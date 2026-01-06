@@ -26,6 +26,7 @@ The visual regression tests cover:
    ```
 
 2. Make sure you have the latest Playwright browsers installed:
+
    ```bash
    pnpm exec playwright install
    ```
@@ -133,6 +134,7 @@ When making intentional UI changes, you may need to update the baseline screensh
 1. Run the tests to see which screenshots need updating
 2. Review the differences to ensure they're expected
 3. Update the baseline screenshots by running:
+
    ```bash
    pnpm exec playwright test visual-regression.spec.ts --project=visual-regression --update-snapshots
    ```

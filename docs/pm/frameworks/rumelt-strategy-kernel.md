@@ -24,9 +24,11 @@ Bad strategy is fluffy, filled with buzzwords, and doesn't make hard choices. Go
 ## Part 1: DIAGNOSIS
 
 ### What It Is
+
 A diagnosis **simplifies the overwhelming complexity** of reality by identifying critical aspects of the situation. It names or classifies the challenge, drawing on existing categories or creating new ones.
 
 ### Questions to Ask
+
 - What's the actual challenge or opportunity we're facing?
 - What are the critical constraints?
 - What's really preventing us from achieving our goals?
@@ -34,9 +36,11 @@ A diagnosis **simplifies the overwhelming complexity** of reality by identifying
 - Where are customers underserved?
 
 ### Example: Netflix circa 2007
+
 **Diagnosis:** "We're a DVD-by-mail company in a world moving to streaming. Our core business has a shelf life. If we don't transform, we'll be the next Blockbuster."
 
 ### For Product Strategy
+
 Your diagnosis should reveal:
 - The core problem or opportunity
 - Why now is the right time
@@ -48,18 +52,22 @@ Your diagnosis should reveal:
 ## Part 2: GUIDING POLICY
 
 ### What It Is
+
 A guiding policy is an **overall approach** chosen to cope with or overcome the obstacles identified in the diagnosis. It channels action in certain directions without defining exactly what shall be done.
 
 ### Key Characteristics
+
 - Creates **advantage** - It's not just "work harder" or "be better"
 - Makes **tradeoffs** - Says no to some things to focus on others
 - Is **coherent** - The parts reinforce each other
 - Provides **direction** - But isn't so specific it becomes a project plan
 
 ### Example: Netflix circa 2007
+
 **Guiding Policy:** "Become a streaming-first entertainment company, even if it cannibalizes our DVD business. Build original content to differentiate from commodity streaming."
 
 ### For Product Strategy
+
 Your guiding policy should answer:
 - Who are we targeting? (And who are we NOT targeting?)
 - What's our positioning/differentiation?
@@ -67,6 +75,7 @@ Your guiding policy should answer:
 - What's our unfair advantage?
 
 ### Red Flags (Bad Guiding Policy)
+
 ❌ "Increase revenue"
 ❌ "Delight customers"
 ❌ "Be the market leader"
@@ -79,15 +88,18 @@ These are **goals**, not strategy. They don't tell you HOW or WHERE to compete.
 ## Part 3: COHERENT ACTIONS
 
 ### What It Is
+
 Coherent actions are **feasible coordinated policies, resource commitments, and actions** designed to carry out the guiding policy. The actions should be coherent - coordinated with one another so they reinforce each other.
 
 ### Key Characteristics
+
 - **Specific enough to be actionable** - Not vague aspirations
 - **Coordinated** - Each action supports the others
 - **Feasible** - Can actually be done with your resources and capabilities
 - **Sequential** - Clear what comes first and what depends on what
 
 ### Example: Netflix circa 2007
+
 **Coherent Actions:**
 1. Launch streaming service (even with limited content)
 2. License streaming rights aggressively from studios
@@ -98,6 +110,7 @@ Coherent actions are **feasible coordinated policies, resource commitments, and 
 Notice how each action **reinforces** the others. Streaming + recommendations + originals = defensible position.
 
 ### For Product Strategy
+
 Your coherent actions should include:
 - Key initiatives on the roadmap (sequenced properly)
 - Resource allocation decisions
@@ -106,6 +119,7 @@ Your coherent actions should include:
 - Partnership or hiring priorities
 
 ### Red Flags (Incoherent Actions)
+
 ❌ A laundry list of every idea anyone had
 ❌ Actions that contradict each other
 ❌ "We'll do everything for everyone"
@@ -116,12 +130,14 @@ Your coherent actions should include:
 ## How to Use This Framework
 
 ### Step 1: Start with Diagnosis
+
 Don't jump to solutions! Spend time really understanding:
 - What's the challenge/opportunity?
 - What do we know from data, research, competitive analysis?
 - What are our constraints?
 
 ### Step 2: Develop Guiding Policy
+
 Make the hard choices:
 - Who's our target customer? (Say no to other segments)
 - What's our positioning?
@@ -130,12 +146,14 @@ Make the hard choices:
 Use this test: **Would a reasonable person disagree with this?** If not, it's probably too generic.
 
 ### Step 3: Define Coherent Actions
+
 Translate strategy into concrete steps:
 - What do we build first, second, third?
 - Why that order?
 - How do these actions reinforce each other?
 
 ### Step 4: Test for Coherence
+
 Ask: Do all these pieces fit together? Would removing any action weaken the whole strategy? Are there conflicting actions?
 
 ---
@@ -143,18 +161,23 @@ Ask: Do all these pieces fit together? Would removing any action weaken the whol
 ## Common Mistakes
 
 ### Mistake 1: Skipping Diagnosis
+
 Jumping straight to "here's what we'll build" without understanding the real problem.
 
 ### Mistake 2: Goals Masquerading as Strategy
+
 "We'll grow 50% year-over-year" is not a strategy. HOW will you grow?
 
 ### Mistake 3: Wishful Thinking
+
 "We'll be the best at X" - okay, but what gives you the right to win? What's your advantage?
 
 ### Mistake 4: Incoherent Actions
+
 Having a laundry list of initiatives that don't reinforce each other - spreading resources thin instead of focusing.
 
 ### Mistake 5: No Tradeoffs
+
 Real strategy involves saying NO. If your strategy accommodates everyone's pet projects, it's not a strategy.
 
 ---

@@ -17,12 +17,14 @@ A strong product strategy scores well on all three dimensions. Weak strategies m
 **Question:** How does this delight customers in a hard-to-copy, margin-enhancing way?
 
 #### What It Means
+
 - Does this solve a meaningful customer problem?
 - Is the solution significantly better than alternatives?
 - Will customers love it (not just tolerate it)?
 - Does it create authentic value?
 
 #### Testing for Delight
+
 - Customer satisfaction scores
 - NPS (Net Promoter Score)
 - Usage metrics and retention
@@ -30,11 +32,13 @@ A strong product strategy scores well on all three dimensions. Weak strategies m
 - Would customers be upset if you removed it?
 
 #### Example: Netflix Recommendations
+
 **Delight:** Helps users discover content they'll love from a massive catalog. Reduces decision paralysis. Personalized to individual taste.
 
 **Test:** Would users complain if recommendations disappeared? Absolutely.
 
 #### For Product Strategy
+
 Ask yourself:
 - What customer pain point are we solving?
 - How is our solution 10x better than alternatives?
@@ -42,6 +46,7 @@ Ask yourself:
 - Do we have evidence customers will love this?
 
 #### Red Flags
+
 ❌ "Customers want this" (based on one loud person's feedback)
 ❌ "It's a nice-to-have feature"
 ❌ Adding features competitors have just to have parity
@@ -54,6 +59,7 @@ Ask yourself:
 **Question:** What makes this defensible? Why can't competitors easily replicate it?
 
 #### What It Means
+
 - Network effects
 - Brand/reputation
 - Data moats
@@ -89,9 +95,11 @@ Ask yourself:
 - Example: Amazon's logistics network
 
 #### Example: Netflix Recommendations
+
 **Hard to Copy:** Requires massive viewing data + years of algorithm development + content tagging by humans. Competitors starting today would be years behind.
 
 #### For Product Strategy
+
 Ask yourself:
 - What prevents competitors from copying this in 6 months?
 - What unique advantages do we have?
@@ -99,6 +107,7 @@ Ask yourself:
 - What gets stronger over time?
 
 #### Red Flags
+
 ❌ "We'll move fast and get there first" (first-mover rarely wins)
 ❌ "It'll be hard to build" (if you can build it, so can they)
 ❌ No durable advantage, just execution
@@ -111,6 +120,7 @@ Ask yourself:
 **Question:** Does this improve our business model and unit economics?
 
 #### What It Means
+
 - Increases revenue per customer
 - Reduces costs
 - Improves retention (increases LTV)
@@ -144,9 +154,11 @@ Ask yourself:
 - Reduce price sensitivity
 
 #### Example: Netflix Recommendations
+
 **Margin-Enhancing:** Increases content utilization (users find value in more of the catalog), improves retention (users don't churn because they always find something), reduces marketing cost (discovery is built-in vs. promoting specific titles).
 
 #### For Product Strategy
+
 Ask yourself:
 - Does this increase LTV or reduce CAC?
 - Will this improve retention?
@@ -155,6 +167,7 @@ Ask yourself:
 - What's the ROI on building this?
 
 #### Red Flags
+
 ❌ "It'll increase engagement" (but no path to monetization)
 ❌ "Everyone has this feature" (table stakes, no margin benefit)
 ❌ Expensive to build and maintain, unclear revenue impact
@@ -270,18 +283,23 @@ Let's say TaskFlow (our fictional company) is considering an AI voice assistant 
 ## Common Mistakes
 
 ### Mistake 1: Focusing Only on Delight
+
 Building features customers love but that don't improve your business model or create defensibility. Classic startup trap.
 
 ### Mistake 2: Pursuing "Hard to Copy" Without Delight
+
 Building technical moats that customers don't care about. Engineers love this; customers don't.
 
 ### Mistake 3: Margin-Enhancing at the Expense of Delight
+
 Optimizing for revenue extraction at the cost of customer experience. Short-term gains, long-term churn.
 
 ### Mistake 4: Copying Competitors
+
 Just because a competitor has a feature doesn't mean it scores well on DHM for YOUR business. Context matters.
 
 ### Mistake 5: Overestimating Defensibility
+
 Thinking "we'll move fast" or "it's complex to build" makes something hard to copy. It doesn't. Real moats are durable.
 
 ---
@@ -289,11 +307,13 @@ Thinking "we'll move fast" or "it's complex to build" makes something hard to co
 ## DHM + Other Frameworks
 
 ### DHM + Rumelt's Kernel
+
 - **Diagnosis** should reveal where you can win on DHM
 - **Guiding Policy** should state which dimension(s) you're optimizing for
 - **Coherent Actions** should strengthen multiple DHM dimensions
 
 ### DHM + SWOT
+
 - **Strengths** = Existing advantages in H (Hard to Copy)
 - **Opportunities** = Where you can improve D, H, or M
 - **Weaknesses** = Low scores on DHM dimensions

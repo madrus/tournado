@@ -335,4 +335,3 @@ A structured way to analyze competitors and identify opportunities
 4. **Build your library over time** - add frameworks as you learn them
 
 Remember: The goal is to make your thinking more structured and consistent. Start simple, add complexity as you need it.
-

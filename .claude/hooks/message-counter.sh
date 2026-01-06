@@ -2,6 +2,8 @@
 # Status line script to display message count in Claude Code
 # Reads transcript path from stdin JSON and counts messages
 
+set -o pipefail
+
 # Read JSON input from stdin
 input=$(cat)
 
@@ -13,11 +15,10 @@ if [ -n "$transcript_path" ] && [ -f "$transcript_path" ]; then
   # JSONL format: each line is a JSON object
   # Count only user messages that are NOT system reminders
   # System reminders contain "<system-reminder>" in their content
-  message_count=$(jq -r 'select(.type == "user") | select((.content // "") | contains("<system-reminder>") | not) | .type' \
+  if ! message_count=$(jq -r 'select(.type == "user") | select((.content // "") | contains("<system-reminder>") | not) | .type' \
     "$transcript_path" 2>/dev/null | \
     wc -l | \
-    tr -d ' ')
-  if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+    tr -d ' '); then
     message_count=0
   fi
 

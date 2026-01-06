@@ -18,6 +18,7 @@ Follow the file creation safety and TypeScript conventions in `.cursor/tasks/tas
 ## ARCHITECTURE DECISION RECORDS
 
 ### 🎯 **FEATURE Task** - Self-contained business domain
+
 **Decision**: Session bridging extends the Firebase feature with server-side session management capabilities. This remains within the Firebase feature boundary as it's core to Firebase authentication functionality and maintains the feature's cohesion.
 
 **Rationale**:
@@ -54,6 +55,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 # 5) Context Plan
 
 ## 🎯 FEATURE Task Pattern
+
 **Beginning (add to model context):**
 - app/features/firebase/server.ts _(from TASK-0101, read-only)_
 - app/utils/session.server.ts _(read-only)_
@@ -75,6 +77,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
    - File: `app/features/firebase/session.server.ts`
    - Exported API:
+
      ```ts
      type CreateSessionFromFirebaseTokenProps = {
        idToken: string
@@ -101,6 +104,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
        props: Readonly<ValidateFirebaseSessionProps>
      ): Promise<{ user: User; session: Session } | null>
      ```
+
    - Details:
      - Verify Firebase ID token using admin SDK
      - Create or update User record in database
@@ -111,6 +115,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
    - File: `app/features/firebase/auth.server.ts`
    - Exported API:
+
      ```ts
      type AuthenticateFirebaseUserProps = {
        request: Request
@@ -137,6 +142,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
        props: Readonly<GetFirebaseUserProps>
      ): Promise<User | null>
      ```
+
    - Details:
      - High-level authentication functions
      - Integrate with existing session patterns
@@ -147,6 +153,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
    - File: `app/utils/session.server.ts`
    - Update functions:
+
      ```ts
      // Enhanced to support Firebase sessions
      export async function getUserId(request: Request): Promise<string | undefined>
@@ -162,6 +169,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
        redirectTo,
      }: CreateUserSessionProps): Promise<Response>
      ```
+
    - Details:
      - Extend existing functions to check both legacy and Firebase sessions
      - Maintain API compatibility
@@ -172,6 +180,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
    - File: `app/models/user.server.ts`
    - Add functions:
+
      ```ts
      type CreateUserFromFirebaseProps = {
        firebaseUid: string
@@ -249,6 +258,7 @@ export type CreateUserSessionProps = {
 # 8) Acceptance Criteria
 
 ## Common Criteria (all tasks)
+
 - All files listed in "End state" section exist and export expected APIs
 - **Validation passes**: Run `pnpm validate` and fix all errors before completion
 - All unit tests pass locally with `pnpm test:run`
@@ -262,6 +272,7 @@ export type CreateUserSessionProps = {
 4. Any code changes require restarting from step 1
 
 ## 🎯 Feature Task Criteria
+
 - Feature exports clean public API via `app/features/firebase/index.ts`
 - Firebase ID tokens can be exchanged for server sessions maintaining SSR compatibility
 - Existing route loaders using `requireUserId`/`getUser` work unchanged

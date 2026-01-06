@@ -58,23 +58,10 @@ test.describe('Group Assignment Dirty State', () => {
 		})
 		TEST_GROUP_STAGE_ID = groupStage.groupStageId
 		TEST_GROUP_ID = groupStage.groupIds[0] // Use first group for tests
-
-		// Create a test team
-		const team = await createTestTeam({
-			tournamentId: TEST_TOURNAMENT_ID,
-			name: 'Test Team Alpha',
-			division: 'FIRST_DIVISION',
-			category: 'JO10',
-		})
-		TEST_TEAM_ID = team.id
 	})
 
 	// Clean up test data after all tests
 	test.afterAll(async () => {
-		// Delete in reverse order of creation
-		if (TEST_TEAM_ID) {
-			await deleteTestTeam({ id: TEST_TEAM_ID })
-		}
 		if (TEST_GROUP_STAGE_ID) {
 			await deleteTestGroupStage(TEST_GROUP_STAGE_ID)
 		}
@@ -86,7 +73,20 @@ test.describe('Group Assignment Dirty State', () => {
 	test.beforeEach(async ({ page }) => {
 		// Use desktop viewport for better drag-and-drop testing
 		await page.setViewportSize({ width: 1920, height: 1080 })
+		const team = await createTestTeam({
+			tournamentId: TEST_TOURNAMENT_ID,
+			name: 'Test Team Alpha',
+			division: 'FIRST_DIVISION',
+			category: 'JO10',
+		})
+		TEST_TEAM_ID = team.id
 		groupAssignmentPage = new GroupAssignmentPage(page)
+	})
+
+	test.afterEach(async () => {
+		if (TEST_TEAM_ID) {
+			await deleteTestTeam({ id: TEST_TEAM_ID })
+		}
 	})
 
 	test('should show clean state on initial load', async () => {
@@ -253,8 +253,6 @@ test.describe('Group Assignment Dirty State', () => {
 
 		// Save
 		await groupAssignmentPage.save()
-		await groupAssignmentPage.expectCleanState()
-
 		await groupAssignmentPage.expectCleanState()
 	})
 })

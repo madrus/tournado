@@ -318,6 +318,7 @@ export function GroupAssignmentBoard({
 							variant='primary'
 							onClick={handleSave}
 							disabled={!isDirty || isSaving}
+							data-testid='group-assignment-save'
 						>
 							{isSaving ? t('common.actions.saving') : t('common.actions.save')}
 						</ActionButton>
@@ -327,12 +328,16 @@ export function GroupAssignmentBoard({
 							variant='secondary'
 							onClick={handleCancel}
 							disabled={!isDirty || isSaving}
+							data-testid='group-assignment-cancel'
 						>
 							{t('common.actions.cancel')}
 						</ActionButton>
 
 						{isDirty ? (
-							<span className='ms-auto text-sm text-warning-600 dark:text-warning-400'>
+							<span
+								className='ms-auto text-sm text-warning-600 dark:text-warning-400'
+								data-testid='group-assignment-unsaved-warning'
+							>
 								{t('competition.groupAssignment.unsavedChanges')}
 							</span>
 						) : null}

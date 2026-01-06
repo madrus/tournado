@@ -18,6 +18,7 @@ Follow the file creation safety and TypeScript conventions in `.cursor/tasks/tas
 ## ARCHITECTURE DECISION RECORDS
 
 ### 🔗 **HYBRID Task** - Mix of shared and feature-specific work
+
 **Decision**: This task combines updates to shared authentication components with new Firebase-specific UI components. Updates existing shared auth routes while creating new Firebase feature components.
 
 **Rationale**:
@@ -56,6 +57,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 # 5) Context Plan
 
 ## 🔗 HYBRID Task Pattern
+
 **Beginning (add to model context):**
 - app/components/auth/ _(read-only existing shared components)_
 - app/routes/auth/ _(read-only existing shared routes)_
@@ -79,6 +81,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
    - File: `app/features/firebase/components/FirebaseSignIn/FirebaseSignIn.tsx`
    - Exported API:
+
      ```tsx
      export type FirebaseSignInProps = {
        redirectTo?: string
@@ -94,6 +97,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
        size = 'md',
      }: FirebaseSignInProps): JSX.Element
      ```
+
    - Details:
      - Use Firebase Auth with Google provider
      - Handle loading states during authentication
@@ -105,6 +109,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
    - File: `app/features/firebase/components/FirebaseSignIn/firebaseSignIn.variants.ts`
    - Use CVA pattern:
+
      ```ts
      export const firebaseSignInVariants = cva([
        'inline-flex items-center justify-center rounded-md font-medium transition-colors',
@@ -129,6 +134,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
    - File: `app/hooks/useFirebaseAuth.ts`
    - Exported API:
+
      ```ts
      export type UseFirebaseAuthReturn = {
        signInWithGoogle: (redirectTo?: string) => Promise<void>
@@ -141,6 +147,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
      export function useFirebaseAuth(): UseFirebaseAuthReturn
      ```
+
    - Details:
      - Handle Google sign-in flow using Firebase client SDK
      - Import Firebase client using: `import { auth, googleProvider } from '~/features/firebase/client'`
@@ -152,6 +159,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
    - File: `app/routes/auth.signin.tsx` (update existing)
    - Update to use FirebaseSignIn component:
+
      ```tsx
      export default function SignIn() {
        const { redirectTo } = useLoaderData<typeof loader>()
@@ -170,6 +178,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
    - File: `app/routes/auth.callback.tsx` (new)
    - Handle Firebase authentication callback:
+
      ```tsx
      export async function loader({ request }: LoaderFunctionArgs) {
        // Handle Firebase ID token from client
@@ -191,6 +200,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
    - File: `app/stores/authStore.ts` (update existing)
    - Add Firebase integration:
+
      ```ts
      type AuthState = {
        user: User | null
@@ -229,6 +239,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 # 7) Types & Interfaces (if applicable)
 
 ## 🔗 Hybrid Types (mix of both)
+
 ```ts
 // app/features/firebase/types.ts (extend existing)
 export type FirebaseUser = {
@@ -253,6 +264,7 @@ export type SignInFlowState = {
 # 8) Acceptance Criteria
 
 ## Common Criteria (all tasks)
+
 - All files listed in "End state" section exist and export expected APIs
 - **Validation passes**: Run `pnpm validate` and fix all errors before completion
 - All unit tests pass locally with `pnpm test:run`
@@ -266,6 +278,7 @@ export type SignInFlowState = {
 4. Any code changes require restarting from step 1
 
 ## 🔗 Hybrid Task Criteria
+
 - Shared components maintain backward compatibility
 - Feature-specific components integrate properly with shared components
 - Clear separation between shared and feature-specific concerns

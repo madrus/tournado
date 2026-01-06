@@ -18,3 +18,4 @@ Hereunder we specify ideas for future application enhancements that we have thou
 - Add devtools panel behind a permanent action button at the bottom left of the screen
 - Add feature flags middleware like I did at Conclusion that I can set in the devtools panel
 - Add a CSS-based responsive layout fallback for the group assignment board to avoid SSR hydration flashes (render both layouts and toggle with CSS)
+- Define explicit server-side refresh triggers for group assignment snapshots (avoid using `updatedAt` unless it reflects meaningful server-side changes)

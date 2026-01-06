@@ -169,16 +169,19 @@ function App() {
 ## Storage Strategies
 
 ### sessionStorage
+
 - Persists across page refreshes
 - Cleared when tab/window closes
 - Good for: UI preferences, temporary state
 
 ### localStorage
+
 - Persists across browser sessions
 - Cleared manually or by user
 - Good for: User settings, long-term preferences
 
 ### No Persistence
+
 Simply omit the `persist` middleware:
 
 ```typescript

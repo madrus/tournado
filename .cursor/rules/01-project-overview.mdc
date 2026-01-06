@@ -1,9 +1,9 @@
-
 # Project Overview - Tournado
 
 **Tournado** is a comprehensive tournament management system built with React Router v7, designed to streamline soccer tournament operations from team registration through live match tracking and public results viewing.
 
 ## 🏆 Project Purpose
+
 A modern, mobile-first PWA that serves multiple user roles:
 - **Public Users**: Team registration and tournament viewing
 - **Admins**: Complete tournament and team management
@@ -11,6 +11,7 @@ A modern, mobile-first PWA that serves multiple user roles:
 - **Tournament Managers**: Tournament-specific administration
 
 ## 🏗️ Technology Stack
+
 - **Frontend**: React Router v7 + TypeScript + Vite
 - **Styling**: Tailwind CSS (mobile-first approach)
 - **Database**: Prisma ORM with SQLite
@@ -22,11 +23,13 @@ A modern, mobile-first PWA that serves multiple user roles:
 ## 📁 Core Architecture
 
 ### Main Entry Points
+
 - `app/root.tsx` - Root component with theme and i18n providers
 - `app/entry.client.tsx` - Client-side hydration and PWA registration
 - `app/entry.server.tsx` - Server-side rendering entry point
 
 ### Key Directories
+
 - `app/routes/` - Route-based file structure with nested layouts
 - `app/components/` - Reusable React components (buttons, inputs, navigation)
 - `app/stores/` - Zustand state management for forms and auth
@@ -39,6 +42,7 @@ A modern, mobile-first PWA that serves multiple user roles:
 - `playwright/` - End-to-end tests and test utilities
 
 ### Database Models (Prisma)
+
 - **User**: Authentication and role management
 - **Tournament**: Tournament details, categories, divisions
 - **Team**: Team registration and management
@@ -47,6 +51,7 @@ A modern, mobile-first PWA that serves multiple user roles:
 - **Score**: Match scoring system
 
 ## 🎨 UI/UX Design Principles
+
 - **Mobile-First**: All layouts prioritize mobile experience
 - **Responsive**: Desktop enhancements using `lg:` breakpoint
 - **Accessibility**: ARIA labels and keyboard navigation
@@ -54,6 +59,7 @@ A modern, mobile-first PWA that serves multiple user roles:
 - **Multi-Language**: RTL support for Arabic, LTR for Dutch, English, French, Turkish
 
 ## 🔧 Configuration Files
+
 - `react-router-config.ts` - React Router configuration
 - `vite.config.ts` - Vite build configuration and plugins
 - `tsconfig.json` - TypeScript configuration
@@ -62,6 +68,7 @@ A modern, mobile-first PWA that serves multiple user roles:
 - `playwright.config.ts` - E2E test configuration
 
 ## 🚀 Development Workflow
+
 - **Development**: `pnpm dev` - Hot reload development server
 - **Database**: `pnpm db:reset` - Reset and seed database
 - **Testing**: `pnpm test` - Run Vitest unit tests
@@ -70,12 +77,14 @@ A modern, mobile-first PWA that serves multiple user roles:
 - **Deployment**: Fly.io with Docker containerization
 
 ## 📖 Documentation
+
 - **PRD**: `docs/development/prd.md` - Product requirements and roadmap
 - **Architecture**: `docs/development/overview.md` - Technical architecture
 - **API Documentation**: Auto-generated from code
 - **Testing Guide**: `docs/testing/overview.md` - Testing strategies
 
 ## 🎯 Current Development Phase
+
 **Phase 1**: Foundation (User Authentication, Basic CRUD) - ✅ In Progress
 **Phase 2**: Pool Creation & Management - 🔄 Planned
 **Phase 3**: Match Scheduling & Score Entry - 📋 Planned

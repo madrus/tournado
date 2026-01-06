@@ -245,6 +245,7 @@ Lower score, but strategic importance might override RICE...
 **Always create three scenarios to show range of outcomes:**
 
 ### Pessimistic Scenario (20th percentile)
+
 - Lower reach (slow adoption)
 - Lower impact (smaller improvement)
 - Higher effort (complexity discovered)
@@ -252,10 +253,12 @@ Lower score, but strategic importance might override RICE...
 - **Result:** Lower RICE score, but still positive
 
 ### Realistic Scenario (50th percentile)
+
 - Expected reach, impact, effort, confidence
 - **Result:** Most likely RICE score
 
 ### Optimistic Scenario (80th percentile)
+
 - Higher reach (fast adoption)
 - Higher impact (bigger improvement)
 - Lower effort (goes smoothly)
@@ -349,4 +352,3 @@ These answers form a defensible prioritization decision backed by data.
 ---
 
 **Remember:** RICE is a tool to make prioritization transparent and data-driven. It's not the only factor (strategic importance, dependencies, etc. also matter), but it helps make trade-offs explicit and defensible. Use judgment - don't blindly follow the highest RICE score.
-

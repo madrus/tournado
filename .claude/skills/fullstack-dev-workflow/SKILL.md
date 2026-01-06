@@ -98,6 +98,7 @@ For **small actions** (bug fixes, minor refactors):
 - Service layer in `app/services/` for API client setup
 
 **Example Structure:**
+
 ```typescript
 // app/services/api-client.ts
 export const apiClient = { /* configured fetch/axios */ }
@@ -121,6 +122,7 @@ export function TodoList() {
 - Loaders and actions live in SSR route components
 
 **Example:**
+
 ```typescript
 // app/routes/todos.tsx (SSR component with loader/action)
 export async function loader() { /* ... */ }
@@ -175,6 +177,7 @@ export default function TodosRoute() {
 - Focus on business logic and user-facing behavior
 
 **Example Test Structure:**
+
 ```typescript
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'

@@ -60,6 +60,7 @@ When writing tests, follow this order of preference for selecting elements:
    ```
 
 8. **By Test ID** (last resort)
+
    ```typescript
    cy.findByTestId('signin-button')
    ```

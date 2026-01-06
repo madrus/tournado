@@ -20,6 +20,36 @@ type Issue =
 			content: string
 	  }
 	| {
+			kind: 'heading-trailing-blank'
+			file: string
+			line: number
+			content: string
+	  }
+	| {
+			kind: 'heading-leading-blank'
+			file: string
+			line: number
+			content: string
+	  }
+	| {
+			kind: 'fence-leading-blank'
+			file: string
+			line: number
+			content: string
+	  }
+	| {
+			kind: 'fence-trailing-blank'
+			file: string
+			line: number
+			content: string
+	  }
+	| {
+			kind: 'duplicate-blank-line'
+			file: string
+			line: number
+			content: string
+	  }
+	| {
 			kind: 'missing-language'
 			file: string
 			line: number
@@ -78,6 +108,10 @@ function isFenceEnd(line: string): boolean {
 function hasTrailingSemicolon(line: string): boolean {
 	const trimmed = line.trimEnd()
 	return trimmed.endsWith(';')
+}
+
+function isHeading(line: string): boolean {
+	return /^\s*#{1,6}\s+/.test(line)
 }
 
 type CheckResult = {
@@ -190,12 +224,14 @@ async function checkFile(filePath: string, fix: boolean): Promise<CheckResult> {
 	const contents = await readFile(filePath, 'utf-8')
 	const lines = contents.split('\n')
 	const issues: Issue[] = []
-	const updatedLines = [...lines]
+	const updatedLines: string[] = []
 	let inCodeBlock = false
 	let checkBlock = false
 	let currentLang: string | null = null
 
-	lines.forEach((line, index) => {
+	for (let index = 0; index < lines.length; index++) {
+		let line = lines[index]
+
 		if (line.includes('\t')) {
 			issues.push({
 				file: filePath,
@@ -205,9 +241,8 @@ async function checkFile(filePath: string, fix: boolean): Promise<CheckResult> {
 			})
 			if (fix) {
 				const replacement = getTabReplacement(inCodeBlock ? currentLang : null)
-				updatedLines[index] = line.replace(/\t/g, replacement)
+				line = line.replace(/\t/g, replacement)
 				console.log(`${filePath} tab`)
-				line = updatedLines[index]
 			}
 		}
 
@@ -220,25 +255,102 @@ async function checkFile(filePath: string, fix: boolean): Promise<CheckResult> {
 				issues.push(result.issue)
 			}
 			if (result.updatedLine !== null) {
-				updatedLines[index] = result.updatedLine
+				line = result.updatedLine
 			}
-			return
+
+			if (line.trim() === '') {
+				const previousLine = updatedLines[updatedLines.length - 1] ?? ''
+				if (previousLine.trim() === '') {
+					issues.push({
+						file: filePath,
+						line: index + 1,
+						content: line.trim(),
+						kind: 'duplicate-blank-line',
+					})
+					if (fix) {
+						console.log(`${filePath} duplicate-blank-line`)
+						continue
+					}
+				}
+			}
+
+			if (isFenceStart(line) !== null && updatedLines.length > 0) {
+				const previousLine = updatedLines[updatedLines.length - 1] ?? ''
+				if (previousLine.trim() !== '') {
+					issues.push({
+						file: filePath,
+						line: index + 1,
+						content: line.trim(),
+						kind: 'fence-leading-blank',
+					})
+					if (fix) {
+						updatedLines.push('')
+						console.log(`${filePath} fence-leading-blank`)
+					}
+				}
+			}
+
+			updatedLines.push(line)
+			if (isHeading(line)) {
+				const previousLine = updatedLines[updatedLines.length - 2] ?? ''
+				if (updatedLines.length > 1 && previousLine.trim() !== '') {
+					issues.push({
+						file: filePath,
+						line: index + 1,
+						content: line.trim(),
+						kind: 'heading-leading-blank',
+					})
+					if (fix) {
+						updatedLines.splice(updatedLines.length - 1, 0, '')
+						console.log(`${filePath} heading-leading-blank`)
+					}
+				}
+
+				const nextLine = lines[index + 1]
+				if (typeof nextLine !== 'undefined' && nextLine.trim() !== '') {
+					issues.push({
+						file: filePath,
+						line: index + 1,
+						content: line.trim(),
+						kind: 'heading-trailing-blank',
+					})
+					if (fix) {
+						updatedLines.push('')
+						console.log(`${filePath} heading-trailing-blank`)
+					}
+				}
+			}
+			continue
 		}
 
 		const result = processCodeBlockLine(line, index, filePath, checkBlock, fix)
-		if (result.isEnd) {
-			inCodeBlock = false
-			checkBlock = false
-			currentLang = null
-			return
-		}
 		if (result.issue) {
 			issues.push(result.issue)
 		}
 		if (result.updatedLine !== null) {
-			updatedLines[index] = result.updatedLine
+			line = result.updatedLine
 		}
-	})
+
+		updatedLines.push(line)
+		if (result.isEnd) {
+			inCodeBlock = false
+			checkBlock = false
+			currentLang = null
+			const nextLine = lines[index + 1]
+			if (typeof nextLine !== 'undefined' && nextLine.trim() !== '') {
+				issues.push({
+					file: filePath,
+					line: index + 1,
+					content: line.trim(),
+					kind: 'fence-trailing-blank',
+				})
+				if (fix) {
+					updatedLines.push('')
+					console.log(`${filePath} fence-trailing-blank`)
+				}
+			}
+		}
+	}
 
 	if (!fix || updatedLines.join('\n') === contents) {
 		return { issues, updatedContent: null }
@@ -267,6 +379,21 @@ async function main(): Promise<void> {
 			const missingLanguageCount = issues.filter(
 				(issue) => issue.kind === 'missing-language',
 			).length
+			const headingTrailingBlankCount = issues.filter(
+				(issue) => issue.kind === 'heading-trailing-blank',
+			).length
+			const headingLeadingBlankCount = issues.filter(
+				(issue) => issue.kind === 'heading-leading-blank',
+			).length
+			const fenceLeadingBlankCount = issues.filter(
+				(issue) => issue.kind === 'fence-leading-blank',
+			).length
+			const fenceTrailingBlankCount = issues.filter(
+				(issue) => issue.kind === 'fence-trailing-blank',
+			).length
+			const duplicateBlankLineCount = issues.filter(
+				(issue) => issue.kind === 'duplicate-blank-line',
+			).length
 			const tabCount = issues.filter((issue) => issue.kind === 'tab').length
 			const parts = []
 
@@ -276,6 +403,26 @@ async function main(): Promise<void> {
 
 			if (missingLanguageCount > 0) {
 				parts.push(`${missingLanguageCount} missing language fence(s)`)
+			}
+
+			if (headingTrailingBlankCount > 0) {
+				parts.push(`${headingTrailingBlankCount} heading trailing blank issue(s)`)
+			}
+
+			if (headingLeadingBlankCount > 0) {
+				parts.push(`${headingLeadingBlankCount} heading leading blank issue(s)`)
+			}
+
+			if (fenceLeadingBlankCount > 0) {
+				parts.push(`${fenceLeadingBlankCount} fence leading blank issue(s)`)
+			}
+
+			if (fenceTrailingBlankCount > 0) {
+				parts.push(`${fenceTrailingBlankCount} fence trailing blank issue(s)`)
+			}
+
+			if (duplicateBlankLineCount > 0) {
+				parts.push(`${duplicateBlankLineCount} duplicate blank line issue(s)`)
 			}
 
 			if (tabCount > 0) {

@@ -477,6 +477,7 @@ Action FormData keys (all strings):
 - Create Page Object Model (`playwright/pages/GroupsPage.ts`)
 
 **Page Object Model Methods:**
+
 ```ts
 class GroupsPage {
   async goto(tournamentId: string): Promise<void>

@@ -747,6 +747,7 @@ If you prefer to use only Continue for coding and Claude for general chat, you c
 1. **Open Cursor Settings:** `Cmd+,` (or `Ctrl+,`)
 2. **Search for:** "AI" or "Copilot"
 3. **Disable these settings:**
+
    ```text
    ✗ Cursor Tab (AI autocompletion)
    ✗ AI predictions

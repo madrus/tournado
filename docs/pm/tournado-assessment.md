@@ -122,6 +122,7 @@ Since you have a PM friend who knows the domain:
 ### 6. Practical Steps for Your Project
 
 **Step 1: Set up your project context**
+
 ```text
 Create:
 - project-context.md (your product, goals, current state)
@@ -346,18 +347,21 @@ methods/
 ## Available Techniques from the Course
 
 ### PRD Writing Workflow
+
 - **Templates:** Use Lenny's or Carl's PRD templates (or your own)
 - **Socratic Questioning:** Use the framework to sharpen feature thinking
 - **Multiple Approaches:** Generate 3 different strategic versions, pick the best
 - **Multi-Perspective Feedback:** Use sub-agents (engineer, executive, user researcher) or your PM friend
 
 ### Context Management
+
 - **@ Mentions:** Reference context files when writing PRDs
 - **Company Context:** Document your product, users, business goals
 - **User Research:** Document pain points, interviews, insights
 - **Competitive Analysis:** Research and document competitors
 
 ### Advanced Techniques
+
 - **Competitive Research:** Claude can web search and synthesize competitor approaches
 - **User Interview Synthesis:** Claude can read interview transcripts and extract themes
 - **Data Analysis:** Claude can analyze usage data to inform prioritization
@@ -415,4 +419,3 @@ The context files and methods library become your "company memory" - they grow o
 ---
 
 **Remember:** As a solopreneur, you don't have a team to bounce ideas off of. But Claude Code + your PM friend + these techniques give you a structured way to think through product decisions, just like a PM at a larger company would.
-

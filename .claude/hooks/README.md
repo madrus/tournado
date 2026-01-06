@@ -18,6 +18,7 @@ Display real-time message count in your Claude Code CLI footer.
 2. **Restart Claude Code** to activate the status line
 
 3. **See the counter** at the bottom of your CLI:
+
    ```text
    💬 Messages: 42
    ```

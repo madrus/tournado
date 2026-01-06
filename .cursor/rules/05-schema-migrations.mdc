@@ -3,6 +3,7 @@ description: Database migration procedures and schema change guidelines
 globs: ["prisma/**/*.prisma", "prisma/migrations/**/*.sql", "app/models/**/*.{ts,tsx}"]
 alwaysApply: true
 ---
+
 # Database Schema Migrations
 
 This guide covers the process of making database schema changes and managing migrations in the application.
@@ -10,8 +11,10 @@ This guide covers the process of making database schema changes and managing mig
 ## Migration Workflow
 
 ### 1. Development Changes
+
 1. Edit [prisma/schema.prisma](mdc:prisma/schema.prisma) with your changes
 2. Run development migration with a descriptive name:
+
    ```bash
    pnpm prisma migrate dev --name <action>_<target>_<details>
    ```
@@ -22,6 +25,7 @@ This guide covers the process of making database schema changes and managing mig
    - `<details>`: Optional additional context
 
    Examples:
+
    ```bash
    # Adding a new field
    pnpm prisma migrate dev --name add_user_role_field
@@ -46,32 +50,40 @@ This guide covers the process of making database schema changes and managing mig
    - Trigger seed data updates
 
 ### 2. Testing Changes
+
 1. Verify migrations work with:
+
    ```bash
    pnpm prisma migrate reset
    ```
+
    This resets the database and runs all migrations
 2. Update [prisma/seed.ts](mdc:prisma/seed.ts) if needed
 3. Run the test suite: `pnpm run test`
 4. Test with mock data: `pnpm run start:mocks`
 
 ### 3. Documentation Updates
+
 After confirming your changes work:
 1. Update [.cursor/rules/02-database-schema.mdc](mdc:.cursor/rules/02-database-schema.mdc)
 2. Update any affected model files in `app/models/`
 3. Update [app/db.server.ts](mdc:app/db.server.ts) if needed
 
 ### 4. Production Deployment
+
 1. Never edit a migration that has been applied to production
 2. Deploy migrations with:
+
    ```bash
    pnpm prisma migrate deploy
    ```
+
 3. Always backup production database before migrations
 
 ## Migration Guidelines
 
 ### Do's
+
 - Use clear, descriptive migration names that indicate the change
 - Follow the naming pattern: `<action>_<target>_<details>`
 - Keep migrations small and focused on related changes
@@ -79,6 +91,7 @@ After confirming your changes work:
 - Update seed data to match new schema
 
 ### Don'ts
+
 - Use vague names like "update_db" or "fix_stuff"
 - Edit existing migrations (create new ones instead)
 - Mix unrelated schema changes in one migration
@@ -88,6 +101,7 @@ After confirming your changes work:
 ## Common Migration Patterns
 
 ### Field Changes
+
 ```bash
 # Adding fields
 add_user_email_verification
@@ -103,6 +117,7 @@ update_user_role_enum
 ```
 
 ### Relationship Changes
+
 ```bash
 # Adding relations
 add_tournament_organizer_relation
@@ -113,6 +128,7 @@ remove_post_category_relation
 ```
 
 ### Model Changes
+
 ```bash
 # Creating models
 create_tournament_model
@@ -126,13 +142,17 @@ remove_legacy_profile_model
 
 If you encounter issues:
 1. Check migration history:
+
    ```bash
    pnpm prisma migrate status
    ```
+
 2. For development, you can reset the database:
+
    ```bash
    pnpm prisma migrate reset
    ```
+
 3. Review migration files in `prisma/migrations/`
 4. Check Prisma's shadow database for conflicts
 

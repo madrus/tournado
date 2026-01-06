@@ -12,30 +12,36 @@ Create a concise summary (<=300 words) of our conversation to use as context for
 Structure the summary as a system prompt with these sections:
 
 ### 1. Context
+
 - What we were working on
 - Why this work matters to the project
 
 ### 2. Key Decisions Made
+
 - Technical decisions and their rationale
 - Design choices (patterns, colors, components)
 - Architecture changes
 
 ### 3. Code Patterns Established
+
 - Component patterns used
 - Styling approaches (variants, utilities)
 - Important conventions followed
 
 ### 4. Files Modified
+
 - List files changed with brief description of changes
 - Include specific line numbers if relevant
 - Note any refactoring (e.g., Panel → custom variants)
 
 ### 5. Technical Context
+
 - Important types, utilities, or APIs referenced
 - Relevant libraries or tools used
 - Key configuration or settings
 
 ### 6. Next Steps / Pending Tasks
+
 - Explicit tasks still to do
 - Implicit follow-up work identified
 - Testing or validation needed

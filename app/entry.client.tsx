@@ -51,3 +51,9 @@ hydrateRoot(
 		<HydratedRouter />
 	),
 )
+
+if (window.ENV?.PLAYWRIGHT === 'true') {
+	queueMicrotask(() => {
+		document.documentElement.setAttribute('data-hydrated', 'true')
+	})
+}

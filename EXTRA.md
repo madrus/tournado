@@ -20,6 +20,7 @@ The 5th item describes a "Credential Persistence Tool" leveraging AI reasoning t
 This plan addresses these gaps by introducing an AI-augmented persistence layer. It builds on existing Firebase/Zustand infrastructure for minimal disruption, prioritizing security (e.g., role-based persistence levels) and SSR compatibility. Estimated effort: 8-12 hours, assuming no major Firebase config changes.
 
 #### High-Level Architecture
+
 - **Core Components**:
   - **AI Reasoning Engine**: A lightweight function (in `useFirebaseAuth.ts` or a new hook) that analyzes token health (e.g., `getIdTokenResult().expirationTime`) against criteria (e.g., user role: admin=longer; idle>30min=shorten). Outputs actions: renew, warn, or expire.
   - **Enhanced Persistence**: Switch to `browserLocalPersistence` for non-sensitive users; fallback to session for admins. Sync across tabs via BroadcastChannel.
@@ -33,6 +34,7 @@ This plan addresses these gaps by introducing an AI-augmented persistence layer.
 - **Fallbacks**: If AI reasoning fails (e.g., offline), default to Firebase's standard behavior.
 
 #### Detailed Implementation Steps
+
 I've broken this into prioritized tasks (tracked via internal TODO system for progress). Each includes affected files, rationale, and success criteria.
 
 1. **Define AI Reasoning Criteria (1-2 hours)**
@@ -102,6 +104,7 @@ I've broken this into prioritized tasks (tracked via internal TODO system for pr
    - **Rationale**: Validates "continuous access"; documents for maintainability.
 
 #### Potential Challenges & Mitigations
+
 - **Privacy/Security Trade-offs**: Long persistence risks session hijacking. **Mitigate**: Role-based (short for admins); audit logs for renewals; comply with GDPR (e.g., explicit consent UI).
 - **Cross-Browser/Tab Sync**: BroadcastChannel may fail in older browsers. **Mitigate**: Fallback to polling; test in Safari/Chrome.
 - **Performance Overhead**: Polling drains battery. **Mitigate**: Throttle to 5-10min; pause on visibility hidden.
@@ -109,6 +112,7 @@ I've broken this into prioritized tasks (tracked via internal TODO system for pr
 - **SSR Conflicts**: LocalPersistence doesn't work server-side. **Mitigate**: Browser-only init (already in codebase via `isBrowser` checks).
 
 #### Next Actions
+
 - **Immediate**: Review/approve this plan. Start with step 1 (reasoning definition) for quick validation.
 - **Timeline**: 1-2 days for core implementation; 1 day for testing.
 - **Dependencies**: Ensure Firebase env vars are set; run `pnpm typecheck` post-changes.

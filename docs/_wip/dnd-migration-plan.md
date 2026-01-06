@@ -1,9 +1,11 @@
 # Group Stage Drag and Drop Assignment System
 
 ## Overview
+
 The group stage assignment interface provides a drag-and-drop experience where teams can be assigned to group slots, moved between slots, returned to confirmed pool, or moved to waitlist. The system maintains smooth animations, supports RTL layouts, and handles both confirmed teams and waitlist teams with distinct behaviors.
 
 ## Core Principles
+
 - Client-side zustand store maintains state during editing
 - SAVE and CANCEL are the only persistence boundaries
 - Touch sensors and pointer sensors support mobile and desktop interactions
@@ -15,6 +17,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 ## Architecture
 
 ### DnD Library Configuration
+
 - **Library**: @dnd-kit/core v6.3.1 with @dnd-kit/modifiers v9.0.0
 - **Collision Detection**: `pointerWithin` strategy for accurate slot targeting
 - **Sensors**: PointerSensor (8px activation distance), TouchSensor (200ms delay, 8px tolerance), KeyboardSensor
@@ -110,11 +113,13 @@ The group stage assignment interface provides a drag-and-drop experience where t
 ## Drag and Drop Behavior
 
 ### Drag Sources
+
 - Team chips in the confirmed pool (confirmed teams)
 - Team chips in the waitlist pool
 - Team chips assigned to group slots
 
 ### Drop Targets
+
 - **Individual group slots** - each slot is independently droppable
 - **Confirmed pool** - accepts teams from group slots and waitlist
 - **Waitlist pool** - accepts teams from group slots and confirmed pool (soft delete)
@@ -145,6 +150,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - No action - prevents unnecessary state updates
 
 ### Waitlist Behavior
+
 - Waitlist teams can be promoted to confirmed pool when capacity exists
 - Capacity = total group slots - currently assigned teams
 - Direct drag from waitlist to group slots is blocked
@@ -174,12 +180,14 @@ The group stage assignment interface provides a drag-and-drop experience where t
 ## Layout and Responsive Design
 
 ### Desktop (≥1024px)
+
 - Groups board: left side, responsive grid (md=2, xl=3, 2xl=4 columns)
 - Confirmed pool: right side, fixed 320px width
 - Waitlist pool: below confirmed pool
 - All groups visible simultaneously
 
 ### Mobile (<1024px)
+
 - Groups: top section, one group visible at a time
 - Horizontal scrollable pill tabs for group navigation
 - Active tab: glossy slate gradient, bold text
@@ -188,12 +196,14 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - Waitlist pool: below confirmed pool
 
 ### Slot Layout
+
 - Vertical lists (not grids) for compact scanning
 - Fixed height (36px/h-9) prevents layout shift
 - Single-line labels for empty slots
 - Consistent spacing between slots (gap-2)
 
 ### RTL Support
+
 - Layout flips using logical CSS properties
 - Text alignment adapts automatically
 - Icons rotate where needed (back arrows)
@@ -202,12 +212,14 @@ The group stage assignment interface provides a drag-and-drop experience where t
 ## Styling System
 
 ### Color Scheme
+
 - Surface color: slate-based for panels and cards
 - Brand color: accent for interactive elements and highlights
 - Semantic colors: primary for confirmed, amber for waitlist
 - Background: gradient from surface tones for depth
 
 ### Panel Styling
+
 - Group cards: subtle gradients, borders, shadows, backdrop blur
 - Unassigned team pools (confirmed/waitlist): similar treatment for visual consistency
 - No decorative parent wrapper around main board
@@ -236,6 +248,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - Color-coded borders and backgrounds for each variant
 
 ### Mobile Tab Styling
+
 - Pill shape (rounded-full)
 - Active: `from-slate-400/50 via-surface to-surface`
 - Inactive: `from-slate-400/30 via-surface/80 to-surface/60`
@@ -243,6 +256,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - Smooth scroll animation centers active tab
 
 ### Accessibility
+
 - ARIA labels for all interactive elements
 - Screen reader announcements for drag operations
 - Keyboard navigation with @dnd-kit keyboard sensor
@@ -252,6 +266,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 ## Data Flow
 
 ### Loading
+
 1. Route loader returns `groupStage` and `availableTeams`
 2. Unassigned teams calculated as: availableTeams + teams in group stage confirmed slots
 3. Each team explicitly tagged with `isWaitlist` flag (true/false)
@@ -260,6 +275,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 6. sessionStorage restores any unsaved edits
 
 ### Editing
+
 1. User drags and drops teams
 2. Store updates immediately (optimistic)
 3. UI reflects changes instantly
@@ -267,6 +283,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 5. Dirty state tracked for navigation warning
 
 ### Saving
+
 1. User clicks SAVE button
 2. Store marked as saving (disables drag)
 3. Slot assignments serialized from store snapshot
@@ -277,6 +294,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 8. On error: keep store state, show inline error, allow retry
 
 ### Canceling
+
 1. User clicks CANCEL button
 2. Store resets to original loader snapshot
 3. All unsaved changes discarded
@@ -284,6 +302,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 5. UI reflects original state
 
 ### Persistence Boundary
+
 - Client state: ephemeral, sessionStorage only
 - Server state: persisted on SAVE only
 - No auto-save, no incremental saves
@@ -310,16 +329,19 @@ The group stage assignment interface provides a drag-and-drop experience where t
 ## Error Handling
 
 ### Drag-Related Errors
+
 - Waitlist to group: toast error, return to origin
 - No capacity for promotion: toast error, block promotion
 - Invalid drop target: no operation, no state change
 
 ### Save Errors
+
 - Network error: inline banner, retry button, store preserved
 - Validation error: inline banner with message
 - Conflict: blocking dialog, force reload required
 
 ### Error Recovery
+
 - All errors preserve current store state
 - User can retry after fixing issues
 - Conflict resolution requires fresh data reload
@@ -336,6 +358,7 @@ All user-facing text internationalized in 6 languages:
 - Arabic (ar)
 
 ### Key Translation Paths
+
 - `competition.groupAssignment.instruction` - hero strip text
 - `competition.groupAssignment.slot.label` - slot numbering
 - `competition.groupAssignment.group.ariaLabel` - group announcements
@@ -345,18 +368,21 @@ All user-facing text internationalized in 6 languages:
 ## Testing Coverage
 
 ### Unit Tests
+
 - Slot assignment logic in store
 - ID parsing and generation utilities
 - Collision detection helpers
 - Reserve capacity calculations
 
 ### Component Tests
+
 - Drag and drop operations (pointer and keyboard)
 - Slot state transitions
 - Team chip rendering and interactions
 - Error boundary behavior
 
 ### E2E Tests (Playwright)
+
 - Complete drag → drop → save → DB verification flow
 - Conflict detection and resolution
 - Mobile touch interactions
@@ -364,6 +390,7 @@ All user-facing text internationalized in 6 languages:
 - Failed save retry
 
 ### Accessibility Tests
+
 - Keyboard navigation completeness
 - Screen reader announcement accuracy
 - Focus management during drag
@@ -372,6 +399,7 @@ All user-facing text internationalized in 6 languages:
 ## Technical Stack
 
 ### Dependencies
+
 - `@dnd-kit/core`: ^6.3.1
 - `@dnd-kit/modifiers`: ^9.0.0
 - `@dnd-kit/utilities`: ^3.2.2
@@ -381,6 +409,7 @@ All user-facing text internationalized in 6 languages:
 - `cva`: component variant API
 
 ### Browser Support
+
 - Modern evergreen browsers
 - Touch-enabled devices
 - Keyboard-only navigation

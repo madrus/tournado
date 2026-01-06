@@ -57,16 +57,16 @@ export class GroupAssignmentPage extends BasePage {
 
 	// Action buttons
 	get saveButton(): Locator {
-		return this.page.getByRole('button', { name: /opslaan/i })
+		return this.page.getByTestId('group-assignment-save')
 	}
 
 	get cancelButton(): Locator {
-		return this.page.getByRole('button', { name: /annuleren/i })
+		return this.page.getByTestId('group-assignment-cancel')
 	}
 
 	// Dirty state indicator
 	get unsavedChangesWarning(): Locator {
-		return this.page.locator('text=/niet-opgeslagen wijzigingen/i')
+		return this.page.getByTestId('group-assignment-unsaved-warning')
 	}
 
 	// Navigation blocker dialog
@@ -142,9 +142,15 @@ export class GroupAssignmentPage extends BasePage {
 
 	// Save changes
 	async save(): Promise<void> {
+		await expect(this.saveButton).toBeEnabled()
 		await this.saveButton.click()
-		// Wait for save to complete (button should become disabled)
+		// Wait for save to complete (no pending state, clean UI)
+		await expect(this.saveButton).toHaveText(/opslaan\.{3}/i, { timeout: 10000 })
 		await expect(this.saveButton).toBeDisabled({ timeout: 10000 })
+		await expect(this.saveButton).toHaveText(/^\s*opslaan\s*$/i, {
+			timeout: 10000,
+		})
+		await expect(this.unsavedChangesWarning).not.toBeVisible()
 	}
 
 	// Cancel changes

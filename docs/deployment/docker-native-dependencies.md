@@ -11,6 +11,7 @@ When deploying Node.js applications with native modules (like `better-sqlite3`) 
 **Problem**: Installing dependencies normally triggers postinstall scripts, including Husky's git hook setup.
 
 **Error**:
+
 ```bash
 sh: 1: husky: not found
 ELIFECYCLE Command failed
@@ -22,6 +23,7 @@ ELIFECYCLE Command failed
 - The postinstall script runs `husky &&` which fails before `|| true` can catch it
 
 **Solution**: Use `--ignore-scripts` flag to skip all postinstall hooks:
+
 ```dockerfile
 RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 ```
@@ -31,6 +33,7 @@ RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 **Problem**: Native modules like `better-sqlite3` need to be compiled for the target platform (Linux in Docker).
 
 **Error**:
+
 ```bash
 Error: Could not locate the bindings file. Tried:
   → /workdir/node_modules/better-sqlite3/build/Release/better_sqlite3.node
@@ -52,12 +55,14 @@ Error: Could not locate the bindings file. Tried:
 **Problem**: Hardcoding version numbers in Dockerfile paths creates maintenance burden.
 
 **Example of bad approach**:
+
 ```dockerfile
 # ❌ WRONG - hardcoded version breaks on upgrades
 COPY --from=deps /workdir/node_modules/.pnpm/better-sqlite3@12.4.6/...
 ```
 
 **Solution**: Use dynamic resolution with `find`:
+
 ```dockerfile
 # ✅ CORRECT - works across version upgrades
 RUN SQLITE_DIR=$(find /workdir/node_modules/.pnpm -type d -name "better-sqlite3" -path "*/node_modules/better-sqlite3" | head -1)
@@ -129,6 +134,7 @@ RUN SQLITE_DIR=$(find /workdir/node_modules/.pnpm -type d -name "better-sqlite3"
 4. node-gyp compiles the C++ source code to a `.node` binary
 
 **Build output (success)**:
+
 ```bash
 > better-sqlite3@12.4.6 build-release
 > node-gyp configure --release && node-gyp build --release
@@ -169,11 +175,13 @@ When you use `--ignore-scripts`:
 ### 2. Never Hardcode Version Numbers
 
 **Bad**:
+
 ```dockerfile
 COPY better-sqlite3@12.4.6/build/Release/better_sqlite3.node
 ```
 
 **Good**:
+
 ```dockerfile
 RUN SQLITE_DIR=$(find ... -name "better-sqlite3" ...)
 ```
@@ -219,16 +227,19 @@ This approach works for any native Node.js module:
 ### Binary still not found
 
 **Check 1**: Verify build-essential is installed
+
 ```bash
 docker run --rm <image> which gcc g++ make
 ```
 
 **Check 2**: Check the build output for errors
+
 ```bash
 docker build --progress=plain . 2>&1 | grep -A 10 "better-sqlite3"
 ```
 
 **Check 3**: Verify the binary exists
+
 ```bash
 docker run --rm <image> find /workdir -name "*.node"
 ```
@@ -236,6 +247,7 @@ docker run --rm <image> find /workdir -name "*.node"
 ### Husky errors persist
 
 **Check**: Ensure `HUSKY=0` is set and `--ignore-scripts` is used:
+
 ```dockerfile
 ENV HUSKY=0
 RUN pnpm install --prod --frozen-lockfile --ignore-scripts
@@ -244,6 +256,7 @@ RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 ### Build takes too long
 
 **Optimization**: Use Docker layer caching by separating dependency installation from building:
+
 ```dockerfile
 # This layer changes rarely (only when dependencies update)
 RUN pnpm install --prod --frozen-lockfile --ignore-scripts
@@ -306,6 +319,7 @@ The test suite (`scripts/test-docker-build.sh`) validates:
 ### Test output
 
 Color-coded results with clear pass/fail indicators:
+
 ```text
 ==========================================
 Docker Build Validation Tests

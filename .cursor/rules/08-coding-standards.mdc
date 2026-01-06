@@ -15,6 +15,7 @@ These rules ensure consistent coding style and standards across the project.
 **Rule:** Never use bold markdown formatting (`**text**`) within markdown headers. Headers are already emphasized by their `#` syntax.
 
 #### ✅ Correct Header Formatting
+
 ```markdown
 # Project Overview
 ## Key Features
@@ -23,6 +24,7 @@ These rules ensure consistent coding style and standards across the project.
 ```
 
 #### ❌ Incorrect Header Formatting
+
 ```markdown
 # **Project Overview**
 ## **Key Features**
@@ -31,6 +33,7 @@ These rules ensure consistent coding style and standards across the project.
 ```
 
 #### Why This Rule?
+
 - **Clean Syntax** - Headers are already emphasized by their level
 - **Consistent Styling** - Avoids redundant formatting
 - **Better Readability** - Cleaner appearance in both source and rendered form
@@ -43,6 +46,7 @@ These rules ensure consistent coding style and standards across the project.
 **Rule:** In Dutch translations, only capitalize the first word of titles and labels (sentence case), not every word.
 
 #### ✅ Correct Dutch Capitalization
+
 ```json
 {
   "teams": {
@@ -57,6 +61,7 @@ These rules ensure consistent coding style and standards across the project.
 ```
 
 #### ❌ Incorrect Dutch Capitalization
+
 ```json
 {
   "teams": {
@@ -71,6 +76,7 @@ These rules ensure consistent coding style and standards across the project.
 ```
 
 #### Why This Rule?
+
 - **Dutch Grammar** - Dutch uses sentence case for titles, not title case like English
 - **Consistency** - Follows Dutch language conventions
 - **User Experience** - Feels natural to Dutch speakers
@@ -80,6 +86,7 @@ These rules ensure consistent coding style and standards across the project.
 **Rule:** Never use em dashes (—) in documentation. Use a spaced hyphen instead: ` - ` (one space on each side).
 
 #### ✅ Correct
+
 ```markdown
 Phase 1 - Authentication Modernization
 Real-time score updates - scope TBD
@@ -87,6 +94,7 @@ This decision - while optional - improves readability.
 ```
 
 #### ❌ Incorrect
+
 ```markdown
 Phase 1 — Authentication Modernization
 Real-time score updates — scope TBD
@@ -94,6 +102,7 @@ This decision—while optional—improves readability.
 ```
 
 #### Why This Rule?
+
 - **Consistency** - Uniform punctuation across docs and UIs
 - **Readability** - Spaced hyphens are clearer in many fonts and locales
 - **Cross-platform** - Avoids encoding/typographic issues in tooling
@@ -101,11 +110,13 @@ This decision—while optional—improves readability.
 ## Implementation Guidelines
 
 ### When Adding Dutch Translations
+
 1. Only capitalize the first letter of the first word
 2. Keep all other words lowercase unless they are proper nouns
 3. Follow Dutch sentence structure and grammar rules
 
 ### When Writing Documentation
+
 1. Use standard markdown header formatting without bold
 2. Maintain consistent header hierarchy
 3. Follow markdown best practices for readability
@@ -135,6 +146,7 @@ if (remainingTeams === 0) {
 ## Examples in Practice
 
 ### Translation Keys
+
 ```json
 // ✅ Good - Dutch
 {
@@ -152,6 +164,7 @@ if (remainingTeams === 0) {
 ```
 
 ### Documentation Structure
+
 ```markdown
 # ✅ Good - Clean Headers
 ## Authentication System
@@ -187,31 +200,35 @@ export function createUser(input: { name: string; email: string }) {
 }
 ```
 
-
 ---
 
 ## TypeScript & React Standards
 
 ### Language & Framework Versions
+
 - React 18+, React Router v7+
 - TypeScript strict mode with ESM modules
 
 ### Type Safety
+
 - No `any` type unless safely narrowed with type guards
 - Prefer type inference but always maintain **strong typing** (never drop types entirely)
 - Complex function arguments must use `Readonly<ComplexType>` with separate exported types (see Function Arguments Typing section above)
 
 ### Code Style
+
 - Function declarations over expressions, unless "return" is the only statement in the function body.
 - No classes, no default exports
 - Favor pure functions
 - Single quotes, spaces, **no semicolons**
 
 ### State Management & Data Fetching
+
 - Use **Zustand** for client-side state (view + form state with reset/partial prefill)
 - Use **native fetch** only with small typed API helpers
 
 ### Project Guidelines
+
 - Keep code minimal, avoid extra dependencies
 - Match existing folder layout and naming conventions
 - When asked for code, output **code blocks only**

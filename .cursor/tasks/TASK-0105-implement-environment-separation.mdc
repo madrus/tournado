@@ -18,6 +18,7 @@ Follow the file creation safety and TypeScript conventions in `.cursor/tasks/tas
 ## ARCHITECTURE DECISION RECORDS
 
 ### 🚀 IMPLEMENTATION Task — Environment Variable Separation
+
 **Decision**: Implement separate Firebase projects and environment variable strategies for local, staging, production, and CI to improve security, reliability, and testing independence.
 
 **Rationale**:
@@ -60,6 +61,7 @@ The solution involves creating separate Firebase projects and implementing autom
 # 5) Context Plan
 
 ## IMPLEMENTATION Task Pattern
+
 **Beginning (add to model context):**
 - Firebase console access for project creation
 - setup-github-secrets.sh _(existing script)_
@@ -78,6 +80,7 @@ The solution involves creating separate Firebase projects and implementing autom
 # 6) Low-Level Steps (Ordered, information-dense)
 
 ## File Creation Safety Check
+
 Before every new/modified file, check if it exists and merge carefully without breaking existing functionality.
 
 1. **Firebase Project Creation**
@@ -134,6 +137,7 @@ No new types needed for environment separation task.
 # 8) Acceptance Criteria
 
 ## Environment Separation Criteria
+
 - Three distinct deployment contexts with appropriate Firebase projects:
   - CI: Uses dummy Firebase values, no real connections
   - Local & Staging: Both share `tournado-dev` Firebase project (different deployment contexts)
@@ -141,24 +145,28 @@ No new types needed for environment separation task.
 - Each environment has appropriate service account permissions
 
 ## Security Criteria
+
 - No production secrets exposed in CI environment
 - Firebase service accounts have minimal required permissions
 - Environment variables properly isolated between deployments
 - Session secrets unique per environment
 
 ## Automation Criteria
+
 - `setup-github-secrets.sh` configures CI with dummy values
 - `setup-flyio-secrets.sh` configures Fly.io environments with real values
 - Scripts are idempotent and safe to run multiple times
 - Clear error messages if prerequisites are missing
 
 ## Testing Criteria
+
 - E2E tests run reliably in CI without Firebase dependencies
 - Authentication bypass works correctly with session cookies
 - Test database completely isolated from development/production
 - No real Firebase API calls during testing
 
 ## Deployment Criteria
+
 - Local development uses `tournado-dev` Firebase (via `.env`)
 - Staging deploys successfully with `tournado-dev` Firebase (shared Firebase project)
 - Production deploys successfully with `tournado-prod` Firebase
@@ -168,18 +176,21 @@ No new types needed for environment separation task.
 # 9) Testing Strategy
 
 ## Environment Testing
+
 - Verify each environment can be set up from scratch using setup scripts
 - Test that dummy Firebase values prevent real service connections in CI
 - Confirm real Firebase authentication works in local, staging, and production
 - Validate environment variable isolation
 
 ## Security Testing
+
 - Audit that no production credentials are accessible from CI
 - Verify service account permissions are minimal
 - Test that environment variables cannot leak between deployments
 - Confirm session cookie security settings per environment
 
 ## Integration Testing
+
 - Test complete authentication flows in local and staging environments
 - Verify E2E tests run without Firebase dependencies
 - Confirm deployment processes work for each deployment context

@@ -821,6 +821,7 @@ export async function createTeam(teamData: CreateTeamData) {
 ```
 
 ## Performance Patterns
+
 ## SSR Security Headers
 
 - Security headers (including CSP) are applied in `app/entry.server.tsx`

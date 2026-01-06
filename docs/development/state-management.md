@@ -259,6 +259,7 @@ Since we use component-level hydration, tests can import stores without triggeri
    ```
 
 3. **Use in components**:
+
    ```typescript
    function App() {
       useStoreHydration()

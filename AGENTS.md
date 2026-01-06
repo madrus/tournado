@@ -195,7 +195,7 @@ This section is not complete yet. It will be filled in as the project evolves.
 
 - **LTR/RTL support** - each UI component, and all its design elements including gradient direction, should flip left/right when switching between LTR and RTL languages
 - **Accessibility** - each UI component should be accessible to screen readers and keyboard navigation
-- **Responsive design** - each UI component should be mobile first and mobile friendly
+- **Responsive design** - each UI component should be mobile-first and mobile-friendly
 - **Unit tests** - each UI component should have its most critical functionality covered
 
 ### Agent Behavior Rules

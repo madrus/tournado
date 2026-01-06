@@ -1,14 +1,17 @@
 # ADR-003: Dynamic Admin Role Assignment
 
 ## Status
+
 Accepted
 
 ## Date
+
 2025-01-10
 
 ## Context
 
 ### Problem
+
 The initial implementation of admin role management had several issues:
 
 1. **Static Role Assignment**: Admin roles were only assigned when users were created. Once set, roles never changed even if `SUPER_ADMIN_EMAILS` was updated.
@@ -20,6 +23,7 @@ The initial implementation of admin role management had several issues:
 4. **Security Risk**: Removing an email from `SUPER_ADMIN_EMAILS` didn't revoke admin access - users remained admins indefinitely.
 
 ### Example Scenario
+
 - User `alice@example.com` signs up → gets PUBLIC role
 - Admin adds `alice@example.com` to `SUPER_ADMIN_EMAILS`
 - Alice logs in again → **still has PUBLIC role** ❌
@@ -52,6 +56,7 @@ We implement **dynamic role assignment on every login** by modifying the `create
 ### Code Changes
 
 **Modified `assignUserRole()` function:**
+
 ```typescript
 export const assignUserRole = async (
   props: Readonly<AssignUserRoleProps>
@@ -75,6 +80,7 @@ export const assignUserRole = async (
 ```
 
 **Modified `createOrUpdateUser()` function:**
+
 ```typescript
 if (existingUser) {
   const assignedRole = await assignUserRole({
@@ -131,6 +137,7 @@ pnpm migrate:admin-roles
 ## Alternatives Considered
 
 ### Alternative 1: Database-Driven Admin List
+
 Store admin emails in database table instead of environment variable.
 
 **Rejected because**:
@@ -139,6 +146,7 @@ Store admin emails in database table instead of environment variable.
 - Environment variables are simpler for ops teams
 
 ### Alternative 2: Role Update API Endpoint
+
 Create API endpoint to manually update user roles.
 
 **Rejected because**:
@@ -147,6 +155,7 @@ Create API endpoint to manually update user roles.
 - Doesn't solve the consistency problem
 
 ### Alternative 3: Background Job
+
 Run periodic job to sync roles with `SUPER_ADMIN_EMAILS`.
 
 **Rejected because**:

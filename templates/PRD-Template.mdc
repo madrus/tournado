@@ -62,6 +62,7 @@ NOTE: This is a template file. Use it to author concrete PRDs under .cursor/rule
 **Timeline**: <Duration estimate>
 
 #### <N.1> <Sub-phase Name>
+
 - [ ] **<Feature Name>**: <Brief description>
 - [ ] **<Feature Name>**: <Brief description>
 
@@ -70,14 +71,17 @@ NOTE: This is a template file. Use it to author concrete PRDs under .cursor/rule
 ## Success Metrics
 
 ### User Engagement Metrics
+
 - **<Metric Name>**: <Description> (Target: <value>)
 - **<Metric Name>**: <Description> (Target: <value>)
 
 ### Performance Metrics
+
 - **<Metric Name>**: <Description> (Target: <value>)
 - **<Metric Name>**: <Description> (Target: <value>)
 
 ### Business Metrics
+
 - **<Metric Name>**: <Description> (Target: <value>)
 - **<Metric Name>**: <Description> (Target: <value>)
 
@@ -109,11 +113,13 @@ Definition of done (MVP)
 ### Current Technical Architecture
 
 #### <System Component>
+
 - **Current State**: <Brief description of what exists>
 - **Limitations**: <What needs to be addressed>
 - **Requirements**: <What needs to be built>
 
 ### Architecture Requirements
+
 - [ ] **<Requirement>**: <Description and target metrics>
 - [ ] **<Requirement>**: <Description and target metrics>
 
@@ -214,18 +220,21 @@ Definition of done (MVP)
 ## Design System & UI Guidelines
 
 ### Standard UI Patterns
+
 - **Actionable Panels**: Use actionable panels with clear CTAs for user interactions across all features where users need to take actions
 - **Panel Hierarchy**: <Define when to use different panel types (info, action, warning, success)>
 - **Component Consistency**: Follow established component library patterns and variants
 - **Navigation Patterns**: <Consistent navigation behavior and visual cues>
 
 ### Visual Design Standards
+
 - **Color System**: Use semantic color classes from app/styles/tailwind.css for ColorAccent types
 - **Typography**: <Consistent heading hierarchy and text styling>
 - **Spacing**: <Standard spacing patterns and grid system>
 - **Iconography**: <Consistent icon usage and styling>
 
 ### Interaction Patterns
+
 - **Loading States**: <Standard loading indicators and skeleton screens>
 - **Error States**: <Consistent error messaging and recovery patterns>
 - **Success States**: <Standard confirmation and success feedback>
@@ -258,14 +267,17 @@ Definition of done (MVP)
 ## Risk Assessment
 
 ### Technical Risks
+
 - **<Risk Name>**: <Description> → **Mitigation**: <Strategy>
 - **<Risk Name>**: <Description> → **Mitigation**: <Strategy>
 
 ### Business Risks
+
 - **<Risk Name>**: <Description> → **Mitigation**: <Strategy>
 - **<Risk Name>**: <Description> → **Mitigation**: <Strategy>
 
 ### Mitigation Strategies
+
 - **<Strategy Name>**: <Description of overall approach>
 - **<Strategy Name>**: <Description of overall approach>
 
@@ -274,6 +286,7 @@ Definition of done (MVP)
 ## Implementation Timeline
 
 ### <Quarter/Phase>: <Name>
+
 - **<Time Period>**: <Milestone description>
 - **<Time Period>**: <Milestone description>
 

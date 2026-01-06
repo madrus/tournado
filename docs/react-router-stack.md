@@ -218,13 +218,17 @@ It's recommended to install the Biome VS Code extension for format-on-save funct
 ## Troubleshooting
 
 - Verify that your `SESSION_SECRET` is properly set in the staging environment:
+
    ```bash
    fly secrets list --app tournado-staging
    ```
+
 - Monitor the application logs in your staging environment:
+
    ```sh
    fly logs --app tournado-staging
    ```
+
 - Check the status of your Fly.io machines and volumes:
 
    ```sh
@@ -238,13 +242,14 @@ It's recommended to install the Biome VS Code extension for format-on-save funct
    View them in the UI here (​https://fly.io/apps/tournado-staging/machines/)
 
    tournado-staging
-   ID            	NAME                     	STATE  	CHECKS	REGION	ROLE	IMAGE                                                 	IP ADDRESS                     	VOLUME              	CREATED             	LAST UPDATED        	PROCESS GROUP	SIZE
-   7815677a50d578	sparkling-wildflower-9325	stopped	0/2   	iad   	    	tournado-staging:deployment-01JRXM5WCTP3S2C0J2JWW3JR6X	fdaa:16:cce:a7b:2f7:a39b:1bad:2	vol_4qpmz25gyggywxwv	2025-04-15T21:06:25Z	2025-04-15T21:32:54Z	app          	shared-cpu-1x:256MB
+   ID              NAME                       STATE    CHECKS  REGION  ROLE  IMAGE                                                   IP ADDRESS                       VOLUME                CREATED               LAST UPDATED          PROCESS GROUP  SIZE
+   7815677a50d578  sparkling-wildflower-9325  stopped  0/2     iad           tournado-staging:deployment-01JRXM5WCTP3S2C0J2JWW3JR6X  fdaa:16:cce:a7b:2f7:a39b:1bad:2  vol_4qpmz25gyggywxwv  2025-04-15T21:06:25Z  2025-04-15T21:32:54Z  app            shared-cpu-1x:256MB
    ```
 
    The machine `7815677a50d578` is currently stopped but still has the volume vol_4qpmz25gyggywxwv attached to it. To delete the volume, we need to first destroy the machine that's using it.
 
 - Let's destroy the machine:
+
    ```sh
    fly machines destroy 7815677a50d578 --app tournado-staging
    ```

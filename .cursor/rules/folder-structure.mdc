@@ -112,6 +112,7 @@ This project follows a modular architecture pattern for React Router v7 applicat
 - **handlers/** - API mock handlers
 
 ### `playwright/` - End-to-End Testing
+
 ### Build & PWA Integration
 
 - Vite plugin configuration: `vite.config.ts` (includes PWA via `vite-plugin-pwa`)

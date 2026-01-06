@@ -258,4 +258,3 @@ These answers form the foundation for a user-centric PRD that solves the right p
 ---
 
 **Remember:** This is not a checklist. Use judgment. Pick the 3-5 most important questions for THIS feature. The goal is to understand the job users are hiring your product to do, not to build a feature they asked for.
-

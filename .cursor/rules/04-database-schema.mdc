@@ -3,6 +3,7 @@ description: Database schema guidelines and Prisma best practices
 globs: ["prisma/**/*.prisma", "app/models/**/*.{ts,tsx}", "**/*.sql"]
 alwaysApply: true
 ---
+
 # Database Schema
 
 The application uses Prisma with SQLite as the database provider. The schema is defined in [prisma/schema.prisma](mdc:prisma/schema.prisma).
@@ -10,23 +11,27 @@ The application uses Prisma with SQLite as the database provider. The schema is 
 ## Models
 
 ### User
+
 The central model representing application users:
 - Has one optional Password record
 - Can have multiple Teams
 - Tracked with creation and update timestamps
 
 ### Password
+
 Stores hashed user passwords:
 - One-to-one relationship with User
 - Cascade deletion with user
 
 ### Team
+
 Represents user teams:
 - Belongs to a User
 - Contains teamName and division
 - Tracked with creation and update timestamps
 
 ## Database Management
+
 - Database migrations are stored in `prisma/migrations/`
 - Seeding data can be found in [prisma/seed.ts](mdc:prisma/seed.ts)
 - Database operations are handled through [app/db.server.ts](mdc:app/db.server.ts)
@@ -37,10 +42,12 @@ When making changes to the database schema:
 
 1. Edit [prisma/schema.prisma](mdc:prisma/schema.prisma)
 2. Run the following commands:
+
    ```bash
    pnpm prisma generate    # Update Prisma Client
    pnpm prisma migrate dev # Create and apply migration
    ```
+
 3. Update this rule file to reflect the new schema
 4. If the changes affect database operations, update [app/db.server.ts](mdc:app/db.server.ts)
 5. Update any affected tests

@@ -72,9 +72,19 @@ const findSlotByPosition = (
 
 export const shouldInitialize = (
 	currentSnapshot: GroupAssignmentSnapshot | null,
-	nextSnapshot: GroupAssignmentSnapshot,
-): boolean =>
-	!currentSnapshot || currentSnapshot.groupStageId !== nextSnapshot.groupStageId
+	originalSnapshotOrNext: GroupAssignmentSnapshot | null,
+	nextSnapshot?: GroupAssignmentSnapshot,
+): boolean => {
+	const hasOriginalSnapshot = typeof nextSnapshot !== 'undefined'
+	const originalSnapshot = hasOriginalSnapshot ? originalSnapshotOrNext : null
+	const incomingSnapshot = nextSnapshot ?? originalSnapshotOrNext
+
+	if (!incomingSnapshot) return false
+	if (!currentSnapshot) return true
+	if (hasOriginalSnapshot && !originalSnapshot) return true
+
+	return currentSnapshot.groupStageId !== incomingSnapshot.groupStageId
+}
 
 export const isGroupAssignmentDirty = (
 	snapshot: GroupAssignmentSnapshot | null,

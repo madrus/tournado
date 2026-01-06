@@ -329,4 +329,3 @@ The plan demonstrates solid architectural thinking but needs some structural imp
    **My Answer:** A good idea. Let us do that.
 3. How to handle team deletion from group stage? (DELETE intent mentioned but not detailed)
    **My Answer:** Each team chip has a delete icon button, we only need to ask for confirmation via a shared pop-up component.
-

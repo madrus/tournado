@@ -37,6 +37,7 @@ Follow the steps below when creating new tasks.
 Choose your task pattern based on the scope and reusability of the work:
 
 ### 🌍 **SHARED Task** - Updates shared/global code
+
 **When to use**: Updating reusable components, core utilities, global stores, database models
 **File locations**:
 - `app/components/` - Reusable UI components across features
@@ -46,6 +47,7 @@ Choose your task pattern based on the scope and reusability of the work:
 - `app/stores/` - **Global stores only** (cross-feature state management)
 
 ### 🎯 **FEATURE Task** - Self-contained business domain
+
 **When to use**: Distinct business domain with its own data models, business rules, workflows
 **File locations**:
 - `app/features/[feature]/` - All feature-specific code
@@ -55,14 +57,17 @@ Choose your task pattern based on the scope and reusability of the work:
 - `app/features/[feature]/types.ts` - Feature-specific types
 
 ### 🔗 **HYBRID Task** - Mix of shared and feature-specific work
+
 **When to use**: Feature work that also requires updates to shared components/utilities
 **File locations**: Mix of both patterns with clear rationale for each
 
 ### 📦 **MIGRATION Task** - Refactoring existing code into feature structure
+
 **When to use**: Moving scattered code into a cohesive feature module
 **Special considerations**: Maintain backward compatibility, update all imports
 
 ### 🧭 **Decision Criteria**
+
 - **Shared**: Used by multiple features OR core infrastructure
 - **Feature**: Belongs to single business domain AND could be extracted as separate service
 - **Store placement**: Global = cross-feature state, Feature = domain-specific state
@@ -95,6 +100,7 @@ Choose your task pattern based on the scope and reusability of the work:
 > Choose the appropriate pattern based on your Architecture Decision from above
 
 ## 🌍 SHARED Task Pattern
+
 **Beginning (add to model context):**
 - app/components/<ExistingComponent>/ _(read-only)_
 - app/utils/<existingUtil>.server.ts _(read-only)_
@@ -109,6 +115,7 @@ Choose your task pattern based on the scope and reusability of the work:
 - app/routes/<route>.tsx _(if adding/modifying routes)_
 
 ## 🎯 FEATURE Task Pattern
+
 **Beginning (add to model context):**
 - app/features/<feature>/types.ts _(read-only if exists)_
 - app/models/<resource>.server.ts _(read-only)_
@@ -127,6 +134,7 @@ Choose your task pattern based on the scope and reusability of the work:
 > - types.ts _(feature types)_
 
 ## 🔗 HYBRID Task Pattern
+
 **Beginning (add to model context):**
 - app/components/<SharedComponent>/ _(read-only)_
 - app/features/<feature>/ _(read-only if exists)_
@@ -138,6 +146,7 @@ Choose your task pattern based on the scope and reusability of the work:
 - app/features/<feature>/<specific-files> _(if creating feature-specific code)_
 
 ## 📦 MIGRATION Task Pattern
+
 **Beginning (add to model context):**
 - app/<scattered-files>/ _(files to be migrated)_
 - app/components/<related-components>/ _(read-only)_
@@ -192,6 +201,7 @@ All code must follow these TypeScript conventions:
    - When unsure, check if error mentions "CommonJS module, which may not support all module.exports as named exports"
 
 Example:
+
 ```ts
 type CreateSessionFromFirebaseTokenProps = {
   idToken: string
@@ -209,6 +219,7 @@ export const createSessionFromFirebaseToken = async (
 ## Step Guidelines by Architecture Pattern
 
 ### 🌍 SHARED Task - Common step types:
+
 - **Shared components**: `app/components/<Name>/` - reusable across features (client + SSR)
 - **Server-only utilities**: `app/utils/<name>.server.ts` - server-side functions (database, auth, etc.)
 - **Universal utilities**: `app/lib/<name>.ts` - functions usable by both client and server
@@ -217,6 +228,7 @@ export const createSessionFromFirebaseToken = async (
 - **Routes**: `app/routes/<route>.tsx` - application pages/endpoints (SSR + client)
 
 ### 🎯 FEATURE Task - Common step types:
+
 - **Feature structure**: `app/features/<feature>/index.ts` - public API exports (universal)
 - **Feature components**: `app/features/<feature>/components/<Name>/` - domain-specific UI (client + SSR)
 - **Feature stores**: `app/features/<feature>/stores/<name>.ts` - domain-specific state (client-side)
@@ -225,12 +237,14 @@ export const createSessionFromFirebaseToken = async (
 - **Feature types**: `app/features/<feature>/types.ts` - domain-specific types (universal)
 
 ### 🔗 HYBRID Task - Mix as needed:
+
 - Combine shared and feature patterns based on requirements
 - Update shared components for reusability
 - Create feature-specific implementations
 - Maintain clear boundaries between shared and feature code
 
 ### 📦 MIGRATION Task - Common step types:
+
 - **Analysis**: Map existing scattered files and dependencies
 - **Feature structure**: Create new organized feature directory
 - **File migration**: Move and refactor existing code
@@ -280,6 +294,7 @@ export const createSessionFromFirebaseToken = async (
 > Choose location based on your Architecture Decision.
 
 ## 🌍 Shared Types (reusable across features)
+
 ```ts
 // app/lib/lib.types.ts
 export type <SharedDataType> = {
@@ -292,6 +307,7 @@ export type <SharedDataType> = {
 ```
 
 ## 🎯 Feature Types (domain-specific)
+
 ```ts
 // app/features/<feature>/types.ts
 export type <FeatureDataType> = {
@@ -308,6 +324,7 @@ export type <FeatureComponentProps> = {
 ```
 
 ## 🔗 Hybrid Types (mix of both)
+
 - Shared types in `app/lib/lib.types.ts`
 - Feature-specific extensions in `app/features/<feature>/types.ts`
 - Import shared types into feature types as needed
@@ -317,6 +334,7 @@ export type <FeatureComponentProps> = {
 > Write specific, testable criteria based on your Architecture Decision and end state files.
 
 ## Common Criteria (all tasks)
+
 - All files listed in "End state" section exist and export expected APIs
 - **Validation passes**: Run `pnpm validate` and fix all errors before completion
 - All unit tests pass locally with `pnpm test:run`
@@ -332,23 +350,27 @@ export type <FeatureComponentProps> = {
 ## Architecture-Specific Criteria
 
 ### 🌍 Shared Task Criteria
+
 - Components are reusable and don't contain feature-specific logic
 - Shared utilities can be imported by multiple features
 - Global stores manage cross-feature state appropriately
 - No breaking changes to existing feature imports
 
 ### 🎯 Feature Task Criteria
+
 - Feature exports clean public API via `app/features/<feature>/index.ts`
 - Feature components use shared components as building blocks
 - Feature-specific stores manage domain state appropriately
 - Feature can be developed/tested independently
 
 ### 🔗 Hybrid Task Criteria
+
 - Shared components maintain backward compatibility
 - Feature-specific components integrate properly with shared components
 - Clear separation between shared and feature-specific concerns
 
 ### 📦 Migration Task Criteria
+
 - All external imports updated to use new feature structure
 - No breaking changes to public APIs during migration
 - Old scattered files successfully removed after migration
@@ -357,6 +379,7 @@ export type <FeatureComponentProps> = {
 # 9) Testing Strategy
 
 ## Common Testing Approach (all tasks)
+
 - Create unit tests with Vitest that verify component behavior and rendering
 - Create E2E tests with Playwright using Page Object Model pattern
 - Include database seeding for realistic test data
@@ -368,21 +391,25 @@ export type <FeatureComponentProps> = {
 ## Architecture-Specific Testing
 
 ### 🌍 Shared Task Testing
+
 - Test component reusability across different contexts
 - Mock external dependencies to ensure pure functionality
 - Verify global stores don't leak state between tests
 
 ### 🎯 Feature Task Testing
+
 - Test feature in isolation with minimal external dependencies
 - Use feature's public API for integration tests
 - Mock shared dependencies consistently
 
 ### 🔗 Hybrid Task Testing
+
 - Test both shared and feature-specific functionality
 - Verify integration between shared and feature components
 - Test backward compatibility when updating shared components
 
 ### 📦 Migration Task Testing
+
 - Test that all external imports still work after migration
 - Verify no functionality was lost during migration
 - Test new feature structure works as expected

@@ -18,6 +18,7 @@ Follow the file creation safety and TypeScript conventions in `.cursor/tasks/tas
 ## ARCHITECTURE DECISION RECORDS
 
 ### 🧹 **MIGRATION Task** - Complete Firebase Authentication
+
 **Decision**: This task completes the Firebase authentication migration by implementing email/password authentication and establishing a clean separation between production code and Playwright/test code via adapters and utilities. Legacy bcrypt/cookie-based authentication removal is deferred to a follow-up task.
 
 **Rationale**:
@@ -59,6 +60,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 # 5) Context Plan
 
 ## 🧹 MIGRATION Task Pattern
+
 **Beginning (add to model context):**
 - app/features/firebase/ _(complete Firebase module)_
 - app/routes/auth/ _(existing auth routes to be updated)_
@@ -92,6 +94,7 @@ Refactor / new adapters and utils:
 # 6) Low-Level Steps (Ordered, information-dense)
 
 ## File Creation Safety Check
+
 **CRITICAL**: Before creating any new file, you MUST:
 1. Check if a file with that name already exists using Read/Glob tools
 2. If exists, analyze its content and purpose
@@ -103,6 +106,7 @@ Refactor / new adapters and utils:
 
    - File: `app/features/firebase/components/FirebaseEmailSignIn/FirebaseEmailSignIn.tsx`
    - Exported API:
+
      ```tsx
      export type FirebaseEmailSignInProps = {
        mode: 'signin' | 'signup'
@@ -120,6 +124,7 @@ Refactor / new adapters and utils:
        size = 'md',
      }: FirebaseEmailSignInProps): JSX.Element
      ```
+
    - Details:
      - Use Firebase Auth with email/password provider
      - Handle both signin and signup modes in single component
@@ -139,6 +144,7 @@ Refactor / new adapters and utils:
 
    - File: `app/hooks/useFirebaseAuth.ts` (update existing)
    - Add email/password methods:
+
      ```ts
      export type UseFirebaseAuthReturn = {
        signInWithGoogle: (redirectTo?: string) => Promise<void>
@@ -151,6 +157,7 @@ Refactor / new adapters and utils:
        clearError: () => void
      }
      ```
+
    - Details:
      - Import auth methods via adapters; keep production code clean (no Playwright checks)
      - Handle email/password signup with automatic role assignment
@@ -160,6 +167,7 @@ Refactor / new adapters and utils:
 
    - File: `app/features/firebase/server.ts` (update existing)
    - Add role assignment logic:
+
      ```ts
      type AssignUserRoleProps = {
        firebaseUid: string
@@ -197,6 +205,7 @@ Refactor / new adapters and utils:
 
    - File: `app/routes/auth.signin.tsx` (update existing)
    - Add email/password option alongside Google authentication:
+
      ```tsx
      export default function SignIn(): JSX.Element {
        const { redirectTo } = useLoaderData<typeof loader>()
@@ -234,6 +243,7 @@ Refactor / new adapters and utils:
 
    - File: `app/routes/auth.signup.tsx` (new)
    - Create Firebase-based signup route:
+
      ```tsx
      export default function SignUp(): JSX.Element {
        const { redirectTo } = useLoaderData<typeof loader>()
@@ -273,6 +283,7 @@ Refactor / new adapters and utils:
 
    - File: `app/routes/admin.users.tsx` (new)
    - Admin-only interface for user role management:
+
      ```tsx
      export async function loader({ request }: LoaderFunctionArgs): LoaderData {
        const user = await requireUserWithRole(request, [Role.ADMIN])
@@ -358,6 +369,7 @@ Refactor / new adapters and utils:
 # 7) Types & Interfaces (if applicable)
 
 ## 🧹 Migration Types (legacy removal + Firebase completion)
+
 ```ts
 // app/features/firebase/types.ts (extend existing)
 export type AuthMode = 'signin' | 'signup'
@@ -388,6 +400,7 @@ export type SuperAdminConfig = {
 # 8) Acceptance Criteria
 
 ## Common Criteria (all tasks)
+
 - All files listed in "End state" section exist and export expected APIs
 - **Validation passes**: Run `pnpm validate` and fix all errors before completion
 - All unit tests pass locally with `pnpm test:run`
@@ -401,6 +414,7 @@ export type SuperAdminConfig = {
 4. Any code changes require restarting from step 1
 
 ## 🧹 Migration Task Criteria
+
 - Firebase authentication supports both Google OAuth and email/password signin/signup
 - Multi-super-admin role assignment works via SUPER_ADMIN_EMAILS environment variable
 - New Firebase users are automatically assigned appropriate roles (ADMIN for super admins, PUBLIC for others)

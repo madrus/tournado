@@ -70,7 +70,9 @@ export const useGroupAssignmentStore = create<
 
 					// Initialize from loader data
 					setSnapshotPair: (snapshot) => {
-						if (!shouldInitialize(get().snapshot, snapshot)) return
+						if (!shouldInitialize(get().snapshot, get().originalSnapshot, snapshot)) {
+							return
+						}
 						set(
 							{
 								snapshot,

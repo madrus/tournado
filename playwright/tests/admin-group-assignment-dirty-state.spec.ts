@@ -203,6 +203,11 @@ test.describe('Group Assignment Dirty State', () => {
 
 		// Attempt to navigate away
 		const homeLink = page.getByRole('link', { name: /tournado/i }).first()
+		const homeHref = await homeLink.getAttribute('href')
+		if (!homeHref) {
+			throw new Error('Home link is missing href')
+		}
+		const homePathname = new URL(homeHref, page.url()).pathname
 		await homeLink.click()
 
 		// Navigation blocker should NOT appear
@@ -211,7 +216,7 @@ test.describe('Group Assignment Dirty State', () => {
 		})
 
 		// Should navigate away successfully
-		expect(page.url()).not.toContain(`/groups/${TEST_GROUP_STAGE_ID}`)
+		await page.waitForURL((url) => url.pathname === homePathname)
 	})
 
 	test('should persist team assignment after save and reload', async ({ page }) => {

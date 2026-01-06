@@ -9,6 +9,7 @@ import { stringToCategory, stringToDivision } from '~/lib/lib.helpers'
 import { createTeam } from '~/models/team.server'
 import { getTournamentById } from '~/models/tournament.server'
 import { sendConfirmationEmail } from '~/utils/email.server'
+import { logger } from '~/utils/logger.server'
 
 type TeamCreationSuccess = {
 	success: true
@@ -136,12 +137,12 @@ export async function createTeamFromFormData(
 		// Send confirmation email (fire-and-forget - don't block team creation)
 		if (tournament) {
 			void sendConfirmationEmail(team, tournament).catch((emailError) => {
-				console.error('Failed to send confirmation email:', emailError)
+				logger.error({ err: emailError }, 'Failed to send confirmation email')
 			})
 		} else {
-			console.error(
-				'Tournament not found for email sending, tournament ID:',
-				teamFormData.tournamentId,
+			logger.error(
+				{ tournamentId: teamFormData.tournamentId },
+				'Tournament not found for email sending',
 			)
 		}
 	} catch (error) {

@@ -6,6 +6,7 @@ import {
 	deleteTeamFromGroupStage,
 	getGroupStageWithDetails,
 } from '~/models/group.server'
+import { logger } from '~/utils/logger.server'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 
 type SlotAssignment = {
@@ -120,7 +121,7 @@ export async function action({
 
 				return { success: true }
 			} catch (error) {
-				console.error('Failed to save group assignments:', error)
+				logger.error({ err: error }, 'Failed to save group assignments')
 				return {
 					success: false,
 					error: error instanceof Error ? error.message : 'Failed to save assignments',
@@ -139,7 +140,7 @@ export async function action({
 				const snapshot = await getGroupStageWithDetails(groupStageId)
 				return { success: true, snapshot }
 			} catch (error) {
-				console.error('Failed to fetch group stage snapshot:', error)
+				logger.error({ err: error }, 'Failed to fetch group stage snapshot')
 				return { success: false, error: 'Failed to fetch snapshot' }
 			}
 		}
@@ -156,7 +157,7 @@ export async function action({
 				await deleteTeamFromGroupStage({ groupStageId, teamId })
 				return { success: true }
 			} catch (error) {
-				console.error('Failed to delete team from group stage:', error)
+				logger.error({ err: error }, 'Failed to delete team from group stage')
 				return {
 					success: false,
 					error: error instanceof Error ? error.message : 'Failed to delete team',

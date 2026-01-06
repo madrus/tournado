@@ -1,5 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+const loggerMock = vi.hoisted(() => ({
+	error: vi.fn(),
+	info: vi.fn(),
+	warn: vi.fn(),
+}))
+
+vi.mock('~/utils/logger.server', () => ({
+	logger: loggerMock,
+}))
+
 // Mock dependencies
 vi.mock('~/utils/email.server', () => ({
 	sendConfirmationEmail: vi.fn(),
@@ -109,6 +119,9 @@ describe('teamCreation.server - createTeamFromFormData', () => {
 
 	beforeEach(() => {
 		vi.clearAllMocks()
+		loggerMock.error.mockReset()
+		loggerMock.info.mockReset()
+		loggerMock.warn.mockReset()
 
 		// Setup default mocks
 		vi.mocked(extractTeamDataFromFormData).mockReturnValue(mockTeamData)
@@ -232,7 +245,6 @@ describe('teamCreation.server - createTeamFromFormData', () => {
 	})
 
 	it('should continue team creation even if email sending fails', async () => {
-		const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => void 0)
 		vi.mocked(sendConfirmationEmail).mockRejectedValue(new Error('Email service down'))
 
 		const result = await createTeamFromFormData(mockFormData)
@@ -248,28 +260,26 @@ describe('teamCreation.server - createTeamFromFormData', () => {
 
 		// Email is fire-and-forget, so we need to wait for the promise to reject
 		await Promise.resolve()
-		expect(consoleErrorSpy).toHaveBeenCalledWith(
-			'Failed to send confirmation email:',
-			expect.any(Error),
+		expect(loggerMock.error).toHaveBeenCalledWith(
+			expect.objectContaining({
+				err: expect.any(Error),
+			}),
+			'Failed to send confirmation email',
 		)
-
-		consoleErrorSpy.mockRestore()
 	})
 
 	it('should not send email when tournament not found for email', async () => {
 		vi.mocked(getTournamentById).mockResolvedValue(null)
-		const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => void 0)
 
 		const result = await createTeamFromFormData(mockFormData)
 
 		expect(sendConfirmationEmail).not.toHaveBeenCalled()
-		expect(consoleErrorSpy).toHaveBeenCalledWith(
-			'Tournament not found for email sending, tournament ID:',
-			'tournament-123',
+		expect(loggerMock.error).toHaveBeenCalledWith(
+			{ tournamentId: 'tournament-123' },
+			'Tournament not found for email sending',
 		)
 
 		expect(result.success).toBe(true)
-		consoleErrorSpy.mockRestore()
 	})
 
 	it('should handle team leader name with multiple spaces', async () => {

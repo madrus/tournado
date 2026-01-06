@@ -5,6 +5,7 @@ import { type App, getApps, initializeApp } from 'firebase-admin/app'
 import { type Auth, type DecodedIdToken, getAuth } from 'firebase-admin/auth'
 
 import { prisma } from '~/db.server'
+import { logger } from '~/utils/logger.server'
 
 import type { FirebaseUser } from './types'
 
@@ -261,7 +262,7 @@ export async function disableFirebaseUser(firebaseUid: string): Promise<void> {
 	if (!adminAuth) {
 		const serviceAccount = getServiceAccount()
 		if (!serviceAccount) {
-			console.warn('[firebase-admin] Cannot disable user - Admin SDK not initialized')
+			logger.warn('[firebase-admin] Cannot disable user - Admin SDK not initialized')
 			return
 		}
 		adminApp =
@@ -273,7 +274,7 @@ export async function disableFirebaseUser(firebaseUid: string): Promise<void> {
 		adminAuth = getAuth(adminApp)
 	}
 	if (!adminAuth) {
-		console.warn('[firebase-admin] Cannot disable user - Admin SDK not initialized')
+		logger.warn('[firebase-admin] Cannot disable user - Admin SDK not initialized')
 		return
 	}
 
@@ -281,13 +282,13 @@ export async function disableFirebaseUser(firebaseUid: string): Promise<void> {
 		await adminAuth.updateUser(firebaseUid, {
 			disabled: true,
 		})
-		console.log(`[firebase-admin] Successfully disabled Firebase user: ${firebaseUid}`)
+		logger.info({ firebaseUid }, '[firebase-admin] Successfully disabled Firebase user')
 	} catch (error) {
 		const message =
 			error instanceof Error
 				? error.message
 				: 'Unknown error during disableFirebaseUser'
-		console.error('[firebase-admin] disableFirebaseUser error:', message)
+		logger.error({ err: error, message }, '[firebase-admin] disableFirebaseUser error')
 		throw new Error(`Failed to disable Firebase user: ${message}`)
 	}
 }
@@ -312,7 +313,7 @@ export async function enableFirebaseUser(firebaseUid: string): Promise<void> {
 	if (!adminAuth) {
 		const serviceAccount = getServiceAccount()
 		if (!serviceAccount) {
-			console.warn('[firebase-admin] Cannot enable user - Admin SDK not initialized')
+			logger.warn('[firebase-admin] Cannot enable user - Admin SDK not initialized')
 			return
 		}
 		adminApp =
@@ -324,7 +325,7 @@ export async function enableFirebaseUser(firebaseUid: string): Promise<void> {
 		adminAuth = getAuth(adminApp)
 	}
 	if (!adminAuth) {
-		console.warn('[firebase-admin] Cannot enable user - Admin SDK not initialized')
+		logger.warn('[firebase-admin] Cannot enable user - Admin SDK not initialized')
 		return
 	}
 
@@ -332,11 +333,11 @@ export async function enableFirebaseUser(firebaseUid: string): Promise<void> {
 		await adminAuth.updateUser(firebaseUid, {
 			disabled: false,
 		})
-		console.log(`[firebase-admin] Successfully enabled Firebase user: ${firebaseUid}`)
+		logger.info({ firebaseUid }, '[firebase-admin] Successfully enabled Firebase user')
 	} catch (error) {
 		const message =
 			error instanceof Error ? error.message : 'Unknown error during enableFirebaseUser'
-		console.error('[firebase-admin] enableFirebaseUser error:', message)
+		logger.error({ err: error, message }, '[firebase-admin] enableFirebaseUser error')
 		throw new Error(`Failed to enable Firebase user: ${message}`)
 	}
 }
@@ -361,7 +362,7 @@ export async function revokeRefreshTokens(firebaseUid: string): Promise<void> {
 	if (!adminAuth) {
 		const serviceAccount = getServiceAccount()
 		if (!serviceAccount) {
-			console.warn('[firebase-admin] Cannot revoke tokens - Admin SDK not initialized')
+			logger.warn('[firebase-admin] Cannot revoke tokens - Admin SDK not initialized')
 			return
 		}
 		adminApp =
@@ -373,21 +374,22 @@ export async function revokeRefreshTokens(firebaseUid: string): Promise<void> {
 		adminAuth = getAuth(adminApp)
 	}
 	if (!adminAuth) {
-		console.warn('[firebase-admin] Cannot revoke tokens - Admin SDK not initialized')
+		logger.warn('[firebase-admin] Cannot revoke tokens - Admin SDK not initialized')
 		return
 	}
 
 	try {
 		await adminAuth.revokeRefreshTokens(firebaseUid)
-		console.log(
-			`[firebase-admin] Successfully revoked refresh tokens for user: ${firebaseUid}`,
+		logger.info(
+			{ firebaseUid },
+			'[firebase-admin] Successfully revoked refresh tokens for user',
 		)
 	} catch (error) {
 		const message =
 			error instanceof Error
 				? error.message
 				: 'Unknown error during revokeRefreshTokens'
-		console.error('[firebase-admin] revokeRefreshTokens error:', message)
+		logger.error({ err: error, message }, '[firebase-admin] revokeRefreshTokens error')
 		throw new Error(`Failed to revoke refresh tokens: ${message}`)
 	}
 }

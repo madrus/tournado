@@ -63,6 +63,39 @@
 	.text-adaptive-brand-text {
 		color: var(--color-adaptive-brand-text);
 	}
+	.text-adaptive-success {
+		color: var(--color-adaptive-success);
+	}
+	.text-adaptive-error {
+		color: var(--color-adaptive-error);
+	}
+	.text-adaptive-warning {
+		color: var(--color-adaptive-warning);
+	}
+	.text-adaptive-info {
+		color: var(--color-adaptive-info);
+	}
+	.text-adaptive-disabled {
+		color: var(--color-adaptive-disabled);
+	}
+	.text-adaptive-accent-amber {
+		color: var(--color-adaptive-accent-amber);
+	}
+	.text-adaptive-accent-indigo {
+		color: var(--color-adaptive-accent-indigo);
+	}
+	.text-adaptive-accent-fuchsia {
+		color: var(--color-adaptive-accent-fuchsia);
+	}
+	.text-adaptive-accent-teal {
+		color: var(--color-adaptive-accent-teal);
+	}
+	.text-adaptive-accent-sky {
+		color: var(--color-adaptive-accent-sky);
+	}
+	.text-adaptive-accent-purple {
+		color: var(--color-adaptive-accent-purple);
+	}
 
 	/* Adaptive Border Color Utilities - For Icons Using Standard Text Colors */
 	.border-adaptive-red {
@@ -123,6 +156,42 @@
 		border-color: var(--color-adaptive-sky);
 	}
 	.border-adaptive-brand {
+		border-color: var(--color-adaptive-brand);
+	}
+	.border-adaptive-success {
+		border-color: var(--color-adaptive-success);
+	}
+	.border-adaptive-error {
+		border-color: var(--color-adaptive-error);
+	}
+	.border-adaptive-warning {
+		border-color: var(--color-adaptive-warning);
+	}
+	.border-adaptive-info {
+		border-color: var(--color-adaptive-info);
+	}
+	.border-adaptive-disabled {
+		border-color: var(--color-adaptive-disabled);
+	}
+	.border-adaptive-accent-amber {
+		border-color: var(--color-adaptive-accent-amber);
+	}
+	.border-adaptive-accent-indigo {
+		border-color: var(--color-adaptive-accent-indigo);
+	}
+	.border-adaptive-accent-fuchsia {
+		border-color: var(--color-adaptive-accent-fuchsia);
+	}
+	.border-adaptive-accent-teal {
+		border-color: var(--color-adaptive-accent-teal);
+	}
+	.border-adaptive-accent-sky {
+		border-color: var(--color-adaptive-accent-sky);
+	}
+	.border-adaptive-accent-purple {
+		border-color: var(--color-adaptive-accent-purple);
+	}
+	.border-adaptive-brand-text {
 		border-color: var(--color-adaptive-brand-text);
 	}
 
@@ -293,14 +362,6 @@
 	}
 	.text-adaptive-accent-purple-action {
 		color: var(--color-adaptive-purple);
-	}
-
-	/* Semantic color mappings for Panel icons (non-action) */
-	.text-adaptive-success {
-		color: var(--color-adaptive-lime);
-	}
-	.text-adaptive-accent-purple {
-		color: var(--color-adaptive-violet);
 	}
 
 	.border-adaptive-red-action {
@@ -773,40 +834,39 @@
 
 	/* UserMenu light mode - force red colors */
 	.light [data-testid="user-menu-dropdown"] {
-		border-color: #ef4444; /* red-500 */
+		border-color: var(--color-usermenu-border);
 	}
 
 	.light [data-testid="user-menu-dropdown"] .bg-red-500 {
-		background-color: #ef4444; /* red-500 */
+		background-color: var(--color-usermenu-accent-bg);
 	}
 
 	/* UserMenu dark mode specific styling */
 	.dark [data-testid="user-menu-dropdown"] {
-		background-color: var(--color-usermenu-bg);
-		border-color: #10b981; /* emerald-500 */
+		border-color: var(--color-usermenu-border);
 	}
 
 	.dark [data-testid="user-menu-dropdown"] .bg-emerald-500 {
-		background-color: #10b981; /* emerald-500 */
+		background-color: var(--color-usermenu-accent-bg);
 	}
 
 	/* Language submenu styling - light mode */
 	.light [data-testid="user-menu-dropdown"] .bg-background {
-		background-color: #ffffff; /* white background */
-		border-color: #ef4444; /* red-500 border */
+		background-color: var(--color-background);
+		border-color: var(--color-usermenu-border);
 	}
 
-	.light [data-testid="user-menu-dropdown"] .bg-accent {
-		background-color: #d1fae5; /* emerald-100 for selected language */
+	.light [data-testid="user-menu-dropdown"] .bg-neutral {
+		background-color: var(--color-usermenu-bg);
 	}
 
-	.light [data-testid="user-menu-dropdown"] .hover\:bg-accent:hover {
-		background-color: #ecfdf5; /* emerald-50 for hover */
+	.light [data-testid="user-menu-dropdown"] .hover\:bg-neutral:hover {
+		background-color: var(--color-usermenu-hover-bg);
 	}
 
 	/* Language submenu styling - dark mode */
-	.dark [data-testid="user-menu-dropdown"] .bg-accent {
-		background-color: #047857; /* emerald-700 for selected language */
+	.dark [data-testid="user-menu-dropdown"] .bg-neutral {
+		background-color: var(--color-usermenu-bg);
 	}
 
 	/* All text elements in UserMenu dropdown - dark mode only */
@@ -822,9 +882,9 @@
 	}
 
 	/* All hover states in UserMenu dropdown - background only, no borders */
-	.dark [data-testid="user-menu-dropdown"] .hover\:bg-accent:hover,
+	.dark [data-testid="user-menu-dropdown"] .hover\:bg-neutral:hover,
 	.dark [data-testid="user-menu-dropdown"] .hover\:bg-background-hover:hover,
-	.dark [data-testid="user-menu-dropdown"] .hover\:bg-accent\/50:hover {
+	.dark [data-testid="user-menu-dropdown"] .hover\:bg-neutral\/50:hover {
 		background-color: var(--color-usermenu-hover-bg);
 		border-color: transparent;
 	}
@@ -838,11 +898,6 @@
 
 	.dark [data-testid="user-menu-dropdown"] .bg-border {
 		background-color: var(--color-border);
-	}
-
-	/* UserMenu submenu (language menu) dark mode styling */
-	.dark [data-testid="user-menu-dropdown"] .bg-background {
-		background-color: var(--color-usermenu-bg);
 	}
 
 	/* Field Validation Styling - Semantic Classes */

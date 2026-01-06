@@ -3,6 +3,7 @@ description: Testing guidelines and best practices for unit and e2e tests
 globs: ["**/*.{ts,tsx,js,jsx}", "**/*.{test,spec}.{ts,tsx}"]
 alwaysApply: true
 ---
+
 # Testing Guide
 
 The application uses multiple testing approaches defined in various configuration files:
@@ -12,12 +13,14 @@ The application uses multiple testing approaches defined in various configuratio
 ## Test Types
 
 ### Unit Tests
+
 - Located in a `__tests__` subfolder next to the files they test, with `.test.ts` or `.test.tsx` extension
 - Use Vitest as the test runner
 - Testing utilities available in [app/utils.test.ts](mdc:app/utils.test.ts)
 - **Rule:** All new unit test files must be placed in a `__tests__` subfolder adjacent to the code they test. This ensures a clean codebase and makes it easy to find related tests.
 
 ### End-to-End Tests
+
 - Located in the `playwright/` directory
 - Use Playwright with Testing Library
 - Run against a live development or production build

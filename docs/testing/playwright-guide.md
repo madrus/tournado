@@ -121,7 +121,7 @@ test('should allow access to public teams page', async ({ page }) => {
 
 ### Structure
 
-```
+```text
 playwright/
 ├── pages/
 │   ├── BasePage.ts           # Common page functionality

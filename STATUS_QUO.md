@@ -48,6 +48,7 @@ TASK-0301 is a mid-complexity feature for team assignment management within tour
 ### ✅ What's Fully Implemented
 
 #### Model Layer (Complete - 100%)
+
 All 4 core assignment functions are **production-quality**:
 - `assignTeamToGroupSlot()` - Validates slot, clears previous, assigns atomically
 - `clearGroupSlot()` - Removes team from slot
@@ -57,6 +58,7 @@ All 4 core assignment functions are **production-quality**:
 **Quality:** All use `prisma.$transaction()` for atomic operations, proper validation, and error handling.
 
 #### Route Layer (Complete - 95%)
+
 Details route `/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/:groupStageId` is fully implemented:
 - ✓ Loader with permission checks and data fetching
 - ✓ Action handler for 4 intents (assign/clear/reserve/swap)
@@ -66,6 +68,7 @@ Details route `/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/:groupStageId` is fu
 - ⚠️ Uses role-based authorization instead of permission-based (works but inconsistent pattern)
 
 #### UI Layer (Complete - 95%)
+
 Details component shows:
 - ✓ 3-column responsive grid layout
 - ✓ Groups section with ordered slots (4 groups × 5 slots = 20)
@@ -80,6 +83,7 @@ Details component shows:
 - ✗ No swap UI (swap function exists but not invocable)
 
 #### Database & Seeding (Complete - 100%)
+
 - ✓ Spring Cup tournament pre-seeded with 23 JO8 teams
 - ✓ Schema correctly supports GroupStage/Group/GroupSlot
 - ✓ Seed strategy: NO pre-created GroupStages (users create via UI)
@@ -89,6 +93,7 @@ Details component shows:
 ### ❌ What's Missing (35% Gap)
 
 #### 1. Internationalization - CRITICAL GAP (0% Complete)
+
 **Impact:** Violates TASK-0301 acceptance criteria step 4
 
 Zero translation keys added for group operations. Code has 12+ hardcoded English strings:
@@ -110,6 +115,7 @@ Zero translation keys added for group operations. Code has 12+ hardcoded English
 **Effort:** 2-3 hours
 
 #### 2. Unit Tests for Model Functions - CRITICAL GAP (0% Complete)
+
 **Impact:** Violates TASK-0301 acceptance criteria step 6
 
 No test file exists at `app/models/__tests__/group.server.test.ts`. Task requires:
@@ -129,6 +135,7 @@ No test file exists at `app/models/__tests__/group.server.test.ts`. Task require
 **Effort:** 4 hours | **Complexity:** Low
 
 #### 3. E2E Tests - CRITICAL GAP (0% Complete)
+
 **Impact:** Violates TASK-0301 acceptance criteria step 7
 
 Missing:
@@ -149,6 +156,7 @@ Required test scenarios:
 **Effort:** 3-4 hours | **Complexity:** Medium
 
 #### 4. Authorization Pattern Mismatch - HIGH PRIORITY (Partial)
+
 **Impact:** Inconsistent with project RBAC strategy
 
 **Current:** Route uses role-based (`requiredRoles: ['REFEREE', 'MANAGER', 'ADMIN']`)
@@ -159,6 +167,7 @@ Required test scenarios:
 **Effort:** 1 hour | **Complexity:** Low
 
 #### 5. Accessibility Issues ✅ RESOLVED (2025-12-18)
+
 Form accessibility has been fixed:
 - ✓ Checkboxes have proper `id` attributes
 - ✓ Labels connected via `htmlFor` attribute
@@ -168,6 +177,7 @@ Form accessibility has been fixed:
 **Status:** COMPLETE
 
 #### 6. Swap Operation Not Invocable (Partial)
+
 Model function exists but UI has no way to trigger it. Task requires "All 4 operations work correctly."
 
 **Effort:** 1 hour | **Complexity:** Low
@@ -177,6 +187,7 @@ Model function exists but UI has no way to trigger it. Task requires "All 4 oper
 ### ✅ Recent Improvements (2025-12-18)
 
 #### Custom Checkbox Component
+
 **Created:** `app/components/inputs/Checkbox.tsx`
 
 **Features:**
@@ -313,6 +324,7 @@ Model function exists but UI has no way to trigger it. Task requires "All 4 oper
 ## 5. Effort Estimate to Production-Ready
 
 ### Phase 0: FIX NAVIGATION BUG ✅ COMPLETED (2025-12-18)
+
 **Effort:** 2 hours | **Status:** DONE
 
 **Completed Work:**
@@ -328,6 +340,7 @@ Model function exists but UI has no way to trigger it. Task requires "All 4 oper
 ---
 
 ### Phase 1: i18n Translation (CRITICAL)
+
 **Effort:** 2-3 hours | **Priority:** P0
 
 1. Add translation keys to en.json (source)
@@ -336,6 +349,7 @@ Model function exists but UI has no way to trigger it. Task requires "All 4 oper
 4. Replace hardcoded strings with t('key') calls
 
 ### Phase 2: Unit Tests (CRITICAL)
+
 **Effort:** 4 hours | **Priority:** P0
 
 1. Create app/models/__tests__/group.server.test.ts
@@ -343,6 +357,7 @@ Model function exists but UI has no way to trigger it. Task requires "All 4 oper
 3. Verify ≥70% coverage
 
 ### Phase 3: E2E Tests (CRITICAL)
+
 **Effort:** 3-4 hours | **Priority:** P0
 
 1. Create playwright/pages/GroupsPage.ts (POM)
@@ -350,11 +365,13 @@ Model function exists but UI has no way to trigger it. Task requires "All 4 oper
 3. Write 8 test scenarios (full user workflows)
 
 ### Phase 4: RBAC Pattern Fix (HIGH)
+
 **Effort:** 1 hour | **Priority:** P1
 
 Replace role-based with permission-based in details route.
 
 ### Phase 5: Add Swap UI (MEDIUM)
+
 **Effort:** 1-1.5 hours | **Priority:** P2
 
 1. Add swap form to UI
@@ -362,16 +379,19 @@ Replace role-based with permission-based in details route.
 3. Test swap functionality
 
 ### Phase 6: Query Efficiency (MEDIUM)
+
 **Effort:** 1-2 hours | **Priority:** P2
 
 Refactor createGroupStage to batch operations.
 
 ### Phase 7: Accessibility (MEDIUM)
+
 **Effort:** 30 minutes | **Priority:** P2
 
 Fix label associations, add focus rings.
 
 ### Phase 8: Validation (FINAL)
+
 **Effort:** 30 minutes | **Priority:** P0
 
 ```bash
@@ -473,11 +493,13 @@ pnpm test:e2e:run   # Must pass
 ## 8. Path to Production
 
 ### ⚠️ CRITICAL: Must Fix Navigation Bug First (Phase 0)
+
 Before any other work, the CREATE → DETAILS navigation must be fixed. This is the blocker that makes the feature non-functional.
 
 ---
 
 ### Option A: Fast Track (11-14 hours) - RECOMMENDED
+
 Ship with minimum requirements to meet acceptance criteria:
 1. **FIX NAVIGATION BUG** (1-2 hrs) ← DO FIRST
 2. Add i18n keys (2-3 hrs)
@@ -489,6 +511,7 @@ Ship with minimum requirements to meet acceptance criteria:
 **Result:** Production-ready, meets all criteria, but some technical debt remains.
 
 ### Option B: Complete (14-17 hours) - COMPREHENSIVE
+
 Fast Track + optimizations:
 - Do all of Option A
 - Implement query efficiency fixes (1-2 hrs)
@@ -498,6 +521,7 @@ Fast Track + optimizations:
 **Result:** Polished, optimized, zero tech debt, best UX.
 
 ### Option C: Defer Non-Critical (Do Now vs. Later)
+
 **Do Now (Fast Track - 11-14 hrs):**
 - **FIX NAVIGATION BUG** (blocking)
 - i18n
@@ -558,12 +582,14 @@ Before merging, verify:
 ## 10. Summary by Role
 
 ### For Product Manager
+
 - **Status:** 65% complete, not shippable yet
 - **Timeline:** 10-12 hours to production-ready (can ship by end of day if assigned now)
 - **Risk:** Low (core logic is solid, just needs tests + translations)
 - **Next Step:** Approve Option A or B, assign owner
 
 ### For Engineering Lead
+
 - **Quality:** 7.5/10 - solid foundation, some technical debt
 - **Effort:** 10-12 hours (critical path), 13-16 hours (full)
 - **Complexity:** Medium (tests and i18n are straightforward)
@@ -571,12 +597,14 @@ Before merging, verify:
 - **Recommendation:** Complete Fast Track (Option A)
 
 ### For Developer
+
 - **What works:** All model functions, route, UI layout
 - **What needs doing:** Tests (4+4 hours), i18n (2-3 hours), RBAC fix (1 hour)
 - **Start with:** i18n keys (fastest win)
 - **Help available:** Use existing test patterns in codebase as templates
 
 ### For QA
+
 - **Test coverage:** Currently only authorization tested (20% coverage)
 - **Missing scenarios:** All 4 operations (assign/clear/move/swap), persistence, mobile responsiveness
 - **E2E test framework:** Playwright + Page Object Model (existing in codebase)

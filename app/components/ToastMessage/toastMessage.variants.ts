@@ -110,7 +110,7 @@ export const toastMessageVariants = cva(
  * @example
  * ```tsx
  * <div className={toastIconVariants({ type: 'success', hasBackground: true })}>
- *   <SuccessIcon />
+ *   <CheckMarkIcon />
  * </div>
  * ```
  */

@@ -1,5 +1,15 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
+const loggerMock = vi.hoisted(() => ({
+	warn: vi.fn(),
+	info: vi.fn(),
+	error: vi.fn(),
+}))
+
+vi.mock('~/utils/logger.server', () => ({
+	logger: loggerMock,
+}))
+
 // Mock Firebase Admin modules
 const mockVerifyIdToken = vi.fn()
 const mockUpdateUser = vi.fn()
@@ -172,11 +182,10 @@ describe('firebase.server', () => {
 			process.env.FIREBASE_ADMIN_PRIVATE_KEY = ''
 			vi.resetModules()
 
-			const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => void 0)
 			const { disableFirebaseUser } = await import('../server')
 
 			await expect(disableFirebaseUser('uid-123')).resolves.toBeUndefined()
-			expect(warnSpy).toHaveBeenCalledWith(
+			expect(loggerMock.warn).toHaveBeenCalledWith(
 				'[firebase-admin] Cannot disable user - Admin SDK not initialized',
 			)
 			expect(mockUpdateUser).not.toHaveBeenCalled()
@@ -184,7 +193,6 @@ describe('firebase.server', () => {
 
 		test('disables user when admin SDK available', async () => {
 			mockUpdateUser.mockResolvedValue(undefined)
-			const logSpy = vi.spyOn(console, 'log').mockImplementation(() => void 0)
 			const { disableFirebaseUser } = await import('../server')
 
 			await disableFirebaseUser('uid-123')
@@ -192,22 +200,25 @@ describe('firebase.server', () => {
 			expect(mockUpdateUser).toHaveBeenCalledWith('uid-123', {
 				disabled: true,
 			})
-			expect(logSpy).toHaveBeenCalledWith(
-				'[firebase-admin] Successfully disabled Firebase user: uid-123',
+			expect(loggerMock.info).toHaveBeenCalledWith(
+				{ firebaseUid: 'uid-123' },
+				'[firebase-admin] Successfully disabled Firebase user',
 			)
 		})
 
 		test('wraps and rethrows errors from Firebase SDK', async () => {
 			mockUpdateUser.mockRejectedValue(new Error('boom'))
-			const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => void 0)
 			const { disableFirebaseUser } = await import('../server')
 
 			await expect(disableFirebaseUser('uid-123')).rejects.toThrow(
 				'Failed to disable Firebase user: boom',
 			)
-			expect(errorSpy).toHaveBeenCalledWith(
-				'[firebase-admin] disableFirebaseUser error:',
-				'boom',
+			expect(loggerMock.error).toHaveBeenCalledWith(
+				expect.objectContaining({
+					err: expect.any(Error),
+					message: 'boom',
+				}),
+				'[firebase-admin] disableFirebaseUser error',
 			)
 		})
 	})
@@ -227,11 +238,10 @@ describe('firebase.server', () => {
 			process.env.FIREBASE_ADMIN_PRIVATE_KEY = ''
 			vi.resetModules()
 
-			const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => void 0)
 			const { enableFirebaseUser } = await import('../server')
 
 			await expect(enableFirebaseUser('uid-123')).resolves.toBeUndefined()
-			expect(warnSpy).toHaveBeenCalledWith(
+			expect(loggerMock.warn).toHaveBeenCalledWith(
 				'[firebase-admin] Cannot enable user - Admin SDK not initialized',
 			)
 			expect(mockUpdateUser).not.toHaveBeenCalled()
@@ -239,7 +249,6 @@ describe('firebase.server', () => {
 
 		test('enables user when admin SDK available', async () => {
 			mockUpdateUser.mockResolvedValue(undefined)
-			const logSpy = vi.spyOn(console, 'log').mockImplementation(() => void 0)
 			const { enableFirebaseUser } = await import('../server')
 
 			await enableFirebaseUser('uid-123')
@@ -247,22 +256,25 @@ describe('firebase.server', () => {
 			expect(mockUpdateUser).toHaveBeenCalledWith('uid-123', {
 				disabled: false,
 			})
-			expect(logSpy).toHaveBeenCalledWith(
-				'[firebase-admin] Successfully enabled Firebase user: uid-123',
+			expect(loggerMock.info).toHaveBeenCalledWith(
+				{ firebaseUid: 'uid-123' },
+				'[firebase-admin] Successfully enabled Firebase user',
 			)
 		})
 
 		test('wraps and rethrows errors from Firebase SDK', async () => {
 			mockUpdateUser.mockRejectedValue(new Error('enable-fail'))
-			const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => void 0)
 			const { enableFirebaseUser } = await import('../server')
 
 			await expect(enableFirebaseUser('uid-123')).rejects.toThrow(
 				'Failed to enable Firebase user: enable-fail',
 			)
-			expect(errorSpy).toHaveBeenCalledWith(
-				'[firebase-admin] enableFirebaseUser error:',
-				'enable-fail',
+			expect(loggerMock.error).toHaveBeenCalledWith(
+				expect.objectContaining({
+					err: expect.any(Error),
+					message: 'enable-fail',
+				}),
+				'[firebase-admin] enableFirebaseUser error',
 			)
 		})
 	})
@@ -282,11 +294,10 @@ describe('firebase.server', () => {
 			process.env.FIREBASE_ADMIN_PRIVATE_KEY = ''
 			vi.resetModules()
 
-			const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => void 0)
 			const { revokeRefreshTokens } = await import('../server')
 
 			await expect(revokeRefreshTokens('uid-123')).resolves.toBeUndefined()
-			expect(warnSpy).toHaveBeenCalledWith(
+			expect(loggerMock.warn).toHaveBeenCalledWith(
 				'[firebase-admin] Cannot revoke tokens - Admin SDK not initialized',
 			)
 			expect(mockRevokeRefreshTokens).not.toHaveBeenCalled()
@@ -294,28 +305,30 @@ describe('firebase.server', () => {
 
 		test('revokes tokens when admin SDK available', async () => {
 			mockRevokeRefreshTokens.mockResolvedValue(undefined)
-			const logSpy = vi.spyOn(console, 'log').mockImplementation(() => void 0)
 			const { revokeRefreshTokens } = await import('../server')
 
 			await revokeRefreshTokens('uid-123')
 
 			expect(mockRevokeRefreshTokens).toHaveBeenCalledWith('uid-123')
-			expect(logSpy).toHaveBeenCalledWith(
-				'[firebase-admin] Successfully revoked refresh tokens for user: uid-123',
+			expect(loggerMock.info).toHaveBeenCalledWith(
+				{ firebaseUid: 'uid-123' },
+				'[firebase-admin] Successfully revoked refresh tokens for user',
 			)
 		})
 
 		test('wraps and rethrows errors from Firebase SDK', async () => {
 			mockRevokeRefreshTokens.mockRejectedValue(new Error('revoke-fail'))
-			const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => void 0)
 			const { revokeRefreshTokens } = await import('../server')
 
 			await expect(revokeRefreshTokens('uid-123')).rejects.toThrow(
 				'Failed to revoke refresh tokens: revoke-fail',
 			)
-			expect(errorSpy).toHaveBeenCalledWith(
-				'[firebase-admin] revokeRefreshTokens error:',
-				'revoke-fail',
+			expect(loggerMock.error).toHaveBeenCalledWith(
+				expect.objectContaining({
+					err: expect.any(Error),
+					message: 'revoke-fail',
+				}),
+				'[firebase-admin] revokeRefreshTokens error',
 			)
 		})
 	})

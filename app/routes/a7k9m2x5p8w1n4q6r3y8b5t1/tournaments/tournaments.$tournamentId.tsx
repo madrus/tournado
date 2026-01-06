@@ -14,7 +14,7 @@ import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
 import { SimpleConfirmDialog } from '~/components/ConfirmDialog'
 import { Panel } from '~/components/Panel'
 import { TournamentForm } from '~/features/tournaments/components/TournamentForm'
-import { useTournamentFormStore } from '~/features/tournaments/stores/useTournamentFormStore'
+import { useTournamentFormActions } from '~/features/tournaments/stores/useTournamentFormStore'
 import type { Tournament } from '~/models/tournament.server'
 import {
 	deleteTournamentById,
@@ -215,7 +215,7 @@ export default function EditTournamentPage(): JSX.Element {
 	const actionData = useActionData<ActionData>()
 	const [searchParams, setSearchParams] = useSearchParams()
 	const submit = useSubmit()
-	const setFormData = useTournamentFormStore((state) => state.setFormData)
+	const { setFormData } = useTournamentFormActions()
 
 	// Check for success parameter and show toast
 	useEffect(() => {

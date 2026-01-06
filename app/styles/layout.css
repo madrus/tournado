@@ -24,7 +24,6 @@ body {
 @media (max-width: 1023px) {
 	body {
 		min-height: 100vh;
-		/* biome-ignore lint/suspicious/noDuplicateProperties: 100vh fallback for browsers without 100dvh support */
 		min-height: 100dvh; /* Dynamic viewport height for mobile */
 	}
 
@@ -36,7 +35,6 @@ body {
 	/* Use full viewport height for fullscreen PWA experience */
 	.min-h-screen {
 		min-height: 100vh;
-		/* biome-ignore lint/suspicious/noDuplicateProperties: 100vh fallback for browsers without 100dvh support */
 		min-height: 100dvh;
 	}
 

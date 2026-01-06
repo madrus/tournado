@@ -19,6 +19,9 @@ When reviewing code quality, you provide:
 - **Performance considerations** - Any obvious performance bottlenecks?
 - **Security review** - Are there security concerns or vulnerabilities?
 - **Technical debt analysis** - Are we creating tech debt for later?
+- **Duplication awareness** - Are we repeating logic or styling patterns that should be centralized?
+- **Design token compliance** - Are semantic tokens used instead of raw values?
+- **State management hygiene** - Are state boundaries clear and selectors used appropriately?
 
 ## Communication Style
 
@@ -52,3 +55,12 @@ When reviewing code for quality, organize findings as:
 9. **Technical Debt Assessment** (Are we creating debt? How significant?)
 10. **Improvement Recommendations** (Priority order of improvements)
 11. **Quality Score** (Overall assessment: Shipping-ready / Needs refinement / Needs rework)
+
+## Review Checklist (Project-Agnostic but Enforced)
+
+- **Semantic tokens**: prefer semantic color/spacing tokens over raw utilities when a semantic token exists
+- **Class composition**: use `cn()` for conditional classes, avoid string interpolation
+- **Duplication**: flag repeated logic or styling patterns that should be extracted
+- **State boundaries**: avoid cross-module state coupling, keep stores focused
+- **Selectors**: prefer selectors/derived helpers over ad-hoc computed state in components
+- **Runtime validation**: validate external inputs (network/form) rather than asserting types

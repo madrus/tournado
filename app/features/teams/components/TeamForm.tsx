@@ -11,8 +11,14 @@ import { Panel } from '~/components/Panel'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
 import type { Division } from '~/db.server'
 import {
-	useTeamFormStore,
+	useTeamFormActions,
+	useTeamFormAvailableOptions,
+	useTeamFormFields,
+	useTeamFormMode,
+	useTeamFormStatus,
 	useTeamFormStoreHydration,
+	useTeamFormValidationState,
+	useTeamOldFormFields,
 } from '~/features/teams/stores/useTeamFormStore'
 import type { TeamFormProps } from '~/features/teams/types'
 import { getDivisionLabel } from '~/lib/lib.helpers'
@@ -58,27 +64,27 @@ export function TeamForm({
 
 	// Get all state from the form store
 	const {
-		formFields: {
-			tournamentId,
-			division,
-			category,
-			clubName,
-			name,
-			teamLeaderName,
-			teamLeaderPhone,
-			teamLeaderEmail,
-			privacyAgreement,
-		},
-		oldFormFields,
-		validation: { displayErrors, blurredFields, forceShowAllErrors, submitAttempted },
-		formMeta: { mode },
-		availableOptions: {
-			tournaments: availableTournaments,
-			divisions: availableDivisions,
-			categories: availableCategories,
-		},
-		isDirty,
-		isFormReadyForSubmission,
+		tournamentId,
+		division,
+		category,
+		clubName,
+		name,
+		teamLeaderName,
+		teamLeaderPhone,
+		teamLeaderEmail,
+		privacyAgreement,
+	} = useTeamFormFields()
+	const { displayErrors, blurredFields, forceShowAllErrors, submitAttempted } =
+		useTeamFormValidationState()
+	const {
+		tournaments: availableTournaments,
+		divisions: availableDivisions,
+		categories: availableCategories,
+	} = useTeamFormAvailableOptions()
+	const mode = useTeamFormMode()
+	const oldFormFields = useTeamOldFormFields()
+	const { isFormDirty, isFormReadyForSubmission } = useTeamFormStatus()
+	const {
 		isPanelEnabled,
 		setFormData,
 		setFormField,
@@ -86,7 +92,7 @@ export function TeamForm({
 		updateAvailableOptions,
 		validateFieldOnBlur,
 		validateForm,
-	} = useTeamFormStore()
+	} = useTeamFormActions()
 
 	// Handle client-side form submission and validation
 	const handleSubmit = useCallback(
@@ -704,8 +710,8 @@ export function TeamForm({
 							disabled={
 								isSubmitting ||
 								isPublicSuccess ||
-								!isFormReadyForSubmission() ||
-								(formMode === 'edit' && !isDirty())
+								!isFormReadyForSubmission ||
+								(formMode === 'edit' && !isFormDirty)
 							}
 						>
 							{isSubmitting

@@ -38,6 +38,23 @@
 	--color-primary-900: var(--color-emerald-900);
 	--color-primary-950: var(--color-emerald-950);
 
+	/* Surface colors (slate-based) - for elevated panels/cards */
+	--color-surface-50: var(--color-slate-50);
+	--color-surface-100: var(--color-slate-100);
+	--color-surface-200: var(--color-slate-200);
+	--color-surface-300: var(--color-slate-300);
+	--color-surface-400: var(--color-slate-400);
+	--color-surface-500: var(--color-slate-500);
+	--color-surface-600: var(--color-slate-600);
+	--color-surface-700: var(--color-slate-700);
+	--color-surface-800: var(--color-slate-800);
+	--color-surface-900: var(--color-slate-900);
+	--color-surface-950: var(--color-slate-950);
+
+	/* Surface aliases */
+	--color-surface: var(--color-surface-100);
+	--color-surface-light: var(--color-surface-50);
+
 	/* Success colors (green-based) - Functional semantic */
 	--color-success-50: var(--color-green-50);
 	--color-success-100: var(--color-green-100);
@@ -196,10 +213,17 @@
 	--color-chip-border: var(--color-red-600); /* chip border color */
 	--color-chip-ring: var(--color-red-600); /* chip focus/hover ring color */
 	--color-chip-ring-offset: var(--color-white); /* chip ring offset color */
-	--color-accent: var(
+	--color-neutral: var(
 		--color-brand-50
 	); /* lighter brand hover background for light mode */
 	--color-title-accent: var(--color-primary-200); /* for accents */
+
+	/* UserMenu specific light mode colors */
+	--color-usermenu-bg: var(--color-emerald-100); /* emerald for selected language */
+	--color-usermenu-hover-bg: var(--color-emerald-50); /* lighter emerald for hover */
+	--color-usermenu-border: var(--color-red-500); /* light mode accent border */
+	--color-usermenu-accent-bg: var(--color-red-500); /* light mode accent fill */
+
 	--gradient-from: var(--color-primary-100);
 	--gradient-to: var(--color-white);
 
@@ -315,7 +339,7 @@
 	--color-chip-ring: var(--color-slate-100); /* chip ring color */
 	--color-chip-ring-offset: var(--color-red-600); /* chip ring offset color */
 	--color-title: var(--color-title-accent);
-	--color-accent: var(
+	--color-neutral: var(
 		--color-slate-800
 	); /* subtle dark hover background without borders */
 	--gradient-from: var(--color-primary-950);
@@ -363,8 +387,10 @@
 	/* AppBar primary color - match primary-900 */
 	--color-button-primary-background: var(--color-primary-900); /* for dark mode */
 
-	/* UserMenu specific dark mode colors - using primary tints */
-	--color-usermenu-bg: var(--color-primary-900); /* darker emerald background */
+	/* UserMenu specific dark mode colors - using neutral palette */
+	--color-usermenu-bg: var(--color-neutral); /* darker neutral background */
 	--color-usermenu-text: var(--color-emerald-400); /* balanced emerald for dark mode */
-	--color-usermenu-hover-bg: var(--color-primary-800); /* primary tint for hover */
+	--color-usermenu-hover-bg: var(--color-slate-700); /* neutral hover tint */
+	--color-usermenu-border: var(--color-emerald-500); /* dark mode accent border */
+	--color-usermenu-accent-bg: var(--color-emerald-500); /* dark mode accent fill */
 }

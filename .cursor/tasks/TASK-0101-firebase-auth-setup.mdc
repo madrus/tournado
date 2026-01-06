@@ -18,6 +18,7 @@ Follow the file creation safety and TypeScript conventions in `.cursor/tasks/tas
 ## ARCHITECTURE DECISION RECORDS
 
 ### 🎯 **FEATURE Task** - Self-contained business domain
+
 **Decision**: Firebase authentication is a distinct business domain with its own data models, business rules, and workflows that could be extracted as a separate service. All Firebase-related functionality will be organized in `app/features/firebase/` for better code organization and maintainability.
 
 **Rationale**:
@@ -52,6 +53,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 # 5) Context Plan
 
 ## 🎯 FEATURE Task Pattern
+
 **Beginning (add to model context):**
 - prisma/schema.prisma _(read-only)_
 - app/utils/session.server.ts _(read-only)_
@@ -81,6 +83,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
    - File: `package.json`
    - Add dependencies:
+
      ```json
      {
        "firebase": "^10.7.1",
@@ -92,6 +95,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
    - File: `app/features/firebase/client.ts`
    - Exported API:
+
      ```ts
      import { initializeApp } from 'firebase/app'
      import { getAuth, GoogleAuthProvider } from 'firebase/auth'
@@ -101,6 +105,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
      export const googleProvider: GoogleAuthProvider
      export const isFirebaseConfigured: boolean
      ```
+
    - Details:
      - Initialize Firebase app with client config
      - Set up Google Auth provider
@@ -111,6 +116,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
    - File: `app/features/firebase/server.ts`
    - Exported API:
+
      ```ts
      import admin from 'firebase-admin'
      import { type App } from 'firebase-admin/app'
@@ -126,6 +132,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
        props: Readonly<VerifyIdTokenProps>
      ): Promise<DecodedIdToken>
      ```
+
    - Details:
      - Initialize Firebase Admin SDK using `admin.credential.cert()` for service account authentication
      - Set up service account authentication
@@ -136,6 +143,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
    - File: `.env.example`
    - Add Firebase environment variables:
+
      ```env
      # Firebase Configuration
      FIREBASE_API_KEY=
@@ -187,6 +195,7 @@ export type FirebaseUser = {
 # 8) Acceptance Criteria
 
 ## Common Criteria (all tasks)
+
 - All files listed in "End state" section exist and export expected APIs
 - **Validation passes**: Run `pnpm validate` and fix all errors before completion
 - All unit tests pass locally with `pnpm test:run`
@@ -200,6 +209,7 @@ export type FirebaseUser = {
 4. Any code changes require restarting from step 1
 
 ## 🎯 Feature Task Criteria
+
 - Feature exports clean public API via `app/features/firebase/index.ts`
 - Firebase project is created and configured with Google Authentication
 - `app/features/firebase/client.ts` exports working Firebase client configuration

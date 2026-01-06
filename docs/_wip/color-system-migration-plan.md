@@ -1,6 +1,7 @@
 # Color System Migration
 
 ## Research
+
 - [x] What are all the official Tailwind colors that we already ACTUALLY use in our components?
   - [x] global search
   - [x] make a list
@@ -24,6 +25,7 @@
   - [ ] 5. Streamline existing semantics and think of ad-hoc semantic names for all other ACTUALLY used colors that are not yet coupled to semantics
 
 ## Requirements
+
 - [ ] Phasing in small increments of one component at a time
 - [ ] No visible changes in colors on the screen
 - [ ] No issues with Tailwind in terms of its dynamic colors limitation - everything should be static
@@ -421,6 +423,7 @@ Per component:
 All component migrations MUST use 100% static class names. Template literals are NOT allowed because Tailwind's static analysis cannot detect dynamically-generated classes at compile time.
 
 **❌ WRONG - Dynamic classes (Tailwind can't detect)**:
+
 ```typescript
 // This creates dynamic classes that Tailwind cannot detect
 color: createColorVariantMapping(
@@ -429,6 +432,7 @@ color: createColorVariantMapping(
 ```
 
 **✅ CORRECT - Inline explicit static classes**:
+
 ```typescript
 // badge.variants.ts - Every class name explicitly written inline
 import type { ColorVariantKey } from '~/components/shared/colorVariants'
@@ -472,6 +476,7 @@ export const badgeVariants = cva('...', {
 ### Completed Migrations
 
 #### Badge Component ✅
+
 - **Structure**: Organized folder with separate variants file
   - `app/components/Badge/Badge.tsx` - Component implementation
   - `app/components/Badge/badge.variants.ts` - CVA variants with all colors inline
@@ -485,6 +490,7 @@ export const badgeVariants = cva('...', {
 - **Status**: Complete - serves as reference implementation for all future component migrations
 
 **Key Implementation Details**:
+
 ```typescript
 // badge.variants.ts - All colors defined inline, explicitly
 export const badgeVariants = cva('...', {
@@ -567,6 +573,7 @@ export const badgeVariants = cva('...', {
 **Goal**: **Strip ColorVariantKey type from 26 colors down to 13 semantic colors only**, removing all 13 real color names. This is the final cleanup that makes real colors unavailable at the type level.
 
 **Current State** (26 colors):
+
 ```typescript
 // app/components/shared/colorVariants.ts
 export const COLOR_VARIANT_KEYS = {
@@ -605,6 +612,7 @@ export const COLOR_VARIANT_KEYS = {
 ```
 
 **Target State** (13 semantic colors only):
+
 ```typescript
 // app/components/shared/colorVariants.ts
 export const COLOR_VARIANT_KEYS = {
@@ -730,18 +738,22 @@ export type ColorVariantKey = keyof typeof COLOR_VARIANT_KEYS
 ## Critical Files Reference
 
 ### Phase 0 (Semantic Design):
+
 - **Color System Migration.md** (this file) - Document decisions here
 - **app/styles/colors.css** (227 lines) - Existing semantic tokens to build upon
 - **app/lib/lib.types.ts** (lines 98-119) - ColorAccent type definition
 
 ### Phase 1 (Badge POC):
+
 - **app/components/Badge.tsx** (38 lines) - Target component for first migration
 - **app/components/shared/colorVariants.ts** (130 lines) - Helper functions to potentially use
 
 ### Phase 2 (Button System):
+
 - **app/components/buttons/button.variants.ts** (229 lines) - Complex CVA with extensive hardcoding
 - **app/styles/safelist.txt** (576 lines) - Shows dynamic class generation to eliminate
 
 ### Phase 3+ (Other Components):
+
 - **app/components/ToggleChip/toggleChip.variants.ts** (316 lines)
 - **app/components/Panel/panel.variants.ts** + **panel-base.variants.ts**

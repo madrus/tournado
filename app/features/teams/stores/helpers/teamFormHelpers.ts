@@ -121,6 +121,22 @@ export const mergeErrors = (
 })
 
 /**
+ * Checks if the form is ready to submit by validating the required panels.
+ */
+export function getIsFormReadyForSubmission(
+	formFields: FormFields,
+	validation: ValidationState,
+	mode: 'create' | 'edit',
+): boolean {
+	const requiredPanels: Array<1 | 2 | 3 | 4> =
+		mode === 'create' ? [1, 2, 3, 4] : [1, 2, 3]
+
+	return requiredPanels.every((panel) =>
+		isPanelValid(panel, formFields, validation.displayErrors, mode),
+	)
+}
+
+/**
  * Checks if all fields in a panel are blurred and valid.
  * Used to determine if a panel is complete for progressive form navigation.
  */

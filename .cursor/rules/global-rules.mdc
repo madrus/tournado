@@ -8,6 +8,7 @@ alwaysApply: true
 ## Global Coding Rules
 
 ### Global Typescript Coding Standards
+
 - Use TypeScript for all new frontend code
 - Prefer types to interfaces
 - Follow SOLID and Clean Code principles
@@ -17,6 +18,7 @@ alwaysApply: true
 - Use meaningful variable names
 
 ### Global Python Coding Standards
+
 - Use Python for all new backend code
 - Follow SOLID and Clean Code principles
 - Prefer async/await over callbacks
@@ -25,6 +27,7 @@ alwaysApply: true
 - Use meaningful variable names
 
 ### Global Code Style Rules
+
 - Use 2 spaces for indentation except in Python
 - Use 4 spaces for indentation in Python
 - No trailing whitespace
@@ -33,6 +36,7 @@ alwaysApply: true
 - Maximum line length: 88 characters
 
 ### Global Testing Guidelines
+
 - Write tests for all public functions
 - Use Vitest for unit tests
 - Implement E2E tests with Playwright
@@ -42,12 +46,14 @@ alwaysApply: true
 ## Project Specific Rules
 
 ### Technology Stack
+
 - React 19 with TypeScript
 - React Router v7
 - SQLite database
 - Tailwind CSS for styling
 
 ### Coding Guidelines
+
 - Use functional components with hooks
 - Implement proper error boundaries
 - Follow atomic design principles
@@ -57,6 +63,7 @@ alwaysApply: true
 ## React TypeScript Rules
 
 ### Component Standards
+
 - Use functional components exclusively
 - Implement proper prop types with types
 - Follow naming convention: PascalCase for components and camelCase for functions
@@ -64,6 +71,7 @@ alwaysApply: true
 - Implement proper error handling
 
 ### State Management
+
 - Use React Query for server state
 - Use Zustand for client state
 - Avoid prop drilling beyond 2 levels
@@ -72,12 +80,14 @@ alwaysApply: true
 ## Backend API Guidelines
 
 ### Architecture
+
 - Follow RESTful conventions
 - Use middleware for authentication
 - Implement proper logging
 - Use environment variables for configuration
 
 ### Error Handling
+
 - Return consistent error responses
 - Log all errors with context
 - Use appropriate HTTP status codes
@@ -86,12 +96,14 @@ alwaysApply: true
 ## Database Guidelines
 
 ### Query Optimization
+
 - Use indexes for frequently queried fields
 - Avoid N+1 queries
 - Implement proper pagination
 - Use connection pooling
 
 ### Security
+
 - Sanitize all inputs
 - Use parameterized queries
 - Implement proper access controls

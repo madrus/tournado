@@ -191,6 +191,7 @@ model UserAuditLog {
 ```
 
 Run migration:
+
 ```bash
 pnpm prisma migrate dev --name add-user-active-and-audit-logs
 ```
@@ -1126,6 +1127,7 @@ export const roleColors = {
 Add to all locale files (`app/i18n/locales/*.json`):
 
 **English (en.json)** - Title case:
+
 ```json
 {
   "users": {
@@ -1200,6 +1202,7 @@ Add to all locale files (`app/i18n/locales/*.json`):
 ```
 
 **Dutch (nl.json)** - Sentence case:
+
 ```json
 {
   "users": {
@@ -1825,6 +1828,7 @@ Add to all locale files (en.json, nl.json, fr.json, ar.json, tr.json, de.json):
 ```
 
 **Dutch (nl.json):**
+
 ```json
 {
   "auth": {
@@ -1942,6 +1946,7 @@ export type UserAuditLogListProps = {
 # 8) Acceptance Criteria
 
 ## Common Criteria
+
 - ✅ All files listed in "End state" section exist and export expected APIs
 - ✅ Run `pnpm validate` - must pass with no errors
 - ✅ All unit tests pass: `pnpm test:run`
@@ -1954,6 +1959,7 @@ export type UserAuditLogListProps = {
 - ✅ No semicolons in TypeScript code
 
 ## Feature-Specific Criteria
+
 - ✅ Users menu item appears in AppBar for ADMIN users only
 - ✅ Users menu item does NOT appear for PUBLIC, MANAGER, or REFEREE users
 - ✅ User list displays all users with correct roles and pagination
@@ -1972,6 +1978,7 @@ export type UserAuditLogListProps = {
 - ✅ Pagination controls navigate correctly between pages
 
 ## Testing Workflow
+
 1. **Validation first** (`pnpm validate`) - must pass before proceeding
 2. **Database migration** (`pnpm prisma migrate dev`) - verify schema changes
 3. **Unit tests** (`pnpm test:run`) - if fixes needed, return to step 1
@@ -1981,6 +1988,7 @@ export type UserAuditLogListProps = {
 # 9) Testing Strategy
 
 ## Unit Testing (Vitest)
+
 - Test all new user management functions in `user.server.ts`
 - Test audit log creation and retrieval functions
 - Mock Prisma client for database operations
@@ -1989,11 +1997,13 @@ export type UserAuditLogListProps = {
 - Test search functionality with partial matches
 
 ## Integration Testing
+
 - Test role update with audit log creation in single transaction
 - Test that failed role updates don't create audit logs
 - Test concurrent role updates (optimistic locking)
 
 ## E2E Testing (Playwright)
+
 - Test complete user approval workflow from admin perspective
 - Test that non-admin users cannot access user management
 - Test mobile and desktop layouts
@@ -2004,12 +2014,14 @@ export type UserAuditLogListProps = {
 - Include database seeding for consistent test data
 
 ## Accessibility Testing
+
 - Verify keyboard navigation works for all forms and tables
 - Test screen reader labels for form fields
 - Verify adequate color contrast for role badges
 - Test focus management after form submissions
 
 ## Responsive Design Testing
+
 - Mobile-first layout (320px+)
 - Tablet view (768px+)
 - Desktop view (1024px+)

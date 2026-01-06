@@ -13,16 +13,19 @@ alwaysApply: true
 **Rule:** Only make the exact changes that were explicitly requested. Do not make any additional changes, improvements, or modifications.
 
 ### ✅ Correct Behavior
+
 - User asks: "Change the button text from 'Add Team' to 'Add'"
 - You change: ONLY the button text
 - You do NOT: Refactor the component, change styling, or modify other parts
 
 ### ❌ Incorrect Behavior
+
 - User asks: "Change the button text from 'Add Team' to 'Add'"
 - You change: Button text + component structure + styling + other unrelated code
 - You do: "Improvements" that weren't requested
 
 ### Why This Rule?
+
 - **Respects User Intent** - User knows what they want to change
 - **Prevents Unwanted Side Effects** - Avoids breaking working code
 - **Maintains Trust** - User can rely on precise changes
@@ -33,12 +36,14 @@ alwaysApply: true
 **Rule:** If you notice something that could be improved, changed, or optimized, you MUST ask for consent before making any changes.
 
 ### ✅ Correct Process
+
 1. **Complete the requested change** first
 2. **Ask for consent** before making additional changes
 3. **Explain your reasoning** clearly
 4. **Wait for approval** before proceeding
 
 ### ❌ Incorrect Process
+
 - Making changes without asking
 - Assuming the user wants "improvements"
 - Changing multiple things at once
@@ -47,16 +52,19 @@ alwaysApply: true
 ## Examples of What NOT to Do
 
 ### ❌ Icon Simplification
+
 - User asks: "Fix responsive sizing for hamburger menu"
 - You do: Change SVG paths, remove wrapper divs, "simplify" icon structure
 - Result: Icons look completely different
 
 ### ❌ Component Refactoring
+
 - User asks: "Update translation key"
 - You do: Refactor component structure, change props, "optimize" code
 - Result: Component behavior changes unexpectedly
 
 ### ❌ Code "Improvements"
+
 - User asks: "Add a new field to the form"
 - You do: "Improve" validation, "simplify" logic, change unrelated functions
 - Result: Form behavior changes in unexpected ways
@@ -64,21 +72,25 @@ alwaysApply: true
 ## Examples of What TO Do
 
 ### ✅ Precise Changes
+
 - User asks: "Change button text from 'Add Team' to 'Add'"
 - You change: Only the text content
 - Result: Button works exactly the same, just different text
 
 ### ✅ Minimal Scope
+
 - User asks: "Fix responsive sizing for hamburger menu"
 - You change: Only the sizing classes or specific sizing issue
 - Result: Menu works exactly the same, just properly sized
 
 ### ✅ Focused Updates
+
 - User asks: "Update translation key"
 - You change: Only the translation key reference
 - Result: Same functionality, just different translation
 
 ### ✅ Asking for Consent
+
 - User asks: "Update translation key"
 - You complete: The translation key update
 - You ask: "I also noticed the component has some unused imports. Would you like me to clean those up as well?"

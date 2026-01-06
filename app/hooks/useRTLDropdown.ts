@@ -1,4 +1,4 @@
-import { useSettingsStore } from '~/stores/useSettingsStore'
+import { useSettingsIsRTL } from '~/stores/useSettingsStore'
 import type { DropdownProps, MenuClasses } from '~/utils/rtlUtils'
 import { getDropdownProps, getMenuClasses } from '~/utils/rtlUtils'
 
@@ -8,7 +8,7 @@ export function useRTLDropdown(): {
 	menuClasses: MenuClasses
 	isRTL: boolean
 } {
-	const { isRTL } = useSettingsStore()
+	const isRTL = useSettingsIsRTL()
 
 	return {
 		dropdownProps: getDropdownProps(),

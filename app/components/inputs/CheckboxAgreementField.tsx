@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 
 import { ErrorMessage } from '~/components/ErrorMessage'
-import { CheckIcon } from '~/components/icons'
+import { CheckMarkIcon } from '~/components/icons'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
 import { LabelWithStatusIcon } from '~/components/shared/LabelWithStatusIcon'
 import type { ColorAccent } from '~/lib/lib.types'
@@ -121,7 +121,7 @@ export const CheckboxAgreementField = forwardRef<
 							disabled={disabled}
 						/>
 						{checked ? (
-							<CheckIcon
+							<CheckMarkIcon
 								className={checkboxAgreementCheckmarkVariants({
 									color,
 									error: !!error,

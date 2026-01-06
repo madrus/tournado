@@ -3,37 +3,45 @@ description: Development workflow guidelines and best practices
 globs: ["**/*"]
 alwaysApply: true
 ---
+
 # Development Workflow
 
 ## Getting Started
+
 1. Install dependencies: `pnpm install`
 2. Setup database: `pnpm run setup`
 3. Start development server: `pnpm run dev`
 
 ## Available Scripts
+
 The main scripts are defined in [package.json](mdc:package.json):
 
 ### Development
+
 - `pnpm run dev` - Start development server
 - `pnpm run setup` - Generate Prisma client, run migrations, and seed database
 - `pnpm run lint` - Run Biome (format + lint)
 - `pnpm run typecheck` - Run TypeScript type checking
 
 ### Testing
+
 - `pnpm run test` - Run Vitest tests in watch mode
 - `pnpm run test:run` - Run Vitest tests once
 - `pnpm run test:e2e:dev` - Run Playwright E2E tests in development
 - `pnpm run test:e2e:run` - Run Playwright E2E tests in CI mode
 
 ### Build & Deploy
+
 - `pnpm run build` - Build the application
 - `pnpm run start` - Start production server
 - `pnpm run start:mocks` - Start server with mock data
 
 ### Documentation
+
 - `pnpm run docs` - Serve documentation locally on port 3030
 
 ## Version Control
+
 - Uses Commitizen for standardized commit messages
 - Husky for Git hooks
 - Standard Version for release management

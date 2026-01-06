@@ -96,7 +96,7 @@ We maintain three distinct test contexts:
 
 ### Test Organization
 
-```
+```text
 playwright/tests/
 ├── auth.spec.ts              # Authentication flows (no-auth project)
 ├── admin-*.spec.ts          # Admin features (admin-authenticated project)
@@ -128,6 +128,7 @@ playwright/tests/
    ```
 
 3. **Session Creation**
+
    ```typescript
    // Create session cookies for authentication contexts
    const sessionId = await createSession(adminUser.id)
@@ -328,6 +329,7 @@ The test environment automatically:
    ```
 
 4. **Environment variable validation**:
+
    ```bash
    # In CI, verify dummy Firebase values are set
    echo $VITE_FIREBASE_PROJECT_ID  # Should be "ci-dummy-project"

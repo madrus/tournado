@@ -4,7 +4,6 @@ import { describe, expect, it } from 'vitest'
 
 import { ErrorIcon } from '../ErrorIcon'
 import { InfoIcon } from '../InfoIcon'
-import { SuccessIcon } from '../SuccessIcon'
 import { WarningIcon } from '../WarningIcon'
 
 describe('Dialog Intent Icons', () => {
@@ -128,61 +127,6 @@ describe('Dialog Intent Icons', () => {
 		})
 	})
 
-	describe('SuccessIcon', () => {
-		it('should render SVG with correct structure', () => {
-			render(<SuccessIcon />)
-
-			const icon = screen.getByRole('img')
-			expect(icon).toBeInTheDocument()
-			expect(icon).toHaveAttribute('viewBox', '0 0 24 24')
-			expect(icon).toHaveAttribute('aria-label', 'Success')
-		})
-
-		it('should have white stroke checkmark for contrast', () => {
-			render(<SuccessIcon />)
-
-			const checkmark = screen.getByTestId('success-icon-checkmark')
-			expect(checkmark).toBeInTheDocument()
-			expect(checkmark).toHaveAttribute('stroke', 'white')
-		})
-
-		it('should support custom weight for stroke width', () => {
-			const { unmount: unmount400 } = render(<SuccessIcon weight={400} />)
-			const icon400 = screen.getByRole('img')
-			expect(icon400).toHaveAttribute('width', '24')
-			unmount400()
-
-			const { unmount: unmount600 } = render(<SuccessIcon weight={600} />)
-			const icon600 = screen.getByRole('img')
-			expect(icon600).toHaveAttribute('width', '24')
-			unmount600()
-		})
-
-		it('should have circle background with intent color', () => {
-			render(<SuccessIcon />)
-
-			const icon = screen.getByRole('img')
-			expect(icon).toBeInTheDocument()
-			expect(icon).toHaveAttribute('role', 'img')
-		})
-
-		it('should support custom className', () => {
-			render(<SuccessIcon className='text-green-600' />)
-
-			const icon = screen.getByRole('img')
-			expect(icon).toHaveClass('text-green-600', 'inline-block')
-		})
-
-		it('should have rounded stroke style', () => {
-			render(<SuccessIcon />)
-
-			const icon = screen.getByRole('img')
-			// SVG attributes use kebab-case when rendered in DOM
-			expect(icon).toHaveAttribute('stroke-linecap', 'round')
-			expect(icon).toHaveAttribute('stroke-linejoin', 'round')
-		})
-	})
-
 	describe('InfoIcon', () => {
 		it('should render SVG with correct structure', () => {
 			render(<InfoIcon />)
@@ -253,13 +197,6 @@ describe('Dialog Intent Icons', () => {
 			expect(icon).toHaveClass('text-red-600')
 		})
 
-		it('success icon should work with green color intent', () => {
-			render(<SuccessIcon className='text-green-600' />)
-
-			const icon = screen.getByRole('img')
-			expect(icon).toHaveClass('text-green-600')
-		})
-
 		it('info icon should work with sky color intent', () => {
 			render(<InfoIcon className='text-sky-600' />)
 
@@ -281,14 +218,6 @@ describe('Dialog Intent Icons', () => {
 			render(<ErrorIcon />)
 
 			const icon = screen.getByRole('img', { name: 'Error' })
-			expect(icon).toBeInTheDocument()
-			expect(icon).toHaveAttribute('aria-label')
-		})
-
-		it('SuccessIcon should be accessible', () => {
-			render(<SuccessIcon />)
-
-			const icon = screen.getByRole('img', { name: 'Success' })
 			expect(icon).toBeInTheDocument()
 			expect(icon).toHaveAttribute('aria-label')
 		})

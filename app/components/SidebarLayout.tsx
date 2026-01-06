@@ -92,19 +92,19 @@ export function SidebarLayout({
 		emerald: {
 			gradient: 'from-accent via-background to-background',
 			border: 'border-primary',
-			button: 'border-primary text-primary hover:bg-accent',
+			button: 'border-primary text-primary hover:bg-neutral',
 			fab: 'bg-primary hover:bg-primary-hover',
 		},
 		red: {
 			gradient: 'from-accent via-background to-background',
 			border: 'border-brand',
-			button: 'border-brand text-brand hover:bg-accent',
+			button: 'border-brand text-brand hover:bg-neutral',
 			fab: 'bg-brand hover:bg-brand-accent',
 		},
 		blue: {
 			gradient: 'from-accent via-background to-background',
 			border: 'border-primary',
-			button: 'border-primary text-primary hover:bg-accent',
+			button: 'border-primary text-primary hover:bg-neutral',
 			fab: 'bg-primary hover:bg-primary-hover',
 		},
 	}
@@ -236,7 +236,7 @@ export function SidebarLayoutDemo(): JSX.Element {
 					className={cn(
 						'flex items-center gap-2 rounded-lg px-4 py-2 text-left font-medium text-sm',
 						selectedItem === item
-							? 'bg-accent text-primary'
+							? 'bg-neutral text-primary'
 							: 'text-foreground hover:bg-background-hover',
 					)}
 				>
@@ -271,7 +271,7 @@ export function SidebarLayoutDemo(): JSX.Element {
 				</ul>
 			</div>
 
-			<div className='mt-6 rounded-lg border border-primary bg-accent p-4'>
+			<div className='mt-6 rounded-lg border border-primary bg-neutral p-4'>
 				<h3 className={cn('mb-2 font-semibold text-primary', getLatinTitleClass())}>
 					Usage Example:
 				</h3>

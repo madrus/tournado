@@ -13,21 +13,13 @@ vi.mock('~/utils/formValidation', () => ({
 // Helper to access store state
 const state = useTournamentFormStore.getState
 
-// Mock the clearStorage method
-const mockClearStorage = vi.fn()
-useTournamentFormStore.persist.clearStorage = mockClearStorage
-
 describe('useTournamentFormStore', () => {
 	beforeEach(() => {
 		// Reset store to initial state
 		state().resetStoreState()
 
-		// Clear sessionStorage
-		sessionStorage.clear()
-
 		// Clear mocks
 		vi.clearAllMocks()
-		mockClearStorage.mockClear()
 	})
 
 	describe('Initial State', () => {
@@ -398,18 +390,18 @@ describe('useTournamentFormStore', () => {
 	describe('Form State Helpers', () => {
 		it('should detect dirty form', () => {
 			// Initially not dirty
-			expect(state().isDirty()).toBe(false)
+			expect(state().isFormDirty()).toBe(false)
 
 			// Set data makes it dirty
 			state().setFormField('name', 'Test Tournament')
-			expect(state().isDirty()).toBe(true)
+			expect(state().isFormDirty()).toBe(true)
 		})
 
 		it('should not be dirty after setting form data', () => {
 			// setFormData updates both formFields and oldFormFields
 			state().setFormData({ name: 'Test Tournament' })
 
-			expect(state().isDirty()).toBe(false)
+			expect(state().isFormDirty()).toBe(false)
 		})
 	})
 
@@ -430,87 +422,6 @@ describe('useTournamentFormStore', () => {
 			// Form submission readiness depends on implementation - test basic functionality
 			const isReady = state().isFormReadyForSubmission()
 			expect(typeof isReady).toBe('boolean')
-		})
-	})
-
-	describe('Persistence', () => {
-		it('should persist form data to sessionStorage', () => {
-			state().setFormField('name', 'Persistent Tournament')
-			state().setFormField('location', 'Persistent Location')
-
-			// Get the persisted data from sessionStorage
-			const persistedDataString = sessionStorage.getItem('TournamentFormStore')
-			expect(persistedDataString).not.toBeNull()
-
-			if (persistedDataString) {
-				const persistedData = JSON.parse(persistedDataString)
-
-				// Zustand persist middleware wraps the state in a 'state' key and adds a version
-				expect(persistedData).toHaveProperty('state')
-				expect(persistedData).toHaveProperty('version')
-
-				// Check that the persisted state contains the expected values
-				expect(persistedData.state.formFields.name).toBe('Persistent Tournament')
-				expect(persistedData.state.formFields.location).toBe('Persistent Location')
-
-				// Validation state should NOT be persisted
-				expect(persistedData.state.validation).toBeUndefined()
-			}
-		})
-
-		it('should only persist specific fields', () => {
-			state().setFormField('name', 'Test Tournament')
-			state().setFieldError('location', 'Required')
-
-			const persistedDataString = sessionStorage.getItem('TournamentFormStore')
-
-			if (persistedDataString) {
-				const persistedData = JSON.parse(persistedDataString)
-
-				// Should persist formFields and oldFormFields and formMeta.mode
-				expect(persistedData.state).toHaveProperty('formFields')
-				expect(persistedData.state).toHaveProperty('oldFormFields')
-				expect(persistedData.state).toHaveProperty('formMeta')
-				expect(persistedData.state.formMeta).toHaveProperty('mode')
-
-				// Should NOT persist validation state
-				expect(persistedData.state).not.toHaveProperty('validation')
-			}
-		})
-	})
-
-	describe('Session Storage Management', () => {
-		it('should clear session storage when clearSessionStorage is called', () => {
-			state().clearSessionStorage()
-			expect(mockClearStorage).toHaveBeenCalledTimes(1)
-		})
-
-		it('should call clearSessionStorage when resetStoreState is called', () => {
-			state().resetStoreState()
-			expect(mockClearStorage).toHaveBeenCalledTimes(1)
-		})
-
-		it('should call clearSessionStorage when resetForm is called', () => {
-			state().resetForm()
-			expect(mockClearStorage).toHaveBeenCalledTimes(1)
-		})
-
-		it('should reset store state and clear session storage', () => {
-			// Set some form data
-			state().setFormField('name', 'Test Tournament')
-			state().setFormField('location', 'Test Location')
-			state().setValidationField('displayErrors', { name: 'Test error' })
-
-			// Reset store state
-			state().resetStoreState()
-
-			// Check that form fields are reset
-			expect(state().formFields.name).toBe('')
-			expect(state().formFields.location).toBe('')
-			expect(state().validation.displayErrors).toEqual({})
-
-			// Check that clearSessionStorage was called
-			expect(mockClearStorage).toHaveBeenCalledTimes(1)
 		})
 	})
 })

@@ -4,7 +4,7 @@ import {
 	clearTestEmailOutbox,
 	getTestEmailOutbox,
 	addEmailToOutbox as storeEmailInOutbox,
-} from '~/utils/email-testing.server'
+} from '../../../app/utils/email-testing.server.ts'
 
 export const emailHandlers = [
 	// Intercepts Resend API calls during tests and captures emails to the in-memory outbox.

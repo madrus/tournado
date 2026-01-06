@@ -1,4 +1,3 @@
-
 ---
 description: Project-specific coding standards and cursor guidance
 globs: ["**/*.{ts,tsx,js,jsx,md,mdx}"]
@@ -14,33 +13,39 @@ alwaysApply: true
 ## Product Requirements Document (PRD) Alignment
 
 ### PRD Consideration Rule
+
 **CRITICAL**: Before implementing any new feature or making significant changes, always consider alignment with the PRD roadmap.
 
 #### ✅ Required PRD Checks:
+
 1. **Phase Alignment**: Does this change align with the current development phase?
 2. **Feature Priority**: Is this feature planned in the PRD or does it conflict with planned features?
 3. **User Persona**: Which user personas does this change serve?
 4. **Technical Architecture**: Does this align with the planned technical direction?
 
 #### 🔍 When to Reference PRD:
+
 - **New Features**: Always check if the feature is planned and in which phase
 - **Significant Changes**: Ensure changes don't conflict with upcoming features
 - **Architecture Decisions**: Verify alignment with technical requirements
 - **User Experience**: Ensure changes serve the intended user personas
 
 #### 📋 PRD Integration Process:
+
 1. **Review Relevant PRD Section** before starting work
 2. **Identify Phase Dependencies** - don't implement Phase 3 features before Phase 1
 3. **Consider User Impact** - how does this affect different user roles?
 4. **Suggest PRD Updates** if new requirements emerge
 
 #### 🚫 PRD Conflicts:
+
 If a requested change conflicts with the PRD:
 - **Highlight the conflict** clearly
 - **Suggest alternatives** that align with the roadmap
 - **Recommend PRD updates** if the conflict indicates new requirements
 
 #### ✅ PRD Task Completion Protocol
+
 **CRITICAL**: Never automatically mark PRD tasks as complete. Always seek user confirmation.
 
 **When Development May Have Completed PRD Tasks:**
@@ -61,18 +66,21 @@ If a requested change conflicts with the PRD:
 - Update PRD status based on technical completion alone
 
 ### PRD Location
+
 The PRD is located at: `docs/development/prd.md`
 
 ## TypeScript & React Conventions
 
 ### TypeScript Style
+
 - **Type Declarations**: Use `type` instead of `interface` (unless impossible)
 - **Type Inference**: Prefer inferred types unless Biome requires explicit types
 - **Syntax**: No semicolons; single quotes
 - **Naming**: PascalCase for types, camelCase for variables
 
 ### React Components
-- **Function Style**: Use function declarations, not expressions
+
+- **Function Style**: Use function declarations, not expressions, unless "return" is the only statement in the function body.
 - **Component Props**: Always use `type` for prop definitions
 
 ```typescript
@@ -100,6 +108,7 @@ const Button = ({ label, onClick }: ButtonProps) => {
 ## Tailwind CSS Standards
 
 ### Class Organization
+
 Group classes in this order: **layout → spacing → color → typography → effects**
 
 ```tsx
@@ -111,24 +120,29 @@ Group classes in this order: **layout → spacing → color → typography → e
 ```
 
 ### Semantic Color System
+
 **CRITICAL**: Avoid using direct Tailwind color tokens (e.g., `text-green-600`, `bg-red-500`). Always use the project's semantic tokens defined in `app/styles/colors.css`.
 
 #### 🎨 Tier 1: Functional Colors (State-based)
+
 Use these for communicating status, state, or actions.
 - **Tokens**: `success`, `error`, `warning`, `info`, `disabled`
 - **Example**: `text-success-700`, `bg-error-50`, `border-warning-300`
 
 #### 🎭 Tier 2: Visual Accents (Area-based)
+
 Use these for specific application areas or visual distinction.
 - **Tokens**: `accent-amber`, `accent-indigo`, `accent-fuchsia`, `accent-teal`, `accent-sky`, `accent-purple`
 - **Example**: `bg-accent-fuchsia-600` (Competition area), `text-accent-teal-700` (Auth/Teams)
 
 #### 🏛️ Base Semantic Tokens
+
 - **Brand/Primary**: `brand` (Red), `primary` (Emerald)
 - **UI Elements**: `background`, `foreground`, `title`, `border`
 - **Example**: `text-title`, `bg-background`, `border-border`
 
 ### Responsive Design
+
 - **Mobile-First**: Default styling for phones (320px-767px, unprefixed base classes)
 - **Tablet/Desktop**: Use `md:` (768px+) to group tablets with desktop, or `lg:` (1024px+) for desktop-only styles
 - **Guideline**: Prefer `md:` over `sm:` to avoid unnecessary intermediate breakpoints
@@ -151,12 +165,14 @@ Use these for specific application areas or visual distinction.
 ## Routing Standards (React Router v7)
 
 ### Route Management
+
 - **Declarative Routes**: Routes must be colocated with layouts when possible
 - **Navigation**: Use `useNavigate` and `useParams` from `react-router@7`
 - **Manual Updates**: Always update parent `routes.tsx` when adding new routes
 - **Lazy Loading**: Prefer lazy-loaded routes unless performance requires otherwise
 
 ### Route Organization
+
 ```typescript
 // ✅ Good
 import { useNavigate, useParams } from 'react-router'
@@ -168,12 +184,14 @@ import { useHistory } from 'react-router' // v6 syntax
 ## State Management Standards
 
 ### Zustand Best Practices
+
 - **Immutable Updates**: Never mutate state directly - always use setter
 - **Flat Structure**: Keep slices flat; use selectors for derived state
 - **Single Responsibility**: Don't nest stores - prefer small slices per concern
 - **Action Extraction**: Extract actions into `actions.ts` if they grow beyond 3-5 functions
 
 ### Tanstack Query
+
 - **Key Structure**: Use tuple-style keys: `['project', id]` not string-based
 - **Collocation**: Colocate query/mutation function with the hook
 - **Error Handling**: Favor suspense + error boundaries over conditional `isLoading`
@@ -181,11 +199,13 @@ import { useHistory } from 'react-router' // v6 syntax
 ## Testing Standards
 
 ### Vitest (Unit Tests)
+
 - **File Organization**: Tests in `__tests__` subfolders adjacent to code they test
 - **Zustand Testing**: Smoke test all mutations and selectors minimally
 - **API Mocking**: Use MSW for API responses, not custom fetch mocks
 
 ### Playwright (E2E Tests)
+
 - **User Behavior**: Describe real user actions ("click login", "assert dashboard appears")
 - **Test Organization**: Use page objects for complex interactions
 - **Realistic Testing**: Test actual user workflows, not implementation details
@@ -193,12 +213,14 @@ import { useHistory } from 'react-router' // v6 syntax
 ## Cursor Development Workflow
 
 ### AI Assistant Guidelines
+
 - **Context7**: Always enable for non-trivial code modifications
 - **Sequential Thinking**: Use for multi-file changes and complex planning
 - **Manual Review**: Review diffs manually after `fixErrors` or `autoFix`
 - **Smart Commits**: Only use after verifying file renames, deletions, and semantic scope
 
 ### Change Philosophy
+
 - **Minimal Changes**: Follow the minimal change principle for refactoring
 - **Explicit Only**: Don't apply formatting or stylistic cleanups unless requested
 - **Focused Scope**: Avoid renaming public APIs unless updating all usages
@@ -206,12 +228,14 @@ import { useHistory } from 'react-router' // v6 syntax
 ## Implementation Guidelines
 
 ### When Adding New Features
+
 1. **Plan First**: Use sequential thinking for multi-file changes
 2. **Test Adjacent**: Create tests in `__tests__` subfolder
 3. **Mobile-First**: Implement mobile layout first, then desktop
 4. **Type Safety**: Use `type` declarations for all new interfaces
 
 ### When Refactoring
+
 1. **Preserve History**: Don't delete commented-out code
 2. **Maintain Context**: Update related comments
 3. **Scope Limitation**: Only change what's being refactored
@@ -230,6 +254,7 @@ These standards should be:
 ## Examples in Practice
 
 ### Complete Component Example
+
 ```typescript
 // ✅ Good: Following all standards
 type TournamentCardProps = {
@@ -270,6 +295,7 @@ export default function TournamentCard({ tournament, onEdit }: TournamentCardPro
 ```
 
 ### Test Example
+
 ```typescript
 // tests/__tests__/TournamentCard.test.tsx
 import { describe, it, expect, vi } from 'vitest'

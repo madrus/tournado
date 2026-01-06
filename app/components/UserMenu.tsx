@@ -144,7 +144,7 @@ export function UserMenu({
 					data-testid='user-menu-dropdown'
 					className={cn(
 						// basic container
-						'z-40 w-max rounded-md bg-background p-1 shadow-lg focus:outline-none',
+						'z-40 w-max rounded-md bg-background p-1 shadow-lg focus:outline-none dark:bg-neutral',
 						// border colors
 						'border border-red-500 dark:border-emerald-500',
 						// responsive sizing / spacing
@@ -210,7 +210,7 @@ export function UserMenu({
 										<button
 											type='button'
 											className={cn(
-												'w-full items-center px-3 py-2 text-foreground-darker hover:bg-accent focus:outline-none',
+												'w-full items-center px-3 py-2 text-foreground-darker hover:bg-neutral focus:outline-none',
 												getMenuItemLineHeight(),
 												menuClasses.menuItem,
 											)}
@@ -233,7 +233,7 @@ export function UserMenu({
 										{languageMenuOpen ? (
 											<div
 												className={cn(
-													'absolute z-30 mt-1 min-w-[8rem] rounded-md bg-background p-1 text-base shadow-lg ring-1 ring-border ring-opacity-5',
+													'absolute z-30 mt-1 min-w-[8rem] rounded-md bg-background p-1 text-base shadow-lg ring-1 ring-border ring-opacity-5 dark:bg-neutral',
 													// Position submenu to the left of the language menu icon (mirrored for Arabic)
 													isRTL ? '-end-16' : '-start-16',
 												)}
@@ -246,8 +246,8 @@ export function UserMenu({
 															'h-10 w-full items-center px-3 py-2 focus:outline-none',
 															getMenuItemLineHeight(),
 															subItem.active
-																? 'bg-accent text-foreground-darker'
-																: 'text-foreground-darker hover:bg-accent',
+																? 'bg-neutral text-foreground-darker'
+																: 'text-foreground-darker hover:bg-neutral',
 															menuClasses.menuItem,
 														)}
 														onClick={(event) => {
@@ -300,7 +300,7 @@ export function UserMenu({
 										to={item.href || '#'}
 										onClick={(event) => handleMenuNavigation(event, item.href)}
 										className={cn(
-											'w-full items-center px-3 py-2 text-foreground-darker hover:bg-accent focus:outline-none',
+											'w-full items-center px-3 py-2 text-foreground-darker hover:bg-neutral focus:outline-none',
 											getMenuItemLineHeight(),
 											menuClasses.menuItem,
 										)}

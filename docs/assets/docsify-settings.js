@@ -1,4 +1,4 @@
-const _getDocsifySettings = () => ({
+window.getDocsifySettings = () => ({
 	name: 'Tournado',
 	logo: './images/three-soccer-balls.png',
 	repo: 'https://github.com/madrus/tournado',
@@ -10,35 +10,20 @@ const _getDocsifySettings = () => ({
 	basePath: '/',
 	maxLevel: 4,
 	subMaxLevel: 2,
-	sidebarDisplayLevel: 1,
+	sidebarDisplayLevel: 0,
 	markdown: {
 		smartypants: true,
 	},
 	plugins: [
-		// Plugin to suppress showing YAML frontmatter in the rendered markdown
+		// Remove YAML frontmatter
 		(hook) => {
-			hook.beforeEach((content) => {
-				// Remove YAML frontmatter (content between --- markers)
-				return content.replace(/^---[\s\S]*?---\s*/m, '')
-			})
+			hook.beforeEach((content) => content.replace(/^---[\s\S]*?---\s*/, ''))
 		},
 	],
 	search: 'auto',
 	themeColor: 'rgb(3, 201, 137)',
-	// Sidebar Collapse Plugin Settings
-	collapse: {
-		multipleOpen: true,
-	},
-	// Copy code button
-	copyCode: {
-		buttonText: 'Copy',
-		errorText: 'Error',
-		successText: 'Copied',
-	},
-	// External script support
+	collapse: { multipleOpen: true },
+	copyCode: { buttonText: 'Copy', errorText: 'Error', successText: 'Copied' },
 	externalLinkTarget: '_blank',
-	// Emoji support
-	emoji: {
-		// Add custom emojis if needed
-	},
+	emoji: {},
 })

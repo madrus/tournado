@@ -126,6 +126,7 @@ git clone https://github.com/madrus/tournado.git
    - Share instructions for re-cloning
 
 4. **Add to .gitignore**
+
    ```bash
    echo ".env*" >> .gitignore
    echo "*.key" >> .gitignore

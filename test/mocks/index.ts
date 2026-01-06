@@ -1,7 +1,7 @@
 import { type HttpResponse, http, type JsonBodyType, passthrough } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { emailHandlers } from './handlers/emails.js'
+import { emailHandlers } from './handlers/emails.ts'
 import { firebaseHandlers } from './handlers/firebase.ts'
 
 // put one-off handlers that don't really need an entire file to themselves here

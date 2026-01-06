@@ -175,7 +175,7 @@ vitest run --outputFile=vitest-results.json --coverage
 
 ### Current Project Test Status
 
-```
+```text
 ✅ 584/584 tests passing
 ✅ 24 test suites executed
 ✅ Coverage analysis across 80+ files
@@ -288,7 +288,7 @@ npx clear-npx-cache
 
 ### NPM Package Structure
 
-```
+```text
 @madrus/vitest-mcp-server/
 ├── dist/
 │   ├── index.js                # Main MCP server entry point

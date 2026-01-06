@@ -47,6 +47,8 @@ export const SUPPORTED_LANGUAGE_CODES = SUPPORTED_LANGUAGES.map(
 	(lang) => lang.code,
 ) as readonly Language[]
 
+export const FALLBACK_LANGUAGE: Language = 'nl'
+
 /**
  * Initializes and returns an i18n instance with the given language.
  * @param language The language code to initialize i18n with.
@@ -58,7 +60,7 @@ export function initI18n(language: string): I18nType {
 		compatibilityJSON: 'v4',
 		resources,
 		defaultNS,
-		fallbackLng: 'nl',
+		fallbackLng: FALLBACK_LANGUAGE,
 		lng: language,
 		interpolation: {
 			escapeValue: false,
@@ -69,8 +71,7 @@ export function initI18n(language: string): I18nType {
 }
 
 // At the bottom of the file
-// At the bottom of the file
-export const i18n = initI18n('nl') // Default to Dutch (fallback language)
+export const i18n = initI18n(FALLBACK_LANGUAGE) // Default to Dutch (fallback language)
 
 // Function to change the language
 export const changeLanguage = (lng: Language): void => {

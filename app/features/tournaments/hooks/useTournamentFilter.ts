@@ -7,6 +7,7 @@ import type { TournamentListItem } from '~/features/tournaments/types'
 type UseTournamentFilterProps = {
 	tournamentListItems: readonly TournamentListItem[]
 	selectedTournamentId?: string
+	basePath?: string
 }
 
 type UseTournamentFilterReturn = {
@@ -18,6 +19,7 @@ type UseTournamentFilterReturn = {
 export function useTournamentFilter({
 	tournamentListItems,
 	selectedTournamentId,
+	basePath,
 }: UseTournamentFilterProps): UseTournamentFilterReturn {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
@@ -60,8 +62,15 @@ export function useTournamentFilter({
 
 		try {
 			const queryString = newSearchParams.toString()
+			if (basePath) {
+				navigate(queryString ? `${basePath}?${queryString}` : basePath)
+				return
+			}
 			navigate(queryString ? `?${queryString}` : '')
-		} catch (_error) {}
+		} catch (error) {
+			console.error('Navigation failed:', error)
+			throw error
+		}
 	}
 
 	return {

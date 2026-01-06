@@ -3,14 +3,19 @@ import { useTranslation } from 'react-i18next'
 import { Form, useNavigation, useSubmit } from 'react-router'
 
 import { ActionButton } from '~/components/buttons'
-import { CheckIcon, RestorePageIcon } from '~/components/icons'
+import { CheckMarkIcon, RestorePageIcon } from '~/components/icons'
 import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { Panel } from '~/components/Panel'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
 import { ToggleChipsField } from '~/components/ToggleChip'
 import {
-	useTournamentFormStore,
+	useFormFields,
+	useFormMode,
+	useFormStatus,
+	useFormValidationState,
+	useOldFormFields,
+	useTournamentFormActions,
 	useTournamentFormStoreHydration,
 } from '~/features/tournaments/stores/useTournamentFormStore'
 import type { TournamentFormProps } from '~/features/tournaments/types'
@@ -53,17 +58,19 @@ export function TournamentForm({
 	}
 	// Get all state from the form store
 	const {
-		formFields: {
-			name,
-			location,
-			startDate,
-			endDate,
-			divisions: selectedDivisions,
-			categories: selectedCategories,
-		},
-		oldFormFields,
-		validation: { displayErrors, blurredFields, forceShowAllErrors, submitAttempted },
-		formMeta: { mode },
+		name,
+		location,
+		startDate,
+		endDate,
+		divisions: selectedDivisions,
+		categories: selectedCategories,
+	} = useFormFields()
+	const { displayErrors, blurredFields, forceShowAllErrors, submitAttempted } =
+		useFormValidationState()
+	const mode = useFormMode()
+	const oldFormFields = useOldFormFields()
+	const { isFormDirty, isFormReadyForSubmission } = useFormStatus()
+	const {
 		setFormField,
 		setFormMetaField,
 		setFormData,
@@ -71,9 +78,7 @@ export function TournamentForm({
 		validateForm,
 		validateFieldOnBlur,
 		isPanelEnabled,
-		isFormReadyForSubmission,
-		isDirty,
-	} = useTournamentFormStore()
+	} = useTournamentFormActions()
 
 	// Ensure the tournament form store is properly hydrated
 	useTournamentFormStoreHydration()
@@ -319,7 +324,7 @@ export function TournamentForm({
 				<Panel
 					variant='content-panel'
 					color='primary'
-					icon={<CheckIcon size={24} />}
+					icon={<CheckMarkIcon size={24} />}
 					className='mb-8'
 					data-testid='tournament-form-success'
 				>
@@ -587,8 +592,8 @@ export function TournamentForm({
 						}
 						disabled={
 							isPublicSuccess ||
-							!isFormReadyForSubmission() ||
-							(mode === 'edit' && !isDirty())
+							!isFormReadyForSubmission ||
+							(mode === 'edit' && !isFormDirty)
 						}
 					>
 						{submitButtonText || t('common.actions.save')}

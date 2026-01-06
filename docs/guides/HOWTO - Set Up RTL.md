@@ -951,7 +951,7 @@ export function LanguageSwitcher() {
 
 **LTR (English/Dutch/Turkish):**
 
-```
+```text
 [🏠] Home
 [⚙️] Settings
 [🌐] Language
@@ -959,7 +959,7 @@ export function LanguageSwitcher() {
 
 **RTL (Arabic):**
 
-```
+```text
 Home [🏠]
 Settings [⚙️]
 Language [🌐]

@@ -6,7 +6,7 @@ import { ToastIcon } from '../ToastIcon'
 
 // Mock the icon components with proper className handling
 vi.mock('~/components/icons', () => ({
-	SuccessIcon: ({
+	CheckMarkIcon: ({
 		className,
 		size,
 		weight,

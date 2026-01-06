@@ -182,7 +182,7 @@ Following project's entity clustering approach:
 
 #### Public Teams ✅
 
-```
+```text
 app/routes/teams/
 ├── teams.tsx          # Clean layout
 ├── teams._index.tsx   # Chip-based display with navigation
@@ -192,7 +192,7 @@ app/routes/teams/
 
 #### Admin Teams ✅
 
-```
+```text
 app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/
 ├── teams.tsx          # Admin layout
 ├── teams._index.tsx   # Full CRUD management

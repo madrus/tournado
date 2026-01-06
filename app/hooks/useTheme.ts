@@ -1,5 +1,5 @@
 import type { ThemeColors } from '~/lib/theme.types'
-import { useSettingsStore } from '~/stores/useSettingsStore'
+import { useSettingsTheme } from '~/stores/useSettingsStore'
 
 type UseThemeReturn = {
 	theme: string
@@ -8,7 +8,7 @@ type UseThemeReturn = {
 }
 
 export function useTheme(): UseThemeReturn {
-	const { theme } = useSettingsStore()
+	const theme = useSettingsTheme()
 
 	const getThemeColor = (colorKey: keyof ThemeColors): string => {
 		// Check if we're in the browser
@@ -29,7 +29,7 @@ export function useTheme(): UseThemeReturn {
 		brandDark: getThemeColor('brandDark'),
 		brandLight: getThemeColor('brandLight'),
 		main: getThemeColor('main'),
-		accent: getThemeColor('accent'),
+		neutral: getThemeColor('neutral'),
 		title: getThemeColor('title'),
 		titleAccent: getThemeColor('titleAccent'),
 		foregroundHeading: getThemeColor('foregroundHeading'),

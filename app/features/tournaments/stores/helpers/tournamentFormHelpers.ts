@@ -97,6 +97,24 @@ export const mergeErrors = (
 })
 
 /**
+ * Checks if the form is ready to submit by validating all panels and ensuring no errors.
+ */
+export function getIsFormReadyForSubmission(
+	formFields: FormFields,
+	validation: ValidationState,
+	mode: 'create' | 'edit',
+): boolean {
+	const allPanelsValid = [1, 2, 3, 4].every((panel) =>
+		isPanelValid(panel as 1 | 2 | 3 | 4, formFields, validation.displayErrors, mode),
+	)
+	const noErrors =
+		Object.keys(mergeErrors(validation.displayErrors, validation.serverErrors))
+			.length === 0
+
+	return allPanelsValid && noErrors
+}
+
+/**
  * Maps flexible form data (from API or partial forms) to strict FormFields shape.
  * Used for bulk form data setting and pre-population.
  */

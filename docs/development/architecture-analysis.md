@@ -211,7 +211,7 @@ sequenceDiagram
 
 The application follows a modular feature-based architecture with clear separation between shared components and feature-specific code:
 
-```
+```text
 app/
 ├── features/           # Feature modules (self-contained domains)
 │   ├── teams/
@@ -502,7 +502,7 @@ app/features/teams/
 
 Different developers can work on different features with minimal merge conflicts:
 
-```
+```text
 Developer A: app/features/teams/
 Developer B: app/features/tournaments/
 Developer C: app/features/users/

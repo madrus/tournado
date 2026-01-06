@@ -84,7 +84,7 @@ export function SidebarTeamsExample({
 						className={cn(
 							'flex items-center gap-2 rounded-lg px-4 py-2 text-left font-medium text-sm transition-colors',
 							selectedTeam?.id === team.id
-								? 'bg-accent text-primary'
+								? 'bg-neutral text-primary'
 								: 'text-foreground hover:bg-background-hover',
 						)}
 					>
@@ -138,7 +138,7 @@ export function SidebarTeamsExample({
 						<div>
 							<dt className='font-medium text-foreground-lighter text-sm'>Status</dt>
 							<dd className='mt-1'>
-								<span className='inline-flex items-center rounded-full bg-accent px-2.5 py-0.5 font-medium text-primary text-xs'>
+								<span className='inline-flex items-center rounded-full bg-neutral px-2.5 py-0.5 font-medium text-primary text-xs'>
 									Active
 								</span>
 							</dd>
@@ -182,7 +182,7 @@ export function SidebarTeamsExample({
 						</button>
 						<button
 							type='button'
-							className='inline-flex items-center rounded-md border border-brand bg-background px-3 py-2 font-medium text-brand text-sm hover:bg-accent'
+							className='inline-flex items-center rounded-md border border-brand bg-background px-3 py-2 font-medium text-brand text-sm hover:bg-neutral'
 						>
 							Delete Team
 						</button>
@@ -317,7 +317,7 @@ export function TeamsLayoutComparison(): JSX.Element {
 			</div>
 
 			{/* Usage Notes */}
-			<div className='rounded-lg border border-primary bg-accent p-6'>
+			<div className='rounded-lg border border-primary bg-neutral p-6'>
 				<h3
 					className={cn(
 						'mb-3 font-semibold text-lg text-primary',

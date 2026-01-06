@@ -24,6 +24,6 @@ export async function loader({
 	}
 }
 
-export default function CompetitionIndex(): JSX.Element {
-	return <div />
-}
+const CompetitionIndex = (): JSX.Element => <></>
+
+export default CompetitionIndex

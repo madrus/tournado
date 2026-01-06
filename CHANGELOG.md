@@ -4,7 +4,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [0.10.0](https://github.com/madrus/tournado/compare/v0.9.0...v0.10.0) (2025-11-28)
 
-
 ### Features
 
 * add detailed logging for team creation and email handling processes ([355cac3](https://github.com/madrus/tournado/commit/355cac33a118edc5c60c7b083e846e029f4059a9))
@@ -35,7 +34,6 @@ All notable changes to this project will be documented in this file. See [standa
 * update i18n configuration and add VS Code workspace settings ([1ec74a1](https://github.com/madrus/tournado/commit/1ec74a16c1bad2dd9fa66dae2eb4fc54777b457f))
 * update i18n configuration and enhance authentication component styling ([920066b](https://github.com/madrus/tournado/commit/920066b8ccf9f5bff0067da1754bd7c470c1eeb9))
 * update i18n configuration and route titles for localization ([0864712](https://github.com/madrus/tournado/commit/08647128c5637ec6bfb336222bc7dca14d6ea8aa))
-
 
 ### Bug Fixes
 

@@ -4,7 +4,7 @@ import type { MetaFunction } from 'react-router'
 import { redirect, useActionData, useLoaderData } from 'react-router'
 
 import { TournamentForm } from '~/features/tournaments/components/TournamentForm'
-import { useTournamentFormStore } from '~/features/tournaments/stores/useTournamentFormStore'
+import { useTournamentFormActions } from '~/features/tournaments/stores/useTournamentFormStore'
 import {
 	createTournament,
 	getAllCategories,
@@ -163,7 +163,7 @@ export default function NewTournamentPage(): JSX.Element {
 	const { t } = useTranslation()
 	const { divisions, categories } = useLoaderData<LoaderData>()
 	const actionData = useActionData<ActionData>()
-	const { resetForm } = useTournamentFormStore()
+	const { resetForm } = useTournamentFormActions()
 	const handleReset = useCallback(() => {
 		resetForm()
 	}, [resetForm])

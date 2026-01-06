@@ -1,6 +1,6 @@
 import type { JSX } from 'react'
 
-import { CheckIcon, CloseIcon } from '~/components/icons'
+import { CheckMarkIcon, CloseIcon } from '~/components/icons'
 
 import { fieldCheckmarkVariants, fieldErrorIconVariants } from './field.variants'
 
@@ -19,12 +19,15 @@ export function FieldStatusIcon({
 
 	if (status === 'success') {
 		return (
-			<div
-				className={fieldCheckmarkVariants({ color: 'emerald', className })}
-				data-testid='field-status-success'
-			>
-				<CheckIcon className='h-4 w-4 text-white' size={16} />
-			</div>
+			<CheckMarkIcon
+				backgroundClassName={fieldCheckmarkVariants({
+					color: 'emerald',
+					className,
+				})}
+				backgroundProps={{ 'data-testid': 'field-status-success' }}
+				className='text-white'
+				size={16}
+			/>
 		)
 	}
 

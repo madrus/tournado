@@ -38,6 +38,7 @@ ring-offset-slate-50
 # Background colors - Primary button variants (all 21 colors with -600 weight)
 bg-brand-600
 bg-primary-600
+bg-surface-600
 bg-emerald-600
 bg-blue-600
 bg-slate-600

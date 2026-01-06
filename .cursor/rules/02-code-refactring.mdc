@@ -14,15 +14,18 @@ These rules ensure proper handling of code history and mobile-first layouts duri
 ## Mobile-First Layout Considerations
 
 ### Responsive Design Rules
+
 - Always consider both mobile and desktop layouts when refactoring
 - Mobile layout should be the default/base implementation
 - Desktop layout should be added using the lg breakpoint
 
 ### Breakpoint Usage
+
 - **Mobile**: < 1024px (default, no prefix)
 - **Desktop**: > 1024px (use `lg:` prefix)
 
 ### Layout Testing Checklist
+
 Before completing any layout refactoring:
 - [ ] Verify mobile layout (< 1024px)
 - [ ] Verify desktop layout (> 1024px)
@@ -33,6 +36,7 @@ Before completing any layout refactoring:
 ## Mobile-First Implementation Examples
 
 ### ✅ Good: Mobile-First Approach
+
 ```typescript
 // Mobile-first: Base styles for mobile, lg: for desktop
 <div className="flex flex-col gap-2 lg:flex-row lg:gap-4">
@@ -42,6 +46,7 @@ Before completing any layout refactoring:
 ```
 
 ### ❌ Bad: Desktop-First Approach
+
 ```typescript
 // Desktop-first: Conflicting responsive classes
 <div className="flex flex-row gap-4 flex-col">
@@ -51,6 +56,7 @@ Before completing any layout refactoring:
 ```
 
 ### Common Mobile-First Patterns
+
 ```typescript
 // Navigation
 <nav className="flex flex-col gap-2 lg:flex-row lg:gap-6">
@@ -71,11 +77,13 @@ Before completing any layout refactoring:
 ## Code Preservation Guidelines
 
 ### Historical Code Preservation
+
 - Do not delete previously commented out code
 - Only delete code lines that are directly involved in the refactoring
 - Preserve code history for future reference
 
 ### Comment Management
+
 - Change comments to refactored code lines if applicable
 - Do not modify or delete comments unless they relate to:
   - Code lines being changed
@@ -83,20 +91,21 @@ Before completing any layout refactoring:
 - Maintain documentation context
 
 ### Refactoring Example
+
 ```typescript
 // ✅ Good: Preserves history and updates comments
 // Original implementation
 // function calculateTotal(items: Item[]) {
-//   let total = 0;
+//   let total = 0
 //   for (const item of items) {
-//     total += item.price;
+//     total += item.price
 //   }
-//   return total;
+//   return total
 // }
 
 // Updated to use reduce for better performance
 function calculateTotal(items: Item[]) {
-  return items.reduce((total, item) => total + item.price, 0);
+  return items.reduce((total, item) => total + item.price, 0)
 }
 ```
 

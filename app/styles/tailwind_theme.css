@@ -17,9 +17,13 @@
 	--color-brand-darkest: var(--color-brand-darkest);
 	--color-brand-light: var(--color-brand-light);
 
-	/* Main Accent */
+	/* Main Neutral */
 	--color-main: var(--color-main);
-	--color-accent: var(--color-accent);
+	--color-neutral: var(--color-neutral);
+
+	/* Surface Colors - semantic slate-based colors for elevated panels */
+	--color-surface: var(--color-surface);
+	--color-surface-light: var(--color-surface-light);
 
 	/* Primary Colors - removed circular references, use @theme inline instead */
 
@@ -171,6 +175,8 @@
 	--color-usermenu-bg: var(--color-usermenu-bg);
 	--color-usermenu-text: var(--color-usermenu-text);
 	--color-usermenu-hover-bg: var(--color-usermenu-hover-bg);
+	--color-usermenu-border: var(--color-usermenu-border);
+	--color-usermenu-accent-bg: var(--color-usermenu-accent-bg);
 
 	/* Panel Gradient Colors */
 	--color-panel-gradient-from: var(--panel-gradient-from);
@@ -182,6 +188,9 @@
 	--color-primary-from: var(--color-primary-light-from);
 	--color-primary-via: var(--color-primary-light-via);
 	--color-primary-to: var(--color-primary-light-to);
+
+	/* Layering */
+	--z-dnd-overlay: 9999;
 
 	/* Adaptive Color System - Consolidated Variables (primarily 700 weights, with exceptions: amber-800, brand red-600) */
 	--color-adaptive-red: var(--color-red-700);
@@ -349,6 +358,19 @@
 	--color-primary-800: var(--color-emerald-800);
 	--color-primary-900: var(--color-emerald-900);
 	--color-primary-950: var(--color-emerald-950);
+
+	/* Functional Semantics - Surface (slate-based) */
+	--color-surface-50: var(--color-slate-50);
+	--color-surface-100: var(--color-slate-100);
+	--color-surface-200: var(--color-slate-200);
+	--color-surface-300: var(--color-slate-300);
+	--color-surface-400: var(--color-slate-400);
+	--color-surface-500: var(--color-slate-500);
+	--color-surface-600: var(--color-slate-600);
+	--color-surface-700: var(--color-slate-700);
+	--color-surface-800: var(--color-slate-800);
+	--color-surface-900: var(--color-slate-900);
+	--color-surface-950: var(--color-slate-950);
 
 	/* Functional Semantics - Success (green-based) */
 	--color-success-50: var(--color-green-50);

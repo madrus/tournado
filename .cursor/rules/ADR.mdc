@@ -1475,6 +1475,7 @@ Implement semantic heading hierarchy where AppBar's `pageTitle` serves as the pr
 - **Single h1 per page**: Each route has exactly one `h1`, maintaining proper document structure
 
 **Route Pattern**:
+
 ```tsx
 // Route file example
 export const handle: RouteMetadata = {
@@ -1557,6 +1558,7 @@ Implement multi-stage Docker build with separate build toolchain:
 5. **Final production image**: Uses `base`, copies built artifacts (minimal footprint)
 
 **Native Module Compilation Strategy**:
+
 ```dockerfile
 # Install with --ignore-scripts to skip Husky
 RUN pnpm install --prod --frozen-lockfile --ignore-scripts && \

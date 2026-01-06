@@ -181,7 +181,7 @@ categories: z.array(z.string()).min(1, t('messages.tournament.categoriesRequired
 
 Each feature manages its own validation schemas:
 
-```
+```text
 app/features/
 ├── teams/
 │   └── validation.ts          # Team validation schemas

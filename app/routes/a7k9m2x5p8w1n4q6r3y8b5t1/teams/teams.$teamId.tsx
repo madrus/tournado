@@ -17,7 +17,7 @@ import { SimpleConfirmDialog } from '~/components/ConfirmDialog'
 import { Panel } from '~/components/Panel'
 import { prisma } from '~/db.server'
 import { TeamForm } from '~/features/teams/components/TeamForm'
-import { useTeamFormStore } from '~/features/teams/stores/useTeamFormStore'
+import { useTeamFormActions } from '~/features/teams/stores/useTeamFormStore'
 import type { TeamCreateActionData } from '~/features/teams/types'
 import { getDivisionLabel, stringToCategory, stringToDivision } from '~/lib/lib.helpers'
 import type { RouteMetadata } from '~/utils/routeTypes'
@@ -255,7 +255,7 @@ export default function AdminTeamPage(): JSX.Element {
 	const { i18n, t } = useTranslation()
 	const [searchParams, setSearchParams] = useSearchParams()
 	const submit = useSubmit()
-	const setFormData = useTeamFormStore((state) => state.setFormData)
+	const { setFormData } = useTeamFormActions()
 
 	// Runtime guard for strict team name pattern: J|M|JM + 'O' + number-number
 	const isValidTeamName = (

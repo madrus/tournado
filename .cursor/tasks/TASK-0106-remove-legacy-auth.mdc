@@ -19,6 +19,7 @@ Follow the file creation safety and TypeScript conventions in `.cursor/tasks/tas
 ## ARCHITECTURE DECISION RECORDS
 
 ### 🧹 MIGRATION Task — Remove legacy auth
+
 **Decision**: Remove all legacy password-based authentication (bcrypt, `Password` table, any cookie/session code not part of Firebase session bridging) and leave the application Firebase-only.
 
 **Rationale**:
@@ -50,6 +51,7 @@ TASK-0104 completed Firebase auth (Google + Email/Password), and refactored E2E/
 # 5) Context Plan
 
 ## MIGRATION Task Pattern
+
 **Beginning (add to model context):**
 - prisma/schema.prisma _(read-only)_
 - prisma/seed.js _(read-only)_
@@ -69,6 +71,7 @@ TASK-0104 completed Firebase auth (Google + Email/Password), and refactored E2E/
 # 6) Low-Level Steps (Ordered, information-dense)
 
 ## File Creation Safety Check
+
 Before every new/modified file, check if it exists and merge carefully without breaking unrelated code.
 
 1. Schema cleanup (Prisma)
@@ -110,4 +113,3 @@ Before every new/modified file, check if it exists and merge carefully without b
 - All routes and auth flows operate via Firebase (Google + Email/Password) with session cookie bridging
 - `pnpm typecheck`, unit tests, and E2E tests pass green
 - No `any` types or forbidden callback/data identifier names introduced
-

@@ -93,22 +93,28 @@ We can hold off on actually running migrations while we iterate on our schema. P
 
 1. Keep editing schema.prisma as much as you like.
 2. Once your model design is stable, run:
+
    ```bash
    pnpm prisma migrate dev --name init
    ```
+
    This will:
    - create a new SQL migration in `prisma/migrations/.../init/`
    - apply it to your local database
    - regenerate the Prisma client
 3. If you need to tweak the schema again, repeat:
+
    ```bash
    pnpm prisma migrate dev --name tweak-xyz
    ```
+
    Each run snapshots just the delta since your last migration.
 4. If this is still pre-production and you don't care about preserving any existing data, you can also do:
+
    ```bash
    pnpm prisma migrate reset
    ```
+
    This will drop the DB, apply all pending migrations from scratch, and re-seed.
 
 ### Seeded Groups (for review)
@@ -196,23 +202,27 @@ pnpm run db:reset:production
 If you prefer to do the reset manually step-by-step on Fly.io:
 
 1. **Connect to your Fly.io app:**
+
    ```sh
    fly ssh console -a tournado-staging  # or tournado for production
    ```
 
 2. **Once connected, run these commands:**
+
    ```sh
    cd /workdir
    npx prisma migrate reset --force
    ```
 
 3. **Seed the database (as needed)**
+
    ```sh
    node prisma/seedSuperAdmins.js # Andre and Otman
    node prisma/seed.js            # dummy data (not for production)
    ```
 
 4. **Exit the SSH session**
+
    ```sh
    exit
    ```

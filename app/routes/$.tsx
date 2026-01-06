@@ -10,6 +10,7 @@ import { useLocation } from 'react-router'
 
 import { GeneralErrorBoundary } from '~/components/GeneralErrorBoundary'
 import { ErrorRecoveryLink } from '~/components/PrefetchLink'
+import { logger } from '~/utils/logger.server'
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
@@ -41,7 +42,10 @@ export async function loader({ request }: { request: Request }): Promise<void> {
 	}
 
 	if (process.env.NODE_ENV !== 'production') {
-		console.warn('[catchall 404]', request.method, request.url)
+		logger.warn(
+			{ method: request.method, url: request.url },
+			'[catchall 404] Unknown route',
+		)
 	}
 	throw new Response('Not found', { status: 404 })
 }

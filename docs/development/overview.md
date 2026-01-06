@@ -4,7 +4,7 @@
 
 The project follows a standard React Router v7 application structure:
 
-```
+```text
 app/
   ├── components/    # Reusable UI components
   ├── layouts/       # Layout components for nested routes
@@ -150,7 +150,7 @@ This project uses a GitHub Actions workflow to send notifications to Slack about
 
 ### Example Slack Message
 
-```
+```text
 *GitHub Action build result*: success on branch dev by alice
 https://github.com/your-org/your-repo/commit/abc123
 

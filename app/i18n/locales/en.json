@@ -113,6 +113,7 @@
 			"creating": "Creating...",
 			"delete": "Delete",
 			"edit": "Edit",
+			"retry": "Retry",
 			"save": "Save",
 			"saving": "Saving...",
 			"update": "Update",
@@ -127,6 +128,7 @@
 			"signingIn": "Signing in..."
 		},
 		"backToHome": "Back to home",
+		"comingSoon": "Soon",
 		"darkMode": "Dark mode",
 		"error": "Error",
 		"guest": "Guest",
@@ -172,6 +174,7 @@
 		"labels": {
 			"categories": "Categories:",
 			"setup": "Setup:",
+			"setupSummary": "{{groups}} groups × {{teams}} teams",
 			"autoFill": "Auto-fill:",
 			"created": "Created:"
 		},
@@ -195,6 +198,61 @@
 			"summaryTeamsAvailable": "{{count}} teams available in selected categories",
 			"summaryWillCreate": "Will create {{groups}} groups with {{slots}} slots each ({{total}} total slots)",
 			"title": "Group Stage"
+		},
+		"groupAssignment": {
+			"instruction": "Drag teams to assign them to groups. Drop on a group to auto-assign, or on a specific slot to place directly.",
+			"backToGroups": "Back to Groups",
+			"unsavedChanges": "You have unsaved changes",
+			"unsavedTitle": "Unsaved Changes",
+			"unsavedDescription": "You have unsaved changes that will be lost if you leave this page.",
+			"leaveAnyway": "Leave anyway",
+			"stayOnPage": "Stay on page",
+			"conflictTitle": "Changes Conflict",
+			"conflictDescription": "Another user saved changes. Your unsaved edits were discarded and the page was refreshed.",
+			"conflictReload": "Reload Page",
+			"deleteConfirmTitle": "Remove Team",
+			"deleteConfirmDescription": "Are you sure you want to remove this team from the group stage? They will no longer be part of this competition.",
+			"goToGroup": "Go to {{name}}",
+			"errors": {
+				"noCapacity": "No space available in confirmed pool. Remove a team from a group first.",
+				"waitlistToGroup": "Waitlist teams cannot be assigned directly to groups. Move them to confirmed pool first."
+			},
+			"hints": {
+				"groupFull": "This group is full. Drop on a specific slot to swap teams."
+			},
+			"chip": {
+				"ariaLabel": "{{club}} {{team}} - drag to assign",
+				"deleteAriaLabel": "Remove {{club}} {{team}} from group stage"
+			},
+			"slot": {
+				"label": "Slot {{number}}",
+				"position": "Slot {{position}}",
+				"dropHere": "Drop here",
+				"empty": "Empty",
+				"emptyAriaLabel": "Empty slot {{position}} - drop a team here",
+				"occupiedAriaLabel": "Slot {{position}} occupied by {{team}}"
+			},
+			"group": {
+				"ariaLabel": "{{name}} - {{filled}} of {{total}} teams assigned",
+				"slotsCount": "Teams: {{filled}} of {{total}}",
+				"dropToAssign": "Drop to auto-assign"
+			},
+			"reserve": {
+				"title": "Confirmed Teams",
+				"count": "Teams: {{count}} of {{capacity}}",
+				"empty": "No teams in confirmed pool",
+				"dropToAdd": "Drop here to move to reserve",
+				"ariaLabel": "Confirmed teams pool - {{count}} of {{capacity}} capacity"
+			},
+			"waitlist": {
+				"title": "Waitlist",
+				"count": "{{count}} waiting",
+				"noCapacity": "Confirmed pool is full. Free up slots to promote waitlist teams.",
+				"helpPromote": "Drag waitlist teams to the confirmed pool to add them.",
+				"helpBlocked": "All slots are assigned. Remove teams from groups to make room.",
+				"ariaLabel": "Waitlist - {{count}} teams waiting",
+				"dropToAdd": "Drop here to move to waitlist"
+			}
 		}
 	},
 	"datatable": {
@@ -284,6 +342,11 @@
 			"notFoundTitle": "Page Not Found",
 			"unexpectedError": "An unexpected error occurred",
 			"unknownError": "An unknown error occurred"
+		},
+		"groupAssignment": {
+			"teamNotFound": "Team not found. Refresh and try again.",
+			"groupNotFound": "Target group not found. Refresh and try again.",
+			"slotNotFound": "Target slot not found. Refresh and try again."
 		},
 		"panel": {
 			"errorTitle": "Something went wrong",

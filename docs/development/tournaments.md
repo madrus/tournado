@@ -83,7 +83,7 @@ Tournaments can also be accessed directly from the **Admin Panel dashboard**:
 
 ### File Structure
 
-```
+```text
 app/
 ├── components/
 │   ├── TournamentForm.tsx          # Form for creating/editing tournaments

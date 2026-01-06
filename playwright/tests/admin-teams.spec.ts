@@ -13,7 +13,12 @@
  * Viewport: Mobile (375x812)
  */
 import { expect, test } from '@playwright/test'
-
+import {
+	createTestTeam,
+	createTestTournament,
+	deleteTestTeam,
+	deleteTestTournament,
+} from '../helpers/database'
 import { AdminPanelPage } from '../pages/AdminPanelPage'
 import { AdminTeamsPage } from '../pages/AdminTeamsPage'
 
@@ -58,16 +63,32 @@ test.describe('Admin Teams', () => {
 	})
 
 	test('should access admin team details', async ({ page }) => {
-		// Test accessing a specific team in admin view
-		await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/test-team-id')
+		const tournament = await createTestTournament(
+			'Admin Teams Details Tournament',
+			'Test Location',
+		)
+		const team = await createTestTeam({
+			tournamentId: tournament.id,
+			name: 'Admin Team Details',
+			division: 'FIRST_DIVISION',
+			category: 'JO10',
+		})
 
-		// Should redirect to signin if team doesn't exist, but stay on admin route if authenticated
-		// This tests that the admin route structure works with authentication
-		const url = page.url()
-		expect(url).toContain('/a7k9m2x5p8w1n4q6r3y8b5t1')
+		try {
+			// Test accessing a specific team in admin view
+			await page.goto(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${team.id}`)
 
-		// Should see some admin interface (either team details or error page)
-		await expect(page.locator('body')).toBeVisible()
+			// Should redirect to signin if team doesn't exist, but stay on admin route if authenticated
+			// This tests that the admin route structure works with authentication
+			const url = page.url()
+			expect(url).toContain('/a7k9m2x5p8w1n4q6r3y8b5t1')
+
+			// Should see some admin interface (either team details or error page)
+			await expect(page.locator('body')).toBeVisible()
+		} finally {
+			await deleteTestTeam({ id: team.id })
+			await deleteTestTournament({ id: tournament.id })
+		}
 	})
 
 	test('should access teams via admin panel button', async ({ page }) => {

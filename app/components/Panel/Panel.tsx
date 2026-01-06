@@ -32,6 +32,8 @@ export type PanelProps = {
 	iconColor?: ColorAccent
 	/** Children text color - defaults to iconColor */
 	childrenIconColor?: ColorAccent
+	/** Let children manage their own text colors */
+	inheritChildrenText?: boolean
 	/** Optional step/section number displayed in a colored badge */
 	panelNumber?: number | string
 	/** If true, the panel is disabled (pointer events are disabled) */
@@ -54,6 +56,7 @@ export function Panel({
 	icon,
 	iconColor,
 	childrenIconColor,
+	inheritChildrenText = false,
 	panelNumber,
 	disabled = false,
 	showGlow = false,
@@ -170,9 +173,11 @@ export function Panel({
 					{children ? (
 						<div
 							className={cn(
-								panelChildrenVariants({
-									iconColor: effectiveChildrenIconColor,
-								}),
+								inheritChildrenText
+									? ''
+									: panelChildrenVariants({
+											iconColor: effectiveChildrenIconColor,
+										}),
 								// Explicit logical alignment for RTL right
 								'text-start',
 							)}

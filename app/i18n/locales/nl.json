@@ -113,6 +113,7 @@
 			"creating": "Aanmaken...",
 			"delete": "Verwijderen",
 			"edit": "Bewerken",
+			"retry": "Opnieuw proberen",
 			"save": "Opslaan",
 			"saving": "Opslaan...",
 			"update": "Bijwerken",
@@ -127,6 +128,7 @@
 			"signingIn": "Inloggen..."
 		},
 		"backToHome": "Terug naar home",
+		"comingSoon": "Binnenkort",
 		"darkMode": "Donkere modus",
 		"error": "Fout",
 		"guest": "Bezoeker",
@@ -172,6 +174,7 @@
 		"labels": {
 			"categories": "Categorieën:",
 			"setup": "Opzet:",
+			"setupSummary": "{{groups}} poules × {{teams}} teams",
 			"autoFill": "Auto-invullen:",
 			"created": "Aangemaakt:"
 		},
@@ -195,6 +198,61 @@
 			"summaryTeamsAvailable": "{{count}} teams beschikbaar in geselecteerde categorieën",
 			"summaryWillCreate": "Er worden {{groups}} poules aangemaakt met {{slots}} plaatsen elk ({{total}} plaatsen in totaal)",
 			"title": "Poulefase"
+		},
+		"groupAssignment": {
+			"instruction": "Sleep teams om ze aan poules toe te wijzen. Laat los op een poule voor automatische toewijzing, of op een specifieke plek om direct te plaatsen.",
+			"backToGroups": "Terug naar poules",
+			"unsavedChanges": "Je hebt niet-opgeslagen wijzigingen",
+			"unsavedTitle": "Niet-opgeslagen wijzigingen",
+			"unsavedDescription": "Je hebt niet-opgeslagen wijzigingen die verloren gaan als je deze pagina verlaat.",
+			"leaveAnyway": "Toch verlaten",
+			"stayOnPage": "Op pagina blijven",
+			"conflictTitle": "Conflicterende wijzigingen",
+			"conflictDescription": "Een andere gebruiker heeft wijzigingen opgeslagen. Je niet-opgeslagen bewerkingen zijn verwijderd en de pagina is vernieuwd.",
+			"conflictReload": "Pagina herladen",
+			"deleteConfirmTitle": "Team verwijderen",
+			"deleteConfirmDescription": "Weet je zeker dat je dit team uit de poulefase wilt verwijderen? Ze zullen niet langer deelnemen aan deze competitie.",
+			"goToGroup": "Ga naar {{name}}",
+			"errors": {
+				"noCapacity": "Geen ruimte beschikbaar in bevestigde pool. Verwijder eerst een team uit een poule.",
+				"waitlistToGroup": "Wachtlijstteams kunnen niet direct aan poules worden toegewezen. Verplaats ze eerst naar de bevestigde pool."
+			},
+			"hints": {
+				"groupFull": "Deze poule is vol. Laat los op een specifieke plek om teams te verwisselen."
+			},
+			"chip": {
+				"ariaLabel": "{{club}} {{team}} - sleep om toe te wijzen",
+				"deleteAriaLabel": "Verwijder {{club}} {{team}} uit poulefase"
+			},
+			"slot": {
+				"label": "Plek {{number}}",
+				"position": "Plek {{position}}",
+				"dropHere": "Hier loslaten",
+				"empty": "Leeg",
+				"emptyAriaLabel": "Lege plek {{position}} - laat hier een team los",
+				"occupiedAriaLabel": "Plek {{position}} bezet door {{team}}"
+			},
+			"group": {
+				"ariaLabel": "{{name}} - {{filled}} van {{total}} teams toegewezen",
+				"slotsCount": "Teams: {{filled}} van {{total}}",
+				"dropToAssign": "Loslaten om toe te wijzen"
+			},
+			"reserve": {
+				"title": "Bevestigde teams",
+				"count": "Teams: {{count}} van {{capacity}}",
+				"empty": "Geen teams in bevestigde pool",
+				"dropToAdd": "Hier loslaten om naar reserve te verplaatsen",
+				"ariaLabel": "Bevestigde teams pool - {{count}} van {{capacity}} capaciteit"
+			},
+			"waitlist": {
+				"title": "Wachtlijst",
+				"count": "{{count}} wachtend",
+				"noCapacity": "Bevestigde pool is vol. Maak plekken vrij om wachtlijstteams te promoveren.",
+				"helpPromote": "Sleep wachtlijstteams naar de bevestigde pool om ze toe te voegen.",
+				"helpBlocked": "Alle plekken zijn bezet. Verwijder teams uit poules om ruimte te maken.",
+				"ariaLabel": "Wachtlijst - {{count}} teams wachtend",
+				"dropToAdd": "Hier loslaten om naar wachtlijst te verplaatsen"
+			}
 		}
 	},
 	"datatable": {
@@ -284,6 +342,11 @@
 			"notFoundTitle": "Pagina niet gevonden",
 			"unexpectedError": "Er is een onverwachte fout opgetreden",
 			"unknownError": "Er is een onbekende fout opgetreden"
+		},
+		"groupAssignment": {
+			"teamNotFound": "Team niet gevonden. Vernieuw en probeer het opnieuw.",
+			"groupNotFound": "Doelgroep niet gevonden. Vernieuw en probeer het opnieuw.",
+			"slotNotFound": "Doelslot niet gevonden. Vernieuw en probeer het opnieuw."
 		},
 		"panel": {
 			"errorTitle": "Er is iets misgegaan",

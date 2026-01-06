@@ -261,7 +261,6 @@ RBAC note: Read-only public access; no Admin Panel access.
 - When appropriate, I want to register teams for selected tournaments and specify the contact details for the Team Leader
 - I want optional live alerts when my team is about to play or when goals are scored (frequency configurable)
 
-
 ### Editor (future)
 
 **Authentication**: Required (editor role)

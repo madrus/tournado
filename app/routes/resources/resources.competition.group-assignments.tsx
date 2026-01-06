@@ -96,10 +96,18 @@ export async function action({
 
 			let assignments: SlotAssignment[]
 			try {
-				assignments = AssignmentsSchema.parse(JSON.parse(assignmentsJson))
+				let parsed: unknown
+				try {
+					parsed = JSON.parse(assignmentsJson)
+				} catch (error) {
+					logger.error({ err: error }, 'Invalid JSON in assignments field')
+					return { success: false, error: 'Invalid JSON format' }
+				}
+
+				assignments = AssignmentsSchema.parse(parsed)
 			} catch (error) {
-				logger.error({ err: error }, 'Invalid assignments format received')
-				return { success: false, error: 'Invalid assignments format' }
+				logger.error({ err: error }, 'Assignments schema validation failed')
+				return { success: false, error: 'Invalid assignments schema' }
 			}
 
 			try {

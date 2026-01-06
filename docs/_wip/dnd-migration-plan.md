@@ -1,4 +1,4 @@
-# Group Stage Drag and Drop Assignment System
+# Group Stage Drag-and-Drop Assignment System
 
 ## Overview
 
@@ -110,7 +110,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - `DndUnassignedTeam` - teams not assigned to any slot (includes both confirmed and waitlist)
 - `GroupAssignmentSnapshot` - contains groups and unassignedTeams array
 
-## Drag and Drop Behavior
+## Drag-and-Drop Behavior
 
 ### Drag Sources
 
@@ -376,7 +376,7 @@ All user-facing text internationalized in 6 languages:
 
 ### Component Tests
 
-- Drag and drop operations (pointer and keyboard)
+- Drag-and-drop operations (pointer and keyboard)
 - Slot state transitions
 - Team chip rendering and interactions
 - Error boundary behavior

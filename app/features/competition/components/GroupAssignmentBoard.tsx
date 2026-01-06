@@ -216,6 +216,16 @@ export function GroupAssignmentBoard({
 	// Responsive layout detection
 	const isMobile = useMediaQuery('(max-width: 1023px)')
 
+	const groupCount = snapshot ? snapshot.groups.length : 0
+	const safeGroupIndex =
+		groupCount === 0 ? 0 : Math.max(0, Math.min(activeGroupIndex, groupCount - 1))
+
+	useEffect(() => {
+		if (activeGroupIndex !== safeGroupIndex) {
+			setActiveGroupIndex(safeGroupIndex)
+		}
+	}, [activeGroupIndex, safeGroupIndex, setActiveGroupIndex])
+
 	if (!snapshot) {
 		return (
 			<div className='flex items-center justify-center p-8'>
@@ -227,7 +237,6 @@ export function GroupAssignmentBoard({
 	const waitlistTeams = getWaitlistTeams(snapshot)
 	const capacity = getConfirmedCapacity(snapshot)
 
-	const groupCount = snapshot.groups.length
 	const { gridColsClass, colSpanClass } = getGroupAssignmentLayoutClasses(groupCount)
 
 	return (
@@ -261,7 +270,7 @@ export function GroupAssignmentBoard({
 					{isMobile && snapshot.groups.length > 1 ? (
 						<GroupAssignmentMobileTabs
 							groups={snapshot.groups}
-							activeGroupIndex={activeGroupIndex}
+							activeGroupIndex={safeGroupIndex}
 							onTabChange={setActiveGroupIndex}
 							getAriaLabel={(name) =>
 								t('competition.groupAssignment.goToGroup', { name })
@@ -277,7 +286,7 @@ export function GroupAssignmentBoard({
 								// Mobile: Show only active group
 								snapshot.groups.length > 0 ? (
 									<GroupCard
-										group={snapshot.groups[activeGroupIndex]}
+										group={snapshot.groups[safeGroupIndex]}
 										disabled={isSaving}
 									/>
 								) : null

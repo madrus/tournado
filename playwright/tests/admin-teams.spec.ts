@@ -24,34 +24,6 @@ import { AdminTeamsPage } from '../pages/AdminTeamsPage'
 
 // Admin Teams Tests - USES GLOBAL AUTHENTICATION from auth.json
 test.describe('Admin Teams', () => {
-	let TEST_TOURNAMENT_ID: string
-	let TEST_TEAM_ID: string
-
-	test.beforeAll(async () => {
-		const tournament = await createTestTournament(
-			'Admin Teams Details Tournament',
-			'Test Location',
-		)
-		TEST_TOURNAMENT_ID = tournament.id
-
-		const team = await createTestTeam({
-			tournamentId: TEST_TOURNAMENT_ID,
-			name: 'Admin Team Details',
-			division: 'FIRST_DIVISION',
-			category: 'JO10',
-		})
-		TEST_TEAM_ID = team.id
-	})
-
-	test.afterAll(async () => {
-		if (TEST_TEAM_ID) {
-			await deleteTestTeam({ id: TEST_TEAM_ID })
-		}
-		if (TEST_TOURNAMENT_ID) {
-			await deleteTestTournament({ id: TEST_TOURNAMENT_ID })
-		}
-	})
-
 	test.beforeEach(async ({ page }) => {
 		await page.setViewportSize({ width: 375, height: 812 })
 		await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
@@ -91,16 +63,32 @@ test.describe('Admin Teams', () => {
 	})
 
 	test('should access admin team details', async ({ page }) => {
-		// Test accessing a specific team in admin view
-		await page.goto(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${TEST_TEAM_ID}`)
+		const tournament = await createTestTournament(
+			'Admin Teams Details Tournament',
+			'Test Location',
+		)
+		const team = await createTestTeam({
+			tournamentId: tournament.id,
+			name: 'Admin Team Details',
+			division: 'FIRST_DIVISION',
+			category: 'JO10',
+		})
 
-		// Should redirect to signin if team doesn't exist, but stay on admin route if authenticated
-		// This tests that the admin route structure works with authentication
-		const url = page.url()
-		expect(url).toContain('/a7k9m2x5p8w1n4q6r3y8b5t1')
+		try {
+			// Test accessing a specific team in admin view
+			await page.goto(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${team.id}`)
 
-		// Should see some admin interface (either team details or error page)
-		await expect(page.locator('body')).toBeVisible()
+			// Should redirect to signin if team doesn't exist, but stay on admin route if authenticated
+			// This tests that the admin route structure works with authentication
+			const url = page.url()
+			expect(url).toContain('/a7k9m2x5p8w1n4q6r3y8b5t1')
+
+			// Should see some admin interface (either team details or error page)
+			await expect(page.locator('body')).toBeVisible()
+		} finally {
+			await deleteTestTeam({ id: team.id })
+			await deleteTestTournament({ id: tournament.id })
+		}
 	})
 
 	test('should access teams via admin panel button', async ({ page }) => {

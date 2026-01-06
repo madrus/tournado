@@ -96,7 +96,7 @@ export class GroupAssignmentPage extends BasePage {
 		await this.saveButton.waitFor({ state: 'visible', timeout: 10000 })
 	}
 
-	// Drag and drop action
+	// Drag-and-drop action
 	async dragTeamToSlot(
 		teamId: string,
 		groupId: string,
@@ -117,7 +117,7 @@ export class GroupAssignmentPage extends BasePage {
 			throw new Error('Could not get bounding boxes for drag operation')
 		}
 
-		// Perform drag and drop using mouse actions
+		// Perform drag-and-drop using mouse actions
 		await this.page.mouse.move(
 			sourceBox.x + sourceBox.width / 2,
 			sourceBox.y + sourceBox.height / 2,

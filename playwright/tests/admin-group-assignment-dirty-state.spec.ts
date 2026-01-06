@@ -206,7 +206,9 @@ test.describe('Group Assignment Dirty State', () => {
 		await homeLink.click()
 
 		// Navigation blocker should NOT appear
-		await page.waitForTimeout(500) // Brief wait to ensure no dialog appears
+		await expect(groupAssignmentPage.navigationBlockerDialog).not.toBeVisible({
+			timeout: 500,
+		})
 
 		// Should navigate away successfully
 		expect(page.url()).not.toContain(`/groups/${TEST_GROUP_STAGE_ID}`)

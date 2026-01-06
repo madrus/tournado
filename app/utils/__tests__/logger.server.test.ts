@@ -6,39 +6,20 @@ const pinoMock = vi.hoisted(() =>
 		transport: transportMock,
 	}),
 )
-const resolveMock = vi.hoisted(() => vi.fn(() => 'pino-pretty'))
 
 vi.mock('pino', () => ({
 	default: pinoMock,
 }))
 
-vi.mock('node:module', async (importOriginal) => {
-	const actual = await importOriginal<typeof import('node:module')>()
-	const createRequireMock = () => ({
-		resolve: resolveMock,
-	})
-	return {
-		...actual,
-		default: {
-			...actual,
-			createRequire: createRequireMock,
-		},
-		createRequire: createRequireMock,
-	}
-})
+import { createLogger } from '../logger.server'
 
 describe('logger.server', () => {
 	afterEach(() => {
-		vi.resetModules()
 		vi.clearAllMocks()
-		delete process.env.NODE_ENV
-		delete process.env.LOG_LEVEL
 	})
 
 	it('configures JSON logging in production', async () => {
-		process.env.NODE_ENV = 'production'
-
-		await import('../logger.server')
+		createLogger({ nodeEnv: 'production', resolvePretty: () => 'pino-pretty' })
 
 		expect(pinoMock).toHaveBeenCalledWith(
 			expect.objectContaining({
@@ -54,12 +35,15 @@ describe('logger.server', () => {
 	})
 
 	it('configures pretty logging in development when available', async () => {
-		process.env.NODE_ENV = 'development'
-		process.env.LOG_LEVEL = 'debug'
 		transportMock.mockReturnValue({ target: 'pino-pretty' })
 
-		await import('../logger.server')
+		createLogger({
+			nodeEnv: 'development',
+			logLevel: 'debug',
+			resolvePretty: () => 'pino-pretty',
+		})
 
+		expect(pinoMock).toHaveBeenCalled()
 		expect(transportMock).toHaveBeenCalled()
 		expect(transportMock).toHaveBeenCalledWith(
 			expect.objectContaining({

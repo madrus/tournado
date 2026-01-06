@@ -189,6 +189,9 @@
 	--color-primary-via: var(--color-primary-light-via);
 	--color-primary-to: var(--color-primary-light-to);
 
+	/* Layering */
+	--z-dnd-overlay: 9999;
+
 	/* Adaptive Color System - Consolidated Variables (primarily 700 weights, with exceptions: amber-800, brand red-600) */
 	--color-adaptive-red: var(--color-red-700);
 	--color-adaptive-blue: var(--color-blue-700);

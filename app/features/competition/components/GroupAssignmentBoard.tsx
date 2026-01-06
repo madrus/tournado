@@ -346,8 +346,7 @@ export function GroupAssignmentBoard({
 
 				{/* Drag overlay */}
 				<DragOverlay
-					zIndex={9999}
-					style={{ cursor: 'grabbing' }}
+					style={{ cursor: 'grabbing', zIndex: 'var(--z-dnd-overlay)' }}
 					modifiers={[snapCenterToCursor]}
 				>
 					{activeDragTeam ? <DragOverlayChip team={activeDragTeam} /> : null}

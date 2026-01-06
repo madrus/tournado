@@ -200,9 +200,11 @@ This section is not complete yet. It will be filled in as the project evolves.
 
 ### Agent Behavior Rules
 
-- **Do NOT run lint or typecheck** unless explicitly requested by the user
+- **Auto-run TypeScript typecheck** on any code change
+- **Do NOT run lint** unless explicitly requested by the user
 - **Do NOT run unit tests** unless explicitly requested by the user
 - **You may proactively verify code quality** and tell me about them asking if I want them fixed
+- You may suggest relevant commands as next steps, but do not offer to run them
 - **See docs/**: Commands, architecture, setup, and environment configuration in dedicated docs files
 
 ### Immutable Rules

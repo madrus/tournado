@@ -7,7 +7,10 @@ import {
 	getGroupStageWithDetails,
 } from '~/models/group.server'
 import { logger } from '~/utils/logger.server'
-import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
+import {
+	checkRoleBasedRateLimit,
+	requireUserWithPermission,
+} from '~/utils/rbacMiddleware.server'
 
 type SlotAssignment = {
 	groupId: string
@@ -75,6 +78,7 @@ export async function action({
 }: ActionFunctionArgs): Promise<SaveResponse | CancelResponse | DeleteResponse> {
 	// Require groups:manage permission
 	await requireUserWithPermission(request, 'groups:manage')
+	await checkRoleBasedRateLimit(request, 'group-assignments:batch-save')
 
 	const formData = await request.formData()
 	const intent = formData.get('intent')?.toString()
@@ -93,7 +97,8 @@ export async function action({
 			let assignments: SlotAssignment[]
 			try {
 				assignments = AssignmentsSchema.parse(JSON.parse(assignmentsJson))
-			} catch {
+			} catch (error) {
+				logger.error({ err: error }, 'Invalid assignments format received')
 				return { success: false, error: 'Invalid assignments format' }
 			}
 
@@ -166,6 +171,7 @@ export async function action({
 		}
 
 		default:
+			logger.warn({ intent }, 'Unknown intent received in group assignments action')
 			return { success: false, error: 'Unknown intent' }
 	}
 }

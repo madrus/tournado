@@ -11,7 +11,7 @@ input=$(cat)
 transcript_path=$(echo "$input" | jq -r '.transcript_path // empty')
 
 # Count messages if transcript exists
-if [ -n "$transcript_path" ] && [ -f "$transcript_path" ]; then
+if [ -n "$transcript_path" ] && [ -r "$transcript_path" ]; then
   # JSONL format: each line is a JSON object
   # Count only user messages that are NOT system reminders
   # System reminders contain "<system-reminder>" in their content

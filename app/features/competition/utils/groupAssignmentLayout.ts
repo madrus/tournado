@@ -1,8 +1,20 @@
-type GroupAssignmentLayout = {
+export type GroupAssignmentLayout = {
 	gridColsClass: string
 	colSpanClass: string
 }
 
+/**
+ * Computes responsive Tailwind grid layout classes for group assignment UI.
+ *
+ * Responsive strategy:
+ * - Mobile (base): 1 column
+ * - md breakpoint: max 2 columns
+ * - xl breakpoint: max 4 columns
+ * - 2xl breakpoint: max 6 columns
+ *
+ * @param groupCount - Number of groups to display
+ * @returns Object containing gridColsClass for container and colSpanClass for pool components
+ */
 export function getGroupAssignmentLayoutClasses(
 	groupCount: number,
 ): GroupAssignmentLayout {

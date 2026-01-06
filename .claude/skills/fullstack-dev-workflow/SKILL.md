@@ -20,6 +20,10 @@ Primary stack:
 
 ## Project Architecture
 
+### Project Rules Override
+
+If the repo provides its own rules (AGENTS.md, .cursor/rules, CLAUDE.md, etc.), follow those over this skill.
+
 ### Standard Folder Structure
 
 ```text
@@ -27,14 +31,13 @@ app/
 ├── routes/               # RR7 routes (flat structure)
 ├── i18n/                 # Internationalization
 ├── services/             # API setup, clients
-├── common/               # Shared across features
-│   ├── components/
-│   ├── hooks/
-│   ├── stores/
-│   ├── lib/             # Configured instances, constants
-│   ├── utils/           # Pure helper functions
-│   ├── types/           # Shared TypeScript types
-│   └── styles/
+├── components/           # Shared UI components
+├── hooks/                # Shared hooks
+├── stores/               # Shared state
+├── lib/                  # Configured instances, constants
+├── models/               # Data models and domain logic
+├── utils/                # Pure helper functions
+├── styles/               # Global styles
 └── features/
     └── [feature-name]/  # Feature-specific code
         ├── components/
@@ -87,7 +90,7 @@ For **small actions** (bug fixes, minor refactors):
 
 **Store Location:**
 - Page-specific stores → `features/[feature]/stores/`
-- Shared stores → `common/stores/`
+- Shared stores → `app/stores/`
 
 ### API Integration
 
@@ -263,15 +266,9 @@ Before creating a pull request or moving to next major task:
 
 ### Running Checks
 
-**Auto-run these checks on every file change**:
-- TypeScript (`pnpm typecheck`)
-
-**DO NOT auto-run these checks** - let the developer run them manually:
-- Biome (`pnpm lint`)
-- Tests (`pnpm test:run`, `pnpm test:e2e`)
-- Build (`pnpm build`)
-
-**Only run checks when explicitly requested** by the developer.
+**Auto-run TypeScript typecheck** on any code change.
+Do not run lint, tests, or build unless explicitly requested by the developer.
+If it is useful, list the relevant commands as next-step suggestions without offering to run them.
 
 ### Explanation Depth
 

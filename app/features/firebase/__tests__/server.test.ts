@@ -40,9 +40,6 @@ vi.mock('firebase-admin', () => ({
 describe('firebase.server', () => {
 	beforeEach(async () => {
 		vi.clearAllMocks()
-		loggerMock.warn.mockReset()
-		loggerMock.info.mockReset()
-		loggerMock.error.mockReset()
 		mockVerifyIdToken.mockReset()
 		mockUpdateUser.mockReset()
 		mockRevokeRefreshTokens.mockReset()

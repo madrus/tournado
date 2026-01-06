@@ -221,6 +221,8 @@
 	/* UserMenu specific light mode colors */
 	--color-usermenu-bg: var(--color-emerald-100); /* emerald for selected language */
 	--color-usermenu-hover-bg: var(--color-emerald-50); /* lighter emerald for hover */
+	--color-usermenu-border: var(--color-red-500); /* light mode accent border */
+	--color-usermenu-accent-bg: var(--color-red-500); /* light mode accent fill */
 
 	--gradient-from: var(--color-primary-100);
 	--gradient-to: var(--color-white);
@@ -389,4 +391,6 @@
 	--color-usermenu-bg: var(--color-neutral); /* darker neutral background */
 	--color-usermenu-text: var(--color-emerald-400); /* balanced emerald for dark mode */
 	--color-usermenu-hover-bg: var(--color-slate-700); /* neutral hover tint */
+	--color-usermenu-border: var(--color-emerald-500); /* dark mode accent border */
+	--color-usermenu-accent-bg: var(--color-emerald-500); /* dark mode accent fill */
 }

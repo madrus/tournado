@@ -22,7 +22,7 @@ Primary stack:
 
 ### Standard Folder Structure
 
-```
+```text
 app/
 ├── routes/               # RR7 routes (flat structure)
 ├── i18n/                 # Internationalization

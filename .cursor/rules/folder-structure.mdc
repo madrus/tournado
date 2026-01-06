@@ -182,11 +182,11 @@ This project follows a modular architecture pattern for React Router v7 applicat
 
 ```tsx
 // app/routes/teams._index.tsx
-import type { LoaderFunctionArgs } from "react-router";
-import { getTeams } from "~/models/team.server";
+import type { LoaderFunctionArgs } from "react-router"
+import { getTeams } from "~/models/team.server"
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  return { teams: await getTeams() };
+  return { teams: await getTeams() }
 }
 ```
 
@@ -203,7 +203,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 ```tsx
 // app/models/team.server.ts
-import { db } from "~/db.server";
+import { db } from "~/db.server"
 
 export async function getTeams() {
   return await db.team.findMany({
@@ -211,7 +211,7 @@ export async function getTeams() {
       tournament: true,
       teamLeader: true,
     },
-  });
+  })
 }
 ```
 
@@ -223,7 +223,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   setUser: (user) => set({ user }),
   clearUser: () => set({ user: null }),
-}));
+}))
 ```
 
 ## File Naming Conventions

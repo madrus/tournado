@@ -128,24 +128,12 @@ export function getIsFormReadyForSubmission(
 	validation: ValidationState,
 	mode: 'create' | 'edit',
 ): boolean {
-	if (mode === 'create') {
-		const isPanel1Valid = isPanelValid(1, formFields, validation.displayErrors, mode)
-		const isPanel2Valid = isPanelValid(2, formFields, validation.displayErrors, mode)
-		const isPanel3Valid = isPanelValid(3, formFields, validation.displayErrors, mode)
-		const isPanel4Valid = isPanelValid(4, formFields, validation.displayErrors, mode)
+	const requiredPanels: Array<1 | 2 | 3 | 4> =
+		mode === 'create' ? [1, 2, 3, 4] : [1, 2, 3]
 
-		return isPanel1Valid && isPanel2Valid && isPanel3Valid && isPanel4Valid
-	}
-
-	if (mode === 'edit') {
-		const isPanel1Valid = isPanelValid(1, formFields, validation.displayErrors, mode)
-		const isPanel2Valid = isPanelValid(2, formFields, validation.displayErrors, mode)
-		const isPanel3Valid = isPanelValid(3, formFields, validation.displayErrors, mode)
-
-		return isPanel1Valid && isPanel2Valid && isPanel3Valid
-	}
-
-	return false
+	return requiredPanels.every((panel) =>
+		isPanelValid(panel, formFields, validation.displayErrors, mode),
+	)
 }
 
 /**

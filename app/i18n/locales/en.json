@@ -343,6 +343,11 @@
 			"unexpectedError": "An unexpected error occurred",
 			"unknownError": "An unknown error occurred"
 		},
+		"groupAssignment": {
+			"teamNotFound": "Team not found. Refresh and try again.",
+			"groupNotFound": "Target group not found. Refresh and try again.",
+			"slotNotFound": "Target slot not found. Refresh and try again."
+		},
 		"panel": {
 			"errorTitle": "Something went wrong",
 			"errorBody": "An error occurred while loading this section. Please try refreshing the page."

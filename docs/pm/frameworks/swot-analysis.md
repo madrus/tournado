@@ -27,6 +27,7 @@ EXTERNAL (Things you don't control)
 **Question:** What advantages do we have? What are we good at?
 
 #### What to Look For
+
 - Unique capabilities or expertise
 - Strong brand or reputation
 - Proprietary technology or data
@@ -37,6 +38,7 @@ EXTERNAL (Things you don't control)
 - Efficient operations
 
 #### Examples for TaskFlow
+
 - Strong activation rate (from Module 2.2 improvements)
 - Deep understanding of small team workflows
 - Engaged user community
@@ -44,6 +46,7 @@ EXTERNAL (Things you don't control)
 - User data on productivity patterns
 
 #### How to Use
+
 Strengths are the foundation of your strategy. Your guiding policy should leverage these advantages.
 
 ---
@@ -53,6 +56,7 @@ Strengths are the foundation of your strategy. Your guiding policy should levera
 **Question:** What limitations do we have? Where are we vulnerable?
 
 #### What to Look For
+
 - Limited resources (budget, team size)
 - Technical debt or infrastructure constraints
 - Gaps in expertise
@@ -63,6 +67,7 @@ Strengths are the foundation of your strategy. Your guiding policy should levera
 - Weak go-to-market capability
 
 #### Examples for TaskFlow
+
 - Limited brand awareness vs competitors
 - Small team (only 8 engineers)
 - No mobile app yet (web-only)
@@ -70,6 +75,7 @@ Strengths are the foundation of your strategy. Your guiding policy should levera
 - Limited marketing budget
 
 #### How to Use
+
 Weaknesses constrain your strategic options. Be honest about what you CAN'T do. Don't choose a strategy that requires strengths you don't have.
 
 ---
@@ -79,6 +85,7 @@ Weaknesses constrain your strategic options. Be honest about what you CAN'T do. 
 **Question:** What trends or changes create opportunities for us?
 
 #### What to Look For
+
 - Market trends favoring your approach
 - Technology shifts (e.g., AI, mobile, voice)
 - Customer behavior changes
@@ -89,6 +96,7 @@ Weaknesses constrain your strategic options. Be honest about what you CAN'T do. 
 - Partnership opportunities
 
 #### Examples for TaskFlow
+
 - AI revolution making voice interfaces mainstream
 - Remote work increasing demand for productivity tools
 - Competitors focused on enterprise, neglecting SMBs
@@ -96,6 +104,7 @@ Weaknesses constrain your strategic options. Be honest about what you CAN'T do. 
 - Integration marketplace opportunities
 
 #### How to Use
+
 Opportunities are your "where to play" options. Pick opportunities that align with your strengths and can overcome weaknesses.
 
 ---
@@ -105,6 +114,7 @@ Opportunities are your "where to play" options. Pick opportunities that align wi
 **Question:** What external factors could hurt us?
 
 #### What to Look For
+
 - New competitors entering the market
 - Existing competitors launching similar features
 - Technology shifts making your approach obsolete
@@ -115,6 +125,7 @@ Opportunities are your "where to play" options. Pick opportunities that align wi
 - Market saturation
 
 #### Examples for TaskFlow
+
 - Notion, Linear, and other tools adding AI features
 - Microsoft/Google bundling productivity tools (free/cheap)
 - AI making complex tools seem dated
@@ -122,6 +133,7 @@ Opportunities are your "where to play" options. Pick opportunities that align wi
 - Apple/Google improving native to-do apps
 
 #### How to Use
+
 Threats shape your strategic urgency and defensibility needs. Identify which threats are most critical and how to mitigate them.
 
 ---
@@ -237,6 +249,7 @@ Based on your SWOT, identify 2-4 strategic directions:
 ## SWOT Example: TaskFlow (Fictional)
 
 ### Strengths
+
 - ⭐ **78% week-1 retention** (after guided onboarding) - industry leading
 - ⭐ Deep expertise in **small team workflows** (our ICP)
 - **Fast iteration** - ship features every 2 weeks
@@ -244,6 +257,7 @@ Based on your SWOT, identify 2-4 strategic directions:
 - **Proprietary data** on productivity patterns
 
 ### Weaknesses
+
 - ⭐ **Limited brand awareness** - <5% aided recall vs Notion's 40%
 - ⭐ **Small team** - 8 engineers vs competitors' 50-100
 - **No mobile app** - web-only limits use cases
@@ -251,6 +265,7 @@ Based on your SWOT, identify 2-4 strategic directions:
 - Limited **marketing budget** - $50k/month vs competitors' $500k+
 
 ### Opportunities
+
 - ⭐ **AI revolution** - voice interfaces becoming mainstream
 - ⭐ **Remote work** - sustained demand for async productivity tools
 - **Competitors focused on enterprise** - leaving SMB underserved
@@ -258,6 +273,7 @@ Based on your SWOT, identify 2-4 strategic directions:
 - Growing "**founder-led company**" segment (our sweet spot)
 
 ### Threats
+
 - ⭐ **Notion, Linear, Height** all adding AI features - will they crush us?
 - ⭐ **Microsoft/Google bundling** - free/cheap alternatives
 - **Economic downturn** - smaller budgets for SaaS

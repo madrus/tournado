@@ -87,16 +87,16 @@ Before completing any layout refactoring:
 // ✅ Good: Preserves history and updates comments
 // Original implementation
 // function calculateTotal(items: Item[]) {
-//   let total = 0;
+//   let total = 0
 //   for (const item of items) {
-//     total += item.price;
+//     total += item.price
 //   }
-//   return total;
+//   return total
 // }
 
 // Updated to use reduce for better performance
 function calculateTotal(items: Item[]) {
-  return items.reduce((total, item) => total + item.price, 0);
+  return items.reduce((total, item) => total + item.price, 0)
 }
 ```
 

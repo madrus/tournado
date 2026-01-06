@@ -48,8 +48,8 @@ const storeName = 'MyFeatureStore'
 
 // 4. Define initial state
 const initialStoreState: StoreState = {
-  theme: 'light'
-  language: 'en'
+  theme: 'light',
+  language: 'en',
   // ... other initial values
 }
 
@@ -70,12 +70,12 @@ export const useMyFeatureStore = create<StoreState & Actions>()(
     persist(
       (set, _get) => ({
         ...initialStoreState,
-        
+
         // Reset action (always include)
         resetStore: () => {
           set(initialStoreState, false, 'resetStore')
         },
-        
+
         // Your custom actions
         setTheme: (theme) => {
           set({ theme }, false, 'setTheme')
@@ -84,7 +84,7 @@ export const useMyFeatureStore = create<StoreState & Actions>()(
             setCookie('theme', theme)
           }
         },
-        
+
         toggleTheme: () => {
           set(
             (state) => {
@@ -101,24 +101,24 @@ export const useMyFeatureStore = create<StoreState & Actions>()(
       }),
       {
         name: storeName,
-        
+
         // Choose storage: sessionStorage or localStorage
         storage: isBrowser
           ? createJSONStorage(() => sessionStorage) // or localStorage
           : createJSONStorage(createServerSideStorage),
-        
+
         // Skip hydration on server
         skipHydration: !isBrowser,
-        
+
         // Partial persistence: only save specific fields
         partialize: (state) =>
           isBrowser
-            ? { 
+            ? {
                 theme: state.theme
                 // Add other fields to persist
               }
             : {},
-        
+
         // Custom merge strategy
         merge: (persistedState, currentState) => ({
           ...currentState,
@@ -150,7 +150,7 @@ export const useMyFeatureStoreHydration = (): void => {
 function MyComponent() {
   const theme = useMyFeatureStore((state) => state.theme)
   const setTheme = useMyFeatureStore((state) => state.setTheme)
-  
+
   return (
     <button onClick={() => setTheme('dark')}>
       Current: {theme}
@@ -161,7 +161,7 @@ function MyComponent() {
 // With hydration
 function App() {
   useMyFeatureStoreHydration()
-  
+
   return <MyComponent />
 }
 ```
@@ -209,7 +209,7 @@ setTheme: (theme) => {
 export async function loader({ request }: LoaderFunctionArgs) {
   const cookieHeader = request.headers.get('Cookie')
   const theme = getCookie(cookieHeader, 'theme') ?? 'light'
-  
+
   return { theme }
 }
 ```

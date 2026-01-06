@@ -52,7 +52,7 @@ Structure the summary as a system prompt with these sections:
 
 ## Example Structure
 
-```
+```text
 Previous session context: We standardized title colors across the competition UI and implemented semi-transparent group panels using sky gradients.
 
 Key decisions:
@@ -67,5 +67,5 @@ Files modified:
 
 Current state: All changes implemented and passing typecheck. Group panels now semi-transparent with sky color matching design system.
 
-[Word count: 287/300]
+[Word count: 91/300]
 ```

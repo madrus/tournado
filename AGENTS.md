@@ -2,7 +2,7 @@
 
 ## Project Context
 
-Project Context documentation can be found in the the following locations:
+Project Context documentation can be found in the following locations:
 
 - **@.cursor/rules/** — Project-wide rules and documentation, such as:
   - `PRD.mdc` (Product Requirements Document)

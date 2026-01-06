@@ -6,9 +6,11 @@
  * Usage:
  *   pnpm migrate:admin-roles
  */
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
 import { PrismaClient, Role } from '@prisma/client'
 
-const prisma = new PrismaClient()
+const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL })
+const prisma = new PrismaClient({ adapter })
 
 async function migrateAdminRoles() {
 	const superAdminEmails =

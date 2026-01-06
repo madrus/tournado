@@ -1,17 +1,22 @@
-import type { Category } from '@prisma/client'
+import { Category } from '@prisma/client'
 
 import { FALLBACK_LANGUAGE } from '~/i18n/config'
 
 export const formatCompetitionCategories = (
 	categories: string | readonly Category[],
 ): string => {
+	const categoryValues = Object.values(Category)
+
 	// If categories is a string, parse it
 	if (typeof categories === 'string') {
 		try {
 			const parsed = JSON.parse(categories)
 			// Validate it's an array
 			if (Array.isArray(parsed)) {
-				return parsed.join(', ')
+				const isValid = parsed.every((item) =>
+					categoryValues.includes(item as Category),
+				)
+				return isValid ? parsed.join(', ') : ''
 			}
 			return ''
 		} catch {
@@ -20,7 +25,8 @@ export const formatCompetitionCategories = (
 	}
 
 	// If it's already an array, join it
-	return categories.join(', ')
+	const isValid = categories.every((item) => categoryValues.includes(item))
+	return isValid ? categories.join(', ') : ''
 }
 
 export const formatCompetitionDate = (date: Date, locale?: string): string => {

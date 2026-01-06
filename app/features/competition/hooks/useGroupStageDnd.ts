@@ -100,6 +100,10 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 
 			const overId = String(over.id)
 			const teamLocation = getTeamLocation(snapshot, teamId)
+			if (!teamLocation) {
+				toast.error(t('messages.groupAssignment.teamNotFound'))
+				return
+			}
 			const isFromWaitlist = teamLocation === 'waitlist'
 
 			// Drop on confirmed pool
@@ -107,7 +111,10 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 				if (teamLocation === 'waitlist') {
 					// Promote from waitlist
 					const capacity = getConfirmedCapacity(snapshot)
-					if (capacity > 0) {
+					const confirmedCount = snapshot.unassignedTeams.filter(
+						(team) => !team.isWaitlist,
+					).length
+					if (capacity > 0 && confirmedCount < capacity) {
 						promoteFromWaitlist(teamId)
 					} else {
 						toast.error(t('competition.groupAssignment.errors.noCapacity'))
@@ -140,10 +147,16 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 
 				// Find the target slot
 				const group = snapshot.groups.find((g) => g.id === groupId)
-				if (!group) return
+				if (!group) {
+					toast.error(t('messages.groupAssignment.groupNotFound'))
+					return
+				}
 
 				const targetSlot = group.slots.find((s) => s.slotIndex === slotIndex)
-				if (!targetSlot) return
+				if (!targetSlot) {
+					toast.error(t('messages.groupAssignment.slotNotFound'))
+					return
+				}
 
 				// Check if dropping on same slot
 				if (targetSlot.team?.id === teamId) {

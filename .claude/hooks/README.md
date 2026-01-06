@@ -4,18 +4,21 @@ Display real-time message count in your Claude Code CLI footer.
 
 ## Quick Setup
 
-1. **Configure Claude Code settings** (`.claude/settings.local.json`):
+1. **Configure Claude Code settings** (`.claude/settings.json`):
 
 ```json
 {
-  "statusLine": ".claude/hooks/message-counter.sh"
+  "statusLine": {
+    "type": "command",
+    "command": ".claude/hooks/message-counter.sh"
+  }
 }
 ```
 
 2. **Restart Claude Code** to activate the status line
 
 3. **See the counter** at the bottom of your CLI:
-   ```
+   ```text
    💬 Messages: 42
    ```
 

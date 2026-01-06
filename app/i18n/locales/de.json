@@ -343,6 +343,11 @@
 			"unexpectedError": "Ein unerwarteter Fehler ist aufgetreten",
 			"unknownError": "Ein unbekannter Fehler ist aufgetreten"
 		},
+		"groupAssignment": {
+			"teamNotFound": "Team nicht gefunden. Bitte aktualisieren und erneut versuchen.",
+			"groupNotFound": "Zielgruppe nicht gefunden. Bitte aktualisieren und erneut versuchen.",
+			"slotNotFound": "Ziel-Slot nicht gefunden. Bitte aktualisieren und erneut versuchen."
+		},
 		"panel": {
 			"errorTitle": "Etwas ist schief gelaufen",
 			"errorBody": "Beim Laden dieses Abschnitts ist ein Fehler aufgetreten. Bitte versuchen Sie, die Seite zu aktualisieren."

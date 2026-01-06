@@ -175,6 +175,8 @@
 	--color-usermenu-bg: var(--color-usermenu-bg);
 	--color-usermenu-text: var(--color-usermenu-text);
 	--color-usermenu-hover-bg: var(--color-usermenu-hover-bg);
+	--color-usermenu-border: var(--color-usermenu-border);
+	--color-usermenu-accent-bg: var(--color-usermenu-accent-bg);
 
 	/* Panel Gradient Colors */
 	--color-panel-gradient-from: var(--panel-gradient-from);

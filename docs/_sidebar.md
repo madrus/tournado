@@ -57,6 +57,8 @@
      - [Lenny's PRD Template](pm/prd-templates/lennys-prd-template.md)
 - Prompts
    - [Create Pools Feature](prompts/pools-feature-prompt.md)
+- QA
+   - [Review Policy](qa/review-policy.md)
 - Security
    - [Overview](security/overview.md)
    - [Role-Based Access Control (RBAC)](security/rbac.md)

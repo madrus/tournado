@@ -1,6 +1,6 @@
 import type { ActionFunctionArgs } from 'react-router'
 import { z } from 'zod'
-
+import type { GroupStageWithDetails } from '~/models/group.server'
 import {
 	batchSaveGroupAssignments,
 	deleteTeamFromGroupStage,
@@ -60,7 +60,7 @@ type SaveResponse = {
 
 type CancelResponse = {
 	success: boolean
-	snapshot?: unknown
+	snapshot?: GroupStageWithDetails | null
 	error?: string
 }
 

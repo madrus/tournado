@@ -343,6 +343,11 @@
 			"unexpectedError": "Une erreur inattendue s'est produite",
 			"unknownError": "Une erreur inconnue s'est produite"
 		},
+		"groupAssignment": {
+			"teamNotFound": "Équipe introuvable. Actualisez et réessayez.",
+			"groupNotFound": "Groupe cible introuvable. Actualisez et réessayez.",
+			"slotNotFound": "Emplacement cible introuvable. Actualisez et réessayez."
+		},
 		"panel": {
 			"errorTitle": "Une erreur s'est produite",
 			"errorBody": "Une erreur s'est produite lors du chargement de cette section. Veuillez essayer de rafraîchir la page."

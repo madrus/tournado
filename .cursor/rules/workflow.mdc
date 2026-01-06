@@ -898,7 +898,7 @@ When something doesn't work:
 
 ### File Organization
 
-```
+```text
 app/
 ├── components/
 │   └── TeamChip/

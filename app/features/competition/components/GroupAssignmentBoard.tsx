@@ -14,7 +14,7 @@ import { snapCenterToCursor } from '@dnd-kit/modifiers'
 import type { JSX } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useBlocker, useFetcher } from 'react-router'
+import { useBlocker, useFetcher, useRevalidator } from 'react-router'
 import { z } from 'zod'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
@@ -32,16 +32,16 @@ import {
 	useGroupAssignmentStatus,
 	useGroupAssignmentUiState,
 } from '../stores/useGroupAssignmentStore'
+import { getGroupAssignmentLayoutClasses } from '../utils/groupAssignmentLayout'
 import type { GroupAssignmentSnapshot } from '../utils/groupStageDnd'
 import { ConfirmedPool } from './ConfirmedPool'
 import { DragOverlayChip } from './DraggableTeamChip'
+import { GroupAssignmentErrorBanner } from './GroupAssignmentErrorBanner'
+import { GroupAssignmentMobileTabs } from './GroupAssignmentMobileTabs'
 import { GroupCard } from './GroupCard'
 import {
 	actionButtonGroupVariants,
-	errorBannerVariants,
-	groupTabVariants,
 	heroStripVariants,
-	paginationDotVariants,
 } from './groupAssignment.variants'
 import { WaitlistPool } from './WaitlistPool'
 
@@ -71,6 +71,7 @@ export function GroupAssignmentBoard({
 }: GroupAssignmentBoardProps): JSX.Element {
 	const { t } = useTranslation()
 	const fetcher = useFetcher()
+	const revalidator = useRevalidator()
 	const [showConflictDialog, setShowConflictDialog] = useState(false)
 	const [isProceedingNavigation, setIsProceedingNavigation] = useState(false)
 
@@ -209,8 +210,8 @@ export function GroupAssignmentBoard({
 	const handleConflictReload = useCallback(() => {
 		setShowConflictDialog(false)
 		setConflict(false)
-		window.location.reload()
-	}, [setConflict])
+		revalidator.revalidate()
+	}, [revalidator, setConflict])
 
 	// Responsive layout detection
 	const isMobile = useMediaQuery('(max-width: 1023px)')
@@ -226,52 +227,8 @@ export function GroupAssignmentBoard({
 	const waitlistTeams = getWaitlistTeams(snapshot)
 	const capacity = getConfirmedCapacity(snapshot)
 
-	// Grid always supports 1, 2, 4, 6 columns at different breakpoints
-	const gridColsClass =
-		'grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-6'
-
-	// Reserve panels span only as many columns as there are actual groups
 	const groupCount = snapshot.groups.length
-	let colSpanClass = 'space-y-4 col-span-1'
-
-	// md breakpoint (max 2 columns)
-	colSpanClass += groupCount >= 2 ? ' md:col-span-2' : ' md:col-span-1'
-
-	// xl breakpoint (max 4 columns)
-	switch (groupCount) {
-		case 1:
-			colSpanClass += ' xl:col-span-1'
-			break
-		case 2:
-			colSpanClass += ' xl:col-span-2'
-			break
-		case 3:
-			colSpanClass += ' xl:col-span-3'
-			break
-		default: // 4 or more
-			colSpanClass += ' xl:col-span-4'
-	}
-
-	// 2xl breakpoint (max 6 columns)
-	switch (groupCount) {
-		case 1:
-			colSpanClass += ' 2xl:col-span-1'
-			break
-		case 2:
-			colSpanClass += ' 2xl:col-span-2'
-			break
-		case 3:
-			colSpanClass += ' 2xl:col-span-3'
-			break
-		case 4:
-			colSpanClass += ' 2xl:col-span-4'
-			break
-		case 5:
-			colSpanClass += ' 2xl:col-span-5'
-			break
-		default: // 6 or more
-			colSpanClass += ' 2xl:col-span-6'
-	}
+	const { gridColsClass, colSpanClass } = getGroupAssignmentLayoutClasses(groupCount)
 
 	return (
 		<>
@@ -294,86 +251,22 @@ export function GroupAssignmentBoard({
 					</div>
 
 					{/* Error banner */}
-					{saveError ? (
-						<div className={errorBannerVariants({ variant: 'error' })}>
-							<svg
-								xmlns='http://www.w3.org/2000/svg'
-								viewBox='0 0 20 20'
-								fill='currentColor'
-								className='w-4 h-4 shrink-0'
-								aria-hidden='true'
-							>
-								<path
-									fillRule='evenodd'
-									d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z'
-									clipRule='evenodd'
-								/>
-							</svg>
-							<span>{saveError}</span>
-							<button
-								type='button'
-								onClick={() => setSaveError(null)}
-								className='ms-auto text-error-600 hover:text-error-700 dark:text-error-400'
-								aria-label={t('common.actions.cancel')}
-							>
-								<svg
-									xmlns='http://www.w3.org/2000/svg'
-									viewBox='0 0 20 20'
-									fill='currentColor'
-									className='w-4 h-4'
-									aria-hidden='true'
-								>
-									<path d='M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z' />
-								</svg>
-							</button>
-						</div>
-					) : null}
+					<GroupAssignmentErrorBanner
+						error={saveError}
+						onDismiss={() => setSaveError(null)}
+						dismissLabel={t('common.actions.cancel')}
+					/>
 
 					{/* Mobile group tabs */}
 					{isMobile && snapshot.groups.length > 1 ? (
-						<div className='space-y-3'>
-							{/* Tab buttons */}
-							<div className='flex gap-2 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-foreground-lighter/30 hover:scrollbar-thumb-foreground-lighter/50'>
-								{snapshot.groups.map((group, index) => (
-									<button
-										key={group.id}
-										type='button'
-										ref={(el) => {
-											if (el && index === activeGroupIndex) {
-												el.scrollIntoView({
-													behavior: 'smooth',
-													block: 'nearest',
-													inline: 'center',
-												})
-											}
-										}}
-										onClick={() => setActiveGroupIndex(index)}
-										className={groupTabVariants({
-											isActive: index === activeGroupIndex,
-										})}
-									>
-										{group.name}
-									</button>
-								))}
-							</div>
-
-							{/* Pagination dots */}
-							<div className='flex justify-center gap-1.5'>
-								{snapshot.groups.map((group, index) => (
-									<button
-										key={group.id}
-										type='button'
-										onClick={() => setActiveGroupIndex(index)}
-										className={paginationDotVariants({
-											isActive: index === activeGroupIndex,
-										})}
-										aria-label={t('competition.groupAssignment.goToGroup', {
-											name: group.name,
-										})}
-									/>
-								))}
-							</div>
-						</div>
+						<GroupAssignmentMobileTabs
+							groups={snapshot.groups}
+							activeGroupIndex={activeGroupIndex}
+							onTabChange={setActiveGroupIndex}
+							getAriaLabel={(name) =>
+								t('competition.groupAssignment.goToGroup', { name })
+							}
+						/>
 					) : null}
 
 					{/* Main board */}
@@ -382,10 +275,12 @@ export function GroupAssignmentBoard({
 						<div className='space-y-4'>
 							{isMobile ? (
 								// Mobile: Show only active group
-								<GroupCard
-									group={snapshot.groups[activeGroupIndex]}
-									disabled={isSaving}
-								/>
+								snapshot.groups.length > 0 ? (
+									<GroupCard
+										group={snapshot.groups[activeGroupIndex]}
+										disabled={isSaving}
+									/>
+								) : null
 							) : (
 								// Desktop: Show all groups in responsive columns
 								<div className={gridColsClass}>
@@ -407,7 +302,7 @@ export function GroupAssignmentBoard({
 
 								{waitlistTeams.length > 0 ? (
 									<WaitlistPool
-										teams={snapshot.unassignedTeams}
+										teams={waitlistTeams}
 										canPromote={capacity > 0}
 										disabled={isSaving}
 									/>

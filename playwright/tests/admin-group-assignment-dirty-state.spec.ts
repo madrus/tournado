@@ -181,7 +181,7 @@ test.describe('Group Assignment Dirty State', () => {
 		await groupAssignmentPage.stayOnPageButton.click()
 
 		// Should still be on group assignment page and dirty
-		await expect(page).toHaveURL(new RegExp(`/groups/${TEST_GROUP_STAGE_ID}`))
+		expect(page.url()).toContain(`/groups/${TEST_GROUP_STAGE_ID}`)
 		await groupAssignmentPage.expectDirtyState()
 	})
 
@@ -209,7 +209,7 @@ test.describe('Group Assignment Dirty State', () => {
 		await page.waitForTimeout(500) // Brief wait to ensure no dialog appears
 
 		// Should navigate away successfully
-		await expect(page).not.toHaveURL(new RegExp(`/groups/${TEST_GROUP_STAGE_ID}`))
+		expect(page.url()).not.toContain(`/groups/${TEST_GROUP_STAGE_ID}`)
 	})
 
 	test('should persist team assignment after save and reload', async ({ page }) => {
@@ -240,7 +240,7 @@ test.describe('Group Assignment Dirty State', () => {
 		)
 	})
 
-	test('should handle multiple changes and save cycles', async () => {
+	test('should maintain clean state after save cycle', async () => {
 		await groupAssignmentPage.goto(TEST_GROUP_STAGE_ID)
 
 		// First change
@@ -255,13 +255,6 @@ test.describe('Group Assignment Dirty State', () => {
 		await groupAssignmentPage.save()
 		await groupAssignmentPage.expectCleanState()
 
-		// Second change - drag team back to confirmed pool (if there's a second team/slot available)
-		// This tests that the dirty state mechanism works across multiple save cycles
-		// Note: This requires having another action available (like another team)
-		// await groupAssignmentPage.dragTeamToSlot(TEST_TEAM_ID_2, TEST_GROUP_ID, 1)
-		// await groupAssignmentPage.expectDirtyState()
-
-		// For now, just verify clean state persists
 		await groupAssignmentPage.expectCleanState()
 	})
 })

@@ -81,6 +81,7 @@ export const isGroupAssignmentDirty = (
 	originalSnapshot: GroupAssignmentSnapshot | null,
 ): boolean => {
 	if (!snapshot || !originalSnapshot) return false
+	// JSON.stringify is simple but scales with snapshot size; consider tracking mutations if this becomes hot.
 	return JSON.stringify(snapshot) !== JSON.stringify(originalSnapshot)
 }
 

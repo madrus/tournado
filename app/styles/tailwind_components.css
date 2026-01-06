@@ -834,26 +834,26 @@
 
 	/* UserMenu light mode - force red colors */
 	.light [data-testid="user-menu-dropdown"] {
-		border-color: #ef4444; /* red-500 */
+		border-color: var(--color-usermenu-border);
 	}
 
 	.light [data-testid="user-menu-dropdown"] .bg-red-500 {
-		background-color: #ef4444; /* red-500 */
+		background-color: var(--color-usermenu-accent-bg);
 	}
 
 	/* UserMenu dark mode specific styling */
 	.dark [data-testid="user-menu-dropdown"] {
-		border-color: #10b981; /* emerald-500 */
+		border-color: var(--color-usermenu-border);
 	}
 
 	.dark [data-testid="user-menu-dropdown"] .bg-emerald-500 {
-		background-color: #10b981; /* emerald-500 */
+		background-color: var(--color-usermenu-accent-bg);
 	}
 
 	/* Language submenu styling - light mode */
 	.light [data-testid="user-menu-dropdown"] .bg-background {
-		background-color: #ffffff; /* white background */
-		border-color: #ef4444; /* red-500 border */
+		background-color: var(--color-background);
+		border-color: var(--color-usermenu-border);
 	}
 
 	.light [data-testid="user-menu-dropdown"] .bg-neutral {

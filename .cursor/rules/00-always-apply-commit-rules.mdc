@@ -9,7 +9,7 @@ alwaysApply: true
 
 ## Commit Message Format
 
-```
+```text
 <type>(<scope>): <description>
 
 [optional body]
@@ -65,7 +65,7 @@ Use a relevant, lowercase scope:
 ## Examples
 
 **Good:**
-```
+```text
 feat(auth): add OAuth2 login functionality
 fix(ui): resolve button alignment on mobile devices
 refactor(api): simplify user validation logic
@@ -79,7 +79,7 @@ perf(db): improve query performance with indexes
 ```
 
 **Bad:**
-```
+```text
 ❌ Updated some files
 ❌ Fix bug
 ❌ refactor: Fixed the issue with the authentication system that was causing problems
@@ -90,7 +90,7 @@ perf(db): improve query performance with indexes
 ```
 
 **Breaking Change Example:**
-```
+```text
 feat(api)!: change user authentication endpoint
 
 BREAKING CHANGE: The /auth endpoint now requires a different request format.
@@ -98,7 +98,7 @@ Migration: Update client code to use { email, password } instead of { username, 
 ```
 
 **Multi-line Example:**
-```
+```text
 feat(tournament): add bracket generation algorithm
 
 Implement Swiss tournament bracket generation with automatic pairing

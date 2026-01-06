@@ -23,7 +23,7 @@ export function CheckMarkIcon({
 	'aria-label': ariaLabel = 'Check mark',
 	...rest
 }: Readonly<CheckMarkIconProps>): JSX.Element {
-	const strokeWidth = weight === 600 ? 2.5 : weight === 500 ? 2 : 2
+	const strokeWidth = weight === 600 ? 2.5 : weight === 500 ? 2 : 1.5
 	const { style, ...restProps } = rest
 	const combinedStyle = { ...style, strokeWidth }
 

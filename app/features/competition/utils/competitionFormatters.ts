@@ -1,11 +1,11 @@
-import { Category } from '@prisma/client'
-
 import { FALLBACK_LANGUAGE } from '~/i18n/config'
+import { getCategoryValues } from '~/lib/lib.helpers'
+import type { Category } from '~/lib/lib.types'
 
 export const formatCompetitionCategories = (
 	categories: string | readonly Category[],
 ): string => {
-	const categoryValues = Object.values(Category)
+	const categoryValues = getCategoryValues()
 
 	// If categories is a string, parse it
 	if (typeof categories === 'string') {

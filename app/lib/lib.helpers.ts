@@ -13,13 +13,17 @@
  *
  * For detailed documentation, see: docs/development/type-system.md
  */
-import { Category, Division } from '@prisma/client'
-
 import type { TeamClass, TeamName } from '~/features/teams/types'
 import { useSettingsStore } from '~/stores/useSettingsStore'
 
 import { CATEGORIES, DIVISIONS } from './lib.constants'
-import type { CategoryObject, DivisionObject, Email } from './lib.types'
+import type {
+	Category,
+	CategoryObject,
+	Division,
+	DivisionObject,
+	Email,
+} from './lib.types'
 
 // Check if we're in a browser environment
 export const isBrowser = typeof window !== 'undefined'
@@ -108,7 +112,8 @@ export const getCurrentDivisionLabel = (value: Division): string => {
 
 export const getAllDivisions = (): DivisionObject[] => Object.values(DIVISIONS)
 
-export const getDivisionValues = (): Division[] => Object.values(Division)
+export const getDivisionValues = (): Division[] =>
+	Object.values(DIVISIONS).map((division) => division.value)
 
 // For form usage
 export const stringToDivisionValue = (value: string | null): Division | undefined => {
@@ -165,7 +170,8 @@ export const getAllCategories = (): CategoryObject[] => Object.values(CATEGORIES
  * Gets all category values
  * @returns Array of all Category enum values
  */
-export const getCategoryValues = (): Category[] => Object.values(Category)
+export const getCategoryValues = (): Category[] =>
+	Object.values(CATEGORIES).map((category) => category.value)
 
 /**
  * Converts a string to Category enum value with validation

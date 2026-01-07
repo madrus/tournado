@@ -45,8 +45,8 @@ export function DraggableTeamChip({
 			ref={setNodeRef}
 			className={cn(
 				draggableChipVariants({ isDragging, variant, size }),
-				'transition-transform duration-200 ease-out motion-reduce:transition-none motion-reduce:transform-none',
-				isDropTarget && !isDragging && 'translate-x-2 rtl:-translate-x-2',
+				'transition-transform duration-150 ease-out motion-reduce:transition-none',
+				isDropTarget && !isDragging && 'scale-[1.02]',
 				disabled && 'opacity-50 cursor-not-allowed',
 				className,
 			)}
@@ -69,9 +69,13 @@ export function DraggableTeamChip({
 // Drag overlay version for smooth dragging animation
 type DragOverlayChipProps = {
 	team: DndTeam
+	hideLabel?: boolean
 }
 
-export function DragOverlayChip({ team }: DragOverlayChipProps): JSX.Element {
+export function DragOverlayChip({
+	team,
+	hideLabel = false,
+}: DragOverlayChipProps): JSX.Element {
 	return (
 		<div
 			className={cn(
@@ -82,9 +86,11 @@ export function DragOverlayChip({ team }: DragOverlayChipProps): JSX.Element {
 				'transition-none',
 			)}
 		>
-			<span className={cn('truncate max-w-[180px]', getLatinTextClass())}>
-				{team.clubName} {team.name}
-			</span>
+			{!hideLabel ? (
+				<span className={cn('truncate max-w-[180px]', getLatinTextClass())}>
+					{team.clubName} {team.name}
+				</span>
+			) : null}
 		</div>
 	)
 }

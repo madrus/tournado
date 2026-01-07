@@ -11,6 +11,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
     - [ ] Highlight the chip under the cursor, or
     - [ ] Visually replace the chip with highlighted slot number (as if empty).
   - [x] Occupied chip shifts inline on hover (RTL-aware) and returns on leave
+  - [x] Occupied slot shows the same bright border highlight as empty slots when hovered
 
 - [ ] RTL correctness
   - [ ] Audit and fix any incomplete flips (layout, gradients, icon direction, drag feedback).

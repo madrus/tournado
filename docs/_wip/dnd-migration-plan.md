@@ -6,9 +6,6 @@ The group stage assignment interface provides a drag-and-drop experience where t
 
 ## Blocking Issues And Decisions (Must Fix Next)
 
-- [ ] RTL correctness
-  - [ ] Audit and fix any incomplete flips (layout, gradients, icon direction, drag feedback).
-
 - [ ] Keyboard DnD support
   - [ ] Define expected behavior; implementation details are TBD.
 

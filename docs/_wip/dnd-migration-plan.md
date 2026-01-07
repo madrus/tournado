@@ -4,172 +4,195 @@
 
 The group stage assignment interface provides a drag-and-drop experience where teams can be assigned to group slots, moved between slots, returned to confirmed pool, or moved to waitlist. The system maintains smooth animations, supports RTL layouts, and handles both confirmed teams and waitlist teams with distinct behaviors.
 
+## Blocking Issues And Decisions (Must Fix Next)
+
+- [ ] Occupied slot drop behavior
+  - [ ] If both teams are in the same group: swap slots.
+  - [ ] Otherwise: replace and move the displaced team to confirmed pool.
+
+- [ ] Hover/drag visual feedback on occupied slots
+  - [ ] Decide and implement one:
+    - [ ] Highlight the chip under the cursor, or
+    - [ ] Visually replace the chip with highlighted slot number (as if empty).
+
+- [ ] RTL correctness
+  - [ ] Audit and fix any incomplete flips (layout, gradients, icon direction, drag feedback).
+
+- [ ] Confirmed pool capacity
+  - [ ] Confirmed pool must be capped by total group slots.
+  - [x] Waitlist is uncapped.
+
+- [ ] Keyboard DnD support
+  - [ ] Define expected behavior; implementation details are TBD.
+
 ## Core Principles
 
-- Client-side zustand store maintains state during editing
-- SAVE and CANCEL are the only persistence boundaries
-- Touch sensors and pointer sensors support mobile and desktop interactions
-- State changes never corrupt data - validation happens at save time
-- Conflict detection validates against server version on save
-- Team status (confirmed/waitlist) is explicitly maintained, not calculated by array position
-- Drag-to-waitlist replaces traditional delete functionality ("soft delete")
+- [x] Client-side zustand store maintains state during editing
+- [x] SAVE and CANCEL are the only persistence boundaries
+- [x] Touch sensors and pointer sensors support mobile and desktop interactions
+- [x] State changes never corrupt data - validation happens at save time
+- [x] Conflict detection validates against server version on save
+- [x] Team status (confirmed/waitlist) is explicitly maintained, not calculated by array position
+- [x] Drag-to-waitlist replaces traditional delete functionality ("soft delete")
 
 ## Architecture
 
 ### DnD Library Configuration
 
-- **Library**: @dnd-kit/core v6.3.1 with @dnd-kit/modifiers v9.0.0
-- **Collision Detection**: `pointerWithin` strategy for accurate slot targeting
-- **Sensors**: PointerSensor (8px activation distance), TouchSensor (200ms delay, 8px tolerance), KeyboardSensor
-- **Measuring**: `MeasuringStrategy.Always` for droppable elements
-- **DragOverlay**: Uses `snapCenterToCursor` modifier for precise cursor-centered positioning
+- [x] **Library**: @dnd-kit/core v6.3.1 with @dnd-kit/modifiers v9.0.0
+- [x] **Collision Detection**: `pointerWithin` strategy for accurate slot targeting
+- [x] **Sensors**: PointerSensor (8px activation distance), TouchSensor (200ms delay, 8px tolerance), KeyboardSensor
+- [x] **Measuring**: `MeasuringStrategy.Always` for droppable elements
+- [x] **DragOverlay**: Uses `snapCenterToCursor` modifier for precise cursor-centered positioning
 
 ### Component Structure
 
 **GroupAssignmentBoard.tsx**
-- Orchestrates the entire assignment interface
-- Manages DndContext with configured sensors and collision detection
-- Renders DragOverlay with cursor-centered positioning
-- Handles save, cancel, conflict detection, and error states
-- Provides mobile/desktop responsive layout switching
+- [x] Orchestrates the entire assignment interface
+- [x] Manages DndContext with configured sensors and collision detection
+- [x] Renders DragOverlay with cursor-centered positioning
+- [x] Handles save, cancel, conflict detection, and error states
+- [x] Provides mobile/desktop responsive layout switching
 
 **GroupCard.tsx**
-- Visual container for a single group
-- Displays group name and slot count
-- Renders vertical list of GroupSlotDropZone components
-- NOT a drop target - purely presentational
+- [x] Visual container for a single group
+- [x] Displays group name and slot count
+- [x] Renders vertical list of GroupSlotDropZone components
+- [x] NOT a drop target - purely presentational
 
 **GroupSlotDropZone.tsx**
-- The only drop target for group assignments
-- Renders either an empty slot placeholder or a DraggableTeamChip
-- Highlights when cursor is directly over it
-- Handles occupied/empty states with distinct styling
+- [x] The only drop target for group assignments
+- [x] Renders either an empty slot placeholder or a DraggableTeamChip
+- [ ] Highlights when cursor is directly over it
+- [x] Handles occupied/empty states with distinct styling
 
 **DraggableTeamChip.tsx**
-- Wraps team data with `useDraggable` hook
-- Becomes completely invisible (`opacity: 0`) during drag
-- No transform applied to original element
-- Can be dragged to waitlist for soft delete functionality
+- [x] Wraps team data with `useDraggable` hook
+- [x] Becomes completely invisible (`opacity: 0`) during drag
+- [x] No transform applied to original element
+- [x] Can be dragged to waitlist for soft delete functionality
 
 **DragOverlayChip.tsx**
-- Separate component rendered in DragOverlay
-- Follows cursor during drag with enhanced shadow
-- Only visible element during drag operation
+- [x] Separate component rendered in DragOverlay
+- [x] Follows cursor during drag with enhanced shadow
+- [x] Only visible element during drag operation
 
 **ConfirmedPool.tsx**
-- Container for confirmed teams (teams that can be assigned to groups)
-- Droppable area for teams being moved out of groups
-- Capacity-limited based on total group slots minus assigned teams
+- [x] Container for confirmed teams (teams that can be assigned to groups)
+- [x] Droppable area for teams being moved out of groups
+- [ ] Capacity-limited based on total group slots minus assigned teams
 
 **WaitlistPool.tsx**
-- Container for waitlist teams
-- Droppable area for teams being soft-deleted from groups or confirmed pool
-- Teams can be promoted to confirmed pool when capacity exists
-- Cannot be dragged directly to group slots
+- [x] Container for waitlist teams
+- [x] Droppable area for teams being soft-deleted from groups or confirmed pool
+- [x] Teams can be promoted to confirmed pool when capacity exists
+- [x] Cannot be dragged directly to group slots
 
 ### State Management
 
 **useGroupAssignmentStore (Zustand)**
-- Maintains snapshot of groups, slots, and unassigned teams (confirmed + waitlist)
-- Tracks dirty state for unsaved changes warning
-- Calculates confirmed capacity dynamically
-- Provides actions: assignTeamToSlot, swapTeamWithSlot, moveTeamToConfirmed, moveTeamToWaitlist, promoteFromWaitlist
-- Team status (confirmed/waitlist) is explicitly maintained via `isWaitlist` flag
-- No index-based recalculation of team status - status is preserved across operations
-- Persists to sessionStorage during editing session
-- Resets on cancel or successful save
+- [x] Maintains snapshot of groups, slots, and unassigned teams (confirmed + waitlist)
+- [x] Tracks dirty state for unsaved changes warning
+- [x] Calculates confirmed capacity dynamically
+- [x] Provides actions: assignTeamToSlot, swapTeamWithSlot, moveTeamToConfirmed, moveTeamToWaitlist, promoteFromWaitlist
+- [x] Team status (confirmed/waitlist) is explicitly maintained via `isWaitlist` flag
+- [x] No index-based recalculation of team status - status is preserved across operations
+- [x] Persists to sessionStorage during editing session
+- [x] Resets on cancel or successful save
 
 **useGroupStageDnd Hook**
-- Isolates drag-and-drop event handling
-- Manages activeDragTeam state for DragOverlay rendering
-- Handles dragStart, dragOver, dragEnd, dragCancel events
-- No group container drop logic - only individual slot targeting
-- Integrates with store for state mutations
-- Provides toast notifications for blocked operations
+- [x] Isolates drag-and-drop event handling
+- [x] Manages activeDragTeam state for DragOverlay rendering
+- [x] Handles dragStart, dragOver, dragEnd, dragCancel events
+- [x] No group container drop logic - only individual slot targeting
+- [x] Integrates with store for state mutations
+- [x] Provides toast notifications for blocked operations
 
 ### Utility Functions (groupStageDnd.ts)
 
 **ID Creators**
-- `createTeamDragId(teamId)` - generates draggable team IDs
-- `createSlotDropId(groupId, slotIndex)` - generates droppable slot IDs
+- [x] `createTeamDragId(teamId)` - generates draggable team IDs
+- [x] `createSlotDropId(groupId, slotIndex)` - generates droppable slot IDs
 
 **ID Parsers**
-- `parseTeamDragId(id)` - extracts team ID from drag ID
-- `parseSlotDropId(id)` - extracts groupId and slotIndex from drop ID
+- [x] `parseTeamDragId(id)` - extracts team ID from drag ID
+- [x] `parseSlotDropId(id)` - extracts groupId and slotIndex from drop ID
 
 **Pool Identifiers**
-- `CONFIRMED_POOL_ID` - constant for confirmed pool drop target
-- `WAITLIST_POOL_ID` - constant for waitlist pool drop target
-- `isConfirmedPoolId(id)` - checks if ID is confirmed pool
-- `isWaitlistPoolId(id)` - checks if ID is waitlist pool
+- [x] `CONFIRMED_POOL_ID` - constant for confirmed pool drop target
+- [x] `WAITLIST_POOL_ID` - constant for waitlist pool drop target
+- [x] `isConfirmedPoolId(id)` - checks if ID is confirmed pool
+- [x] `isWaitlistPoolId(id)` - checks if ID is waitlist pool
 
 **Collision Helpers**
-- `findSlotById(groups, slotId)` - locates slot across all groups
+- [x] `findSlotById(groups, slotId)` - locates slot across all groups
 
 **Type Definitions**
-- `DndUnassignedTeam` - teams not assigned to any slot (includes both confirmed and waitlist)
-- `GroupAssignmentSnapshot` - contains groups and unassignedTeams array
+- [x] `DndUnassignedTeam` - teams not assigned to any slot (includes both confirmed and waitlist)
+- [x] `GroupAssignmentSnapshot` - contains groups and unassignedTeams array
 
 ## Drag-and-Drop Behavior
 
 ### Drag Sources
 
-- Team chips in the confirmed pool (confirmed teams)
-- Team chips in the waitlist pool
-- Team chips assigned to group slots
+- [x] Team chips in the confirmed pool (confirmed teams)
+- [x] Team chips in the waitlist pool
+- [x] Team chips assigned to group slots
 
 ### Drop Targets
 
-- **Individual group slots** - each slot is independently droppable
-- **Confirmed pool** - accepts teams from group slots and waitlist
-- **Waitlist pool** - accepts teams from group slots and confirmed pool (soft delete)
-- **Group containers** - NOT droppable (only individual slots accept drops)
+- [x] **Individual group slots** - each slot is independently droppable
+- [x] **Confirmed pool** - accepts teams from group slots and waitlist
+- [x] **Waitlist pool** - accepts teams from group slots and confirmed pool (soft delete)
+- [x] **Group containers** - NOT droppable (only individual slots accept drops)
 
 ### Drop Operations
 
 **Drop on Empty Slot**
-- Assigns the dragged team to that specific slot
-- Team is removed from source location (confirmed pool, waitlist, or other slot)
+- [x] Assigns the dragged team to that specific slot
+- [x] Team is removed from source location (confirmed pool, waitlist, or other slot)
 
 **Drop on Occupied Slot**
-- Existing team moves to confirmed pool (explicit `isWaitlist: false`)
-- Dragged team takes the slot
-- Swap operation if both teams are in slots
+- [ ] If both teams are in the same group: swap slots
+- [ ] Otherwise: existing team moves to confirmed pool (explicit `isWaitlist: false`)
+- [ ] Dragged team takes the slot
 
 **Drop on Confirmed Pool**
-- Team moves to confirmed pool (explicit `isWaitlist: false`)
-- Group slot becomes empty if team was assigned
-- Team retains confirmed status if already confirmed
+- [x] Team moves to confirmed pool (explicit `isWaitlist: false`)
+- [x] Group slot becomes empty if team was assigned
+- [x] Team retains confirmed status if already confirmed
 
 **Drop on Waitlist Pool**
-- Team moves to waitlist pool (explicit `isWaitlist: true`)
-- Provides soft delete functionality for removing teams
-- Group slot becomes empty if team was assigned
+- [x] Team moves to waitlist pool (explicit `isWaitlist: true`)
+- [x] Provides soft delete functionality for removing teams
+- [x] Group slot becomes empty if team was assigned
 
 **Drop on Same Slot**
-- No action - prevents unnecessary state updates
+- [x] No action - prevents unnecessary state updates
 
 ### Waitlist Behavior
 
-- Waitlist teams can be promoted to confirmed pool when capacity exists
-- Capacity = total group slots - currently assigned teams
-- Direct drag from waitlist to group slots is blocked
-- Error toast: "Only confirmed teams can be moved to group slots"
-- Promotion requires available reserve capacity
+- [x] Waitlist teams can be promoted to confirmed pool when capacity exists
+- [x] Confirmed capacity = total group slots - currently assigned teams
+- [x] Direct drag from waitlist to group slots is blocked
+- [x] Error toast: "Only confirmed teams can be moved to group slots"
+- [x] Promotion requires available reserve capacity
+- [x] Waitlist is uncapped and can contain any number of teams
 
 ### Visual Feedback
 
 **During Drag**
-- Original chip: completely invisible (`opacity: 0`)
-- DragOverlay: visible, centered on cursor, enhanced shadow
-- Hovered slot: highlighted with visual indicator
-- No group-level highlighting
+- [x] Original chip: completely invisible (`opacity: 0`)
+- [x] DragOverlay: visible, centered on cursor, enhanced shadow
+- [x] Hovered slot: highlighted with visual indicator (empty slots only)
+- [x] No group-level highlighting
+- [ ] Hovering an occupied slot must show a visible highlight state (chip highlight or slot overlay)
 
 **Slot States**
-- Empty: dashed border, subtle slate tint, "Slot N" label
-- Occupied: team chip fills slot, no wrapper border
-- Highlighted: animate-pulse, brand color accent
-- Drop target: visual glow when cursor is over
+- [x] Empty: dashed border, subtle slate tint, "Slot N" label
+- [x] Occupied: team chip fills slot, no wrapper border
+- [ ] Highlighted: animate-pulse, brand color accent
+- [x] Drop target: visual glow when cursor is over
 
 **Cursor States**
 - Idle: default cursor
@@ -181,62 +204,62 @@ The group stage assignment interface provides a drag-and-drop experience where t
 
 ### Desktop (≥1024px)
 
-- Groups board: left side, responsive grid (md=2, xl=3, 2xl=4 columns)
-- Confirmed pool: right side, fixed 320px width
-- Waitlist pool: below confirmed pool
-- All groups visible simultaneously
+- [x] Groups board: left side, responsive grid (md=2, xl=3, 2xl=4 columns)
+- [x] Confirmed pool: right side, fixed 320px width
+- [x] Waitlist pool: below confirmed pool
+- [x] All groups visible simultaneously
 
 ### Mobile (<1024px)
 
-- Groups: top section, one group visible at a time
-- Horizontal scrollable pill tabs for group navigation
-- Active tab: glossy slate gradient, bold text
-- Inactive tabs: semi-transparent, medium weight
-- Confirmed pool: below groups
-- Waitlist pool: below confirmed pool
+- [x] Groups: top section, one group visible at a time
+- [x] Horizontal scrollable pill tabs for group navigation
+- [x] Active tab: glossy slate gradient, bold text
+- [x] Inactive tabs: semi-transparent, medium weight
+- [x] Confirmed pool: below groups
+- [x] Waitlist pool: below confirmed pool
 
 ### Slot Layout
 
-- Vertical lists (not grids) for compact scanning
-- Fixed height (36px/h-9) prevents layout shift
-- Single-line labels for empty slots
-- Consistent spacing between slots (gap-2)
+- [x] Vertical lists (not grids) for compact scanning
+- [x] Fixed height (36px/h-9) prevents layout shift
+- [x] Single-line labels for empty slots
+- [x] Consistent spacing between slots (gap-2)
 
 ### RTL Support
 
-- Layout flips using logical CSS properties
-- Text alignment adapts automatically
-- Icons rotate where needed (back arrows)
-- Maintained through `useLanguageDirection` hook
+- [ ] Layout flips using logical CSS properties
+- [ ] Text alignment adapts automatically
+- [ ] Icons rotate where needed (back arrows)
+- [ ] RTL support must be audited and fixed if any component fails to flip correctly
 
 ## Styling System
 
 ### Color Scheme
 
-- Surface color: slate-based for panels and cards
-- Brand color: accent for interactive elements and highlights
-- Semantic colors: primary for confirmed, amber for waitlist
-- Background: gradient from surface tones for depth
+- [x] Surface color: slate-based for panels and cards
+- [x] Brand color: accent for interactive elements and highlights
+- [x] Semantic colors: primary for confirmed, amber for waitlist
+- [x] Background: gradient from surface tones for depth
 
 ### Panel Styling
 
-- Group cards: subtle gradients, borders, shadows, backdrop blur
-- Unassigned team pools (confirmed/waitlist): similar treatment for visual consistency
-- No decorative parent wrapper around main board
-- Direct layout without extra chrome
+- [x] Group cards: subtle gradients, borders, shadows, backdrop blur
+- [x] Unassigned team pools (confirmed/waitlist): similar treatment for visual consistency
+- [x] No decorative parent wrapper around main board
+- [x] Direct layout without extra chrome
 
 ### Component Variants (CVA)
 
 **draggableChipVariants**
-- `isDragging: true` - `opacity: 0` (invisible)
-- `isDragging: false` - normal state with hover effects
-- Variants: default, confirmed, waitlist
-- Sizes: sm, md, lg
+- [x] `isDragging: true` - `opacity: 0` (invisible)
+- [x] `isDragging: false` - normal state with hover effects
+- [x] Variants: default, confirmed, waitlist
+- [x] Sizes: sm, md, lg
 
 **groupSlotVariants**
-- States: empty, occupied, dropTarget, highlighted
-- Fixed height for all states
-- Smooth transitions between states
+- [x] States: empty, occupied, dropTarget, highlighted (highlighted not wired)
+- [x] Fixed height for all states
+- [x] Smooth transitions between states
 
 **groupCardVariants**
 - Base styling for all group cards

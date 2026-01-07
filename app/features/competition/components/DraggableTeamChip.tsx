@@ -73,6 +73,8 @@ export function DragOverlayChip({ team }: DragOverlayChipProps): JSX.Element {
 				draggableChipVariants({ variant: 'confirmed', isDragging: false, size: 'md' }),
 				'shadow-xl shadow-brand/30',
 				'cursor-grabbing',
+				'pointer-events-none',
+				'transition-none',
 			)}
 		>
 			<span className={cn('truncate max-w-[180px]', getLatinTextClass())}>

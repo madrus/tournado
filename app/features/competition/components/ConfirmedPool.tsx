@@ -44,7 +44,6 @@ export function ConfirmedPool({
 				className,
 			)}
 			aria-label={t('competition.groupAssignment.reserve.ariaLabel', {
-				count: confirmedTeams.length,
 				capacity,
 			})}
 		>
@@ -62,8 +61,7 @@ export function ConfirmedPool({
 					</h3>
 				</div>
 				<span className='text-sm text-foreground'>
-					{t('competition.groupAssignment.reserve.count', {
-						count: confirmedTeams.length,
+					{t('competition.groupAssignment.reserve.availableSlots', {
 						capacity,
 					})}
 				</span>

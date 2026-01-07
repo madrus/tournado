@@ -207,7 +207,7 @@
 			"title": "Grup aşaması"
 		},
 		"groupAssignment": {
-			"instruction": "Takımları gruplara atamak için sürükleyin. Otomatik atama için bir gruba bırakın veya doğrudan yerleştirmek için belirli bir yere bırakın.",
+			"instruction": "Takımları belirli kontenjanlara atamak için sürükleyin. Boş bir kontenjana veya bir takımın üzerine bırakıp değiştirebilirsiniz.",
 			"backToGroups": "Gruplara geri dön",
 			"unsavedChanges": "Kaydedilmemiş değişiklikleriniz var",
 			"unsavedTitle": "Kaydedilmemiş değişiklikler",
@@ -246,14 +246,14 @@
 			},
 			"reserve": {
 				"title": "Onaylı takımlar",
-				"count": "Takımlar: {{capacity}} kapasiteden {{count}}",
+				"availableSlots": "Mevcut kontenjan: {{capacity}}",
 				"empty": "Onaylı havuzda takım yok",
 				"dropToAdd": "Yedek kadrosuna taşımak için buraya bırakın",
-				"ariaLabel": "Onaylı takımlar havuzu - {{capacity}} kapasiteden {{count}}"
+				"ariaLabel": "Onaylı takımlar havuzu - {{capacity}} mevcut kontenjan"
 			},
 			"waitlist": {
 				"title": "Bekleme listesi",
-				"count": "{{count}} bekliyor",
+				"count": "Bekleyen: {{count}}",
 				"noCapacity": "Onaylı havuz dolu. Bekleme listesindeki takımları yükseltmek için yer açın.",
 				"helpPromote": "Bekleme listesindeki takımları eklemek için onaylı havuza sürükleyin.",
 				"helpBlocked": "Tüm yerler atandı. Yer açmak için gruplardan takım çıkarın.",

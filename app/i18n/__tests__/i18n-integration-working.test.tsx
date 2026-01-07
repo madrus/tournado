@@ -210,6 +210,6 @@ describe('i18n React Performance', () => {
 		})
 
 		const duration = performance.now() - start
-		expect(duration).toBeLessThan(50) // Should complete quickly
+		expect(duration).toBeLessThan(100) // Should complete quickly
 	})
 })

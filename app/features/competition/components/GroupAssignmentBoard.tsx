@@ -12,7 +12,7 @@ import {
 } from '@dnd-kit/core'
 import { snapCenterToCursor } from '@dnd-kit/modifiers'
 import type { JSX } from 'react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useBlocker, useFetcher, useRevalidator } from 'react-router'
 import { z } from 'zod'
@@ -20,6 +20,7 @@ import { z } from 'zod'
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { ConfirmDialog } from '~/components/ConfirmDialog'
 import { useMediaQuery } from '~/hooks/useMediaQuery'
+import { useReducedMotion } from '~/hooks/useReducedMotion'
 
 import { useGroupStageDnd } from '../hooks/useGroupStageDnd'
 import {
@@ -74,6 +75,11 @@ export function GroupAssignmentBoard({
 	const revalidator = useRevalidator()
 	const [showConflictDialog, setShowConflictDialog] = useState(false)
 	const [isProceedingNavigation, setIsProceedingNavigation] = useState(false)
+	const [displacedAnimation, setDisplacedAnimation] = useState<{
+		teamId: string
+		fromRect: DOMRect
+	} | null>(null)
+	const prefersReducedMotion = useReducedMotion()
 
 	// Store state
 	const snapshot = useGroupAssignmentSnapshot()
@@ -91,13 +97,30 @@ export function GroupAssignmentBoard({
 	} = useGroupAssignmentActions()
 
 	// DnD hook
+	const handleDisplacedTeam = useCallback(
+		(teamId: string) => {
+			if (prefersReducedMotion || typeof document === 'undefined') return
+
+			const teamElement = document.querySelector(
+				`[data-team-id="${teamId}"]`,
+			) as HTMLElement | null
+			if (!teamElement) return
+
+			setDisplacedAnimation({
+				teamId,
+				fromRect: teamElement.getBoundingClientRect(),
+			})
+		},
+		[prefersReducedMotion],
+	)
+
 	const {
 		activeDragTeam,
 		handleDragStart,
 		handleDragOver,
 		handleDragEnd,
 		handleDragCancel,
-	} = useGroupStageDnd()
+	} = useGroupStageDnd({ onDisplacedTeam: handleDisplacedTeam })
 
 	// Initialize store from loader data
 	useEffect(() => {
@@ -225,6 +248,45 @@ export function GroupAssignmentBoard({
 			setActiveGroupIndex(safeGroupIndex)
 		}
 	}, [activeGroupIndex, safeGroupIndex, setActiveGroupIndex])
+
+	useLayoutEffect(() => {
+		if (
+			!displacedAnimation ||
+			prefersReducedMotion ||
+			typeof document === 'undefined'
+		) {
+			return
+		}
+
+		const confirmedPool = document.querySelector(
+			'[data-testid="confirmed-pool"]',
+		) as HTMLElement | null
+		const confirmedTeam = confirmedPool?.querySelector(
+			`[data-team-id="${displacedAnimation.teamId}"]`,
+		) as HTMLElement | null
+		if (!confirmedTeam) {
+			setDisplacedAnimation(null)
+			return
+		}
+
+		const toRect = confirmedTeam.getBoundingClientRect()
+		const deltaX = displacedAnimation.fromRect.left - toRect.left
+		const deltaY = displacedAnimation.fromRect.top - toRect.top
+
+		confirmedTeam.animate(
+			[
+				{ transform: `translate(${deltaX}px, ${deltaY}px)` },
+				{ transform: 'translate(0, 0)' },
+			],
+			{
+				duration: 260,
+				easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+				fill: 'both',
+			},
+		)
+
+		setDisplacedAnimation(null)
+	}, [displacedAnimation, prefersReducedMotion])
 
 	if (!snapshot) {
 		return (

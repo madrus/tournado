@@ -6,9 +6,9 @@ The group stage assignment interface provides a drag-and-drop experience where t
 
 ## Blocking Issues And Decisions (Must Fix Next)
 
-- [ ] Occupied slot drop behavior
-  - [ ] If both teams are in the same group: swap slots.
-  - [ ] Otherwise: replace and move the displaced team to confirmed pool.
+- [x] Occupied slot drop behavior
+  - [x] If both teams are in the same group: swap slots.
+  - [x] Otherwise: replace and move the displaced team to confirmed pool.
 
 - [ ] Hover/drag visual feedback on occupied slots
   - [ ] Decide and implement one:
@@ -17,10 +17,6 @@ The group stage assignment interface provides a drag-and-drop experience where t
 
 - [ ] RTL correctness
   - [ ] Audit and fix any incomplete flips (layout, gradients, icon direction, drag feedback).
-
-- [ ] Confirmed pool capacity
-  - [ ] Confirmed pool must be capped by total group slots.
-  - [x] Waitlist is uncapped.
 
 - [ ] Keyboard DnD support
   - [ ] Define expected behavior; implementation details are TBD.
@@ -80,7 +76,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 **ConfirmedPool.tsx**
 - [x] Container for confirmed teams (teams that can be assigned to groups)
 - [x] Droppable area for teams being moved out of groups
-- [ ] Capacity-limited based on total group slots minus assigned teams
+- [x] Capacity-limited based on total group slots minus assigned teams
 
 **WaitlistPool.tsx**
 - [x] Container for waitlist teams
@@ -153,9 +149,9 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - [x] Team is removed from source location (confirmed pool, waitlist, or other slot)
 
 **Drop on Occupied Slot**
-- [ ] If both teams are in the same group: swap slots
-- [ ] Otherwise: existing team moves to confirmed pool (explicit `isWaitlist: false`)
-- [ ] Dragged team takes the slot
+- [x] If both teams are in the same group: swap slots
+- [x] Otherwise: existing team moves to confirmed pool (explicit `isWaitlist: false`)
+- [x] Dragged team takes the slot
 
 **Drop on Confirmed Pool**
 - [x] Team moves to confirmed pool (explicit `isWaitlist: false`)
@@ -353,8 +349,8 @@ The group stage assignment interface provides a drag-and-drop experience where t
 
 ### Drag-Related Errors
 
-- Waitlist to group: toast error, return to origin
-- No capacity for promotion: toast error, block promotion
+- Waitlist to group: toast warning, return to origin
+- No capacity for promotion: toast warning, block promotion
 - Invalid drop target: no operation, no state change
 
 ### Save Errors
@@ -396,6 +392,7 @@ All user-facing text internationalized in 6 languages:
 - ID parsing and generation utilities
 - Collision detection helpers
 - Reserve capacity calculations
+- Waitlist promotion capacity enforcement
 
 ### Component Tests
 

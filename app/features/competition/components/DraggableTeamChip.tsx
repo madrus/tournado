@@ -50,6 +50,7 @@ export function DraggableTeamChip({
 				club: team.clubName,
 				team: team.name,
 			})}
+			data-team-id={team.id}
 			{...listeners}
 			{...attributes}
 			data-testid={`team-chip-${team.id}`}

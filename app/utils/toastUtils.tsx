@@ -6,7 +6,7 @@ import { ToastMessage as ToastMessageBase } from '~/components/ToastMessage'
 import type { ToastConfig, ToastErrorType, ToastType } from '~/lib/lib.types'
 
 // Default toast duration constant
-const DEFAULT_TOAST_DURATION = 7500
+export const DEFAULT_TOAST_DURATION = 10000
 
 // Enhanced toast configuration per type
 const TOAST_CONFIGS: Record<ToastType, ToastConfig> = {
@@ -87,6 +87,7 @@ export const createToast = (
 		description?: string
 		duration?: number
 		priority?: 'low' | 'normal' | 'high'
+		force?: boolean
 	},
 ) => ToastResult) => {
 	const config = TOAST_CONFIGS[type]
@@ -97,6 +98,7 @@ export const createToast = (
 			description?: string
 			duration?: number
 			priority?: 'low' | 'normal' | 'high'
+			force?: boolean
 		},
 	) => {
 		// Create cache key to prevent duplicate rapid toasts (account for priority)
@@ -105,7 +107,7 @@ export const createToast = (
 
 		// Check if identical toast is already showing (prevent spam)
 		// Skip caching for success toasts to always show them
-		if (type !== 'success' && toastCache.has(cacheKey)) {
+		if (type !== 'success' && !options?.force && toastCache.has(cacheKey)) {
 			const cachedToast = toastCache.get(cacheKey)
 			if (cachedToast) {
 				return {
@@ -140,8 +142,8 @@ export const createToast = (
 			toastOptions,
 		)
 
-		// Cache the toast briefly to prevent duplicates (skip caching success toasts)
-		if (type !== 'success') {
+		// Cache the toast briefly to prevent duplicates (skip caching success toasts or forced toasts)
+		if (type !== 'success' && !options?.force) {
 			toastCache.set(cacheKey, toastId)
 		}
 
@@ -151,6 +153,7 @@ export const createToast = (
 		let timeoutId: NodeJS.Timeout | undefined
 		if (
 			type !== 'success' &&
+			!options?.force &&
 			typeof process !== 'undefined' &&
 			process.env.NODE_ENV !== 'test'
 		) {
@@ -185,6 +188,7 @@ const createSimpleToast = (type: ToastType) => {
 			description?: string
 			duration?: number
 			priority?: 'low' | 'normal' | 'high'
+			force?: boolean
 		},
 	): string | number => {
 		const result = toastFn(message, options)

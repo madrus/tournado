@@ -200,7 +200,7 @@
 			"title": "Poulefase"
 		},
 		"groupAssignment": {
-			"instruction": "Sleep teams om ze aan poules toe te wijzen. Laat los op een poule voor automatische toewijzing, of op een specifieke plek om direct te plaatsen.",
+			"instruction": "Sleep teams om ze aan specifieke plekken toe te wijzen. Laat los op een vrije plek of op een team om het te vervangen.",
 			"backToGroups": "Terug naar poules",
 			"unsavedChanges": "Je hebt niet-opgeslagen wijzigingen",
 			"unsavedTitle": "Niet-opgeslagen wijzigingen",
@@ -239,14 +239,14 @@
 			},
 			"reserve": {
 				"title": "Bevestigde teams",
-				"count": "Teams: {{count}} van {{capacity}}",
+				"availableSlots": "Plekken beschikbaar: {{capacity}}",
 				"empty": "Geen teams in bevestigde pool",
 				"dropToAdd": "Hier loslaten om naar reserve te verplaatsen",
-				"ariaLabel": "Bevestigde teams pool - {{count}} van {{capacity}} capaciteit"
+				"ariaLabel": "Bevestigde teams pool - {{capacity}} beschikbare plekken"
 			},
 			"waitlist": {
 				"title": "Wachtlijst",
-				"count": "{{count}} wachtend",
+				"count": "Wachtend: {{count}}",
 				"noCapacity": "Bevestigde pool is vol. Maak plekken vrij om wachtlijstteams te promoveren.",
 				"helpPromote": "Sleep wachtlijstteams naar de bevestigde pool om ze toe te voegen.",
 				"helpBlocked": "Alle plekken zijn bezet. Verwijder teams uit poules om ruimte te maken.",

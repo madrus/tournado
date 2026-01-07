@@ -167,7 +167,7 @@ describe('groupAssignmentStoreHelpers', () => {
 			).toBe(true)
 		})
 
-		it('should swap a team with an occupied slot', () => {
+		it('should replace an occupied slot when dragging from confirmed', () => {
 			const snapshot = createSnapshot()
 
 			const next = swapTeamWithSlot(snapshot, 'team-b', 'group-1', 0)
@@ -176,6 +176,47 @@ describe('groupAssignmentStoreHelpers', () => {
 			expect(
 				next?.unassignedTeams.some((team) => team.id === 'team-a' && !team.isWaitlist),
 			).toBe(true)
+		})
+
+		it('should swap teams within the same group', () => {
+			const teamA = createTeam('team-a', 'Team A')
+			const teamB = createTeam('team-b', 'Team B')
+
+			const snapshot: GroupAssignmentSnapshot = {
+				groupStageId: 'group-stage-1',
+				groupStageName: 'Group Stage',
+				tournamentId: 'tournament-1',
+				updatedAt: '2024-01-01T00:00:00.000Z',
+				groups: [
+					{
+						id: 'group-1',
+						name: 'Group 1',
+						order: 1,
+						slots: [
+							{
+								slotId: 'group-1-slot-0',
+								groupId: 'group-1',
+								slotIndex: 0,
+								team: teamA,
+							},
+							{
+								slotId: 'group-1-slot-1',
+								groupId: 'group-1',
+								slotIndex: 1,
+								team: teamB,
+							},
+						],
+					},
+				],
+				unassignedTeams: [],
+				totalSlots: 2,
+			}
+
+			const next = swapTeamWithSlot(snapshot, 'team-a', 'group-1', 1)
+
+			expect(next?.groups[0].slots[0].team?.id).toBe('team-b')
+			expect(next?.groups[0].slots[1].team?.id).toBe('team-a')
+			expect(next?.unassignedTeams).toHaveLength(0)
 		})
 
 		it('should promote a team from waitlist when capacity allows', () => {
@@ -192,6 +233,48 @@ describe('groupAssignmentStoreHelpers', () => {
 			const snapshot = {
 				...createSnapshot(),
 				totalSlots: 1,
+			}
+
+			expect(promoteFromWaitlist(snapshot, 'team-c')).toBe(null)
+		})
+
+		it('should not promote from waitlist when confirmed reaches capacity', () => {
+			const teamA = createTeam('team-a', 'Team A')
+			const teamB = createTeam('team-b', 'Team B')
+			const teamC = createTeam('team-c', 'Team C')
+			const teamD = createTeam('team-d', 'Team D')
+
+			const snapshot: GroupAssignmentSnapshot = {
+				groupStageId: 'group-stage-1',
+				groupStageName: 'Group Stage',
+				tournamentId: 'tournament-1',
+				updatedAt: '2024-01-01T00:00:00.000Z',
+				groups: [
+					{
+						id: 'group-1',
+						name: 'Group 1',
+						order: 1,
+						slots: [
+							{
+								slotId: 'group-1-slot-0',
+								groupId: 'group-1',
+								slotIndex: 0,
+								team: teamA,
+							},
+							{
+								slotId: 'group-1-slot-1',
+								groupId: 'group-1',
+								slotIndex: 1,
+								team: teamD,
+							},
+						],
+					},
+				],
+				unassignedTeams: [
+					{ ...teamB, isWaitlist: false },
+					{ ...teamC, isWaitlist: true },
+				],
+				totalSlots: 3,
 			}
 
 			expect(promoteFromWaitlist(snapshot, 'team-c')).toBe(null)

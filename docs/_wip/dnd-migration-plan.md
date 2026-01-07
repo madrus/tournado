@@ -6,13 +6,6 @@ The group stage assignment interface provides a drag-and-drop experience where t
 
 ## Blocking Issues And Decisions (Must Fix Next)
 
-- [ ] Hover/drag visual feedback on occupied slots
-  - [ ] Decide and implement one:
-    - [ ] Highlight the chip under the cursor, or
-    - [ ] Visually replace the chip with highlighted slot number (as if empty).
-  - [x] Occupied chip shifts inline on hover (RTL-aware) and returns on leave
-  - [x] Occupied slot shows the same bright border highlight as empty slots when hovered
-
 - [ ] RTL correctness
   - [ ] Audit and fix any incomplete flips (layout, gradients, icon direction, drag feedback).
 
@@ -180,12 +173,12 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - [x] DragOverlay: visible, centered on cursor, enhanced shadow
 - [x] Hovered slot: highlighted with visual indicator (empty slots only)
 - [x] No group-level highlighting
-- [ ] Hovering an occupied slot must show a visible highlight state (chip highlight or slot overlay)
+- [x] Hovering an occupied slot shows the same highlight as empty slots
 
 **Slot States**
 - [x] Empty: dashed border, subtle slate tint, "Slot N" label
 - [x] Occupied: team chip fills slot, no wrapper border
-- [ ] Highlighted: animate-pulse, brand color accent
+- [x] Highlighted: animate-pulse, brand color accent
 - [x] Drop target: visual glow when cursor is over
 
 **Cursor States**

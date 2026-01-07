@@ -19,3 +19,4 @@ Hereunder we specify ideas for future application enhancements that we have thou
 - Add feature flags middleware like I did at Conclusion that I can set in the devtools panel
 - Add a CSS-based responsive layout fallback for the group assignment board to avoid SSR hydration flashes (render both layouts and toggle with CSS)
 - Define explicit server-side refresh triggers for group assignment snapshots (avoid using `updatedAt` unless it reflects meaningful server-side changes)
+- Add script detection for RTL font overrides so Latin text uses `latin-text` only when the label is actually Latin

@@ -2,6 +2,7 @@ import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { cn } from '~/utils/misc'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 import type { DndGroup } from '../utils/groupStageDnd'
 import { GroupSlotDropZone } from './GroupSlotDropZone'
@@ -39,7 +40,9 @@ export function GroupCard({
 		>
 			{/* Group header */}
 			<div className='flex items-center justify-between mb-3'>
-				<h3 className='font-semibold text-lg text-title'>{group.name}</h3>
+				<h3 className={cn('font-semibold text-lg text-title', getLatinTitleClass())}>
+					{group.name}
+				</h3>
 				<span className='text-sm text-foreground'>
 					{t('competition.groupAssignment.group.slotsCount', {
 						filled: filledSlots,

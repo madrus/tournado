@@ -5,6 +5,7 @@ import { ComboField } from '~/components/inputs/ComboField'
 import { useTournamentFilter } from '~/features/tournaments/hooks/useTournamentFilter'
 import type { TournamentListItem } from '~/features/tournaments/types'
 import type { ColorAccent } from '~/lib/lib.types'
+import { getLatinTextClass } from '~/utils/rtlUtils'
 
 type TournamentFilterProps = {
 	tournamentListItems: readonly TournamentListItem[]
@@ -33,6 +34,7 @@ export function TournamentFilter({
 		selectedTournamentId,
 		basePath,
 	})
+	const latinTextClass = getLatinTextClass()
 
 	// For competition page, filter out the "all" option if showAllOption is false
 	const filteredOptions = showAllOption
@@ -53,6 +55,10 @@ export function TournamentFilter({
 			placeholder={placeholder || t('teams.allTournaments')}
 			className={className}
 			color={color}
+			valueClassName={adjustedSelectedValue !== 'all' ? latinTextClass : ''}
+			getOptionTextClassName={(option) =>
+				option.value === 'all' ? '' : latinTextClass
+			}
 		/>
 	)
 }

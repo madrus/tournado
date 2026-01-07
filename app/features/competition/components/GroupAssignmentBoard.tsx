@@ -13,6 +13,7 @@ import {
 import { snapCenterToCursor } from '@dnd-kit/modifiers'
 import type { JSX } from 'react'
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { useBlocker, useFetcher, useRevalidator } from 'react-router'
 import { z } from 'zod'
@@ -21,6 +22,8 @@ import { ActionButton } from '~/components/buttons/ActionButton'
 import { ConfirmDialog } from '~/components/ConfirmDialog'
 import { useMediaQuery } from '~/hooks/useMediaQuery'
 import { useReducedMotion } from '~/hooks/useReducedMotion'
+import { cn } from '~/utils/misc'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 import { useGroupStageDnd } from '../hooks/useGroupStageDnd'
 import {
@@ -315,7 +318,9 @@ export function GroupAssignmentBoard({
 				<div className='space-y-6'>
 					{/* Hero strip */}
 					<div className={heroStripVariants()}>
-						<h2 className='font-bold text-2xl text-title'>{snapshot.groupStageName}</h2>
+						<h2 className={cn('font-bold text-2xl text-title', getLatinTitleClass())}>
+							{snapshot.groupStageName}
+						</h2>
 						<p className='text-foreground-light'>
 							{t('competition.groupAssignment.instruction')}
 						</p>
@@ -416,12 +421,24 @@ export function GroupAssignmentBoard({
 				</div>
 
 				{/* Drag overlay */}
-				<DragOverlay
-					style={{ cursor: 'grabbing', zIndex: 'var(--z-dnd-overlay)' }}
-					modifiers={[snapCenterToCursor]}
-				>
-					{activeDragTeam ? <DragOverlayChip team={activeDragTeam} /> : null}
-				</DragOverlay>
+				{typeof document !== 'undefined' ? (
+					createPortal(
+						<DragOverlay
+							style={{ cursor: 'grabbing', zIndex: 'var(--z-dnd-overlay)' }}
+							modifiers={[snapCenterToCursor]}
+						>
+							{activeDragTeam ? <DragOverlayChip team={activeDragTeam} /> : null}
+						</DragOverlay>,
+						document.body,
+					)
+				) : (
+					<DragOverlay
+						style={{ cursor: 'grabbing', zIndex: 'var(--z-dnd-overlay)' }}
+						modifiers={[snapCenterToCursor]}
+					>
+						{activeDragTeam ? <DragOverlayChip team={activeDragTeam} /> : null}
+					</DragOverlay>
+				)}
 			</DndContext>
 
 			{/* Conflict dialog */}

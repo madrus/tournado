@@ -6,14 +6,11 @@ The group stage assignment interface provides a drag-and-drop experience where t
 
 ## Blocking Issues And Decisions (Must Fix Next)
 
-- [x] Occupied slot drop behavior
-  - [x] If both teams are in the same group: swap slots.
-  - [x] Otherwise: replace and move the displaced team to confirmed pool.
-
 - [ ] Hover/drag visual feedback on occupied slots
   - [ ] Decide and implement one:
     - [ ] Highlight the chip under the cursor, or
     - [ ] Visually replace the chip with highlighted slot number (as if empty).
+  - [x] Occupied chip shifts inline on hover (RTL-aware) and returns on leave
 
 - [ ] RTL correctness
   - [ ] Audit and fix any incomplete flips (layout, gradients, icon direction, drag feedback).

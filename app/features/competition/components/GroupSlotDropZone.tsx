@@ -41,7 +41,7 @@ export function GroupSlotDropZone({
 
 	return slot.team ? (
 		<div ref={setNodeRef} data-testid={`group-slot-${slot.slotIndex}`}>
-			<DraggableTeamChip team={slot.team} disabled={disabled} />
+			<DraggableTeamChip team={slot.team} disabled={disabled} isDropTarget={isOver} />
 		</div>
 	) : (
 		<div

@@ -93,7 +93,7 @@ export function scanFlatRoutes(): RouteEntry[] {
 				// Handle flat route naming in subdirectories: teams.new.tsx -> teams/new
 				const segments = fileName.split('.')
 				const baseSegment = segments[0]
-				const parentDirPath = applyAdminRoutePrefix(`/${dirName.replace(/\//g, '/')}`)
+				const parentDirPath = `/${dirName}`
 
 				if (fileName === baseSegment) {
 					// This shouldn't happen with the layout check above, but just in case
@@ -116,7 +116,7 @@ export function scanFlatRoutes(): RouteEntry[] {
 				}
 			} else if (fileName === '_index') {
 				// Handle folder-based routing: users/_index.tsx -> /users (index)
-				routePath = applyAdminRoutePrefix(`/${dirName}`)
+				routePath = `/${dirName}`
 			} else if (fileName.startsWith('$')) {
 				// Handle folder-based dynamic routes: users/$userId.tsx -> /users/:userId
 				const paramName = fileName.substring(1) // Remove the $
@@ -131,11 +131,11 @@ export function scanFlatRoutes(): RouteEntry[] {
 							'Parameter names must start with a letter or underscore, and contain only alphanumeric characters and underscores.',
 					)
 				} else {
-					routePath = applyAdminRoutePrefix(`/${dirName}/:${paramName}`)
+					routePath = `/${dirName}/:${paramName}`
 				}
 			} else {
 				// Simple file in subdirectory: resources/somefile -> /resources/somefile
-				routePath = applyAdminRoutePrefix(`/${dirName}/${fileName}`)
+				routePath = `/${dirName}/${fileName}`
 			}
 		}
 

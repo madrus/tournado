@@ -210,6 +210,7 @@ jobs:
           echo "🔨 Building and deploying new code changes..."
           flyctl deploy --remote-only \
             --build-arg COMMIT_SHA=${{ steps.prepare_deployment.outputs.head_sha }} \
+            --build-arg VITE_ADMIN_SLUG=${{ secrets.VITE_ADMIN_SLUG }} \
             --app ${{ steps.app_name.outputs.value }}-staging \
             --strategy rolling \
             --max-unavailable 0.33 \
@@ -451,6 +452,7 @@ jobs:
           echo "🔨 Building and deploying new code changes..."
           flyctl deploy --remote-only \
             --build-arg COMMIT_SHA=${{ steps.prepare_deployment.outputs.head_sha }} \
+            --build-arg VITE_ADMIN_SLUG=${{ secrets.VITE_ADMIN_SLUG }} \
             --app ${{ steps.app_name.outputs.value }} \
             --strategy rolling \
             --max-unavailable 0.33 \

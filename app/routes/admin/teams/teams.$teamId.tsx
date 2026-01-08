@@ -19,6 +19,8 @@ import { prisma } from '~/db.server'
 import { TeamForm } from '~/features/teams/components/TeamForm'
 import { useTeamFormActions } from '~/features/teams/stores/useTeamFormStore'
 import type { TeamCreateActionData } from '~/features/teams/types'
+import type { TournamentData } from '~/features/tournaments/types'
+import { transformTournamentData } from '~/features/tournaments/utils'
 import { getDivisionLabel, stringToCategory, stringToDivision } from '~/lib/lib.helpers'
 import { adminPath } from '~/utils/adminRoutes'
 import type { RouteMetadata } from '~/utils/routeTypes'
@@ -81,13 +83,7 @@ type LoaderData = {
 			email: string
 			phone: string
 		}
-		tournament: {
-			id: string
-			name: string
-			location: string
-			divisions: string[]
-			categories: string[]
-		}
+		tournament: TournamentData
 	}
 }
 
@@ -134,18 +130,7 @@ export const loader = async ({
 		throw new Response('Team not found', { status: 404 })
 	}
 
-	// Parse tournament divisions and categories
-	const tournamentDivisions = Array.isArray(team.tournament.divisions)
-		? (team.tournament.divisions as string[])
-		: team.tournament.divisions
-			? JSON.parse(team.tournament.divisions as string)
-			: []
-
-	const tournamentCategories = Array.isArray(team.tournament.categories)
-		? (team.tournament.categories as string[])
-		: team.tournament.categories
-			? JSON.parse(team.tournament.categories as string)
-			: []
+	const tournamentData = transformTournamentData(team.tournament)
 
 	return {
 		team: {
@@ -160,13 +145,7 @@ export const loader = async ({
 				email: team.teamLeader.email,
 				phone: team.teamLeader.phone,
 			},
-			tournament: {
-				id: team.tournament.id,
-				name: team.tournament.name,
-				location: team.tournament.location,
-				divisions: tournamentDivisions,
-				categories: tournamentCategories,
-			},
+			tournament: tournamentData,
 		},
 	}
 }
@@ -283,17 +262,7 @@ export default function AdminTeamPage(): JSX.Element {
 
 	// Set tournament in store so form can compute divisions/categories
 	useEffect(() => {
-		// Create a tournament object that matches TournamentData structure
-		const tournamentData = {
-			id: team.tournament.id,
-			name: team.tournament.name,
-			location: team.tournament.location,
-			divisions: team.tournament.divisions,
-			categories: team.tournament.categories,
-			startDate: new Date().toISOString(), // Placeholder
-			endDate: null,
-		}
-		setAvailableOptionsField('tournaments', [tournamentData])
+		setAvailableOptionsField('tournaments', [team.tournament])
 	}, [team.tournament, setAvailableOptionsField])
 
 	// Check for success parameter and show toast

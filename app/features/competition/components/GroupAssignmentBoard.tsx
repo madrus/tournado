@@ -12,7 +12,8 @@ import {
 } from '@dnd-kit/core'
 import { snapCenterToCursor } from '@dnd-kit/modifiers'
 import type { JSX } from 'react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { useBlocker, useFetcher, useRevalidator } from 'react-router'
 import { z } from 'zod'
@@ -20,6 +21,9 @@ import { z } from 'zod'
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { ConfirmDialog } from '~/components/ConfirmDialog'
 import { useMediaQuery } from '~/hooks/useMediaQuery'
+import { useReducedMotion } from '~/hooks/useReducedMotion'
+import { cn } from '~/utils/misc'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 import { useGroupStageDnd } from '../hooks/useGroupStageDnd'
 import {
@@ -74,6 +78,12 @@ export function GroupAssignmentBoard({
 	const revalidator = useRevalidator()
 	const [showConflictDialog, setShowConflictDialog] = useState(false)
 	const [isProceedingNavigation, setIsProceedingNavigation] = useState(false)
+	const [isClient, setIsClient] = useState(false)
+	const [displacedAnimation, setDisplacedAnimation] = useState<{
+		teamId: string
+		fromRect: DOMRect
+	} | null>(null)
+	const prefersReducedMotion = useReducedMotion()
 
 	// Store state
 	const snapshot = useGroupAssignmentSnapshot()
@@ -91,18 +101,39 @@ export function GroupAssignmentBoard({
 	} = useGroupAssignmentActions()
 
 	// DnD hook
+	const handleDisplacedTeam = useCallback(
+		(teamId: string) => {
+			if (prefersReducedMotion || typeof document === 'undefined') return
+
+			const teamElement = document.querySelector(
+				`[data-team-id="${teamId}"]`,
+			) as HTMLElement | null
+			if (!teamElement) return
+
+			setDisplacedAnimation({
+				teamId,
+				fromRect: teamElement.getBoundingClientRect(),
+			})
+		},
+		[prefersReducedMotion],
+	)
+
 	const {
 		activeDragTeam,
 		handleDragStart,
 		handleDragOver,
 		handleDragEnd,
 		handleDragCancel,
-	} = useGroupStageDnd()
+	} = useGroupStageDnd({ onDisplacedTeam: handleDisplacedTeam })
 
 	// Initialize store from loader data
 	useEffect(() => {
 		setSnapshotPair(initialSnapshot)
 	}, [initialSnapshot, setSnapshotPair])
+
+	useEffect(() => {
+		setIsClient(true)
+	}, [])
 
 	// Handle conflict dialog
 	useEffect(() => {
@@ -226,6 +257,45 @@ export function GroupAssignmentBoard({
 		}
 	}, [activeGroupIndex, safeGroupIndex, setActiveGroupIndex])
 
+	useLayoutEffect(() => {
+		if (
+			!displacedAnimation ||
+			prefersReducedMotion ||
+			typeof document === 'undefined'
+		) {
+			return
+		}
+
+		const confirmedPool = document.querySelector(
+			'[data-testid="confirmed-pool"]',
+		) as HTMLElement | null
+		const confirmedTeam = confirmedPool?.querySelector(
+			`[data-team-id="${displacedAnimation.teamId}"]`,
+		) as HTMLElement | null
+		if (!confirmedTeam) {
+			setDisplacedAnimation(null)
+			return
+		}
+
+		const toRect = confirmedTeam.getBoundingClientRect()
+		const deltaX = displacedAnimation.fromRect.left - toRect.left
+		const deltaY = displacedAnimation.fromRect.top - toRect.top
+
+		confirmedTeam.animate(
+			[
+				{ transform: `translate(${deltaX}px, ${deltaY}px)` },
+				{ transform: 'translate(0, 0)' },
+			],
+			{
+				duration: 260,
+				easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+				fill: 'both',
+			},
+		)
+
+		setDisplacedAnimation(null)
+	}, [displacedAnimation, prefersReducedMotion])
+
 	if (!snapshot) {
 		return (
 			<div className='flex items-center justify-center p-8'>
@@ -253,7 +323,9 @@ export function GroupAssignmentBoard({
 				<div className='space-y-6'>
 					{/* Hero strip */}
 					<div className={heroStripVariants()}>
-						<h2 className='font-bold text-2xl text-title'>{snapshot.groupStageName}</h2>
+						<h2 className={cn('font-bold text-2xl text-title', getLatinTitleClass())}>
+							{snapshot.groupStageName}
+						</h2>
 						<p className='text-foreground-light'>
 							{t('competition.groupAssignment.instruction')}
 						</p>
@@ -354,12 +426,17 @@ export function GroupAssignmentBoard({
 				</div>
 
 				{/* Drag overlay */}
-				<DragOverlay
-					style={{ cursor: 'grabbing', zIndex: 'var(--z-dnd-overlay)' }}
-					modifiers={[snapCenterToCursor]}
-				>
-					{activeDragTeam ? <DragOverlayChip team={activeDragTeam} /> : null}
-				</DragOverlay>
+				{isClient
+					? createPortal(
+							<DragOverlay
+								style={{ cursor: 'grabbing', zIndex: 'var(--z-dnd-overlay)' }}
+								modifiers={[snapCenterToCursor]}
+							>
+								{activeDragTeam ? <DragOverlayChip team={activeDragTeam} /> : null}
+							</DragOverlay>,
+							document.body,
+						)
+					: null}
 			</DndContext>
 
 			{/* Conflict dialog */}

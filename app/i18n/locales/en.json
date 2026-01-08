@@ -175,7 +175,6 @@
 			"categories": "Categories:",
 			"setup": "Setup:",
 			"setupSummary": "{{groups}} groups × {{teams}} teams",
-			"autoFill": "Auto-fill:",
 			"created": "Created:"
 		},
 		"status": {
@@ -192,15 +191,13 @@
 			"configGroupsPlaceholder": "4",
 			"configSlots": "Teams per Group",
 			"configSlotsPlaceholder": "5",
-			"autoFillGroups": "Fill groups",
-			"autoFillDescription": "Initially distribute teams to groups automatically",
 			"summary": "Summary",
 			"summaryTeamsAvailable": "{{count}} teams available in selected categories",
 			"summaryWillCreate": "Will create {{groups}} groups with {{slots}} slots each ({{total}} total slots)",
 			"title": "Group Stage"
 		},
 		"groupAssignment": {
-			"instruction": "Drag teams to assign them to groups. Drop on a group to auto-assign, or on a specific slot to place directly.",
+			"instruction": "Drag teams to assign them to specific slots. Drop on a free slot or on a team to replace it.",
 			"backToGroups": "Back to Groups",
 			"unsavedChanges": "You have unsaved changes",
 			"unsavedTitle": "Unsaved Changes",
@@ -239,14 +236,14 @@
 			},
 			"reserve": {
 				"title": "Confirmed Teams",
-				"count": "Teams: {{count}} of {{capacity}}",
+				"availableSlots": "Available slots: {{capacity}}",
 				"empty": "No teams in confirmed pool",
 				"dropToAdd": "Drop here to move to reserve",
-				"ariaLabel": "Confirmed teams pool - {{count}} of {{capacity}} capacity"
+				"ariaLabel": "Confirmed teams pool - {{capacity}} available slots"
 			},
 			"waitlist": {
 				"title": "Waitlist",
-				"count": "{{count}} waiting",
+				"count": "Waiting: {{count}}",
 				"noCapacity": "Confirmed pool is full. Free up slots to promote waitlist teams.",
 				"helpPromote": "Drag waitlist teams to the confirmed pool to add them.",
 				"helpBlocked": "All slots are assigned. Remove teams from groups to make room.",

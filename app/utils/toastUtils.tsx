@@ -6,7 +6,7 @@ import { ToastMessage as ToastMessageBase } from '~/components/ToastMessage'
 import type { ToastConfig, ToastErrorType, ToastType } from '~/lib/lib.types'
 
 // Default toast duration constant
-const DEFAULT_TOAST_DURATION = 7500
+export const DEFAULT_TOAST_DURATION = 10000
 
 // Enhanced toast configuration per type
 const TOAST_CONFIGS: Record<ToastType, ToastConfig> = {
@@ -75,37 +75,30 @@ export type ToastResult = {
 	cleanup: () => void
 }
 
+type ToastOptions = {
+	description?: string
+	duration?: number
+	priority?: 'low' | 'normal' | 'high'
+	force?: boolean
+}
+
 /**
  * Enhanced toast function with better error handling and performance optimizations
  * Returns a result object with toast ID and cleanup function
  */
 export const createToast = (
 	type: ToastType,
-): ((
-	message: string,
-	options?: {
-		description?: string
-		duration?: number
-		priority?: 'low' | 'normal' | 'high'
-	},
-) => ToastResult) => {
+): ((message: string, options?: ToastOptions) => ToastResult) => {
 	const config = TOAST_CONFIGS[type]
 
-	return (
-		message: string,
-		options?: {
-			description?: string
-			duration?: number
-			priority?: 'low' | 'normal' | 'high'
-		},
-	) => {
+	return (message: string, options?: ToastOptions) => {
 		// Create cache key to prevent duplicate rapid toasts (account for priority)
 		const priorityPart = options?.priority ?? config.priority
 		const cacheKey = `${type}:${priorityPart}:${message}:${options?.description || ''}`
 
 		// Check if identical toast is already showing (prevent spam)
 		// Skip caching for success toasts to always show them
-		if (type !== 'success' && toastCache.has(cacheKey)) {
+		if (type !== 'success' && !options?.force && toastCache.has(cacheKey)) {
 			const cachedToast = toastCache.get(cacheKey)
 			if (cachedToast) {
 				return {
@@ -140,8 +133,8 @@ export const createToast = (
 			toastOptions,
 		)
 
-		// Cache the toast briefly to prevent duplicates (skip caching success toasts)
-		if (type !== 'success') {
+		// Cache the toast briefly to prevent duplicates (skip caching success toasts or forced toasts)
+		if (type !== 'success' && !options?.force) {
 			toastCache.set(cacheKey, toastId)
 		}
 
@@ -151,6 +144,7 @@ export const createToast = (
 		let timeoutId: NodeJS.Timeout | undefined
 		if (
 			type !== 'success' &&
+			!options?.force &&
 			typeof process !== 'undefined' &&
 			process.env.NODE_ENV !== 'test'
 		) {
@@ -179,14 +173,7 @@ export const createToast = (
 // Create wrapper functions that return just the ID for backward compatibility
 const createSimpleToast = (type: ToastType) => {
 	const toastFn = createToast(type)
-	return (
-		message: string,
-		options?: {
-			description?: string
-			duration?: number
-			priority?: 'low' | 'normal' | 'high'
-		},
-	): string | number => {
+	return (message: string, options?: ToastOptions): string | number => {
 		const result = toastFn(message, options)
 		return result.id
 	}

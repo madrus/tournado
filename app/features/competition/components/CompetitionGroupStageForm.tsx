@@ -27,7 +27,6 @@ type CompetitionGroupStageFormProps = {
 			categories: string[]
 			configGroups: string
 			configSlots: string
-			autoFill: boolean
 		}
 	}
 }
@@ -145,30 +144,6 @@ export function CompetitionGroupStageForm({
 							error={actionData?.errors?.configSlots}
 							required
 						/>
-					</div>
-
-					{/* Auto-fill Option */}
-					<div>
-						<label
-							htmlFor='autoFill-checkbox'
-							className='flex items-start gap-2 cursor-pointer'
-						>
-							<Checkbox
-								id='autoFill-checkbox'
-								name='autoFill'
-								defaultChecked={actionData?.fieldValues?.autoFill ?? true}
-								accentColor='fuchsia'
-								className='mt-1'
-							/>
-							<div>
-								<span className='font-medium text-sm'>
-									{t('competition.groupStage.autoFillGroups')}
-								</span>
-								<p className='text-xs text-foreground-light'>
-									{t('competition.groupStage.autoFillDescription')}
-								</p>
-							</div>
-						</label>
 					</div>
 
 					{/* Summary */}

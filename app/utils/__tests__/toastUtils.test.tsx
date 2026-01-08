@@ -6,6 +6,7 @@ import { describe, expect, it, vi } from 'vitest'
 import {
 	createErrorToast,
 	createToast,
+	DEFAULT_TOAST_DURATION,
 	showNetworkError,
 	showPermissionError,
 	showServerError,
@@ -38,7 +39,7 @@ describe('toastUtils', () => {
 
 			expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 
@@ -49,7 +50,7 @@ describe('toastUtils', () => {
 
 			expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 
@@ -66,7 +67,7 @@ describe('toastUtils', () => {
 			toast.success('Test message', { priority: 'high' })
 
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 				style: { borderLeft: '4px solid var(--color-red-500)' },
 			})
 		})
@@ -78,7 +79,7 @@ describe('toastUtils', () => {
 
 			expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 
@@ -87,7 +88,7 @@ describe('toastUtils', () => {
 
 			expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 	})
@@ -98,7 +99,7 @@ describe('toastUtils', () => {
 
 			expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 
@@ -107,7 +108,7 @@ describe('toastUtils', () => {
 
 			expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 	})
@@ -118,7 +119,7 @@ describe('toastUtils', () => {
 
 			expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 
@@ -127,7 +128,7 @@ describe('toastUtils', () => {
 
 			expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 	})
@@ -137,7 +138,7 @@ describe('toastUtils', () => {
 			toast.success('Test message')
 
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 
@@ -153,7 +154,7 @@ describe('toastUtils', () => {
 			toast.info('Test message', { description: undefined })
 
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 	})
@@ -216,7 +217,7 @@ describe('toastUtils', () => {
 			toast.validation('Validation error')
 
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 
@@ -224,7 +225,7 @@ describe('toastUtils', () => {
 			toast.network('Network error')
 
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 
@@ -232,7 +233,7 @@ describe('toastUtils', () => {
 			toast.permission('Permission denied')
 
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 
@@ -240,7 +241,7 @@ describe('toastUtils', () => {
 			toast.server('Server error')
 
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 
@@ -248,7 +249,7 @@ describe('toastUtils', () => {
 			toast.client('Client error')
 
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 
@@ -256,7 +257,7 @@ describe('toastUtils', () => {
 			toast.unknown('Unknown error')
 
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 	})
@@ -267,7 +268,7 @@ describe('toastUtils', () => {
 			createErrorToast(error, 'network')
 
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 				style: { borderLeft: '4px solid var(--color-red-500)' },
 			})
 		})
@@ -276,7 +277,7 @@ describe('toastUtils', () => {
 			showValidationError('email', 'Invalid email format')
 
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 
@@ -284,7 +285,7 @@ describe('toastUtils', () => {
 			showNetworkError('Connection failed')
 
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 
@@ -292,7 +293,7 @@ describe('toastUtils', () => {
 			showPermissionError('Access denied')
 
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 
@@ -300,7 +301,7 @@ describe('toastUtils', () => {
 			showServerError('Internal server error')
 
 			expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
-				duration: 7500,
+				duration: DEFAULT_TOAST_DURATION,
 			})
 		})
 	})
@@ -435,6 +436,20 @@ describe('toastUtils', () => {
 
 			// Same messages should return same IDs
 			expect(toastIds[0]).toBe(toastIds[3]) // Both 'Message 1'
+		})
+
+		it('should bypass dedupe when force is true', () => {
+			vi.mocked(sonnerToast.custom)
+				.mockReturnValueOnce('forced-1')
+				.mockReturnValueOnce('forced-2')
+
+			const first = toast.warning('Force me', { force: true })
+			const second = toast.warning('Force me', { force: true })
+
+			expect(first).toBe('forced-1')
+			expect(second).toBe('forced-2')
+			expect(sonnerToast.custom).toHaveBeenCalledTimes(2)
+			expect(toastCache.size).toBe(0)
 		})
 
 		it('should handle mixed priority toasts efficiently', () => {

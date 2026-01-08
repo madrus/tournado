@@ -3,7 +3,7 @@
 
 import type { User } from '@prisma/client'
 import type React from 'react'
-import { type JSX, useEffect, useRef, useState } from 'react'
+import { type JSX, useCallback, useEffect, useRef, useState } from 'react'
 import {
 	Links,
 	type LinksFunction,
@@ -11,6 +11,7 @@ import {
 	type MetaFunction,
 	Scripts,
 	ScrollRestoration,
+	useLocation,
 } from 'react-router'
 import '@radix-ui/themes/styles.css'
 import '~/styles/radix-overrides.css'
@@ -20,8 +21,14 @@ import { GeneralErrorBoundary } from '~/components/GeneralErrorBoundary'
 import { PWAElements } from '~/components/PWAElements'
 import { SubtleRouteTransition } from '~/components/RouteTransition'
 import { prisma } from '~/db.server'
-import { useTeamFormStore } from '~/features/teams/stores/useTeamFormStore'
+import { useGroupAssignmentActions } from '~/features/competition/stores/useGroupAssignmentStore'
+import {
+	useTeamFormActions,
+	useTeamFormStore,
+} from '~/features/teams/stores/useTeamFormStore'
+import { useTournamentFormActions } from '~/features/tournaments/stores/useTournamentFormStore'
 import type { TournamentData } from '~/features/tournaments/types'
+import { useRouteCleanup } from '~/hooks/useRouteCleanup'
 import { initI18n, type Language, SUPPORTED_LANGUAGES } from '~/i18n/config'
 import {
 	useAuthActions,
@@ -277,6 +284,19 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 	const { setUser, setFirebaseUser } = useAuthActions()
 	const { setTheme, setLanguage } = useSettingsActions()
 	const { setAvailableOptionsField } = useTeamFormStore()
+	const { clearStore: clearGroupAssignmentStore } = useGroupAssignmentActions()
+	const { resetForm: resetTeamForm } = useTeamFormActions()
+	const { resetForm: resetTournamentForm } = useTournamentFormActions()
+	const location = useLocation()
+	const handleClearGroupAssignment = useCallback(
+		() => clearGroupAssignmentStore(),
+		[clearGroupAssignmentStore],
+	)
+	const handleResetTeamForm = useCallback(() => resetTeamForm(), [resetTeamForm])
+	const handleResetTournamentForm = useCallback(
+		() => resetTournamentForm(),
+		[resetTournamentForm],
+	)
 
 	// Initialize store from server values BEFORE first render
 	// This runs synchronously before the component returns JSX
@@ -316,6 +336,27 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 	useEffect(() => {
 		setAvailableOptionsField('tournaments', tournaments)
 	}, [tournaments, setAvailableOptionsField])
+
+	useRouteCleanup({
+		currentPath: location.pathname,
+		isActiveRoute: (pathname) =>
+			/\/competition\/groups\/[^/]+$/.test(pathname.replace(/\/$/, '')),
+		onLeave: handleClearGroupAssignment,
+	})
+
+	useRouteCleanup({
+		currentPath: location.pathname,
+		isActiveRoute: (pathname) =>
+			/\/teams\/(new|[^/]+)$/.test(pathname.replace(/\/$/, '')),
+		onLeave: handleResetTeamForm,
+	})
+
+	useRouteCleanup({
+		currentPath: location.pathname,
+		isActiveRoute: (pathname) =>
+			/\/tournaments\/(new|[^/]+)$/.test(pathname.replace(/\/$/, '')),
+		onLeave: handleResetTournamentForm,
+	})
 
 	// Update i18n when language changes
 	useEffect(() => {

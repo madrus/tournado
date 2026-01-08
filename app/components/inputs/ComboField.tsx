@@ -47,6 +47,8 @@ type ComboFieldProps = {
 	compact?: boolean
 	statusIcon?: ReactNode // Status icon (success/error) rendered inline with label
 	onBlur?: () => void
+	valueClassName?: string
+	getOptionTextClassName?: (option: Option) => string
 }
 
 export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
@@ -66,6 +68,8 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 			compact = false,
 			statusIcon,
 			onBlur,
+			valueClassName,
+			getOptionTextClassName,
 		},
 		selectRef,
 	): JSX.Element => {
@@ -138,6 +142,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 									comboFieldValueVariants({
 										state: safeValue === '' ? 'placeholder' : 'value',
 									}),
+									safeValue === '' ? '' : valueClassName,
 								)}
 							>
 								<Select.Value placeholder={placeholder || 'Selecteer een optie'} />
@@ -175,7 +180,11 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 												compact,
 											})}
 										>
-											<Select.ItemText>{opt.label}</Select.ItemText>
+											<Select.ItemText>
+												<span className={cn(getOptionTextClassName?.(opt))}>
+													{opt.label}
+												</span>
+											</Select.ItemText>
 											<Select.ItemIndicator className='absolute end-2 flex h-3.5 w-3.5 items-center justify-center'>
 												{renderIcon('check', { className: 'w-4 h-4' })}
 											</Select.ItemIndicator>

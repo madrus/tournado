@@ -10,7 +10,7 @@ export const groupCardVariants = cva(
 		'rounded-xl p-4',
 		'border border-accent-sky-500/30 dark:border-accent-sky-300/40',
 		// Sky gradient matching other management panels
-		'bg-gradient-to-br from-accent-sky-600/15 dark:from-accent-sky-300/25 via-accent-sky-600/5 dark:via-accent-sky-300/8 to-surface/40',
+		'bg-gradient-to-br rtl:bg-gradient-to-bl from-accent-sky-600/15 dark:from-accent-sky-300/25 via-accent-sky-600/5 dark:via-accent-sky-300/8 to-surface/40',
 		'backdrop-blur-sm',
 		// Soft shadow for elevation
 		'shadow-md shadow-black/5',
@@ -21,7 +21,7 @@ export const groupCardVariants = cva(
 		variants: {
 			isDropTarget: {
 				true: [
-					'border-brand/60 bg-gradient-to-br from-brand/10 via-brand/5 to-brand/5',
+					'border-brand/60 bg-gradient-to-br rtl:bg-gradient-to-bl from-brand/10 via-brand/5 to-brand/5',
 					'ring-2 ring-brand/20 ring-offset-2 ring-offset-background',
 					'shadow-lg shadow-brand/10',
 				],
@@ -107,11 +107,11 @@ export const unassignedPoolVariants = cva(
 			variant: {
 				confirmed: [
 					'border-primary-600/30 dark:border-primary-400/40',
-					'bg-gradient-to-br from-primary-300/15 dark:from-primary-600/40 via-primary-300/5 dark:via-primary-600/20 to-surface/40',
+					'bg-gradient-to-br rtl:bg-gradient-to-bl from-primary-300/15 dark:from-primary-600/40 via-primary-300/5 dark:via-primary-600/20 to-surface/40',
 				],
 				waitlist: [
 					'border-accent-amber-600/30 dark:border-accent-amber-400/30',
-					'bg-gradient-to-br from-accent-amber-300/15 dark:from-accent-amber-600/15 via-accent-amber-300/5 dark:via-accent-amber-600/5 to-surface/40',
+					'bg-gradient-to-br rtl:bg-gradient-to-bl from-accent-amber-300/15 dark:from-accent-amber-600/15 via-accent-amber-300/5 dark:via-accent-amber-600/5 to-surface/40',
 				],
 			},
 			isDropTarget: {

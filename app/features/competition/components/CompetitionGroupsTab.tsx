@@ -9,7 +9,6 @@ import {
 	formatCompetitionDate,
 } from '~/features/competition/utils/competitionFormatters'
 import type { GroupStageListItem } from '~/models/group.server'
-import { cn } from '~/utils/misc'
 
 type CompetitionGroupsTabProps = {
 	groupStages: readonly GroupStageListItem[]
@@ -96,7 +95,7 @@ export function CompetitionGroupsTab({
 
 							{/* Content */}
 							<div className='mt-4 space-y-2'>
-								<div className='flex items-center text-sm'>
+								<div className='flex items-start text-sm'>
 									<span className='w-28 font-medium text-foreground'>
 										{t('competition.labels.categories')}
 									</span>
@@ -104,7 +103,7 @@ export function CompetitionGroupsTab({
 										{formatCompetitionCategories(groupStage.categories)}
 									</span>
 								</div>
-								<div className='flex items-center text-sm'>
+								<div className='flex items-start text-sm'>
 									<span className='w-28 font-medium text-foreground'>
 										{t('competition.labels.setup')}
 									</span>
@@ -115,28 +114,11 @@ export function CompetitionGroupsTab({
 										})}
 									</span>
 								</div>
-								<div className='flex items-center text-sm'>
-									<span className='w-28 font-medium text-foreground'>
-										{t('competition.labels.autoFill')}
-									</span>
-									<span
-										className={cn(
-											'inline-flex items-center rounded-full px-2 py-1 font-medium text-xs',
-											groupStage.autoFill
-												? 'bg-success-100 text-success-800'
-												: 'bg-neutral text-foreground-light',
-										)}
-									>
-										{groupStage.autoFill
-											? t('competition.status.enabled')
-											: t('competition.status.disabled')}
-									</span>
-								</div>
-								<div className='flex items-center text-sm'>
+								<div className='flex items-start text-sm'>
 									<span className='w-28 font-medium text-foreground'>
 										{t('competition.labels.created')}
 									</span>
-									<span className='text-foreground-lighter text-xs'>
+									<span className='text-foreground-light'>
 										{formatCompetitionDate(groupStage.createdAt, i18n.language)}
 									</span>
 								</div>

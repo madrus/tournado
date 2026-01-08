@@ -182,7 +182,6 @@
 			"categories": "Catégories :",
 			"setup": "Configuration :",
 			"setupSummary": "{{groups}} groupes × {{teams}} équipes",
-			"autoFill": "Remplissage auto :",
 			"created": "Créé :"
 		},
 		"status": {
@@ -199,15 +198,13 @@
 			"configGroupsPlaceholder": "4",
 			"configSlots": "Équipes par groupe",
 			"configSlotsPlaceholder": "5",
-			"autoFillGroups": "Remplir automatiquement les groupes",
-			"autoFillDescription": "Répartir automatiquement les équipes dans les groupes initialement",
 			"summary": "Résumé",
 			"summaryTeamsAvailable": "{{count}} équipes disponibles dans les catégories sélectionnées",
 			"summaryWillCreate": "Créera {{groups}} groupes avec {{slots}} places chacun ({{total}} places au total)",
 			"title": "Phase de groupes"
 		},
 		"groupAssignment": {
-			"instruction": "Glissez les équipes pour les assigner aux groupes. Déposez sur un groupe pour l'assignation automatique, ou sur une place spécifique pour placer directement.",
+			"instruction": "Faites glisser les équipes pour les assigner à des places spécifiques. Déposez sur une place libre ou sur une équipe pour la remplacer.",
 			"backToGroups": "Retour aux groupes",
 			"unsavedChanges": "Vous avez des modifications non enregistrées",
 			"unsavedTitle": "Modifications non enregistrées",
@@ -246,14 +243,14 @@
 			},
 			"reserve": {
 				"title": "Équipes confirmées",
-				"count": "Équipes: {{count}} sur {{capacity}}",
+				"availableSlots": "Places disponibles: {{capacity}}",
 				"empty": "Aucune équipe dans le pool confirmé",
 				"dropToAdd": "Déposer ici pour déplacer en réserve",
-				"ariaLabel": "Pool d'équipes confirmées - {{count}} sur {{capacity}} de capacité"
+				"ariaLabel": "Pool d'équipes confirmées - {{capacity}} places disponibles"
 			},
 			"waitlist": {
 				"title": "Liste d'attente",
-				"count": "{{count}} en attente",
+				"count": "En attente : {{count}}",
 				"noCapacity": "Le pool confirmé est plein. Libérez des places pour promouvoir les équipes en liste d'attente.",
 				"helpPromote": "Glissez les équipes en liste d'attente vers le pool confirmé pour les ajouter.",
 				"helpBlocked": "Toutes les places sont assignées. Retirez des équipes des groupes pour faire de la place.",

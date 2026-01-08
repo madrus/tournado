@@ -83,7 +83,11 @@ export const shouldInitialize = (
 	if (!currentSnapshot) return true
 	if (hasOriginalSnapshot && !originalSnapshot) return true
 
-	return currentSnapshot.groupStageId !== incomingSnapshot.groupStageId
+	if (currentSnapshot.groupStageId !== incomingSnapshot.groupStageId) {
+		return true
+	}
+
+	return currentSnapshot.updatedAt !== incomingSnapshot.updatedAt
 }
 
 export const isGroupAssignmentDirty = (
@@ -204,6 +208,32 @@ export const swapTeamWithSlot = (
 
 	const found = findTeam(snapshot, teamId)
 	if (!found) return null
+
+	if (found.location === 'group' && found.groupId === groupId && targetSlot.team) {
+		const targetTeam = targetSlot.team
+		const sourceSlotIndex = found.slotIndex
+		const updatedGroups = snapshot.groups.map((group) =>
+			group.id !== groupId
+				? group
+				: {
+						...group,
+						slots: group.slots.map((slot) => {
+							if (slot.slotIndex === slotIndex) {
+								return { ...slot, team: stripWaitlist(found.team) }
+							}
+							if (slot.slotIndex === sourceSlotIndex) {
+								return { ...slot, team: stripWaitlist(targetTeam) }
+							}
+							return slot
+						}),
+					},
+		)
+
+		return {
+			...snapshot,
+			groups: updatedGroups,
+		}
+	}
 
 	const updatedGroups = setTeamInSlot(
 		clearTeamFromGroups(snapshot.groups, teamId),

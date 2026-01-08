@@ -40,8 +40,16 @@ export function GroupSlotDropZone({
 	const slotState = getSlotState()
 
 	return slot.team ? (
-		<div ref={setNodeRef} data-testid={`group-slot-${slot.slotIndex}`}>
-			<DraggableTeamChip team={slot.team} disabled={disabled} />
+		<div
+			ref={setNodeRef}
+			data-testid={`group-slot-${slot.slotIndex}`}
+			className={cn(
+				'relative rounded-lg',
+				isOver &&
+					"bg-brand/10 ring-2 ring-brand/30 shadow-md shadow-brand/20 before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-dashed before:border-brand before:content-[''] before:pointer-events-none",
+			)}
+		>
+			<DraggableTeamChip team={slot.team} disabled={disabled} isDropTarget={isOver} />
 		</div>
 	) : (
 		<div

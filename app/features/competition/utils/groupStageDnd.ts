@@ -121,7 +121,7 @@ export const findSlotById = (
  * Find a team in the reserve or groups
  */
 type TeamLocationResult =
-	| { location: 'reserve'; team: DndTeam }
+	| { location: 'reserve'; team: DndTeam; isWaitlist: boolean }
 	| { location: 'group'; team: DndTeam; groupId: string; slotIndex: number }
 
 export const findTeam = (
@@ -131,7 +131,11 @@ export const findTeam = (
 	// Check reserve
 	const reserveTeam = snapshot.unassignedTeams.find((t) => t.id === teamId)
 	if (reserveTeam) {
-		return { location: 'reserve', team: reserveTeam }
+		return {
+			location: 'reserve',
+			team: reserveTeam,
+			isWaitlist: reserveTeam.isWaitlist,
+		}
 	}
 
 	// Check groups

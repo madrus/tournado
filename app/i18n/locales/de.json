@@ -182,7 +182,6 @@
 			"categories": "Kategorien:",
 			"setup": "Aufbau:",
 			"setupSummary": "{{groups}} Gruppen × {{teams}} Teams",
-			"autoFill": "Auto-Ausfüllen:",
 			"created": "Erstellt:"
 		},
 		"status": {
@@ -199,15 +198,13 @@
 			"configGroupsPlaceholder": "4",
 			"configSlots": "Teams pro Gruppe",
 			"configSlotsPlaceholder": "5",
-			"autoFillGroups": "Gruppen automatisch ausfüllen",
-			"autoFillDescription": "Teams initial automatisch auf die Gruppen verteilen",
 			"summary": "Zusammenfassung",
 			"summaryTeamsAvailable": "{{count}} Teams verfügbar in ausgewählten Kategorien",
 			"summaryWillCreate": "Es werden {{groups}} Gruppen mit jeweils {{slots}} Plätzen erstellt ({{total}} Plätze insgesamt)",
 			"title": "Gruppenphase"
 		},
 		"groupAssignment": {
-			"instruction": "Ziehen Sie Teams, um sie Gruppen zuzuweisen. Auf eine Gruppe loslassen für automatische Zuweisung, oder auf einen bestimmten Platz für direkte Platzierung.",
+			"instruction": "Ziehen Sie Teams, um sie bestimmten Plätzen zuzuweisen. Lassen Sie auf einem freien Platz oder auf einem Team los, um es zu ersetzen.",
 			"backToGroups": "Zurück zu Gruppen",
 			"unsavedChanges": "Sie haben ungespeicherte Änderungen",
 			"unsavedTitle": "Ungespeicherte Änderungen",
@@ -246,14 +243,14 @@
 			},
 			"reserve": {
 				"title": "Bestätigte Teams",
-				"count": "Teams: {{count}} von {{capacity}}",
+				"availableSlots": "Verfügbare Plätze: {{capacity}}",
 				"empty": "Keine Teams im bestätigten Pool",
 				"dropToAdd": "Hier loslassen, um zur Reserve zu verschieben",
-				"ariaLabel": "Bestätigter Teams-Pool - {{count}} von {{capacity}} Kapazität"
+				"ariaLabel": "Bestätigter Teams-Pool - {{capacity}} verfügbare Plätze"
 			},
 			"waitlist": {
 				"title": "Warteliste",
-				"count": "{{count}} wartend",
+				"count": "Wartend: {{count}}",
 				"noCapacity": "Bestätigter Pool ist voll. Plätze freigeben, um Wartelisten-Teams aufzunehmen.",
 				"helpPromote": "Ziehen Sie Wartelisten-Teams in den bestätigten Pool, um sie hinzuzufügen.",
 				"helpBlocked": "Alle Plätze sind belegt. Entfernen Sie Teams aus Gruppen, um Platz zu schaffen.",

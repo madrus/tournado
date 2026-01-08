@@ -486,7 +486,7 @@ Details: See `docs/development/PRD.details.md#bracket-formats`
 - [ ] E2E happy path (Playwright) validated
 - [ ] Lint, typecheck, and build pass: `pnpm validate`
 - [ ] Performance budget respected on targeted routes (Lighthouse mobile ≥ 90)
-- [ ] Accessibility basics: roles, labels, keyboard nav
+- [ ] Accessibility basics: roles, labels, keyboard nav (keyboard DnD for group assignment deferred due to mobile-first priority)
 - [ ] No remaining references to unrelated stacks (Next.js/Python) in this PRD
 
 ---

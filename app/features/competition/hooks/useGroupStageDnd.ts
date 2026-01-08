@@ -1,12 +1,11 @@
 import type { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { toast } from 'sonner'
+import { toast } from '~/utils/toastUtils'
 
 import {
 	getConfirmedCapacity,
 	getTeamById,
-	getTeamLocation,
 } from '../stores/helpers/groupAssignmentStoreHelpers'
 import {
 	useGroupAssignmentActions,
@@ -14,6 +13,7 @@ import {
 } from '../stores/useGroupAssignmentStore'
 import {
 	type DndTeam,
+	findTeam,
 	isConfirmedPoolId,
 	isWaitlistPoolId,
 	parseSlotDropId,
@@ -35,10 +35,25 @@ type UseGroupStageDndResult = {
 	activeDropTarget: string | null
 }
 
-export const useGroupStageDnd = (): UseGroupStageDndResult => {
+type UseGroupStageDndProps = {
+	onDisplacedTeam?: (teamId: string) => void
+}
+
+/**
+ * Custom hook for managing drag-and-drop behavior in group stage assignments.
+ * @param props - Configuration options
+ * @param props.onDisplacedTeam - Optional callback invoked when a team is displaced
+ * from its slot during a swap operation (before the swap executes). Not called for
+ * same-group swaps.
+ * @returns Drag-and-drop event handlers and state
+ */
+export const useGroupStageDnd = (
+	props: UseGroupStageDndProps = {},
+): UseGroupStageDndResult => {
 	const { t } = useTranslation()
 	const [activeDragTeam, setActiveDragTeam] = useState<DndTeam | null>(null)
 	const [activeDropTarget, setActiveDropTarget] = useState<string | null>(null)
+	const { onDisplacedTeam } = props
 
 	const snapshot = useGroupAssignmentSnapshot()
 	const {
@@ -98,12 +113,19 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 			const teamId = parseTeamDragId(String(active.id))
 			if (!teamId) return
 
-			const overId = String(over.id)
-			const teamLocation = getTeamLocation(snapshot, teamId)
-			if (!teamLocation) {
+			const found = findTeam(snapshot, teamId)
+			if (!found) {
 				toast.error(t('messages.groupAssignment.teamNotFound'))
 				return
 			}
+
+			const overId = String(over.id)
+			const teamLocation =
+				found.location === 'group'
+					? 'group'
+					: found.isWaitlist
+						? 'waitlist'
+						: 'confirmed'
 			const isFromWaitlist = teamLocation === 'waitlist'
 
 			// Drop on confirmed pool
@@ -117,7 +139,9 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 					if (capacity > 0 && confirmedCount < capacity) {
 						promoteFromWaitlist(teamId)
 					} else {
-						toast.error(t('competition.groupAssignment.errors.noCapacity'))
+						toast.warning(t('competition.groupAssignment.errors.noCapacity'), {
+							force: true,
+						})
 					}
 				} else if (teamLocation === 'group') {
 					moveTeamToConfirmed(teamId)
@@ -136,7 +160,9 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 
 			// Block waitlist teams from going directly to group slots
 			if (isFromWaitlist) {
-				toast.error(t('competition.groupAssignment.errors.waitlistToGroup'))
+				toast.warning(t('competition.groupAssignment.errors.waitlistToGroup'), {
+					force: true,
+				})
 				return
 			}
 
@@ -163,8 +189,13 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 					return // No action needed
 				}
 
-				// If slot is occupied, swap
+				// If slot is occupied, swap/replace
 				if (targetSlot.team) {
+					const isSameGroupSwap =
+						found.location === 'group' && found.groupId === groupId
+					if (!isSameGroupSwap) {
+						onDisplacedTeam?.(targetSlot.team.id)
+					}
 					swapTeamWithSlot(teamId, groupId, slotIndex)
 				} else {
 					assignTeamToSlot(teamId, groupId, slotIndex)
@@ -182,6 +213,7 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 			swapTeamWithSlot,
 			promoteFromWaitlist,
 			t,
+			onDisplacedTeam,
 		],
 	)
 

@@ -92,6 +92,20 @@ describe('useGroupAssignmentStore', () => {
 		expect(state().snapshot).toEqual(snapshot)
 	})
 
+	it('should update snapshot pair when updatedAt changes', () => {
+		const snapshot = createSnapshot()
+		const nextSnapshot = {
+			...snapshot,
+			updatedAt: '2024-02-01T00:00:00.000Z',
+		}
+
+		state().setSnapshotPair(snapshot)
+		state().setSnapshotPair(nextSnapshot)
+
+		expect(state().snapshot).toEqual(nextSnapshot)
+		expect(state().originalSnapshot).toEqual(nextSnapshot)
+	})
+
 	it('should reset snapshot to the original pair', () => {
 		const snapshot = createSnapshot()
 

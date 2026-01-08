@@ -83,7 +83,11 @@ export const shouldInitialize = (
 	if (!currentSnapshot) return true
 	if (hasOriginalSnapshot && !originalSnapshot) return true
 
-	return currentSnapshot.groupStageId !== incomingSnapshot.groupStageId
+	if (currentSnapshot.groupStageId !== incomingSnapshot.groupStageId) {
+		return true
+	}
+
+	return currentSnapshot.updatedAt !== incomingSnapshot.updatedAt
 }
 
 export const isGroupAssignmentDirty = (

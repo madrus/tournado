@@ -80,6 +80,12 @@ describe('groupAssignmentStoreHelpers', () => {
 					groupStageId: 'group-stage-2',
 				}),
 			).toBe(true)
+			expect(
+				shouldInitialize(snapshot, {
+					...snapshot,
+					updatedAt: '2024-02-01T00:00:00.000Z',
+				}),
+			).toBe(true)
 		})
 
 		it('should detect dirty snapshot changes', () => {

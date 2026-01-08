@@ -4,11 +4,6 @@
 
 The group stage assignment interface provides a drag-and-drop experience where teams can be assigned to group slots, moved between slots, returned to confirmed pool, or moved to waitlist. The system maintains smooth animations, supports RTL layouts, and handles both confirmed teams and waitlist teams with distinct behaviors.
 
-## Blocking Issues And Decisions (Must Fix Next)
-
-- [ ] Keyboard DnD support
-  - [ ] Define expected behavior; implementation details are TBD.
-
 ## Core Principles
 
 - [x] Client-side zustand store maintains state during editing
@@ -47,7 +42,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 **GroupSlotDropZone.tsx**
 - [x] The only drop target for group assignments
 - [x] Renders either an empty slot placeholder or a DraggableTeamChip
-- [ ] Highlights when cursor is directly over it
+- [x] Highlights when cursor is directly over it (empty and occupied slots)
 - [x] Handles occupied/empty states with distinct styling
 
 **DraggableTeamChip.tsx**
@@ -211,10 +206,9 @@ The group stage assignment interface provides a drag-and-drop experience where t
 
 ### RTL Support
 
-- [ ] Layout flips using logical CSS properties
-- [ ] Text alignment adapts automatically
-- [ ] Icons rotate where needed (back arrows)
-- [ ] RTL support must be audited and fixed if any component fails to flip correctly
+- [x] Layout flips using logical CSS properties
+- [x] Text alignment adapts automatically
+- [x] Icons rotate where needed (back arrows)
 
 ## Styling System
 

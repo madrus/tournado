@@ -7,7 +7,7 @@ import { useLoaderData } from 'react-router'
 import { ActionLinkButton } from '~/components/buttons'
 import { useTheme } from '~/hooks/useTheme'
 import type { Language } from '~/i18n/config'
-import { ADMIN_DASHBOARD_URL } from '~/lib/lib.constants'
+import { adminPath } from '~/utils/adminRoutes'
 import { cn } from '~/utils/misc'
 import { hasAdminPanelAccess } from '~/utils/rbac'
 import type { RouteMetadata } from '~/utils/routeTypes'
@@ -61,9 +61,7 @@ export default function IndexPage(): JSX.Element {
 	const typography = getTypographyClasses(currentLanguage)
 
 	// Determine the correct teams route based on user permissions
-	const teamsRoute = hasAdminPanelAccess(user)
-		? `${ADMIN_DASHBOARD_URL}/teams`
-		: '/teams'
+	const teamsRoute = hasAdminPanelAccess(user) ? adminPath('/teams') : '/teams'
 
 	return (
 		<main className={`flex h-full flex-col ${theme}`}>

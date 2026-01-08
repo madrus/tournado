@@ -100,7 +100,7 @@ These variables configure the Firebase client SDK and are exposed to the browser
 - **Staging**: `""` (empty, can be configured later)
 - **Production**: `""` (empty, can be configured later)
 
-#### `VITE_ADMIN_DASHBOARD_URL`
+#### `VITE_ADMIN_SLUG`
 
 - **Purpose**: Admin dashboard obfuscated URL path
 - **Required**: Optional (defaults to `/a7k9m2x5p8w1n4q6r3y8b5t1`)
@@ -114,7 +114,7 @@ These variables configure the Firebase client SDK and are exposed to the browser
 
 ```bash
 # Custom obfuscated path
-VITE_ADMIN_DASHBOARD_URL="/x9p2m5k8n3w7q1r4y6b8t2a5"
+VITE_ADMIN_SLUG="/x9p2m5k8n3w7q1r4y6b8t2a5"
 ```
 
 **Use Case**: When you need to rotate the admin URL for security (e.g., discovered by bots, security incident) or want different URLs per environment without code changes.

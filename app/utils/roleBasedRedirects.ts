@@ -6,17 +6,19 @@
  */
 import type { User } from '@prisma/client'
 
+import { adminPath, isAdminPath } from '~/utils/adminRoutes'
+
 import { getUserRole, isAdmin } from './rbac'
 
 /**
  * Default landing pages for each role
  */
 const ROLE_LANDING_PAGES = {
-	ADMIN: '/a7k9m2x5p8w1n4q6r3y8b5t1',
-	MANAGER: '/a7k9m2x5p8w1n4q6r3y8b5t1',
-	EDITOR: '/a7k9m2x5p8w1n4q6r3y8b5t1', // Editors need admin panel for content management
-	BILLING: '/a7k9m2x5p8w1n4q6r3y8b5t1', // Billing users need admin panel for billing management
-	REFEREE: '/a7k9m2x5p8w1n4q6r3y8b5t1', // Referees need admin panel for match management
+	ADMIN: adminPath(),
+	MANAGER: adminPath(),
+	EDITOR: adminPath(), // Editors need admin panel for content management
+	BILLING: adminPath(), // Billing users need admin panel for billing management
+	REFEREE: adminPath(), // Referees need admin panel for match management
 	PUBLIC: '/',
 } as const
 
@@ -56,7 +58,7 @@ export function getPostSignInRedirect(
 			const isAdminUser = ['ADMIN', 'MANAGER', 'EDITOR', 'BILLING', 'REFEREE'].includes(
 				role,
 			)
-			const requestedAdminRoute = requestedPath.startsWith('/a7k9m2x5p8w1n4q6r3y8b5t1')
+			const requestedAdminRoute = isAdminPath(requestedPath)
 
 			// If admin user requested a non-admin route, redirect to admin panel instead
 			if (isAdminUser && !requestedAdminRoute) {
@@ -90,7 +92,7 @@ export function canUserAccessPath(user: User | null, path: string): boolean {
 	}
 
 	// Admin panel routes require admin role or referee role
-	if (path.startsWith('/a7k9m2x5p8w1n4q6r3y8b5t1')) {
+	if (isAdminPath(path)) {
 		if (!user) return false
 		const role = getUserRole(user)
 		return (
@@ -172,12 +174,12 @@ export function getUnauthorizedRedirect(
 
 		case 'REFEREE':
 			// Referees who try to access content beyond their permissions
-			return '/a7k9m2x5p8w1n4q6r3y8b5t1?error=insufficient-permissions'
+			return adminPath('?error=insufficient-permissions')
 
 		case 'MANAGER':
 		case 'ADMIN':
 			// Admin users hitting unauthorized (shouldn't happen often)
-			return '/a7k9m2x5p8w1n4q6r3y8b5t1?error=access-denied'
+			return adminPath('?error=access-denied')
 
 		default:
 			return '/?error=unauthorized'

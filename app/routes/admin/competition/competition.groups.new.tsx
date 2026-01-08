@@ -6,6 +6,7 @@ import { CompetitionGroupStageForm } from '~/features/competition/components'
 import { getServerT } from '~/i18n/i18n.server'
 import { createGroupStage, getUnassignedTeamsByCategories } from '~/models/group.server'
 import { getTournamentById } from '~/models/tournament.server'
+import { adminPath } from '~/utils/adminRoutes'
 import { safeParseJSON } from '~/utils/json'
 import { invariant } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
@@ -164,7 +165,7 @@ export async function action({
 		})
 
 		return redirect(
-			`/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/${groupStageId}?tournament=${tournamentId}`,
+			adminPath(`/competition/groups/${groupStageId}?tournament=${tournamentId}`),
 		)
 	} catch (_error) {
 		return {

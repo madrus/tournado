@@ -2,6 +2,8 @@
  * Prefetching configuration types and utilities for React Router v7
  */
 
+import { adminPath } from './adminRoutes'
+
 export type PrefetchStrategy = 'none' | 'intent' | 'render' | 'viewport'
 
 /**
@@ -120,7 +122,7 @@ export const routePrefetchOverrides: Record<string, PrefetchStrategy> =
 				'/auth/signup': 'intent',
 
 				// Admin routes only when needed
-				'/a7k9m2x5p8w1n4q6r3y8b5t1': 'intent',
+				[adminPath()]: 'intent',
 
 				// About page - lower priority
 				'/about': 'intent',

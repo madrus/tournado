@@ -4,6 +4,7 @@ import { useLoaderData, useNavigate } from 'react-router'
 
 import { TeamsPageContent } from '~/features/teams/components/TeamsPageContent'
 import type { TeamsLoaderData } from '~/features/teams/types'
+import { adminPath } from '~/utils/adminRoutes'
 import { loadTeamsAndTournamentsData } from '~/utils/dataLoaders'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
@@ -48,7 +49,7 @@ export default function AdminTeamsIndexPage(): JSX.Element {
 	const navigate = useNavigate()
 
 	const handleTeamClick = (teamId: string) => {
-		navigate(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${teamId}`)
+		navigate(adminPath(`/teams/${teamId}`))
 	}
 
 	return (

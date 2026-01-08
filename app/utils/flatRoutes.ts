@@ -1,6 +1,8 @@
 import path from 'node:path'
 import { glob } from 'glob'
 
+import { getAdminBasePath } from './adminRoutes'
+
 type RouteEntry = {
 	path?: string
 	file: string
@@ -14,6 +16,19 @@ type RouteMap = {
 		isLayout?: boolean
 		parentPath?: string
 	}
+}
+
+const ADMIN_ROUTE_SEGMENT = 'admin'
+const ADMIN_ROUTE_PREFIX = `/${ADMIN_ROUTE_SEGMENT}`
+
+function applyAdminRoutePrefix(routePath: string): string {
+	if (!routePath) return routePath
+	const adminBasePath = `/${getAdminBasePath()}`
+	if (routePath === ADMIN_ROUTE_PREFIX) return adminBasePath
+	if (routePath.startsWith(`${ADMIN_ROUTE_PREFIX}/`)) {
+		return `${adminBasePath}${routePath.slice(ADMIN_ROUTE_PREFIX.length)}`
+	}
+	return routePath
 }
 
 export function scanFlatRoutes(): RouteEntry[] {
@@ -66,11 +81,11 @@ export function scanFlatRoutes(): RouteEntry[] {
 
 			if (isLayoutFile) {
 				// This is a layout file: teams/teams.tsx -> /teams (layout)
-				// or a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.tsx -> /a7k9m2x5p8w1n4q6r3y8b5t1/teams (layout)
+				// or admin/teams/teams.tsx -> /admin/teams (layout)
 				routePath = `/${dirSegments.join('/')}`
 				isLayout = true
 
-				// If this is nested (e.g., a7k9m2x5p8w1n4q6r3y8b5t1/teams), set parent
+				// If this is nested (e.g., admin/teams), set parent
 				if (dirSegments.length > 1) {
 					parentPath = `/${dirSegments.slice(0, -1).join('/')}`
 				}
@@ -78,7 +93,7 @@ export function scanFlatRoutes(): RouteEntry[] {
 				// Handle flat route naming in subdirectories: teams.new.tsx -> teams/new
 				const segments = fileName.split('.')
 				const baseSegment = segments[0]
-				const parentDirPath = `/${dirName.replace(/\//g, '/')}`
+				const parentDirPath = applyAdminRoutePrefix(`/${dirName.replace(/\//g, '/')}`)
 
 				if (fileName === baseSegment) {
 					// This shouldn't happen with the layout check above, but just in case
@@ -101,7 +116,7 @@ export function scanFlatRoutes(): RouteEntry[] {
 				}
 			} else if (fileName === '_index') {
 				// Handle folder-based routing: users/_index.tsx -> /users (index)
-				routePath = `/${dirName}`
+				routePath = applyAdminRoutePrefix(`/${dirName}`)
 			} else if (fileName.startsWith('$')) {
 				// Handle folder-based dynamic routes: users/$userId.tsx -> /users/:userId
 				const paramName = fileName.substring(1) // Remove the $
@@ -116,12 +131,17 @@ export function scanFlatRoutes(): RouteEntry[] {
 							'Parameter names must start with a letter or underscore, and contain only alphanumeric characters and underscores.',
 					)
 				} else {
-					routePath = `/${dirName}/:${paramName}`
+					routePath = applyAdminRoutePrefix(`/${dirName}/:${paramName}`)
 				}
 			} else {
 				// Simple file in subdirectory: resources/somefile -> /resources/somefile
-				routePath = `/${dirName}/${fileName}`
+				routePath = applyAdminRoutePrefix(`/${dirName}/${fileName}`)
 			}
+		}
+
+		routePath = applyAdminRoutePrefix(routePath)
+		if (parentPath) {
+			parentPath = applyAdminRoutePrefix(parentPath)
 		}
 
 		routeMap[routePath] = {

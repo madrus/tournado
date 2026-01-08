@@ -12,7 +12,7 @@ const schema = z.object({
 	VITE_FIREBASE_STORAGE_BUCKET: z.string().optional(),
 	VITE_FIREBASE_MESSAGING_SENDER_ID: z.string().optional(),
 	VITE_FIREBASE_APP_ID: z.string().optional(),
-	VITE_ADMIN_DASHBOARD_URL: z.string().optional(),
+	VITE_ADMIN_SLUG: z.string().optional(),
 	PLAYWRIGHT: z.string().optional(),
 })
 
@@ -47,6 +47,6 @@ export const getEnv = (): ENV => ({
 	VITE_FIREBASE_STORAGE_BUCKET: process.env.VITE_FIREBASE_STORAGE_BUCKET,
 	VITE_FIREBASE_MESSAGING_SENDER_ID: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
 	VITE_FIREBASE_APP_ID: process.env.VITE_FIREBASE_APP_ID,
-	VITE_ADMIN_DASHBOARD_URL: process.env.VITE_ADMIN_DASHBOARD_URL,
+	VITE_ADMIN_SLUG: process.env.VITE_ADMIN_SLUG,
 	PLAYWRIGHT: process.env.PLAYWRIGHT,
 })

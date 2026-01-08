@@ -7,7 +7,7 @@
 
 import type { User } from '@prisma/client'
 import { redirect } from 'react-router'
-
+import { adminPath } from './adminRoutes'
 import {
 	checkRateLimit,
 	createRateLimitResponse,
@@ -132,7 +132,7 @@ export function getPostAuthRedirect(
 		case 'BILLING':
 		case 'REFEREE':
 			// Admin panel access for ADMIN, MANAGER, EDITOR, BILLING, and REFEREE users
-			return '/a7k9m2x5p8w1n4q6r3y8b5t1'
+			return adminPath()
 		default:
 			// Public users go to teams page
 			return '/teams'

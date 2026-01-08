@@ -20,6 +20,7 @@ import { TeamForm } from '~/features/teams/components/TeamForm'
 import { useTeamFormActions } from '~/features/teams/stores/useTeamFormStore'
 import type { TeamCreateActionData } from '~/features/teams/types'
 import { getDivisionLabel, stringToCategory, stringToDivision } from '~/lib/lib.helpers'
+import { adminPath } from '~/utils/adminRoutes'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 import { toast } from '~/utils/toastUtils'
@@ -235,7 +236,7 @@ export async function action({
 			},
 		})
 
-		return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${teamId}?success=updated`)
+		return redirect(adminPath(`/teams/${teamId}?success=updated`))
 	}
 
 	if (intent === 'delete') {
@@ -243,7 +244,7 @@ export async function action({
 			where: { id: teamId },
 		})
 
-		return redirect('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+		return redirect(adminPath('/teams'))
 	}
 
 	return Response.json({ errors: {} })

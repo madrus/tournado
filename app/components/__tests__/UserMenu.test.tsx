@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { ADMIN_DASHBOARD_URL } from '~/lib/lib.constants'
+import { adminPath } from '~/utils/adminRoutes'
 
 import type { MenuItemType } from '../UserMenu'
 import { UserMenu } from '../UserMenu'
@@ -90,12 +90,12 @@ describe('UserMenu', () => {
 		{
 			label: 'Admin Panel',
 			icon: 'admin_panel_settings',
-			href: ADMIN_DASHBOARD_URL,
+			href: adminPath(),
 		},
 		{
 			label: 'Tournaments',
 			icon: 'trophy',
-			href: `${ADMIN_DASHBOARD_URL}/tournaments`,
+			href: adminPath('/tournaments'),
 		},
 		{
 			label: 'Teams',
@@ -105,12 +105,12 @@ describe('UserMenu', () => {
 		{
 			label: 'Competition',
 			icon: 'sports',
-			href: `${ADMIN_DASHBOARD_URL}/competition`,
+			href: adminPath('/competition'),
 		},
 		{
 			label: 'Users',
 			icon: 'people',
-			href: `${ADMIN_DASHBOARD_URL}/users`,
+			href: adminPath('/users'),
 		},
 		{
 			label: 'About',
@@ -270,11 +270,11 @@ describe('UserMenu', () => {
 		})
 
 		test.each([
-			{ label: 'Admin Panel', href: ADMIN_DASHBOARD_URL },
-			{ label: 'Tournaments', href: `${ADMIN_DASHBOARD_URL}/tournaments` },
+			{ label: 'Admin Panel', href: adminPath() },
+			{ label: 'Tournaments', href: adminPath('/tournaments') },
 			{ label: 'Teams', href: '/teams' },
-			{ label: 'Competition', href: `${ADMIN_DASHBOARD_URL}/competition` },
-			{ label: 'Users', href: `${ADMIN_DASHBOARD_URL}/users` },
+			{ label: 'Competition', href: adminPath('/competition') },
+			{ label: 'Users', href: adminPath('/users') },
 			{ label: 'About', href: '/about' },
 			{ label: 'Settings', href: '/settings' },
 			{ label: 'Profile', href: '/profile' },

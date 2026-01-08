@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
-
+import { adminPath } from '~/utils/adminRoutes'
 import { scanFlatRoutes } from '../flatRoutes'
 
 // Mock glob with factory function
@@ -129,42 +129,42 @@ describe('scanFlatRoutes', () => {
 		const mockGlob = vi.mocked(glob.sync)
 
 		mockGlob.mockReturnValue([
-			'a7k9m2x5p8w1n4q6r3y8b5t1/a7k9m2x5p8w1n4q6r3y8b5t1.tsx',
-			'a7k9m2x5p8w1n4q6r3y8b5t1/a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx',
-			'a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.tsx',
-			'a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams._index.tsx',
-			'a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.new.tsx',
-			'a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.$teamId.tsx',
+			'admin/admin.tsx',
+			'admin/admin._index.tsx',
+			'admin/teams/teams.tsx',
+			'admin/teams/teams._index.tsx',
+			'admin/teams/teams.new.tsx',
+			'admin/teams/teams.$teamId.tsx',
 		])
 
 		const routes = scanFlatRoutes()
 
 		expect(routes).toEqual([
 			{
-				path: '/a7k9m2x5p8w1n4q6r3y8b5t1',
-				file: 'routes/a7k9m2x5p8w1n4q6r3y8b5t1/a7k9m2x5p8w1n4q6r3y8b5t1.tsx',
+				path: adminPath(),
+				file: 'routes/admin/admin.tsx',
 				children: [
 					{
 						path: 'teams', // This should be relative, not absolute!
-						file: 'routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.tsx',
+						file: 'routes/admin/teams/teams.tsx',
 						children: [
 							{
 								index: true,
-								file: 'routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams._index.tsx',
+								file: 'routes/admin/teams/teams._index.tsx',
 							},
 							{
 								path: 'new',
-								file: 'routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.new.tsx',
+								file: 'routes/admin/teams/teams.new.tsx',
 							},
 							{
 								path: ':teamId',
-								file: 'routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.$teamId.tsx',
+								file: 'routes/admin/teams/teams.$teamId.tsx',
 							},
 						],
 					},
 					{
 						index: true,
-						file: 'routes/a7k9m2x5p8w1n4q6r3y8b5t1/a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx',
+						file: 'routes/admin/admin._index.tsx',
 					},
 				],
 			},
@@ -179,17 +179,17 @@ describe('scanFlatRoutes', () => {
 			'teams/teams.tsx',
 			'teams/teams._index.tsx',
 			'teams/teams.new.tsx',
-			'a7k9m2x5p8w1n4q6r3y8b5t1/a7k9m2x5p8w1n4q6r3y8b5t1.tsx',
-			'a7k9m2x5p8w1n4q6r3y8b5t1/a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx',
-			'a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.tsx',
-			'a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams._index.tsx',
+			'admin/admin.tsx',
+			'admin/admin._index.tsx',
+			'admin/teams/teams.tsx',
+			'admin/teams/teams._index.tsx',
 		])
 
 		const routes = scanFlatRoutes()
 
 		// Should have separate public and admin teams routes
 		const publicTeamsRoute = routes.find((r) => r.path === '/teams')
-		const adminLayoutRoute = routes.find((r) => r.path === '/a7k9m2x5p8w1n4q6r3y8b5t1')
+		const adminLayoutRoute = routes.find((r) => r.path === adminPath())
 
 		expect(publicTeamsRoute).toBeDefined()
 		expect(publicTeamsRoute?.file).toBe('routes/teams/teams.tsx')
@@ -200,9 +200,7 @@ describe('scanFlatRoutes', () => {
 
 		const adminTeamsRoute = adminLayoutRoute?.children?.find((c) => c.path === 'teams')
 		expect(adminTeamsRoute).toBeDefined()
-		expect(adminTeamsRoute?.file).toBe(
-			'routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.tsx',
-		)
+		expect(adminTeamsRoute?.file).toBe('routes/admin/teams/teams.tsx')
 		expect(adminTeamsRoute?.children).toHaveLength(1) // just _index
 	})
 
@@ -304,12 +302,12 @@ describe('scanFlatRoutes', () => {
 			'auth/auth.signin.tsx',
 			'auth/auth.signup.tsx',
 			'auth/auth.signout.tsx',
-			'a7k9m2x5p8w1n4q6r3y8b5t1/a7k9m2x5p8w1n4q6r3y8b5t1.tsx',
-			'a7k9m2x5p8w1n4q6r3y8b5t1/a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx',
-			'a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.tsx',
-			'a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams._index.tsx',
-			'a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.new.tsx',
-			'a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.$teamId.tsx',
+			'admin/admin.tsx',
+			'admin/admin._index.tsx',
+			'admin/teams/teams.tsx',
+			'admin/teams/teams._index.tsx',
+			'admin/teams/teams.new.tsx',
+			'admin/teams/teams.$teamId.tsx',
 			'resources/resources.healthcheck.tsx',
 		])
 
@@ -320,8 +318,8 @@ describe('scanFlatRoutes', () => {
 		expect(topLevelPaths).toEqual([
 			'*',
 			'/',
-			'/a7k9m2x5p8w1n4q6r3y8b5t1',
 			'/about',
+			adminPath(),
 			'/auth',
 			'/favicon.ico',
 			'/profile',
@@ -330,7 +328,7 @@ describe('scanFlatRoutes', () => {
 		])
 
 		// Verify admin teams route structure is correct
-		const adminRoute = routes.find((r) => r.path === '/a7k9m2x5p8w1n4q6r3y8b5t1')
+		const adminRoute = routes.find((r) => r.path === adminPath())
 		expect(adminRoute).toBeDefined()
 		const adminTeamsRoute = adminRoute?.children?.find((c) => c.path === 'teams')
 		expect(adminTeamsRoute).toBeDefined()

@@ -10,6 +10,7 @@ import {
 	getAllCategories,
 	getAllDivisions,
 } from '~/models/tournament.server'
+import { adminPath } from '~/utils/adminRoutes'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
@@ -147,9 +148,7 @@ export async function action({
 		})
 
 		// Redirect to tournament detail page with success parameter
-		return redirect(
-			`/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournament.id}?success=created`,
-		)
+		return redirect(adminPath(`/tournaments/${tournament.id}?success=created`))
 	} catch (_error) {
 		return {
 			errors: {

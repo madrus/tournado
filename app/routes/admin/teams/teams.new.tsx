@@ -12,6 +12,7 @@ import { useTeamFormActions } from '~/features/teams/stores/useTeamFormStore'
 import type { TeamCreateActionData } from '~/features/teams/types'
 import { handleTeamCreation } from '~/features/teams/utils/teamActions.server'
 import type { User } from '~/models/user.server'
+import { adminPath } from '~/utils/adminRoutes'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
@@ -40,7 +41,7 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
 	const intent = formData.get('intent')
 
 	if (intent === 'create') {
-		return handleTeamCreation(formData, '/a7k9m2x5p8w1n4q6r3y8b5t1/teams/{teamId}')
+		return handleTeamCreation(formData, adminPath('/teams/{teamId}'))
 	}
 
 	return Response.json({ errors: {} })

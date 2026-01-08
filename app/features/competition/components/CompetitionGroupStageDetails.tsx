@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 
 import { Panel } from '~/components/Panel'
 import type { GroupStageWithDetails, UnassignedTeam } from '~/models/group.server'
+import { adminPath } from '~/utils/adminRoutes'
 
 import {
 	createSnapshotFromLoader,
@@ -100,7 +101,7 @@ export function CompetitionGroupStageDetails({
 			<div className='flex items-center justify-between'>
 				<div>
 					<Link
-						to={`/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups?tournament=${tournamentId}`}
+						to={adminPath(`/competition/groups?tournament=${tournamentId}`)}
 						className='text-sm text-brand hover:text-brand/80 transition-colors inline-flex items-center gap-1 mb-2'
 					>
 						<svg

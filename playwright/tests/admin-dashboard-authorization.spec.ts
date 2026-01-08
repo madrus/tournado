@@ -17,7 +17,7 @@
 import { expect, type Page, test } from '@playwright/test'
 import type { Role } from '@prisma/client'
 
-import { ADMIN_DASHBOARD_URL } from '../../app/lib/lib.constants'
+import { ADMIN_SLUG } from '../../app/lib/lib.constants'
 import { loginAsRole } from '../helpers/session'
 
 test.describe('Admin Dashboard Authorization Tests', () => {
@@ -30,7 +30,7 @@ test.describe('Admin Dashboard Authorization Tests', () => {
 		// Use empty storage state (no authentication)
 		await page.context().clearCookies()
 
-		await page.goto(ADMIN_DASHBOARD_URL)
+		await page.goto(ADMIN_SLUG)
 
 		// Should redirect to signin with redirectTo parameter
 		await expect(page).toHaveURL(/\/auth\/signin/)
@@ -44,11 +44,11 @@ test.describe('Admin Dashboard Authorization Tests', () => {
 		shouldAccess: boolean,
 	): Promise<void> {
 		await loginAsRole(page, role)
-		await page.goto(ADMIN_DASHBOARD_URL)
+		await page.goto(ADMIN_SLUG)
 
 		if (shouldAccess) {
 			// Should stay on admin dashboard
-			await expect(page).toHaveURL(ADMIN_DASHBOARD_URL)
+			await expect(page).toHaveURL(ADMIN_SLUG)
 			// Verify admin dashboard content renders
 			await expect(page.getByTestId('admin-dashboard-container')).toBeVisible()
 		} else {

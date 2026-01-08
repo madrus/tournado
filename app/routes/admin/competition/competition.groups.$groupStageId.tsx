@@ -13,6 +13,7 @@ import {
 	swapGroupSlots,
 } from '~/models/group.server'
 import { getTournamentById } from '~/models/tournament.server'
+import { adminPath } from '~/utils/adminRoutes'
 import { invariant } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
@@ -144,7 +145,7 @@ export async function action({
 
 		// Use derived tournamentId in redirect
 		return redirect(
-			`/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/${groupStageId}?tournament=${tournamentId}`,
+			adminPath(`/competition/groups/${groupStageId}?tournament=${tournamentId}`),
 		)
 	} catch (error) {
 		return { error: error instanceof Error ? error.message : 'Unknown error' }

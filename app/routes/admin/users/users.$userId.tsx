@@ -12,7 +12,6 @@ import { UserAuditLogList } from '~/features/users/components/UserAuditLogList'
 import { UserDetailCard } from '~/features/users/components/UserDetailCard'
 import { useUserActionFeedback } from '~/features/users/hooks/useUserActionFeedback'
 import { validateRole } from '~/features/users/utils/roleUtils'
-import { ADMIN_DASHBOARD_URL } from '~/lib/lib.constants'
 import {
 	deactivateUser,
 	getUserById,
@@ -22,6 +21,7 @@ import {
 } from '~/models/user.server'
 import { getUserAuditLogs } from '~/models/userAuditLog.server'
 import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
+import { adminPath } from '~/utils/adminRoutes'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
@@ -75,7 +75,7 @@ export const action = async ({
 
 	const { userId } = params
 	if (!userId) {
-		return redirect(`${ADMIN_DASHBOARD_URL}/users?error=userNotFound`)
+		return redirect(adminPath('/users?error=userNotFound'))
 	}
 
 	const formData = await request.formData()
@@ -86,13 +86,11 @@ export const action = async ({
 	const requiresUserId = intent === 'deactivate' || intent === 'reactivate'
 	if (requiresUserId) {
 		if (typeof formUserId !== 'string' || !formUserId.trim()) {
-			return redirect(`${ADMIN_DASHBOARD_URL}/users/${userId}?error=requestFailed`)
+			return redirect(adminPath(`/users/${userId}?error=requestFailed`))
 		}
 
 		if (formUserId !== userId) {
-			return redirect(
-				`${ADMIN_DASHBOARD_URL}/users/${userId}?error=requestFailedRefresh`,
-			)
+			return redirect(adminPath(`/users/${userId}?error=requestFailedRefresh`))
 		}
 	}
 
@@ -101,9 +99,7 @@ export const action = async ({
 			const displayName = (formData.get('displayName') as string) || ''
 
 			if (!displayName.trim()) {
-				return redirect(
-					`${ADMIN_DASHBOARD_URL}/users/${userId}?error=displayNameRequired`,
-				)
+				return redirect(adminPath(`/users/${userId}?error=displayNameRequired`))
 			}
 
 			await updateUserDisplayName({
@@ -112,15 +108,13 @@ export const action = async ({
 				performedBy: currentUser.id,
 			})
 
-			return redirect(`${ADMIN_DASHBOARD_URL}/users/${userId}?success=displayName`)
+			return redirect(adminPath(`/users/${userId}?success=displayName`))
 		}
 
 		if (intent === 'updateRole') {
 			// Prevent users from changing their own role
 			if (userId === currentUser.id) {
-				return redirect(
-					`${ADMIN_DASHBOARD_URL}/users/${userId}?error=cannotChangeOwnRole`,
-				)
+				return redirect(adminPath(`/users/${userId}?error=cannotChangeOwnRole`))
 			}
 
 			const newRole = validateRole(roleValue)
@@ -131,15 +125,13 @@ export const action = async ({
 				performedBy: currentUser.id,
 			})
 
-			return redirect(`${ADMIN_DASHBOARD_URL}/users/${userId}?success=role`)
+			return redirect(adminPath(`/users/${userId}?success=role`))
 		}
 
 		if (intent === 'deactivate') {
 			// Prevent users from deactivating themselves
 			if (userId === currentUser.id) {
-				return redirect(
-					`${ADMIN_DASHBOARD_URL}/users/${userId}?error=cannotDeactivateOwnAccount`,
-				)
+				return redirect(adminPath(`/users/${userId}?error=cannotDeactivateOwnAccount`))
 			}
 
 			await deactivateUser({
@@ -147,15 +139,13 @@ export const action = async ({
 				performedBy: currentUser.id,
 			})
 
-			return redirect(`${ADMIN_DASHBOARD_URL}/users/${userId}?success=deactivate`)
+			return redirect(adminPath(`/users/${userId}?success=deactivate`))
 		}
 
 		if (intent === 'reactivate') {
 			// Prevent users from reactivating themselves (this should never happen since they're active)
 			if (userId === currentUser.id) {
-				return redirect(
-					`${ADMIN_DASHBOARD_URL}/users/${userId}?error=cannotReactivateOwnAccount`,
-				)
+				return redirect(adminPath(`/users/${userId}?error=cannotReactivateOwnAccount`))
 			}
 
 			await reactivateUser({
@@ -163,7 +153,7 @@ export const action = async ({
 				performedBy: currentUser.id,
 			})
 
-			return redirect(`${ADMIN_DASHBOARD_URL}/users/${userId}?success=reactivate`)
+			return redirect(adminPath(`/users/${userId}?success=reactivate`))
 		}
 
 		throw new Response('Invalid intent', { status: 400 })
@@ -173,7 +163,7 @@ export const action = async ({
 		}
 		const errorMessage = error instanceof Error ? error.message : 'unknownError'
 		return redirect(
-			`${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent(errorMessage)}`,
+			adminPath(`/users/${userId}?error=${encodeURIComponent(errorMessage)}`),
 		)
 	}
 }

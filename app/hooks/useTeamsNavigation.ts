@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 import { useNavigate, useRevalidator } from 'react-router'
 
+import { adminPath } from '~/utils/adminRoutes'
+
 type UseTeamsNavigationProps = {
 	context: 'public' | 'admin'
 }
@@ -32,7 +34,7 @@ export function useTeamsNavigation({
 	// Context-aware team navigation
 	const handleTeamClick = (teamId: string) => {
 		if (context === 'admin') {
-			navigate(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${teamId}`)
+			navigate(adminPath(`/teams/${teamId}`))
 		} else {
 			navigate(`/teams/${teamId}`)
 		}

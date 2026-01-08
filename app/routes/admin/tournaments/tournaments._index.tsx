@@ -13,6 +13,7 @@ import type { TournamentListItem } from '~/features/tournaments/types'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { deleteTournamentById, getAllTournaments } from '~/models/tournament.server'
 import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
+import { adminPath } from '~/utils/adminRoutes'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
@@ -115,7 +116,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
 
 	const handleTournamentClick = useCallback(
 		(tournamentId: string) => {
-			navigate(`/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournamentId}`)
+			navigate(adminPath(`/tournaments/${tournamentId}`))
 		},
 		[navigate],
 	)

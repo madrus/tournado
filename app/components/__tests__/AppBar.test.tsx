@@ -5,6 +5,8 @@ import { MemoryRouter } from 'react-router'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { adminPath } from '~/utils/adminRoutes'
+
 import { AppBar } from '../AppBar'
 import type { MenuItemType } from '../UserMenu'
 
@@ -302,7 +304,7 @@ describe('AppBar Context Menu', () => {
 			const teamsMenuItem = menuItems[2]
 			const teamsHref = within(teamsMenuItem).getByTestId('menu-href')
 
-			expect(teamsHref).toHaveTextContent('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+			expect(teamsHref).toHaveTextContent(adminPath('/teams'))
 		})
 
 		it('should show Admin Panel with correct properties', () => {
@@ -492,7 +494,7 @@ describe('AppBar Context Menu', () => {
 				{ role: 'PUBLIC', expectedHref: '/teams', teamsMenuItemIndex: 0 },
 				{
 					role: 'MANAGER',
-					expectedHref: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams',
+					expectedHref: adminPath('/teams'),
 					teamsMenuItemIndex: 2,
 				}, // Teams is 3rd for manager (after Admin Panel, Tournaments)
 				{
@@ -502,7 +504,7 @@ describe('AppBar Context Menu', () => {
 				}, // Teams is 2nd for referee (after Admin Panel, before Competition)
 				{
 					role: 'ADMIN',
-					expectedHref: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams',
+					expectedHref: adminPath('/teams'),
 					teamsMenuItemIndex: 2,
 				}, // Teams is 3rd for admin (after Admin Panel, Tournaments)
 			]

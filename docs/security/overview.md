@@ -223,7 +223,7 @@ The admin panel uses a secure, obfuscated URL pattern (default: `/a7k9m2x5p8w1n4
 
 **Environment Configuration**:
 
-The URL can be customized per environment via the `VITE_ADMIN_DASHBOARD_URL` environment variable, providing:
+The URL can be customized per environment via the `VITE_ADMIN_SLUG` environment variable, providing:
 
 - **Security rotation**: Change URL without code rebuild if discovered by bots
 - **Per-environment paths**: Different obfuscated URLs for dev/staging/prod
@@ -236,7 +236,7 @@ If not configured, the application uses the default path defined in `app/lib/lib
 
 ```bash
 # Rotate URL during security incident
-flyctl secrets set VITE_ADMIN_DASHBOARD_URL="/new-obfuscated-path" --app tournado-production
+flyctl secrets set VITE_ADMIN_SLUG="/new-obfuscated-path" --app tournado-production
 # No rebuild needed - takes effect on next server restart
 ```
 

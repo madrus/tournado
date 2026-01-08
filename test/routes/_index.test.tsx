@@ -3,9 +3,8 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 
 import { describe, expect, test } from 'vitest'
-
-import { ADMIN_DASHBOARD_URL } from '~/lib/lib.constants'
 import IndexPage from '~/routes/_index'
+import { adminPath } from '~/utils/adminRoutes'
 
 // Mock the loader data
 const mockLoaderData = (user: User | null) => ({
@@ -129,7 +128,7 @@ describe('Home Page (_index)', () => {
 				)
 
 				const viewTeamsButton = screen.getByTestId('view-teams-button')
-				expect(viewTeamsButton).toHaveAttribute('href', `${ADMIN_DASHBOARD_URL}/teams`)
+				expect(viewTeamsButton).toHaveAttribute('href', adminPath('/teams'))
 
 				unmount()
 			})
@@ -156,7 +155,7 @@ describe('Home Page (_index)', () => {
 			)
 
 			const viewTeamsButton = screen.getByTestId('view-teams-button')
-			expect(viewTeamsButton).toHaveAttribute('href', `${ADMIN_DASHBOARD_URL}/teams`)
+			expect(viewTeamsButton).toHaveAttribute('href', adminPath('/teams'))
 		})
 
 		test('should route based on user role with comprehensive test matrix', () => {
@@ -200,7 +199,7 @@ describe('Home Page (_index)', () => {
 						createdAt: new Date(),
 						updatedAt: new Date(),
 					},
-					expectedHref: `${ADMIN_DASHBOARD_URL}/teams`,
+					expectedHref: adminPath('/teams'),
 				},
 				{
 					scenario: 'REFEREE role user',
@@ -216,7 +215,7 @@ describe('Home Page (_index)', () => {
 						createdAt: new Date(),
 						updatedAt: new Date(),
 					},
-					expectedHref: `${ADMIN_DASHBOARD_URL}/teams`,
+					expectedHref: adminPath('/teams'),
 				},
 				{
 					scenario: 'ADMIN role user',
@@ -232,7 +231,7 @@ describe('Home Page (_index)', () => {
 						createdAt: new Date(),
 						updatedAt: new Date(),
 					},
-					expectedHref: `${ADMIN_DASHBOARD_URL}/teams`,
+					expectedHref: adminPath('/teams'),
 				},
 			]
 
@@ -315,9 +314,9 @@ describe('Home Page (_index)', () => {
 				expectedRoute: string
 			}> = [
 				{ role: 'PUBLIC', expectedRoute: '/teams' },
-				{ role: 'MANAGER', expectedRoute: `${ADMIN_DASHBOARD_URL}/teams` },
-				{ role: 'REFEREE', expectedRoute: `${ADMIN_DASHBOARD_URL}/teams` },
-				{ role: 'ADMIN', expectedRoute: `${ADMIN_DASHBOARD_URL}/teams` },
+				{ role: 'MANAGER', expectedRoute: adminPath('/teams') },
+				{ role: 'REFEREE', expectedRoute: adminPath('/teams') },
+				{ role: 'ADMIN', expectedRoute: adminPath('/teams') },
 			]
 
 			roles.forEach(({ role, expectedRoute }) => {

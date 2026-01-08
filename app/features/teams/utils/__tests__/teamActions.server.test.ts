@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { adminPath } from '~/utils/adminRoutes'
+
 import { handleTeamCreation } from '../teamActions.server'
 
 // Mock the teamCreation module
@@ -57,14 +59,14 @@ describe('teamActions.server - handleTeamCreation', () => {
 
 			const response = await handleTeamCreation(
 				mockFormData,
-				'/a7k9m2x5p8w1n4q6r3y8b5t1/teams/{teamId}',
+				adminPath('/teams/{teamId}'),
 			)
 
 			expect(redirect).toHaveBeenCalledWith(
-				'/a7k9m2x5p8w1n4q6r3y8b5t1/teams/team-456?success=created',
+				adminPath('/teams/team-456?success=created'),
 			)
 			expect(response.headers.get('Location')).toBe(
-				'/a7k9m2x5p8w1n4q6r3y8b5t1/teams/team-456?success=created',
+				adminPath('/teams/team-456?success=created'),
 			)
 		})
 

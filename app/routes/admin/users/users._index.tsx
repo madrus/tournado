@@ -20,6 +20,7 @@ import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { getServerT } from '~/i18n/i18n.server'
 import { getAllUsersWithPagination, updateUserRole } from '~/models/user.server'
 import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
+import { adminPath } from '~/utils/adminRoutes'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
@@ -97,15 +98,14 @@ export async function action({ request }: Route.ActionArgs): Promise<Response> {
 
 		if (!userId) {
 			return redirect(
-				'/a7k9m2x5p8w1n4q6r3y8b5t1/users?error=' +
-					encodeURIComponent(t('messages.user.missingUserId')),
+				adminPath('?error=') + encodeURIComponent(t('messages.user.missingUserId')),
 			)
 		}
 
 		// Prevent users from changing their own role
 		if (userId === currentUser.id) {
 			return redirect(
-				'/a7k9m2x5p8w1n4q6r3y8b5t1/users?error=' +
+				adminPath('?error=') +
 					encodeURIComponent(t('messages.user.cannotChangeOwnRole')),
 			)
 		}
@@ -120,22 +120,18 @@ export async function action({ request }: Route.ActionArgs): Promise<Response> {
 				// No reason provided for quick role updates from user list
 				// Admin can view full audit trail on user detail page
 			})
-			return redirect('/a7k9m2x5p8w1n4q6r3y8b5t1/users?success=true')
+			return redirect(adminPath('?success=true'))
 		} catch (error) {
 			if (error instanceof Response) {
 				throw error
 			}
 			const errorMessage =
 				error instanceof Error ? error.message : t('messages.user.failedToUpdateRole')
-			return redirect(
-				`/a7k9m2x5p8w1n4q6r3y8b5t1/users?error=${encodeURIComponent(errorMessage)}`,
-			)
+			return redirect(adminPath(`?error=${encodeURIComponent(errorMessage)}`))
 		}
 	}
 
-	return redirect(
-		`/a7k9m2x5p8w1n4q6r3y8b5t1/users?error=${encodeURIComponent('Invalid action')}`,
-	)
+	return redirect(adminPath(`?error=${encodeURIComponent('Invalid action')}`))
 }
 
 export function AdminUsersIndexPage(): JSX.Element {
@@ -171,7 +167,7 @@ export function AdminUsersIndexPage(): JSX.Element {
 	}, [searchParams, setSearchParams, t])
 
 	const handleUserClick = (userId: string) => {
-		navigate(`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}`)
+		navigate(adminPath(`/users/${userId}`))
 	}
 
 	// Pagination calculations

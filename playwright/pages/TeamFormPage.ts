@@ -1,6 +1,6 @@
 import type { Locator, Page } from '@playwright/test'
 
-import { ADMIN_SLUG } from '../../app/lib/lib.constants'
+import { adminPath } from '../../app/utils/adminRoutes'
 
 export class TeamFormPage {
 	readonly page: Page
@@ -16,7 +16,7 @@ export class TeamFormPage {
 	}
 
 	async goto(): Promise<void> {
-		await this.page.goto(`${ADMIN_SLUG}/teams/new`)
+		await this.page.goto(adminPath('/teams/new'))
 	}
 
 	async waitForPageLoad(): Promise<void> {

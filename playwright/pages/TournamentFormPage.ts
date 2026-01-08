@@ -1,5 +1,7 @@
 import type { Locator, Page } from '@playwright/test'
 
+import { adminPath } from '../../app/utils/adminRoutes'
+
 export class TournamentFormPage {
 	readonly page: Page
 	readonly form: Locator
@@ -18,7 +20,7 @@ export class TournamentFormPage {
 	}
 
 	async goto(): Promise<void> {
-		await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new')
+		await this.page.goto(adminPath('/tournaments/new'))
 	}
 
 	async waitForPageLoad(): Promise<void> {

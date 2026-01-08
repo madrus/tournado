@@ -15,7 +15,7 @@
  */
 import { expect, test } from '@playwright/test'
 
-import { ADMIN_SLUG } from '../../app/lib/lib.constants'
+import { adminPath } from '../../app/utils/adminRoutes'
 import {
 	checkTournamentExists,
 	createTestTournament,
@@ -104,7 +104,7 @@ test.describe('Admin Tournaments', () => {
 
 		// Use Promise.all to wait for navigation to complete
 		await Promise.all([
-			page.waitForURL(new RegExp(`${ADMIN_SLUG}/tournaments`), {
+			page.waitForURL(new RegExp(`${adminPath('/tournaments')}`), {
 				timeout: 15000,
 			}),
 			adminTournamentsPage.tournamentsLink.first().click(),
@@ -114,7 +114,7 @@ test.describe('Admin Tournaments', () => {
 		const _currentUrl = page.url()
 
 		// Verify we're on the correct page
-		await expect(page).toHaveURL(new RegExp(`${ADMIN_SLUG}/tournaments`))
+		await expect(page).toHaveURL(new RegExp(`${adminPath('/tournaments')}`))
 		await adminTournamentsPage.expectPageToContainTournamentText()
 	})
 
@@ -140,7 +140,7 @@ test.describe('Admin Tournaments', () => {
 		await adminTournamentsPage.manageTournamentsPanel.click()
 
 		// Should navigate to tournaments page
-		await expect(page).toHaveURL(`${ADMIN_SLUG}/tournaments`)
+		await expect(page).toHaveURL(adminPath('/tournaments'))
 	})
 
 	test('should allow admin tournament creation', async ({ page }) => {

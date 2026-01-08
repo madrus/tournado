@@ -1,5 +1,7 @@
 import type { Locator, Page } from '@playwright/test'
 
+import { adminPath } from '../../app/utils/adminRoutes'
+
 export class PublicPage {
 	constructor(readonly page: Page) {}
 
@@ -16,11 +18,11 @@ export class PublicPage {
 	}
 
 	async navigateToAdminPanel(): Promise<void> {
-		await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1')
+		await this.page.goto(adminPath())
 	}
 
 	async navigateToAdminTeams(): Promise<void> {
-		await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+		await this.page.goto(adminPath('/teams'))
 	}
 
 	async getAddTeamButton(): Promise<Locator> {

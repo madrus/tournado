@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test'
 
-import { ADMIN_SLUG } from '../../app/lib/lib.constants'
+import { adminPath } from '../../app/utils/adminRoutes'
 
 export class AdminTournamentsPage {
 	readonly page: Page
@@ -66,15 +66,15 @@ export class AdminTournamentsPage {
 	}
 
 	async navigate(): Promise<void> {
-		await this.page.goto(`${ADMIN_SLUG}/tournaments`)
+		await this.page.goto(adminPath('/tournaments'))
 	}
 
 	async navigateToNew(): Promise<void> {
-		await this.page.goto(`${ADMIN_SLUG}/tournaments/new`)
+		await this.page.goto(adminPath('/tournaments/new'))
 	}
 
 	async navigateToAdminHome(): Promise<void> {
-		await this.page.goto(ADMIN_SLUG)
+		await this.page.goto(adminPath())
 	}
 
 	async expectPageToContainTournamentText(): Promise<void> {
@@ -86,7 +86,7 @@ export class AdminTournamentsPage {
 	}
 
 	async expectToBeOnNewTournamentPage(): Promise<void> {
-		await expect(this.page).toHaveURL(`${ADMIN_SLUG}/tournaments/new`)
+		await expect(this.page).toHaveURL(adminPath('/tournaments/new'))
 	}
 
 	async expectFormIsVisible(): Promise<void> {

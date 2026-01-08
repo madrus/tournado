@@ -17,6 +17,7 @@
 import { expect, type Page, test } from '@playwright/test'
 import type { Role } from '@prisma/client'
 
+import { adminPath } from '../../app/utils/adminRoutes'
 import { loginAsRole } from '../helpers/session'
 
 test.describe('Users Management Authorization Tests', () => {
@@ -29,7 +30,7 @@ test.describe('Users Management Authorization Tests', () => {
 		// Use empty storage state (no authentication)
 		await page.context().clearCookies()
 
-		await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/users')
+		await page.goto(adminPath('/users'))
 
 		// Should redirect to signin with redirectTo parameter
 		await expect(page).toHaveURL(/\/auth\/signin/)
@@ -43,11 +44,11 @@ test.describe('Users Management Authorization Tests', () => {
 		shouldAccess: boolean,
 	): Promise<void> {
 		await loginAsRole(page, role)
-		await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/users')
+		await page.goto(adminPath('/users'))
 
 		if (shouldAccess) {
 			// Should stay on users page
-			await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1/users')
+			await expect(page).toHaveURL(adminPath('/users'))
 			// Verify users management content renders
 			await expect(page.getByTestId('admin-users-page-content')).toBeVisible()
 		} else {

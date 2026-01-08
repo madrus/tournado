@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test'
 
+import { adminPath } from '../../app/utils/adminRoutes'
 import { waitForTournamentInDatabase } from '../helpers/database'
 import { BasePage } from './BasePage'
 
@@ -82,7 +83,7 @@ export class AdminTeamsPage extends BasePage {
 
 	// Navigation methods
 	async goto(): Promise<void> {
-		await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams', {
+		await this.page.goto(adminPath('/teams'), {
 			waitUntil: 'networkidle',
 			timeout: 30000,
 		})
@@ -91,7 +92,7 @@ export class AdminTeamsPage extends BasePage {
 	}
 
 	async gotoCreateTeam(): Promise<void> {
-		await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new', {
+		await this.page.goto(adminPath('/teams/new'), {
 			waitUntil: 'networkidle',
 			timeout: 30000,
 		})
@@ -146,13 +147,13 @@ export class AdminTeamsPage extends BasePage {
 
 	// Verification methods
 	async expectToBeOnAdminTeamsPage(): Promise<void> {
-		await expect(this.page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/teams$/)
+		await expect(this.page).toHaveURL(new RegExp(`${adminPath('/teams')}$`))
 		await expect(this.pageTitle).toBeVisible({ timeout: 15000 })
 		await expect(this.layoutContainer).toBeVisible()
 	}
 
 	async expectToBeOnCreateTeamPage(): Promise<void> {
-		await expect(this.page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/teams\/new$/)
+		await expect(this.page).toHaveURL(new RegExp(`${adminPath('/teams/new')}$`))
 		await expect(this.createTeamContainer).toBeVisible()
 	}
 
@@ -166,7 +167,7 @@ export class AdminTeamsPage extends BasePage {
 	}
 
 	async expectToBeOnTeamFormPage(): Promise<void> {
-		await expect(this.page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/teams\/new/)
+		await expect(this.page).toHaveURL(new RegExp(`${adminPath('/teams/new')}`))
 		await expect(this.page.locator('form')).toBeVisible()
 	}
 

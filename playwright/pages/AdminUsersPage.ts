@@ -1,5 +1,7 @@
 import { expect, type Locator, type Page } from '@playwright/test'
 
+import { adminPath } from '../../app/utils/adminRoutes'
+
 import { BasePage } from './BasePage'
 
 export class AdminUsersPage extends BasePage {
@@ -83,7 +85,7 @@ export class AdminUsersPage extends BasePage {
 
 	// Navigation methods
 	async goto(): Promise<void> {
-		await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/users', {
+		await this.page.goto(adminPath('/users'), {
 			waitUntil: 'networkidle',
 			timeout: 30000,
 		})
@@ -92,7 +94,7 @@ export class AdminUsersPage extends BasePage {
 	}
 
 	async gotoUserDetail(userId: string): Promise<void> {
-		await this.page.goto(`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}`, {
+		await this.page.goto(adminPath(`/users/${userId}`), {
 			waitUntil: 'networkidle',
 			timeout: 30000,
 		})
@@ -203,13 +205,13 @@ export class AdminUsersPage extends BasePage {
 
 	// Verification methods
 	async expectToBeOnUsersPage(): Promise<void> {
-		await expect(this.page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/users$/)
+		await expect(this.page).toHaveURL(new RegExp(`${adminPath('/users')}$`))
 		await expect(this.pageTitle).toBeVisible({ timeout: 15000 })
 		await expect(this.layoutContainer).toBeVisible()
 	}
 
 	async expectToBeOnUserDetailPage(userId: string): Promise<void> {
-		await expect(this.page).toHaveURL(`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}`)
+		await expect(this.page).toHaveURL(adminPath(`/users/${userId}`))
 		await expect(this.userDetailCard).toBeVisible({ timeout: 15000 })
 	}
 

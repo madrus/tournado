@@ -17,11 +17,16 @@ export const DEFAULT_CONTAINER_WIDTH = 400
  * VITE_ADMIN_SLUG="any-very-long-hash-string-so-no-doubt-it-will-be-unique-and-hard-to-guess"
  *
  */
-export const ADMIN_SLUG =
+const rawAdminSlug =
 	// Client-side: from window.ENV (runtime)
-	(typeof window !== 'undefined' && window.ENV?.VITE_ADMIN_SLUG) ||
+	(typeof window !== 'undefined' ? window.ENV?.VITE_ADMIN_SLUG : undefined) ||
 	// Server-side: from process.env (runtime)
-	(typeof process !== 'undefined' && process.env.VITE_ADMIN_SLUG)
+	(typeof process !== 'undefined' ? process.env.VITE_ADMIN_SLUG : undefined)
+
+const isProduction =
+	typeof process !== 'undefined' && process.env.NODE_ENV === 'production'
+
+export const ADMIN_SLUG = rawAdminSlug?.trim() || (!isProduction ? 'admin' : '')
 
 if (!ADMIN_SLUG) {
 	throw new Error('Missing VITE_ADMIN_SLUG environment variable')

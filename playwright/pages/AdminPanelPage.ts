@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test'
 
-import { ADMIN_SLUG } from '../../app/lib/lib.constants'
+import { adminPath } from '../../app/utils/adminRoutes'
 import { BasePage } from './BasePage'
 
 export class AdminPanelPage extends BasePage {
@@ -23,7 +23,7 @@ export class AdminPanelPage extends BasePage {
 
 	// Navigation methods
 	async goto(): Promise<void> {
-		await this.page.goto(ADMIN_SLUG, {
+		await this.page.goto(adminPath(), {
 			waitUntil: 'networkidle',
 			timeout: 30000,
 		})
@@ -32,19 +32,19 @@ export class AdminPanelPage extends BasePage {
 	}
 
 	async gotoAdminTeams(): Promise<void> {
-		await this.page.goto(`${ADMIN_SLUG}/teams`)
+		await this.page.goto(adminPath('/teams'))
 	}
 
 	async gotoAdminTeamNew(): Promise<void> {
-		await this.page.goto(`${ADMIN_SLUG}/teams/new`)
+		await this.page.goto(adminPath('/teams/new'))
 	}
 
 	async gotoTeamEdit(teamId: string): Promise<void> {
-		await this.page.goto(`${ADMIN_SLUG}/teams/${teamId}`)
+		await this.page.goto(adminPath(`/teams/${teamId}`))
 	}
 
 	async gotoTournamentNew(): Promise<void> {
-		await this.page.goto(`${ADMIN_SLUG}/tournaments/new`)
+		await this.page.goto(adminPath('/tournaments/new'))
 	}
 
 	async clickTeamManagement(): Promise<void> {
@@ -59,15 +59,15 @@ export class AdminPanelPage extends BasePage {
 
 	// Verification methods
 	async expectToBeOnAdminPanel(): Promise<void> {
-		await expect(this.page).toHaveURL(ADMIN_SLUG)
+		await expect(this.page).toHaveURL(adminPath())
 	}
 
 	async expectToBeOnAdminTeams(): Promise<void> {
-		await expect(this.page).toHaveURL(`${ADMIN_SLUG}/teams`)
+		await expect(this.page).toHaveURL(adminPath('/teams'))
 	}
 
 	async expectToBeOnAdminTeamNew(): Promise<void> {
-		await expect(this.page).toHaveURL(`${ADMIN_SLUG}/teams/new`)
+		await expect(this.page).toHaveURL(adminPath('/teams/new'))
 	}
 
 	async expectToBeOnUnauthorizedPage(): Promise<void> {

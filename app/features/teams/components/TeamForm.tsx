@@ -47,7 +47,6 @@ export function TeamForm({
 	const scrollListenerRef = useRef<((this: Window, ev: Event) => void) | null>(null)
 	const scrollTimeoutRef = useRef<number | undefined>(undefined)
 	const isSubmittingRef = useRef(false)
-	const hasInitializedEditData = useRef(false)
 	const isSubmitting = navigation.state === 'submitting'
 	const isPublicSuccess = isSuccess && variant === 'public'
 
@@ -61,7 +60,7 @@ export function TeamForm({
 	}
 
 	// Ensure the team form store is properly hydrated
-	const isHydrated = useTeamFormStoreHydration()
+	useTeamFormStoreHydration()
 
 	// Get all state from the form store
 	const {
@@ -229,13 +228,6 @@ export function TeamForm({
 		[getTranslatedError],
 	)
 
-	// Reset initialization flag when formData changes (navigating to different team)
-	useEffect(() => {
-		if (formMode === 'edit' && formData) {
-			hasInitializedEditData.current = false
-		}
-	}, [formData, formMode])
-
 	// Initialize mode in store
 	useEffect(() => {
 		if (mode !== formMode) {
@@ -255,42 +247,26 @@ export function TeamForm({
 
 	// Initialize form data in store when formData prop is provided
 	useEffect(() => {
-		if (!formData) return
-
-		if (formMode === 'edit') {
-			if (!isHydrated) return
-			if (hasInitializedEditData.current) return
-
-			setFormData({
-				tournamentId: formData.tournamentId || '',
-				clubName: formData.clubName || '',
-				name: formData.name || '',
-				division: formData.division || '',
-				category: formData.category || '',
-				teamLeaderName: formData.teamLeaderName || '',
-				teamLeaderPhone: formData.teamLeaderPhone || '',
-				teamLeaderEmail: formData.teamLeaderEmail || '',
-				privacyAgreement: formData.privacyAgreement || false,
-			})
-			hasInitializedEditData.current = true
-			return
+		if (formData) {
+			// In edit mode, set form data immediately since we have all the data
+			// In create mode, wait for tournaments to be loaded
+			if (formMode === 'edit' || availableTournaments.length > 0) {
+				setFormData({
+					tournamentId: formData.tournamentId || '',
+					clubName: formData.clubName || '',
+					name: formData.name || '',
+					division: formData.division || '',
+					category: formData.category || '',
+					teamLeaderName: formData.teamLeaderName || '',
+					teamLeaderPhone: formData.teamLeaderPhone || '',
+					teamLeaderEmail: formData.teamLeaderEmail || '',
+					privacyAgreement: formData.privacyAgreement || false,
+				})
+				// Note: updateAvailableOptions() will be called by the second useEffect
+				// when tournaments are loaded and tournamentId is set
+			}
 		}
-
-		// In create mode, wait for tournaments to be loaded
-		if (availableTournaments.length > 0) {
-			setFormData({
-				tournamentId: formData.tournamentId || '',
-				clubName: formData.clubName || '',
-				name: formData.name || '',
-				division: formData.division || '',
-				category: formData.category || '',
-				teamLeaderName: formData.teamLeaderName || '',
-				teamLeaderPhone: formData.teamLeaderPhone || '',
-				teamLeaderEmail: formData.teamLeaderEmail || '',
-				privacyAgreement: formData.privacyAgreement || false,
-			})
-		}
-	}, [formData, setFormData, formMode, availableTournaments.length, isHydrated])
+	}, [formData, setFormData, formMode, availableTournaments.length])
 
 	// When the list of available tournaments changes (i.e., is loaded from root),
 	// check if a tournament is already selected (e.g., from persisted state).

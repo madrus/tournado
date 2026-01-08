@@ -175,7 +175,6 @@
 			"categories": "Categorieën:",
 			"setup": "Opzet:",
 			"setupSummary": "{{groups}} poules × {{teams}} teams",
-			"autoFill": "Auto-invullen:",
 			"created": "Aangemaakt:"
 		},
 		"status": {
@@ -192,8 +191,6 @@
 			"configGroupsPlaceholder": "4",
 			"configSlots": "Teams per poule",
 			"configSlotsPlaceholder": "5",
-			"autoFillGroups": "Poules invullen",
-			"autoFillDescription": "Verdeel teams initieel automatisch over de poules",
 			"summary": "Samenvatting",
 			"summaryTeamsAvailable": "{{count}} teams beschikbaar in geselecteerde categorieën",
 			"summaryWillCreate": "Er worden {{groups}} poules aangemaakt met {{slots}} plaatsen elk ({{total}} plaatsen in totaal)",

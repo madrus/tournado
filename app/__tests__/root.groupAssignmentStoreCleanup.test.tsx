@@ -154,9 +154,45 @@ describe('App route cleanup', () => {
 		expect(mockResetTeamForm).toHaveBeenCalledTimes(1)
 	})
 
+	it('clears team form store when leaving team edit route', () => {
+		mockUseLocation.mockReturnValue({
+			pathname: '/teams/team-123',
+		})
+
+		const { rerender } = render(<App {...baseProps} />)
+
+		expect(mockResetTeamForm).not.toHaveBeenCalled()
+
+		mockUseLocation.mockReturnValue({
+			pathname: '/teams',
+		})
+
+		rerender(<App {...baseProps} />)
+
+		expect(mockResetTeamForm).toHaveBeenCalledTimes(1)
+	})
+
 	it('clears tournament form store when leaving tournament form routes', () => {
 		mockUseLocation.mockReturnValue({
 			pathname: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new',
+		})
+
+		const { rerender } = render(<App {...baseProps} />)
+
+		expect(mockResetTournamentForm).not.toHaveBeenCalled()
+
+		mockUseLocation.mockReturnValue({
+			pathname: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments',
+		})
+
+		rerender(<App {...baseProps} />)
+
+		expect(mockResetTournamentForm).toHaveBeenCalledTimes(1)
+	})
+
+	it('clears tournament form store when leaving tournament edit route', () => {
+		mockUseLocation.mockReturnValue({
+			pathname: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/tournament-123',
 		})
 
 		const { rerender } = render(<App {...baseProps} />)

@@ -182,7 +182,6 @@
 			"categories": "Kategoriler:",
 			"setup": "Kurulum:",
 			"setupSummary": "{{groups}} grup × {{teams}} takım",
-			"autoFill": "Otomatik doldur:",
 			"created": "Oluşturuldu:"
 		},
 		"status": {
@@ -199,8 +198,6 @@
 			"configGroupsPlaceholder": "4",
 			"configSlots": "Grup başına takım",
 			"configSlotsPlaceholder": "5",
-			"autoFillGroups": "Grupları otomatik doldur",
-			"autoFillDescription": "Takımları başlangıçta otomatik olarak gruplara dağıtın",
 			"summary": "Özet",
 			"summaryTeamsAvailable": "Seçilen kategorilerde {{count}} takım mevcut",
 			"summaryWillCreate": "Her biri {{slots}} kontenjanla {{groups}} grup oluşturulacak (toplam {{total}} kontenjan)",

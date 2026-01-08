@@ -22,4 +22,20 @@ describe('DragOverlayChip', () => {
 		expect(overlay).toHaveClass('pointer-events-none')
 		expect(overlay).toHaveClass('transition-none')
 	})
+
+	it('hides label when hideLabel is true', () => {
+		const team = createTeam()
+		const { container } = render(<DragOverlayChip team={team} hideLabel />)
+
+		expect(container.textContent).not.toContain(team.clubName)
+		expect(container.textContent).not.toContain(team.name)
+	})
+
+	it('shows label when hideLabel is false', () => {
+		const team = createTeam()
+		const { container } = render(<DragOverlayChip team={team} />)
+
+		expect(container.textContent).toContain(team.clubName)
+		expect(container.textContent).toContain(team.name)
+	})
 })

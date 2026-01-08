@@ -180,7 +180,6 @@
 			"categories": "الفئات:",
 			"setup": "الإعداد:",
 			"setupSummary": "{{groups}} مجموعات × {{teams}} فرق",
-			"autoFill": "التعبئة التلقائية:",
 			"created": "تم الإنشاء:"
 		},
 		"status": {
@@ -197,8 +196,6 @@
 			"configGroupsPlaceholder": "4",
 			"configSlots": "الفرق لكل مجموعة",
 			"configSlotsPlaceholder": "5",
-			"autoFillGroups": "تعبئة المجموعات تلقائياً",
-			"autoFillDescription": "توزيع الفرق تلقائياً على المجموعات في البداية",
 			"summary": "ملخص",
 			"summaryTeamsAvailable": "{{count}} فريق متاح في الفئات المختارة",
 			"summaryWillCreate": "سيتم إنشاء {{groups}} مجموعة بـ {{slots}} مكان لكل منها ({{total}} مكان إجمالي)",

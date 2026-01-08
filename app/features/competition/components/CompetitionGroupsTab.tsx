@@ -9,7 +9,6 @@ import {
 	formatCompetitionDate,
 } from '~/features/competition/utils/competitionFormatters'
 import type { GroupStageListItem } from '~/models/group.server'
-import { cn } from '~/utils/misc'
 
 type CompetitionGroupsTabProps = {
 	groupStages: readonly GroupStageListItem[]
@@ -113,21 +112,6 @@ export function CompetitionGroupsTab({
 											groups: groupStage.configGroups,
 											teams: groupStage.configSlots,
 										})}
-									</span>
-								</div>
-								<div className='flex items-start text-sm'>
-									<span className='w-28 font-medium text-foreground'>
-										{t('competition.labels.autoFill')}
-									</span>
-									<span
-										className={cn(
-											'inline-flex items-center rounded-full px-2 py-1 font-medium text-sm',
-											'bg-accent-fuchsia-600 text-white',
-										)}
-									>
-										{groupStage.autoFill
-											? t('competition.status.enabled')
-											: t('competition.status.disabled')}
 									</span>
 								</div>
 								<div className='flex items-start text-sm'>

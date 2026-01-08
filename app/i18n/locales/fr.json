@@ -182,7 +182,6 @@
 			"categories": "Catégories :",
 			"setup": "Configuration :",
 			"setupSummary": "{{groups}} groupes × {{teams}} équipes",
-			"autoFill": "Remplissage auto :",
 			"created": "Créé :"
 		},
 		"status": {
@@ -199,8 +198,6 @@
 			"configGroupsPlaceholder": "4",
 			"configSlots": "Équipes par groupe",
 			"configSlotsPlaceholder": "5",
-			"autoFillGroups": "Remplir automatiquement les groupes",
-			"autoFillDescription": "Répartir automatiquement les équipes dans les groupes initialement",
 			"summary": "Résumé",
 			"summaryTeamsAvailable": "{{count}} équipes disponibles dans les catégories sélectionnées",
 			"summaryWillCreate": "Créera {{groups}} groupes avec {{slots}} places chacun ({{total}} places au total)",

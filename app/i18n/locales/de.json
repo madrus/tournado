@@ -182,7 +182,6 @@
 			"categories": "Kategorien:",
 			"setup": "Aufbau:",
 			"setupSummary": "{{groups}} Gruppen × {{teams}} Teams",
-			"autoFill": "Auto-Ausfüllen:",
 			"created": "Erstellt:"
 		},
 		"status": {
@@ -199,8 +198,6 @@
 			"configGroupsPlaceholder": "4",
 			"configSlots": "Teams pro Gruppe",
 			"configSlotsPlaceholder": "5",
-			"autoFillGroups": "Gruppen automatisch ausfüllen",
-			"autoFillDescription": "Teams initial automatisch auf die Gruppen verteilen",
 			"summary": "Zusammenfassung",
 			"summaryTeamsAvailable": "{{count}} Teams verfügbar in ausgewählten Kategorien",
 			"summaryWillCreate": "Es werden {{groups}} Gruppen mit jeweils {{slots}} Plätzen erstellt ({{total}} Plätze insgesamt)",

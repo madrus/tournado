@@ -27,7 +27,7 @@ export function DraggableTeamChip({
 	disabled = false,
 	isDropTarget = false,
 	className,
-}: DraggableTeamChipProps): JSX.Element {
+}: Readonly<DraggableTeamChipProps>): JSX.Element {
 	const dragId = createTeamDragId(team.id)
 	const { t } = useTranslation()
 
@@ -45,7 +45,7 @@ export function DraggableTeamChip({
 			ref={setNodeRef}
 			className={cn(
 				draggableChipVariants({ isDragging, variant, size }),
-				'transition-transform duration-150 ease-out motion-reduce:transition-none',
+				'motion-reduce:transition-none',
 				isDropTarget && !isDragging && 'scale-[1.02]',
 				disabled && 'opacity-50 cursor-not-allowed',
 				className,

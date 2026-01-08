@@ -330,7 +330,8 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 
 	useRouteCleanup({
 		currentPath: location.pathname,
-		isActiveRoute: (pathname) => /\/competition\/groups\/[^/]+/.test(pathname),
+		isActiveRoute: (pathname) =>
+			/\/competition\/groups\/[^/]+$/.test(pathname.replace(/\/$/, '')),
 		onLeave: clearGroupAssignmentStore,
 	})
 

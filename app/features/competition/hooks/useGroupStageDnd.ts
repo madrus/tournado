@@ -6,7 +6,6 @@ import { toast } from '~/utils/toastUtils'
 import {
 	getConfirmedCapacity,
 	getTeamById,
-	getTeamLocation,
 } from '../stores/helpers/groupAssignmentStoreHelpers'
 import {
 	useGroupAssignmentActions,
@@ -16,6 +15,7 @@ import {
 	type DndTeam,
 	findTeam,
 	isConfirmedPoolId,
+	isTeamOnWaitlist,
 	isWaitlistPoolId,
 	parseSlotDropId,
 	parseTeamDragId,
@@ -113,11 +113,12 @@ export const useGroupStageDnd = (
 			}
 
 			const overId = String(over.id)
-			const teamLocation = getTeamLocation(snapshot, teamId)
-			if (!teamLocation) {
-				toast.error(t('messages.groupAssignment.teamNotFound'))
-				return
-			}
+			const teamLocation =
+				found.location === 'group'
+					? 'group'
+					: isTeamOnWaitlist(snapshot, teamId)
+						? 'waitlist'
+						: 'confirmed'
 			const isFromWaitlist = teamLocation === 'waitlist'
 
 			// Drop on confirmed pool

@@ -34,7 +34,6 @@ type ActionData = {
 		categories: string[]
 		configGroups: string
 		configSlots: string
-		autoFill: boolean
 	}
 }
 
@@ -121,7 +120,6 @@ export async function action({
 	const selectedCategories = formData.getAll('categories') as string[]
 	const configGroups = formData.get('configGroups')?.toString() || ''
 	const configSlots = formData.get('configSlots')?.toString() || ''
-	const autoFill = formData.get('autoFill') === 'on'
 
 	// Validation
 	const errors = {} as NonNullable<ActionData['errors']>
@@ -152,7 +150,6 @@ export async function action({
 				categories: selectedCategories,
 				configGroups,
 				configSlots,
-				autoFill,
 			},
 		}
 	}
@@ -164,7 +161,6 @@ export async function action({
 			categories: selectedCategories as Category[],
 			configGroups: groupsNum,
 			configSlots: slotsNum,
-			autoFill,
 		})
 
 		return redirect(
@@ -178,7 +174,6 @@ export async function action({
 				categories: selectedCategories,
 				configGroups,
 				configSlots,
-				autoFill,
 			},
 		}
 	}

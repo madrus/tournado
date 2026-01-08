@@ -75,32 +75,23 @@ export type ToastResult = {
 	cleanup: () => void
 }
 
+type ToastOptions = {
+	description?: string
+	duration?: number
+	priority?: 'low' | 'normal' | 'high'
+	force?: boolean
+}
+
 /**
  * Enhanced toast function with better error handling and performance optimizations
  * Returns a result object with toast ID and cleanup function
  */
 export const createToast = (
 	type: ToastType,
-): ((
-	message: string,
-	options?: {
-		description?: string
-		duration?: number
-		priority?: 'low' | 'normal' | 'high'
-		force?: boolean
-	},
-) => ToastResult) => {
+): ((message: string, options?: ToastOptions) => ToastResult) => {
 	const config = TOAST_CONFIGS[type]
 
-	return (
-		message: string,
-		options?: {
-			description?: string
-			duration?: number
-			priority?: 'low' | 'normal' | 'high'
-			force?: boolean
-		},
-	) => {
+	return (message: string, options?: ToastOptions) => {
 		// Create cache key to prevent duplicate rapid toasts (account for priority)
 		const priorityPart = options?.priority ?? config.priority
 		const cacheKey = `${type}:${priorityPart}:${message}:${options?.description || ''}`
@@ -182,15 +173,7 @@ export const createToast = (
 // Create wrapper functions that return just the ID for backward compatibility
 const createSimpleToast = (type: ToastType) => {
 	const toastFn = createToast(type)
-	return (
-		message: string,
-		options?: {
-			description?: string
-			duration?: number
-			priority?: 'low' | 'normal' | 'high'
-			force?: boolean
-		},
-	): string | number => {
+	return (message: string, options?: ToastOptions): string | number => {
 		const result = toastFn(message, options)
 		return result.id
 	}

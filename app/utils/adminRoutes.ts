@@ -14,7 +14,16 @@ export function adminPath(path = ''): string {
 	return path.startsWith('/') ? `${basePath}${path}` : `${basePath}/${path}`
 }
 
+function getPathname(path: string): string {
+	try {
+		return new URL(path, 'http://local').pathname
+	} catch {
+		return path
+	}
+}
+
 export function isAdminPath(path: string): boolean {
 	const basePath = `/${getAdminBasePath()}`
-	return path === basePath || path.startsWith(`${basePath}/`)
+	const pathname = getPathname(path)
+	return pathname === basePath || pathname.startsWith(`${basePath}/`)
 }

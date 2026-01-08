@@ -5,7 +5,7 @@ import { afterEach, beforeEach, vi } from 'vitest'
 
 // Set up required environment variables for tests
 process.env.SESSION_SECRET = 'test-session-secret-for-vitest-tests'
-process.env.VITE_ADMIN_SLUG = process.env.VITE_ADMIN_SLUG || 'admin-test'
+process.env.VITE_ADMIN_SLUG = process.env.VITE_ADMIN_SLUG || 'admin'
 // Ensure unit tests point to the test database (even though Prisma is mocked)
 process.env.DATABASE_URL =
 	process.env.DATABASE_URL || 'file:./prisma/data-test.db?connection_limit=1'

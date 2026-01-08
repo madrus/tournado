@@ -306,6 +306,12 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 		return true
 	})
 
+	// Seed tournaments into the team form store before first render
+	const [_tournamentsInitialized] = useState(() => {
+		useTeamFormStore.getState().setAvailableOptionsField('tournaments', tournaments)
+		return true
+	})
+
 	// Get store values (already initialized with server values above)
 	const currentTheme = useSettingsTheme()
 	const currentLanguage = useSettingsLanguage()
@@ -332,7 +338,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 		}
 	}, [user, setUser, setFirebaseUser])
 
-	// Initialize tournaments in the store
+	// Keep tournaments in sync if loader data changes
 	useEffect(() => {
 		setAvailableOptionsField('tournaments', tournaments)
 	}, [tournaments, setAvailableOptionsField])

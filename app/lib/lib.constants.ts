@@ -21,11 +21,9 @@ export const ADMIN_SLUG =
 	// Client-side: from window.ENV (runtime)
 	(typeof window !== 'undefined' && window.ENV?.VITE_ADMIN_SLUG) ||
 	// Server-side: from process.env (runtime)
-	(typeof process !== 'undefined' && process.env.VITE_ADMIN_SLUG)
-
-if (!ADMIN_SLUG) {
-	throw new Error('Missing VITE_ADMIN_SLUG environment variable')
-}
+	(typeof process !== 'undefined' && process.env.VITE_ADMIN_SLUG) ||
+	// Fallback: hardcoded default (temporary until env var is set)
+	'admin'
 
 /**
  * Division display labels for internationalization

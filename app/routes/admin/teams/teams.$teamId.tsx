@@ -1,5 +1,5 @@
 import type { Category, Division } from '@prisma/client'
-import { type JSX, useEffect, useMemo } from 'react'
+import { type JSX, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
 	type ActionFunctionArgs,
@@ -17,8 +17,12 @@ import { SimpleConfirmDialog } from '~/components/ConfirmDialog'
 import { Panel } from '~/components/Panel'
 import { prisma } from '~/db.server'
 import { TeamForm } from '~/features/teams/components/TeamForm'
-import { useTeamFormActions } from '~/features/teams/stores/useTeamFormStore'
+import {
+	useTeamFormActions,
+	useTeamFormAvailableOptions,
+} from '~/features/teams/stores/useTeamFormStore'
 import type { TeamCreateActionData } from '~/features/teams/types'
+import type { TournamentData } from '~/features/tournaments/types'
 import { getDivisionLabel, stringToCategory, stringToDivision } from '~/lib/lib.helpers'
 import { adminPath } from '~/utils/adminRoutes'
 import type { RouteMetadata } from '~/utils/routeTypes'
@@ -87,6 +91,7 @@ type LoaderData = {
 			location: string
 		}
 	}
+	tournaments: TournamentData[]
 }
 
 function parseTeamLeaderName(fullName: string): {
@@ -132,6 +137,35 @@ export const loader = async ({
 		throw new Response('Team not found', { status: 404 })
 	}
 
+	const tournamentsRaw = await prisma.tournament.findMany({
+		select: {
+			id: true,
+			name: true,
+			location: true,
+			startDate: true,
+			endDate: true,
+			divisions: true,
+			categories: true,
+		},
+		orderBy: { startDate: 'asc' },
+	})
+
+	const tournaments: TournamentData[] = tournamentsRaw.map((t) => ({
+		...t,
+		startDate: t.startDate.toISOString(),
+		endDate: t.endDate?.toISOString() || null,
+		divisions: Array.isArray(t.divisions)
+			? (t.divisions as string[])
+			: t.divisions
+				? JSON.parse(t.divisions as string)
+				: [],
+		categories: Array.isArray(t.categories)
+			? (t.categories as string[])
+			: t.categories
+				? JSON.parse(t.categories as string)
+				: [],
+	}))
+
 	return {
 		team: {
 			id: team.id,
@@ -151,6 +185,7 @@ export const loader = async ({
 				location: team.tournament.location,
 			},
 		},
+		tournaments,
 	}
 }
 
@@ -251,18 +286,21 @@ export async function action({
 }
 
 export default function AdminTeamPage(): JSX.Element {
-	const { team } = useLoaderData<LoaderData>()
+	const { team, tournaments } = useLoaderData<LoaderData>()
 	const actionData = useActionData<TeamCreateActionData>()
 	const { i18n, t } = useTranslation()
 	const [searchParams, setSearchParams] = useSearchParams()
 	const submit = useSubmit()
-	const { setFormData } = useTeamFormActions()
+	const { setFormData, setAvailableOptionsField } = useTeamFormActions()
+	const { tournaments: availableTournaments, divisions, categories } =
+		useTeamFormAvailableOptions()
 
 	// Runtime guard for strict team name pattern: J|M|JM + 'O' + number-number
 	const isValidTeamName = (
 		value: string,
 	): value is `${'J' | 'M' | 'JM'}O${number}-${number}` =>
 		/^(?:J|M|JM)O\d+-\d+$/.test(value)
+
 
 	// Check for success parameter and show toast
 	// biome-ignore lint/correctness/useExhaustiveDependencies: isValidTeamName is a runtime guard and does not need to be a dependency
@@ -304,6 +342,20 @@ export default function AdminTeamPage(): JSX.Element {
 		}
 	}, [searchParams, setSearchParams, t, setFormData, team])
 
+	// Set tournaments and populate divisions/categories from selected tournament
+	useEffect(() => {
+		if (tournaments.length > 0) {
+			setAvailableOptionsField('tournaments', tournaments)
+
+			// Find the team's tournament and extract its divisions/categories
+			const selectedTournament = tournaments.find((t) => t.id === team.tournament.id)
+			if (selectedTournament) {
+				setAvailableOptionsField('divisions', selectedTournament.divisions || [])
+				setAvailableOptionsField('categories', selectedTournament.categories || [])
+			}
+		}
+	}, [tournaments, setAvailableOptionsField, team.tournament.id])
+
 	// Prepare the initial team data for reset functionality - memoized to prevent infinite loops
 	// biome-ignore lint/correctness/useExhaustiveDependencies: isValidTeamName is a runtime guard and does not need to be a dependency
 	const initialTeamData = useMemo(
@@ -326,6 +378,10 @@ export default function AdminTeamPage(): JSX.Element {
 		fd.set('intent', 'delete')
 		submit(fd, { method: 'post' })
 	}
+
+	// Check if all data is ready before rendering the form
+	const isDataReady =
+		availableTournaments.length > 0 && divisions.length > 0 && categories.length > 0
 
 	return (
 		<div className='w-full'>
@@ -365,14 +421,20 @@ export default function AdminTeamPage(): JSX.Element {
 				</div>
 			</Panel>
 
-			{/* Team Form */}
-			<TeamForm
-				mode='edit'
-				variant='admin'
-				formData={initialTeamData}
-				errors={actionData?.errors || {}}
-				intent='update'
-			/>
+			{/* Team Form - only render when data is ready */}
+			{isDataReady ? (
+				<TeamForm
+					mode='edit'
+					variant='admin'
+					formData={initialTeamData}
+					errors={actionData?.errors || {}}
+					intent='update'
+				/>
+			) : (
+				<Panel color='slate'>
+					<p className='text-center text-foreground'>{t('common.loading')}</p>
+				</Panel>
+			)}
 		</div>
 	)
 }

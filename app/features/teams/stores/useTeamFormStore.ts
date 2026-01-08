@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { create } from 'zustand'
 import {
@@ -703,6 +703,7 @@ export const useTeamFormActions = () =>
 			setFormData: state.setFormData,
 			setFormField: state.setFormField,
 			setFormMetaField: state.setFormMetaField,
+			setAvailableOptionsField: state.setAvailableOptionsField,
 			updateAvailableOptions: state.updateAvailableOptions,
 			validateFieldOnBlur: state.validateFieldOnBlur,
 			validateForm: state.validateForm,
@@ -726,12 +727,27 @@ export const useTeamFormStatus = () =>
  * Hook to handle team form store rehydration in components
  * Use this in components that need the team form store to be properly hydrated
  */
-export const useTeamFormStoreHydration = (): void => {
+export const useTeamFormStoreHydration = (): boolean => {
+	const [isHydrated, setIsHydrated] = useState(false)
+
 	useEffect(() => {
-		if (isBrowser) {
-			useTeamFormStore.persist.rehydrate()
+		if (!isBrowser) {
+			return undefined
 		}
+
+		if (useTeamFormStore.persist.hasHydrated()) {
+			setIsHydrated(true)
+			return undefined
+		}
+
+		const unsubscribe = useTeamFormStore.persist.onFinishHydration(() => {
+			setIsHydrated(true)
+		})
+		useTeamFormStore.persist.rehydrate()
+		return unsubscribe
 	}, [])
+
+	return isHydrated
 }
 export const subscribeToBlurredFields = (
 	handler: (blurredFields: Record<string, boolean>) => void,

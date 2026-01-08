@@ -78,6 +78,7 @@ export function GroupAssignmentBoard({
 	const revalidator = useRevalidator()
 	const [showConflictDialog, setShowConflictDialog] = useState(false)
 	const [isProceedingNavigation, setIsProceedingNavigation] = useState(false)
+	const [isClient, setIsClient] = useState(false)
 	const [displacedAnimation, setDisplacedAnimation] = useState<{
 		teamId: string
 		fromRect: DOMRect
@@ -129,6 +130,10 @@ export function GroupAssignmentBoard({
 	useEffect(() => {
 		setSnapshotPair(initialSnapshot)
 	}, [initialSnapshot, setSnapshotPair])
+
+	useEffect(() => {
+		setIsClient(true)
+	}, [])
 
 	// Handle conflict dialog
 	useEffect(() => {
@@ -421,24 +426,17 @@ export function GroupAssignmentBoard({
 				</div>
 
 				{/* Drag overlay */}
-				{typeof document !== 'undefined' ? (
-					createPortal(
-						<DragOverlay
-							style={{ cursor: 'grabbing', zIndex: 'var(--z-dnd-overlay)' }}
-							modifiers={[snapCenterToCursor]}
-						>
-							{activeDragTeam ? <DragOverlayChip team={activeDragTeam} /> : null}
-						</DragOverlay>,
-						document.body,
-					)
-				) : (
-					<DragOverlay
-						style={{ cursor: 'grabbing', zIndex: 'var(--z-dnd-overlay)' }}
-						modifiers={[snapCenterToCursor]}
-					>
-						{activeDragTeam ? <DragOverlayChip team={activeDragTeam} /> : null}
-					</DragOverlay>
-				)}
+				{isClient
+					? createPortal(
+							<DragOverlay
+								style={{ cursor: 'grabbing', zIndex: 'var(--z-dnd-overlay)' }}
+								modifiers={[snapCenterToCursor]}
+							>
+								{activeDragTeam ? <DragOverlayChip team={activeDragTeam} /> : null}
+							</DragOverlay>,
+							document.body,
+						)
+					: null}
 			</DndContext>
 
 			{/* Conflict dialog */}

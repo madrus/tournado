@@ -3,7 +3,7 @@
 
 import type { User } from '@prisma/client'
 import type React from 'react'
-import { type JSX, useEffect, useRef, useState } from 'react'
+import { type JSX, useCallback, useEffect, useRef, useState } from 'react'
 import {
 	Links,
 	type LinksFunction,
@@ -288,6 +288,15 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 	const { resetForm: resetTeamForm } = useTeamFormActions()
 	const { resetForm: resetTournamentForm } = useTournamentFormActions()
 	const location = useLocation()
+	const handleClearGroupAssignment = useCallback(
+		() => clearGroupAssignmentStore(),
+		[clearGroupAssignmentStore],
+	)
+	const handleResetTeamForm = useCallback(() => resetTeamForm(), [resetTeamForm])
+	const handleResetTournamentForm = useCallback(
+		() => resetTournamentForm(),
+		[resetTournamentForm],
+	)
 
 	// Initialize store from server values BEFORE first render
 	// This runs synchronously before the component returns JSX
@@ -332,19 +341,21 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 		currentPath: location.pathname,
 		isActiveRoute: (pathname) =>
 			/\/competition\/groups\/[^/]+$/.test(pathname.replace(/\/$/, '')),
-		onLeave: clearGroupAssignmentStore,
+		onLeave: handleClearGroupAssignment,
 	})
 
 	useRouteCleanup({
 		currentPath: location.pathname,
-		isActiveRoute: (pathname) => /\/teams\/(new|[^/]+)$/.test(pathname),
-		onLeave: resetTeamForm,
+		isActiveRoute: (pathname) =>
+			/\/teams\/(new|[^/]+)$/.test(pathname.replace(/\/$/, '')),
+		onLeave: handleResetTeamForm,
 	})
 
 	useRouteCleanup({
 		currentPath: location.pathname,
-		isActiveRoute: (pathname) => /\/tournaments\/(new|[^/]+)$/.test(pathname),
-		onLeave: resetTournamentForm,
+		isActiveRoute: (pathname) =>
+			/\/tournaments\/(new|[^/]+)$/.test(pathname.replace(/\/$/, '')),
+		onLeave: handleResetTournamentForm,
 	})
 
 	// Update i18n when language changes

@@ -118,7 +118,7 @@ export function CompetitionGroupsTab({
 									<span className='w-28 font-medium text-foreground'>
 										{t('competition.labels.created')}
 									</span>
-									<span className='text-foreground-light text-sm'>
+									<span className='text-foreground-light'>
 										{formatCompetitionDate(groupStage.createdAt, i18n.language)}
 									</span>
 								</div>

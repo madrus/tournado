@@ -100,17 +100,18 @@ export async function createGroupStage({
 			},
 		})
 		groups.push(group)
+	}
 
-		// Create slots for this group
-		for (let slotIndex = 0; slotIndex < configSlots; slotIndex++) {
-			await prisma.groupSlot.create({
-				data: {
-					groupStageId: groupStage.id,
-					groupId: group.id,
-					slotIndex,
-				},
-			})
-		}
+	// Create all group slots in a single batch
+	const groupSlotData = groups.flatMap((group) =>
+		Array.from({ length: configSlots }, (_, slotIndex) => ({
+			groupStageId: groupStage.id,
+			groupId: group.id,
+			slotIndex,
+		})),
+	)
+	if (groupSlotData.length > 0) {
+		await prisma.groupSlot.createMany({ data: groupSlotData })
 	}
 
 	// Always auto-fill reserve with matching teams
@@ -123,14 +124,14 @@ export async function createGroupStage({
 	})
 
 	// Create reserve slots for matching teams
-	for (const team of matchingTeams) {
-		await prisma.groupSlot.create({
-			data: {
+	if (matchingTeams.length > 0) {
+		await prisma.groupSlot.createMany({
+			data: matchingTeams.map((team) => ({
 				groupStageId: groupStage.id,
 				groupId: null, // Reserve slot
 				slotIndex: 0, // Reserve doesn't need ordering
 				teamId: team.id,
-			},
+			})),
 		})
 	}
 

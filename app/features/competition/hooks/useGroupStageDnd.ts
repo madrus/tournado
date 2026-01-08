@@ -15,7 +15,6 @@ import {
 	type DndTeam,
 	findTeam,
 	isConfirmedPoolId,
-	isTeamOnWaitlist,
 	isWaitlistPoolId,
 	parseSlotDropId,
 	parseTeamDragId,
@@ -40,6 +39,14 @@ type UseGroupStageDndProps = {
 	onDisplacedTeam?: (teamId: string) => void
 }
 
+/**
+ * Custom hook for managing drag-and-drop behavior in group stage assignments.
+ * @param props - Configuration options
+ * @param props.onDisplacedTeam - Optional callback invoked when a team is displaced
+ * from its slot during a swap operation (before the swap executes). Not called for
+ * same-group swaps.
+ * @returns Drag-and-drop event handlers and state
+ */
 export const useGroupStageDnd = (
 	props: UseGroupStageDndProps = {},
 ): UseGroupStageDndResult => {
@@ -116,7 +123,7 @@ export const useGroupStageDnd = (
 			const teamLocation =
 				found.location === 'group'
 					? 'group'
-					: isTeamOnWaitlist(snapshot, teamId)
+					: found.isWaitlist
 						? 'waitlist'
 						: 'confirmed'
 			const isFromWaitlist = teamLocation === 'waitlist'

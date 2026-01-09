@@ -12,7 +12,15 @@ type TournamentRaw = {
 
 const parseTournamentList = (value: string | string[]): string[] => {
 	if (Array.isArray(value)) return value
-	return value ? (JSON.parse(value) as string[]) : []
+	if (!value) return []
+	try {
+		const parsed = JSON.parse(value)
+		return Array.isArray(parsed)
+			? parsed.filter((item): item is string => typeof item === 'string')
+			: []
+	} catch {
+		return []
+	}
 }
 
 const toIsoString = (value: Date | string): string =>

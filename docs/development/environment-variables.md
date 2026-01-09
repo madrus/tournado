@@ -103,12 +103,12 @@ These variables configure the Firebase client SDK and are exposed to the browser
 #### `VITE_ADMIN_SLUG`
 
 - **Purpose**: Admin dashboard obfuscated URL path
-- **Required**: Optional (defaults to `/a7k9m2x5p8w1n4q6r3y8b5t1`)
+- **Required**: Yes
 - **Format**: URL path starting with `/`
-- **CI Value**: Not set (uses default)
-- **Staging**: Not set (uses default, can be customized per environment)
-- **Production**: Not set (uses default, can be customized for security rotation)
-- **Security Note**: Can be changed per environment for additional security or rotated without code changes if URL is discovered
+- **CI Value**: Set via `VITE_ADMIN_SLUG` secret
+- **Staging**: Set via `VITE_ADMIN_SLUG` secret
+- **Production**: Set via `VITE_ADMIN_SLUG` secret
+- **Security Note**: Must be set per environment for security rotation or URL changes without code updates
 
 **Example**:
 

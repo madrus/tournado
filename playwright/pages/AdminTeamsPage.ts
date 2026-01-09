@@ -4,6 +4,9 @@ import { adminPath } from '../../app/utils/adminRoutes'
 import { waitForTournamentInDatabase } from '../helpers/database'
 import { BasePage } from './BasePage'
 
+const escapeRegExp = (value: string): string =>
+	value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
 export class AdminTeamsPage extends BasePage {
 	constructor(protected override page: Page) {
 		super(page)
@@ -147,13 +150,17 @@ export class AdminTeamsPage extends BasePage {
 
 	// Verification methods
 	async expectToBeOnAdminTeamsPage(): Promise<void> {
-		await expect(this.page).toHaveURL(new RegExp(`${adminPath('/teams')}$`))
+		await expect(this.page).toHaveURL(
+			new RegExp(`${escapeRegExp(adminPath('/teams'))}$`),
+		)
 		await expect(this.pageTitle).toBeVisible({ timeout: 15000 })
 		await expect(this.layoutContainer).toBeVisible()
 	}
 
 	async expectToBeOnCreateTeamPage(): Promise<void> {
-		await expect(this.page).toHaveURL(new RegExp(`${adminPath('/teams/new')}$`))
+		await expect(this.page).toHaveURL(
+			new RegExp(`${escapeRegExp(adminPath('/teams/new'))}$`),
+		)
 		await expect(this.createTeamContainer).toBeVisible()
 	}
 
@@ -167,7 +174,9 @@ export class AdminTeamsPage extends BasePage {
 	}
 
 	async expectToBeOnTeamFormPage(): Promise<void> {
-		await expect(this.page).toHaveURL(new RegExp(`${adminPath('/teams/new')}`))
+		await expect(this.page).toHaveURL(
+			new RegExp(`${escapeRegExp(adminPath('/teams/new'))}`),
+		)
 		await expect(this.page.locator('form')).toBeVisible()
 	}
 

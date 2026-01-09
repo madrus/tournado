@@ -98,14 +98,15 @@ export async function action({ request }: Route.ActionArgs): Promise<Response> {
 
 		if (!userId) {
 			return redirect(
-				adminPath('?error=') + encodeURIComponent(t('messages.user.missingUserId')),
+				adminPath('/users?error=') +
+					encodeURIComponent(t('messages.user.missingUserId')),
 			)
 		}
 
 		// Prevent users from changing their own role
 		if (userId === currentUser.id) {
 			return redirect(
-				adminPath('?error=') +
+				adminPath('/users?error=') +
 					encodeURIComponent(t('messages.user.cannotChangeOwnRole')),
 			)
 		}
@@ -120,18 +121,18 @@ export async function action({ request }: Route.ActionArgs): Promise<Response> {
 				// No reason provided for quick role updates from user list
 				// Admin can view full audit trail on user detail page
 			})
-			return redirect(adminPath('?success=true'))
+			return redirect(adminPath('/users?success=true'))
 		} catch (error) {
 			if (error instanceof Response) {
 				throw error
 			}
 			const errorMessage =
 				error instanceof Error ? error.message : t('messages.user.failedToUpdateRole')
-			return redirect(adminPath(`?error=${encodeURIComponent(errorMessage)}`))
+			return redirect(adminPath(`/users?error=${encodeURIComponent(errorMessage)}`))
 		}
 	}
 
-	return redirect(adminPath(`?error=${encodeURIComponent('Invalid action')}`))
+	return redirect(adminPath(`/users?error=${encodeURIComponent('Invalid action')}`))
 }
 
 export function AdminUsersIndexPage(): JSX.Element {

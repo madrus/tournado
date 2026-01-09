@@ -7,10 +7,12 @@ export const DEFAULT_CONTAINER_WIDTH = 400
 /**
  * Admin dashboard base path (obfuscated slug for security)
  *
- * Can be overridden via VITE_ADMIN_SLUG environment variable
- * for per-environment customization or security rotation without code changes.
+ * REQUIRED: Must be provided via VITE_ADMIN_SLUG environment variable.
+ * Used for per-environment customization or security rotation without code changes.
  *
- * Priority: Client runtime (window.ENV) > Server runtime (process.env) > Fallback
+ * Priority: Client runtime (window.ENV) > Server runtime (process.env)
+ *
+ * @throws {Error} If VITE_ADMIN_SLUG is not provided or is empty
  *
  * @example
  * // .env or Fly.io secrets

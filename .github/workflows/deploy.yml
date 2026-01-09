@@ -165,13 +165,6 @@ jobs:
             exit 0
           fi
 
-      - name: ✅ Validate required secrets
-        run: |
-          if [ -z "$VITE_ADMIN_SLUG" ]; then
-            echo "VITE_ADMIN_SLUG secret is missing"
-            exit 1
-          fi
-
           # Otherwise, require core tests to pass (E2E failures are non-blocking)
           if [[ "$LINT_STATUS" == "success" && "$TYPECHECK_STATUS" == "success" && "$VITEST_STATUS" == "success" ]]; then
             echo "✅ Core tests passed - proceeding with deployment (E2E status: ignored)"
@@ -327,9 +320,16 @@ jobs:
 
           # Prefer an explicit workflow_run id supplied via the manual dispatch payload
           if [[ -n "$MANUAL_WORKFLOW_RUN_ID" ]]; then
-            RUN_ID="$MANUAL_WORKFLOW_RUN_ID"
-            echo "Using workflow_run id provided via manual trigger: $RUN_ID"
-          else
+            if [[ "$MANUAL_WORKFLOW_RUN_ID" =~ ^[0-9]+$ ]]; then
+              RUN_ID="$MANUAL_WORKFLOW_RUN_ID"
+              echo "Using workflow_run id provided via manual trigger: $RUN_ID"
+            else
+              echo "⚠️ workflow_run_id must be numeric; falling back to latest CI run for branch $TARGET_BRANCH"
+              RUN_ID=""
+            fi
+          fi
+
+          if [[ -z "$RUN_ID" ]]; then
             # Fall back to locating the latest completed CI run for the same commit on the target branch
             echo "Looking up latest completed CI run for branch $TARGET_BRANCH"
             curl -H "Authorization: token $GITHUB_TOKEN" \
@@ -420,13 +420,6 @@ jobs:
           if [[ "$WORKFLOW_ONLY_STATUS" == "success" ]]; then
             echo "✅ Workflow changes only - proceeding with deployment"
             exit 0
-          fi
-
-      - name: ✅ Validate required secrets
-        run: |
-          if [ -z "$VITE_ADMIN_SLUG" ]; then
-            echo "VITE_ADMIN_SLUG secret is missing"
-            exit 1
           fi
 
           # Otherwise, require core tests to pass

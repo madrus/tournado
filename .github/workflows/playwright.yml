@@ -172,6 +172,7 @@ jobs:
           PLAYWRIGHT_BASE_URL: "http://localhost:8811"
           EMAIL_FROM: "Team Registration <noreply@tournado.app>"
           SESSION_SECRET: ${{ secrets.SESSION_SECRET || format('playwright-session-{0}', github.run_id) }}
+          VITE_ADMIN_SLUG: ${{ secrets.VITE_ADMIN_SLUG }}
           FIREBASE_ADMIN_PROJECT_ID: ${{ secrets.FIREBASE_ADMIN_PROJECT_ID }}
           FIREBASE_ADMIN_CLIENT_EMAIL: ${{ secrets.FIREBASE_ADMIN_CLIENT_EMAIL }}
           FIREBASE_ADMIN_PRIVATE_KEY: ${{ secrets.FIREBASE_ADMIN_PRIVATE_KEY }}

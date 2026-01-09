@@ -219,18 +219,18 @@ process.env.NODE_ENV = 'test'
 
 ### Admin Panel Protection
 
-The admin panel uses a secure, obfuscated URL pattern (default: `/a7k9m2x5p8w1n4q6r3y8b5t1`) to prevent discovery through URL enumeration.
+The admin panel uses a secure, obfuscated URL pattern to prevent discovery through URL enumeration.
 
 **Environment Configuration**:
 
-The URL can be customized per environment via the `VITE_ADMIN_SLUG` environment variable, providing:
+The URL is configured per environment via the `VITE_ADMIN_SLUG` environment variable, providing:
 
 - **Security rotation**: Change URL without code rebuild if discovered by bots
 - **Per-environment paths**: Different obfuscated URLs for dev/staging/prod
 - **Zero-downtime updates**: Configuration change vs code deployment
 - **Runtime flexibility**: Restart server (no rebuild) to apply changes
 
-If not configured, the application uses the default path defined in `app/lib/lib.constants.ts`.
+`VITE_ADMIN_SLUG` is required in all environments, including CI.
 
 **Example**:
 

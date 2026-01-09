@@ -31,7 +31,7 @@ test.describe('Admin Authorization', () => {
 			await page.waitForLoadState('networkidle')
 
 			// Should not be redirected away
-			await expect(page).toHaveURL(new RegExp(`${adminPath()}`))
+			await expect(page).toHaveURL(adminPath())
 
 			// Should see specific admin content (h2 since h1 is in AppBar navigation)
 			await expect(
@@ -49,7 +49,7 @@ test.describe('Admin Authorization', () => {
 			await page.waitForLoadState('networkidle')
 
 			// Admin should see team management interface
-			await expect(page).toHaveURL(new RegExp(`${adminPath('/teams')}`))
+			await expect(page).toHaveURL(adminPath('/teams'))
 
 			// Should see teams management heading
 			await expect(page.getByRole('heading', { name: 'Teams beheer' })).toBeVisible({
@@ -64,7 +64,7 @@ test.describe('Admin Authorization', () => {
 			await page.waitForLoadState('networkidle')
 
 			// Should see admin team creation form
-			await expect(page).toHaveURL(new RegExp(`${adminPath('/teams/new')}`))
+			await expect(page).toHaveURL(adminPath('/teams/new'))
 
 			// Should have form elements (look for form instead of specific button)
 			await expect(page.locator('form')).toBeVisible({ timeout: 15000 })

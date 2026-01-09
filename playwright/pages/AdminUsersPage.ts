@@ -205,7 +205,7 @@ export class AdminUsersPage extends BasePage {
 
 	// Verification methods
 	async expectToBeOnUsersPage(): Promise<void> {
-		await expect(this.page).toHaveURL(new RegExp(`${adminPath('/users')}$`))
+		await expect(this.page).toHaveURL(adminPath('/users'))
 		await expect(this.pageTitle).toBeVisible({ timeout: 15000 })
 		await expect(this.layoutContainer).toBeVisible()
 	}

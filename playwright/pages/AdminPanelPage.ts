@@ -27,8 +27,7 @@ export class AdminPanelPage extends BasePage {
 			waitUntil: 'networkidle',
 			timeout: 30000,
 		})
-		await this.page.waitForTimeout(2000) // Wait for hydration/rendering
-		await this.page.waitForFunction(() => document.body.children.length > 0)
+		await expect(this.teamManagementPanel).toBeVisible({ timeout: 10000 })
 	}
 
 	async gotoAdminTeams(): Promise<void> {

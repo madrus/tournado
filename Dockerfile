@@ -85,6 +85,8 @@ FROM base
 
 ENV DATABASE_URL=file:/data/sqlite.db
 ENV PORT="8080"
+ARG VITE_ADMIN_SLUG
+ENV VITE_ADMIN_SLUG=$VITE_ADMIN_SLUG
 
 # Create data directory and set permissions
 RUN mkdir -p /data && chmod 777 /data

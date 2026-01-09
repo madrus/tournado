@@ -31,6 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      VITE_ADMIN_SLUG: ${{ secrets.VITE_ADMIN_SLUG }}
     outputs:
       code_changed: ${{ steps.check_changes.outputs.code_changed }}
       image_exists: ${{ steps.check_image.outputs.image_exists }}
@@ -150,6 +151,13 @@ jobs:
             exit 0
           fi
 
+      - name: ✅ Validate required secrets
+        run: |
+          if [ -z "$VITE_ADMIN_SLUG" ]; then
+            echo "VITE_ADMIN_SLUG secret is missing"
+            exit 1
+          fi
+
           # Otherwise, require core tests to pass (E2E failures are non-blocking)
           if [[ "$LINT_STATUS" == "success" && "$TYPECHECK_STATUS" == "success" && "$VITEST_STATUS" == "success" ]]; then
             echo "✅ Core tests passed - proceeding with deployment (E2E status: ignored)"
@@ -210,6 +218,7 @@ jobs:
           echo "🔨 Building and deploying new code changes..."
           flyctl deploy --remote-only \
             --build-arg COMMIT_SHA=${{ steps.prepare_deployment.outputs.head_sha }} \
+            --build-arg VITE_ADMIN_SLUG=$VITE_ADMIN_SLUG \
             --app ${{ steps.app_name.outputs.value }}-staging \
             --strategy rolling \
             --max-unavailable 0.33 \
@@ -284,6 +293,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      VITE_ADMIN_SLUG: ${{ secrets.VITE_ADMIN_SLUG }}
     outputs:
       code_changed: ${{ steps.check_changes.outputs.code_changed }}
       image_exists: ${{ steps.check_image.outputs.image_exists }}
@@ -391,6 +401,13 @@ jobs:
             exit 0
           fi
 
+      - name: ✅ Validate required secrets
+        run: |
+          if [ -z "$VITE_ADMIN_SLUG" ]; then
+            echo "VITE_ADMIN_SLUG secret is missing"
+            exit 1
+          fi
+
           # Otherwise, require core tests to pass
           if [[ "$LINT_STATUS" == "success" && "$TYPECHECK_STATUS" == "success" && "$VITEST_STATUS" == "success" ]]; then
             echo "✅ Core tests passed - proceeding with deployment"
@@ -451,6 +468,7 @@ jobs:
           echo "🔨 Building and deploying new code changes..."
           flyctl deploy --remote-only \
             --build-arg COMMIT_SHA=${{ steps.prepare_deployment.outputs.head_sha }} \
+            --build-arg VITE_ADMIN_SLUG=$VITE_ADMIN_SLUG \
             --app ${{ steps.app_name.outputs.value }} \
             --strategy rolling \
             --max-unavailable 0.33 \

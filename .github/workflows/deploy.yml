@@ -65,9 +65,16 @@ jobs:
 
           # For manual deploys (workflow_dispatch), find the CI run
           if [[ -n "$MANUAL_WORKFLOW_RUN_ID" ]]; then
-            RUN_ID="$MANUAL_WORKFLOW_RUN_ID"
-            echo "Using workflow_run id provided via manual trigger: $RUN_ID"
-          else
+            if [[ "$MANUAL_WORKFLOW_RUN_ID" =~ ^[0-9]+$ ]]; then
+              RUN_ID="$MANUAL_WORKFLOW_RUN_ID"
+              echo "Using workflow_run id provided via manual trigger: $RUN_ID"
+            else
+              echo "⚠️ workflow_run_id must be numeric; falling back to latest CI run for branch $TARGET_BRANCH"
+              RUN_ID=""
+            fi
+          fi
+
+          if [[ -z "$RUN_ID" ]]; then
             echo "Looking up latest completed CI run for branch $TARGET_BRANCH"
             curl -H "Authorization: token $GITHUB_TOKEN" \
                  -H "Accept: application/vnd.github.v3+json" \

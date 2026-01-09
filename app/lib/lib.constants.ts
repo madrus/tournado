@@ -23,10 +23,7 @@ const rawAdminSlug =
 	// Server-side: from process.env (runtime)
 	(typeof process !== 'undefined' ? process.env.VITE_ADMIN_SLUG : undefined)
 
-const isProduction =
-	typeof process !== 'undefined' && process.env.NODE_ENV === 'production'
-
-export const ADMIN_SLUG = rawAdminSlug?.trim() || (!isProduction ? 'admin' : '')
+export const ADMIN_SLUG = rawAdminSlug?.trim() || ''
 
 if (!ADMIN_SLUG) {
 	throw new Error('Missing VITE_ADMIN_SLUG environment variable')

@@ -118,11 +118,18 @@ jobs:
 
           rm -f runs.json run.json
 
-      - name: ✅ Check core tests passed
+      - name: ✅ Check core tests passed and validate secrets
         env:
           WORKFLOW_RUN_ID: ${{ steps.prepare_deployment.outputs.workflow_run_id }}
           WORKFLOW_RUN_CONCLUSION: ${{ steps.prepare_deployment.outputs.workflow_run_conclusion }}
         run: |
+          # Validate required secrets first
+          if [ -z "$VITE_ADMIN_SLUG" ]; then
+            echo "❌ VITE_ADMIN_SLUG secret is missing"
+            exit 1
+          fi
+          echo "✅ Required secrets validated"
+
           echo "Checking CI workflow results..."
           echo "Workflow conclusion: $WORKFLOW_RUN_CONCLUSION"
 
@@ -156,13 +163,6 @@ jobs:
           if [[ "$WORKFLOW_ONLY_STATUS" == "success" ]]; then
             echo "✅ Workflow changes only - proceeding with deployment"
             exit 0
-          fi
-
-      - name: ✅ Validate required secrets
-        run: |
-          if [ -z "$VITE_ADMIN_SLUG" ]; then
-            echo "VITE_ADMIN_SLUG secret is missing"
-            exit 1
           fi
 
           # Otherwise, require core tests to pass (E2E failures are non-blocking)
@@ -368,11 +368,18 @@ jobs:
 
           rm -f runs.json run.json
 
-      - name: ✅ Check core tests passed
+      - name: ✅ Check core tests passed and validate secrets
         env:
           WORKFLOW_RUN_ID: ${{ steps.prepare_deployment.outputs.workflow_run_id }}
           WORKFLOW_RUN_CONCLUSION: ${{ steps.prepare_deployment.outputs.workflow_run_conclusion }}
         run: |
+          # Validate required secrets first
+          if [ -z "$VITE_ADMIN_SLUG" ]; then
+            echo "❌ VITE_ADMIN_SLUG secret is missing"
+            exit 1
+          fi
+          echo "✅ Required secrets validated"
+
           echo "Checking CI workflow results..."
           echo "Workflow conclusion: $WORKFLOW_RUN_CONCLUSION"
 
@@ -406,13 +413,6 @@ jobs:
           if [[ "$WORKFLOW_ONLY_STATUS" == "success" ]]; then
             echo "✅ Workflow changes only - proceeding with deployment"
             exit 0
-          fi
-
-      - name: ✅ Validate required secrets
-        run: |
-          if [ -z "$VITE_ADMIN_SLUG" ]; then
-            echo "VITE_ADMIN_SLUG secret is missing"
-            exit 1
           fi
 
           # Otherwise, require core tests to pass

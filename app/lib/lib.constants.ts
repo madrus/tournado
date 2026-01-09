@@ -12,8 +12,8 @@ export const DEFAULT_CONTAINER_WIDTH = 400
  *
  * Priority: Client runtime (window.ENV) > Server runtime (process.env)
  *
- * Throws in production when rawAdminSlug resolves to a falsy value.
- * Falls back to "admin" in non-production environments.
+ * Throws at runtime in production (browser) when rawAdminSlug resolves to a falsy value.
+ * Falls back to "admin" in non-production environments and during build.
  *
  * @example
  * // .env or Fly.io secrets
@@ -32,7 +32,11 @@ const isProd =
 
 const normalizedAdminSlug = rawAdminSlug?.trim()
 
-if (!normalizedAdminSlug && isProd) {
+// Only enforce at runtime (when window is available), not during build
+// This allows Docker builds to complete, but will fail at runtime if not set in production
+const isRuntimeProd = isProd && typeof window !== 'undefined'
+
+if (!normalizedAdminSlug && isRuntimeProd) {
 	throw new Error('VITE_ADMIN_SLUG is required in production environments.')
 }
 

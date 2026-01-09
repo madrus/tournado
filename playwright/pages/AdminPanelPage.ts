@@ -17,17 +17,30 @@ export class AdminPanelPage extends BasePage {
 		return this.page.getByRole('link', { name: 'Toernooien beheer' })
 	}
 
+	get header(): Locator {
+		return this.page
+			.getByTestId('admin-panel-header')
+			.getByRole('heading', { level: 2 })
+	}
+
+	get userMenuTournamentsOption(): Locator {
+		return this.userMenuDropdown.getByText('Toernooien')
+	}
+
 	get bodyContent(): Locator {
 		return this.page.locator('body')
 	}
 
 	// Navigation methods
-	async goto(): Promise<void> {
+	async goto(options?: { expectAccess?: boolean }): Promise<void> {
+		const expectAccess = options?.expectAccess ?? true
 		await this.page.goto(adminPath(), {
 			waitUntil: 'networkidle',
 			timeout: 30000,
 		})
-		await expect(this.teamManagementPanel).toBeVisible({ timeout: 10000 })
+		if (expectAccess) {
+			await expect(this.teamManagementPanel).toBeVisible({ timeout: 10000 })
+		}
 	}
 
 	async gotoAdminTeams(): Promise<void> {
@@ -81,5 +94,17 @@ export class AdminPanelPage extends BasePage {
 		await expect(this.tournamentManagementPanel).toBeVisible({
 			timeout: 15000,
 		})
+	}
+
+	async expectHeaderVisible(): Promise<void> {
+		await expect(this.header).toBeVisible({ timeout: 15000 })
+	}
+
+	async expectUserMenuTournamentsVisible(): Promise<void> {
+		await expect(this.userMenuTournamentsOption).toBeVisible()
+	}
+
+	async expectSignOutVisible(): Promise<void> {
+		await expect(this.signOutButton).toBeVisible()
 	}
 }

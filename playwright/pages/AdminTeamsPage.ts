@@ -180,6 +180,11 @@ export class AdminTeamsPage extends BasePage {
 		await expect(this.page.locator('form')).toBeVisible()
 	}
 
+	async expectTeamCreationFormVisible(): Promise<void> {
+		await expect(this.page.locator('form')).toBeVisible({ timeout: 15000 })
+		await expect(this.clubNameInput).toBeVisible({ timeout: 15000 })
+	}
+
 	// Form interaction methods
 	async selectDivision(divisionName: string): Promise<void> {
 		await expect(this.divisionCombo).toBeVisible()

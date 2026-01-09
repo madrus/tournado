@@ -317,6 +317,7 @@ jobs:
           TARGET_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
+          RUN_ID=""
 
           # Prefer an explicit workflow_run id supplied via the manual dispatch payload
           if [[ -n "$MANUAL_WORKFLOW_RUN_ID" ]]; then

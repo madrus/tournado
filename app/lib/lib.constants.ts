@@ -25,10 +25,18 @@ const rawAdminSlug =
 	// Server-side: from process.env (runtime)
 	(typeof process !== 'undefined' ? process.env.VITE_ADMIN_SLUG : undefined)
 
-export const ADMIN_SLUG = rawAdminSlug?.trim() || ''
+export const ADMIN_SLUG = rawAdminSlug?.trim() || 'admin'
 
-if (!ADMIN_SLUG) {
-	throw new Error('Missing VITE_ADMIN_SLUG environment variable')
+// Only warn in non-test environments
+if (
+	!rawAdminSlug &&
+	typeof process !== 'undefined' &&
+	!process.env.PLAYWRIGHT &&
+	process.env.NODE_ENV !== 'test'
+) {
+	console.warn(
+		'VITE_ADMIN_SLUG environment variable is missing. Using fallback value "admin".',
+	)
 }
 
 /**

@@ -4,9 +4,6 @@ import { adminPath } from '../../app/utils/adminRoutes'
 import { waitForTournamentInDatabase } from '../helpers/database'
 import { BasePage } from './BasePage'
 
-const escapeRegExp = (value: string): string =>
-	value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-
 export class AdminTeamsPage extends BasePage {
 	constructor(protected override page: Page) {
 		super(page)
@@ -90,8 +87,7 @@ export class AdminTeamsPage extends BasePage {
 			waitUntil: 'networkidle',
 			timeout: 30000,
 		})
-		await this.page.waitForTimeout(2000) // Wait for hydration/rendering
-		await this.page.waitForFunction(() => document.body.children.length > 0)
+		await this.layoutContainer.waitFor({ state: 'visible', timeout: 10000 })
 	}
 
 	async gotoCreateTeam(): Promise<void> {
@@ -99,8 +95,7 @@ export class AdminTeamsPage extends BasePage {
 			waitUntil: 'networkidle',
 			timeout: 30000,
 		})
-		await this.page.waitForTimeout(2000) // Wait for hydration/rendering
-		await this.page.waitForFunction(() => document.body.children.length > 0)
+		await this.createTeamContainer.waitFor({ state: 'visible', timeout: 10000 })
 	}
 
 	async clickCreateTeam(): Promise<void> {
@@ -150,17 +145,13 @@ export class AdminTeamsPage extends BasePage {
 
 	// Verification methods
 	async expectToBeOnAdminTeamsPage(): Promise<void> {
-		await expect(this.page).toHaveURL(
-			new RegExp(`${escapeRegExp(adminPath('/teams'))}$`),
-		)
+		await expect(this.page).toHaveURL(adminPath('/teams'))
 		await expect(this.pageTitle).toBeVisible({ timeout: 15000 })
 		await expect(this.layoutContainer).toBeVisible()
 	}
 
 	async expectToBeOnCreateTeamPage(): Promise<void> {
-		await expect(this.page).toHaveURL(
-			new RegExp(`${escapeRegExp(adminPath('/teams/new'))}$`),
-		)
+		await expect(this.page).toHaveURL(adminPath('/teams/new'))
 		await expect(this.createTeamContainer).toBeVisible()
 	}
 
@@ -174,9 +165,7 @@ export class AdminTeamsPage extends BasePage {
 	}
 
 	async expectToBeOnTeamFormPage(): Promise<void> {
-		await expect(this.page).toHaveURL(
-			new RegExp(`${escapeRegExp(adminPath('/teams/new'))}`),
-		)
+		await expect(this.page).toHaveURL(adminPath('/teams/new'))
 		await expect(this.page.locator('form')).toBeVisible()
 	}
 

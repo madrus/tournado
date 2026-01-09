@@ -248,15 +248,7 @@ export default function AdminTeamPage(): JSX.Element {
 			divisions: team.tournament.divisions,
 			categories: team.tournament.categories,
 		}),
-		[
-			team.tournament.id,
-			team.tournament.name,
-			team.tournament.location,
-			team.tournament.startDate,
-			team.tournament.endDate,
-			team.tournament.divisions,
-			team.tournament.categories,
-		],
+		[team.tournament],
 	)
 
 	// Set tournament in store so form can compute divisions/categories

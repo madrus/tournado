@@ -19,6 +19,8 @@
  */
 import { expect, test } from '@playwright/test'
 
+import { adminPath } from '../../app/utils/adminRoutes'
+
 import { HomePage } from '../pages/HomePage'
 import { TeamFormPage } from '../pages/TeamFormPage'
 import { TeamsListPage } from '../pages/TeamsListPage'
@@ -84,7 +86,7 @@ test.describe('UI Structure and Theme Tests', () => {
 
 	test.describe('Dark Mode Theme Functionality', () => {
 		test('should apply dark theme correctly on tournaments page', async ({ page }) => {
-			await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')
+			await page.goto(adminPath('/tournaments'))
 			await page.waitForLoadState('networkidle')
 
 			await setTheme(page, 'dark')
@@ -93,7 +95,7 @@ test.describe('UI Structure and Theme Tests', () => {
 		})
 
 		test('should apply light theme correctly on teams page', async ({ page }) => {
-			await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+			await page.goto(adminPath('/teams'))
 			await page.waitForLoadState('networkidle')
 
 			await setTheme(page, 'light')

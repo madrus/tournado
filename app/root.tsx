@@ -12,6 +12,7 @@ import {
 	Scripts,
 	ScrollRestoration,
 	useLocation,
+	useRouteLoaderData,
 } from 'react-router'
 import '@radix-ui/themes/styles.css'
 import '~/styles/radix-overrides.css'
@@ -28,6 +29,7 @@ import {
 } from '~/features/teams/stores/useTeamFormStore'
 import { useTournamentFormActions } from '~/features/tournaments/stores/useTournamentFormStore'
 import type { TournamentData } from '~/features/tournaments/types'
+import { transformTournamentData } from '~/features/tournaments/utils'
 import { useRouteCleanup } from '~/hooks/useRouteCleanup'
 import { initI18n, type Language, SUPPORTED_LANGUAGES } from '~/i18n/config'
 import {
@@ -130,21 +132,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 		orderBy: { startDate: 'asc' },
 	})
 
-	const tournaments: TournamentData[] = tournamentsRaw.map((t) => ({
-		...t,
-		startDate: t.startDate.toISOString(),
-		endDate: t.endDate?.toISOString() || null,
-		divisions: Array.isArray(t.divisions)
-			? (t.divisions as string[])
-			: t.divisions
-				? JSON.parse(t.divisions as string)
-				: [],
-		categories: Array.isArray(t.categories)
-			? (t.categories as string[])
-			: t.categories
-				? JSON.parse(t.categories as string)
-				: [],
-	}))
+	const tournaments: TournamentData[] = tournamentsRaw.map(transformTournamentData)
 
 	return {
 		authenticated: !!user,
@@ -389,10 +377,12 @@ export function ErrorBoundary(): JSX.Element {
 	useAuthStoreHydration()
 	useSettingsStoreHydration()
 
+	const rootData = useRouteLoaderData<LoaderData>('root')
 	const user = useAuthUser()
 	const authenticated = !!user
 	const username = user?.email ?? ''
 	const theme = useSettingsTheme()
+	const env = rootData?.ENV ?? (typeof window !== 'undefined' ? window.ENV : undefined)
 
 	// Use Dutch for error boundary fallback
 	const i18n = initI18n('nl')
@@ -405,6 +395,7 @@ export function ErrorBoundary(): JSX.Element {
 				theme={theme}
 				i18n={i18n}
 				language='nl'
+				env={env}
 				contentClassName={cn('pt-8 md:pb-4', CONTENT_CONTAINER_CLASSES)}
 			>
 				<GeneralErrorBoundary />

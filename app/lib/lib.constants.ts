@@ -5,26 +5,51 @@ export const SWIPE_START_THRESHOLD = 10
 export const DEFAULT_CONTAINER_WIDTH = 400
 
 /**
- * Admin dashboard base URL (obfuscated for security)
+ * Admin dashboard base path (obfuscated slug for security)
  *
- * Can be overridden via VITE_ADMIN_DASHBOARD_URL environment variable
- * for per-environment customization or security rotation without code changes.
+ * REQUIRED: Must be provided via VITE_ADMIN_SLUG environment variable.
+ * Used for per-environment customization or security rotation without code changes.
  *
- * Priority: Client runtime (window.ENV) > Server runtime (process.env) > Fallback
+ * Priority: Client runtime (window.ENV) > Server runtime (process.env)
+ *
+ * Throws in production when rawAdminSlug resolves to a falsy value.
+ * Falls back to "admin" in non-production environments.
  *
  * @example
  * // .env or Fly.io secrets
- * VITE_ADMIN_DASHBOARD_URL="/x9p2m5k8n3w7q1r4y6b8t2a5"
+ * VITE_ADMIN_SLUG="any-very-long-hash-string-so-no-doubt-it-will-be-unique-and-hard-to-guess"
  *
- * @todo Hardcoded fallback is temporary until VITE_ADMIN_DASHBOARD_URL is configured in all environments
  */
-export const ADMIN_DASHBOARD_URL =
+const rawAdminSlug =
 	// Client-side: from window.ENV (runtime)
-	(typeof window !== 'undefined' && window.ENV?.VITE_ADMIN_DASHBOARD_URL) ||
+	(typeof window !== 'undefined' ? window.ENV?.VITE_ADMIN_SLUG : undefined) ||
 	// Server-side: from process.env (runtime)
-	(typeof process !== 'undefined' && process.env.VITE_ADMIN_DASHBOARD_URL) ||
-	// Fallback: hardcoded default (temporary until env var is set)
-	'/a7k9m2x5p8w1n4q6r3y8b5t1'
+	(typeof process !== 'undefined' ? process.env.VITE_ADMIN_SLUG : undefined)
+
+const isProd =
+	(typeof import.meta !== 'undefined' && import.meta.env?.PROD) ||
+	(typeof process !== 'undefined' && process.env.NODE_ENV === 'production')
+
+const normalizedAdminSlug = rawAdminSlug?.trim()
+
+if (!normalizedAdminSlug && isProd) {
+	throw new Error('VITE_ADMIN_SLUG is required in production environments.')
+}
+
+export const ADMIN_SLUG = normalizedAdminSlug || 'admin'
+
+// Only warn in non-test environments
+if (
+	!normalizedAdminSlug &&
+	typeof process !== 'undefined' &&
+	!process.env.PLAYWRIGHT &&
+	process.env.NODE_ENV !== 'test' &&
+	!isProd
+) {
+	console.warn(
+		'VITE_ADMIN_SLUG environment variable is missing. Using fallback value "admin".',
+	)
+}
 
 /**
  * Division display labels for internationalization

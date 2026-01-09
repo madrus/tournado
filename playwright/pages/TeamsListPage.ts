@@ -1,5 +1,7 @@
 import type { Locator, Page } from '@playwright/test'
 
+import { adminPath } from '../../app/utils/adminRoutes'
+
 export class TeamsListPage {
 	readonly page: Page
 	readonly heading: Locator
@@ -12,7 +14,7 @@ export class TeamsListPage {
 	}
 
 	async goto(): Promise<void> {
-		await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+		await this.page.goto(adminPath('/teams'))
 	}
 
 	async waitForPageLoad(): Promise<void> {

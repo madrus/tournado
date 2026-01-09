@@ -895,7 +895,7 @@ Tournado focuses on clarity for the public and control for managers. With a mobi
 
 **Current State**: Admin dashboard URL is obfuscated (`/a7k9m2x5p8w1n4q6r3y8b5t1`) with constant fallback in `app/lib/lib.constants.ts`
 
-**Future Consideration**: Environment-configurable URL via `VITE_ADMIN_DASHBOARD_URL`
+**Future Consideration**: Environment-configurable URL via `VITE_ADMIN_SLUG`
 
 **Rationale**:
 - **Security rotation**: Change URL without code rebuild if discovered by bots
@@ -903,11 +903,11 @@ Tournado focuses on clarity for the public and control for managers. With a mobi
 - **Zero-downtime updates**: Config change vs code deployment
 
 **Implementation Status**:
-- ✅ Environment variable infrastructure ready (`VITE_ADMIN_DASHBOARD_URL`)
+- ✅ Environment variable infrastructure ready (`VITE_ADMIN_SLUG`)
 - ✅ Runtime fallback pattern implemented in `app/lib/lib.constants.ts`
 - ✅ Type definitions and schema validation added
 - ⏳ Pending: Migrate 50+ hardcoded URLs to use constant (gradual migration)
-- ⏳ Pending: Set `VITE_ADMIN_DASHBOARD_URL` in environment configs when needed
+- ⏳ Pending: Set `VITE_ADMIN_SLUG` in environment configs when needed
 
 **Migration Progress**: E2E tests ✅, `_index` route ✅, remaining routes pending
 

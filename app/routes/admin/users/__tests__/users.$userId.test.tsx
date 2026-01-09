@@ -3,7 +3,7 @@ import type { ActionFunctionArgs } from 'react-router'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { ADMIN_DASHBOARD_URL } from '~/lib/lib.constants'
+import { adminPath } from '~/utils/adminRoutes'
 
 import { action } from '../users.$userId'
 
@@ -80,7 +80,7 @@ describe('users.$userId route action', () => {
 		}),
 		params: { userId },
 		context: {},
-		unstable_pattern: '/a7k9m2x5p8w1n4q6r3y8b5t1/users/:userId',
+		unstable_pattern: adminPath('/users/:userId'),
 	})
 
 	describe('updateDisplayName intent', () => {
@@ -97,7 +97,7 @@ describe('users.$userId route action', () => {
 				performedBy: mockCurrentUser.id,
 			})
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?success=displayName`,
+				adminPath(`/users/${mockTargetUserId}?success=displayName`),
 			)
 			expect(response.status).toBe(302)
 		})
@@ -111,7 +111,7 @@ describe('users.$userId route action', () => {
 
 			expect(updateUserDisplayName).not.toHaveBeenCalled()
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=displayNameRequired`,
+				adminPath(`/users/${mockTargetUserId}?error=displayNameRequired`),
 			)
 			expect(response.status).toBe(302)
 		})
@@ -131,7 +131,7 @@ describe('users.$userId route action', () => {
 				performedBy: mockCurrentUser.id,
 			})
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?success=role`,
+				adminPath(`/users/${mockTargetUserId}?success=role`),
 			)
 			expect(response.status).toBe(302)
 		})
@@ -145,7 +145,7 @@ describe('users.$userId route action', () => {
 
 			expect(updateUserRole).not.toHaveBeenCalled()
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockCurrentUser.id}?error=cannotChangeOwnRole`,
+				adminPath(`/users/${mockCurrentUser.id}?error=cannotChangeOwnRole`),
 			)
 			expect(response.status).toBe(302)
 		})
@@ -180,7 +180,7 @@ describe('users.$userId route action', () => {
 				performedBy: mockCurrentUser.id,
 			})
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?success=deactivate`,
+				adminPath(`/users/${mockTargetUserId}?success=deactivate`),
 			)
 			expect(response.status).toBe(302)
 		})
@@ -194,7 +194,7 @@ describe('users.$userId route action', () => {
 
 			expect(deactivateUser).not.toHaveBeenCalled()
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockCurrentUser.id}?error=cannotDeactivateOwnAccount`,
+				adminPath(`/users/${mockCurrentUser.id}?error=cannotDeactivateOwnAccount`),
 			)
 			expect(response.status).toBe(302)
 		})
@@ -207,7 +207,7 @@ describe('users.$userId route action', () => {
 
 			expect(deactivateUser).not.toHaveBeenCalled()
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=requestFailed`,
+				adminPath(`/users/${mockTargetUserId}?error=requestFailed`),
 			)
 			expect(response.status).toBe(302)
 		})
@@ -221,7 +221,7 @@ describe('users.$userId route action', () => {
 
 			expect(deactivateUser).not.toHaveBeenCalled()
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=requestFailedRefresh`,
+				adminPath(`/users/${mockTargetUserId}?error=requestFailedRefresh`),
 			)
 			expect(response.status).toBe(302)
 		})
@@ -240,7 +240,7 @@ describe('users.$userId route action', () => {
 				performedBy: mockCurrentUser.id,
 			})
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?success=reactivate`,
+				adminPath(`/users/${mockTargetUserId}?success=reactivate`),
 			)
 			expect(response.status).toBe(302)
 		})
@@ -254,7 +254,7 @@ describe('users.$userId route action', () => {
 
 			expect(reactivateUser).not.toHaveBeenCalled()
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockCurrentUser.id}?error=cannotReactivateOwnAccount`,
+				adminPath(`/users/${mockCurrentUser.id}?error=cannotReactivateOwnAccount`),
 			)
 			expect(response.status).toBe(302)
 		})
@@ -275,9 +275,7 @@ describe('users.$userId route action', () => {
 				context: {},
 			} as ActionFunctionArgs)
 
-			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users?error=userNotFound`,
-			)
+			expect(redirect).toHaveBeenCalledWith(adminPath('/users?error=userNotFound'))
 			expect(response.status).toBe(302)
 		})
 	})
@@ -328,7 +326,9 @@ describe('users.$userId route action', () => {
 
 			expect(response.status).toBe(302)
 			expect(response.headers.get('Location')).toBe(
-				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=${encodeURIComponent(errorMessage)}`,
+				adminPath(
+					`/users/${mockTargetUserId}?error=${encodeURIComponent(errorMessage)}`,
+				),
 			)
 		})
 
@@ -343,7 +343,7 @@ describe('users.$userId route action', () => {
 
 			expect(response.status).toBe(302)
 			expect(response.headers.get('Location')).toBe(
-				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=unknownError`,
+				adminPath(`/users/${mockTargetUserId}?error=unknownError`),
 			)
 		})
 
@@ -373,14 +373,12 @@ describe('users.$userId route action', () => {
 				}),
 				params: {}, // No userId
 				context: {},
-				unstable_pattern: '/a7k9m2x5p8w1n4q6r3y8b5t1/users/:userId',
+				unstable_pattern: adminPath('/users/:userId'),
 			}
 
 			const response = await action(args)
 
-			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users?error=userNotFound`,
-			)
+			expect(redirect).toHaveBeenCalledWith(adminPath('/users?error=userNotFound'))
 			expect(response.status).toBe(302)
 		})
 	})

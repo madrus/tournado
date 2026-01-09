@@ -8,6 +8,8 @@ process.env.DATABASE_URL = 'file:./prisma/data-test.db?connection_limit=1'
 process.env.PLAYWRIGHT = 'true'
 // Disable React Router DevTools during E2E tests to prevent overlay interference
 process.env.ENABLE_REACT_ROUTER_DEVTOOLS = 'false'
+// Set admin slug for E2E tests (matches local .env)
+process.env.VITE_ADMIN_SLUG = 'admin'
 const { withMockImports } = await import('./utils/node-options.js')
 process.env.NODE_OPTIONS = withMockImports(process.env.NODE_OPTIONS)
 

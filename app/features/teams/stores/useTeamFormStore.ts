@@ -703,6 +703,7 @@ export const useTeamFormActions = () =>
 			setFormData: state.setFormData,
 			setFormField: state.setFormField,
 			setFormMetaField: state.setFormMetaField,
+			setAvailableOptionsField: state.setAvailableOptionsField,
 			updateAvailableOptions: state.updateAvailableOptions,
 			validateFieldOnBlur: state.validateFieldOnBlur,
 			validateForm: state.validateForm,

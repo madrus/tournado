@@ -2,9 +2,9 @@ import { cleanup, render, screen } from '@testing-library/react'
 import { createMemoryRouter, RouterProvider } from 'react-router'
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-
 // Import the actual route component
 import SigninRoute from '~/routes/auth/auth.signin'
+import { adminPath } from '~/utils/adminRoutes'
 
 type ActionData = {
 	errors?: {
@@ -17,9 +17,7 @@ type ActionData = {
 vi.mock('~/features/firebase/components/FirebaseAuth', () => ({
 	FirebaseSignIn: ({ redirectTo }: { redirectTo?: string }) => (
 		<div data-testid='firebase-signin-component'>
-			<div data-testid='firebase-redirect-data'>
-				{redirectTo || '/a7k9m2x5p8w1n4q6r3y8b5t1'}
-			</div>
+			<div data-testid='firebase-redirect-data'>{redirectTo || adminPath()}</div>
 		</div>
 	),
 	FirebaseEmailSignIn: ({
@@ -31,9 +29,7 @@ vi.mock('~/features/firebase/components/FirebaseAuth', () => ({
 	}) => (
 		<div data-testid='firebase-email-signin-component'>
 			<div data-testid='firebase-email-mode'>{mode}</div>
-			<div data-testid='firebase-email-redirect-data'>
-				{redirectTo || '/a7k9m2x5p8w1n4q6r3y8b5t1'}
-			</div>
+			<div data-testid='firebase-email-redirect-data'>{redirectTo || adminPath()}</div>
 		</div>
 	),
 }))
@@ -61,7 +57,7 @@ describe('Auth SignIn Route Component', () => {
 		const { useActionData, useLoaderData } = await import('react-router')
 		vi.mocked(useActionData).mockReturnValue(actionData)
 		vi.mocked(useLoaderData).mockReturnValue({
-			redirectTo: '/a7k9m2x5p8w1n4q6r3y8b5t1',
+			redirectTo: adminPath(),
 		})
 
 		const router = createMemoryRouter(
@@ -90,14 +86,12 @@ describe('Auth SignIn Route Component', () => {
 		await renderSigninRoute()
 
 		expect(screen.getByTestId('firebase-signin-component')).toBeInTheDocument()
-		expect(screen.getByTestId('firebase-redirect-data')).toHaveTextContent(
-			'/a7k9m2x5p8w1n4q6r3y8b5t1',
-		)
+		expect(screen.getByTestId('firebase-redirect-data')).toHaveTextContent(adminPath())
 
 		expect(screen.getByTestId('firebase-email-signin-component')).toBeInTheDocument()
 		expect(screen.getByTestId('firebase-email-mode')).toHaveTextContent('signin')
 		expect(screen.getByTestId('firebase-email-redirect-data')).toHaveTextContent(
-			'/a7k9m2x5p8w1n4q6r3y8b5t1',
+			adminPath(),
 		)
 	})
 
@@ -129,11 +123,9 @@ describe('Auth SignIn Route Component', () => {
 	it('renders with default redirect paths when no redirectTo provided', async () => {
 		await renderSigninRoute()
 
-		expect(screen.getByTestId('firebase-redirect-data')).toHaveTextContent(
-			'/a7k9m2x5p8w1n4q6r3y8b5t1',
-		)
+		expect(screen.getByTestId('firebase-redirect-data')).toHaveTextContent(adminPath())
 		expect(screen.getByTestId('firebase-email-redirect-data')).toHaveTextContent(
-			'/a7k9m2x5p8w1n4q6r3y8b5t1',
+			adminPath(),
 		)
 	})
 })

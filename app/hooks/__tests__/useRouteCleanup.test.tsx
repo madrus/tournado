@@ -1,6 +1,8 @@
 import { renderHook } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
+import { adminPath } from '~/utils/adminRoutes'
+
 import { useRouteCleanup } from '../useRouteCleanup'
 
 describe('useRouteCleanup', () => {
@@ -17,13 +19,13 @@ describe('useRouteCleanup', () => {
 				}),
 			{
 				initialProps: {
-					currentPath: '/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/123',
+					currentPath: adminPath('/competition/groups/123'),
 				},
 			},
 		)
 
 		rerender({
-			currentPath: '/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups',
+			currentPath: adminPath('/competition/groups'),
 		})
 
 		expect(onLeave).toHaveBeenCalledTimes(1)
@@ -42,13 +44,13 @@ describe('useRouteCleanup', () => {
 				}),
 			{
 				initialProps: {
-					currentPath: '/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/123',
+					currentPath: adminPath('/competition/groups/123'),
 				},
 			},
 		)
 
 		rerender({
-			currentPath: '/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/456',
+			currentPath: adminPath('/competition/groups/456'),
 		})
 
 		expect(onLeave).not.toHaveBeenCalled()

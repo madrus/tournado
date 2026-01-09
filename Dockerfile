@@ -2,10 +2,8 @@
 FROM node:22-bullseye-slim AS base
 
 # set for base and all layer that inherit from it
-ARG VITE_ADMIN_SLUG
 ENV NODE_ENV=production
 ENV HUSKY=0
-ENV VITE_ADMIN_SLUG=$VITE_ADMIN_SLUG
 
 # Install runtime dependencies and pnpm
 RUN apt-get update && apt-get install -y \

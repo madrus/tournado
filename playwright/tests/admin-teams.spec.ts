@@ -13,6 +13,7 @@
  * Viewport: Mobile (375x812)
  */
 import { expect, test } from '@playwright/test'
+import { adminPath } from '../../app/utils/adminRoutes'
 import {
 	createTestTeam,
 	createTestTournament,
@@ -26,7 +27,7 @@ import { AdminTeamsPage } from '../pages/AdminTeamsPage'
 test.describe('Admin Teams', () => {
 	test.beforeEach(async ({ page }) => {
 		await page.setViewportSize({ width: 375, height: 812 })
-		await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+		await page.goto(adminPath('/teams'))
 	})
 
 	test('should display admin teams management page', async ({ page }) => {
@@ -76,12 +77,12 @@ test.describe('Admin Teams', () => {
 
 		try {
 			// Test accessing a specific team in admin view
-			await page.goto(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${team.id}`)
+			await page.goto(adminPath(`/teams/${team.id}`))
 
 			// Should redirect to signin if team doesn't exist, but stay on admin route if authenticated
 			// This tests that the admin route structure works with authentication
 			const url = page.url()
-			expect(url).toContain('/a7k9m2x5p8w1n4q6r3y8b5t1')
+			expect(url).toContain(adminPath())
 
 			// Should see some admin interface (either team details or error page)
 			await expect(page.locator('body')).toBeVisible()
@@ -99,13 +100,13 @@ test.describe('Admin Teams', () => {
 		await adminPanelPage.clickTeamManagement()
 
 		// Should navigate to teams page
-		await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+		await expect(page).toHaveURL(adminPath('/teams'))
 	})
 
 	test('should display "Toevoegen" link for admin users on admin teams page', async ({
 		page,
 	}) => {
-		await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+		await page.goto(adminPath('/teams'))
 		await expect(page.getByRole('link', { name: 'Toevoegen' })).toBeVisible()
 	})
 })

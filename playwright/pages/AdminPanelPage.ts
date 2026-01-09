@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test'
 
-import { ADMIN_DASHBOARD_URL } from '../../app/lib/lib.constants'
+import { adminPath } from '../../app/utils/adminRoutes'
 import { BasePage } from './BasePage'
 
 export class AdminPanelPage extends BasePage {
@@ -17,34 +17,46 @@ export class AdminPanelPage extends BasePage {
 		return this.page.getByRole('link', { name: 'Toernooien beheer' })
 	}
 
+	get header(): Locator {
+		return this.page
+			.getByTestId('admin-panel-header')
+			.getByRole('heading', { level: 2 })
+	}
+
+	get userMenuTournamentsOption(): Locator {
+		return this.userMenuDropdown.getByText('Toernooien')
+	}
+
 	get bodyContent(): Locator {
 		return this.page.locator('body')
 	}
 
 	// Navigation methods
-	async goto(): Promise<void> {
-		await this.page.goto(ADMIN_DASHBOARD_URL, {
+	async goto(options?: { expectAccess?: boolean }): Promise<void> {
+		const expectAccess = options?.expectAccess ?? true
+		await this.page.goto(adminPath(), {
 			waitUntil: 'networkidle',
 			timeout: 30000,
 		})
-		await this.page.waitForTimeout(2000) // Wait for hydration/rendering
-		await this.page.waitForFunction(() => document.body.children.length > 0)
+		if (expectAccess) {
+			await expect(this.teamManagementPanel).toBeVisible({ timeout: 10000 })
+		}
 	}
 
 	async gotoAdminTeams(): Promise<void> {
-		await this.page.goto(`${ADMIN_DASHBOARD_URL}/teams`)
+		await this.page.goto(adminPath('/teams'))
 	}
 
 	async gotoAdminTeamNew(): Promise<void> {
-		await this.page.goto(`${ADMIN_DASHBOARD_URL}/teams/new`)
+		await this.page.goto(adminPath('/teams/new'))
 	}
 
 	async gotoTeamEdit(teamId: string): Promise<void> {
-		await this.page.goto(`${ADMIN_DASHBOARD_URL}/teams/${teamId}`)
+		await this.page.goto(adminPath(`/teams/${teamId}`))
 	}
 
 	async gotoTournamentNew(): Promise<void> {
-		await this.page.goto(`${ADMIN_DASHBOARD_URL}/tournaments/new`)
+		await this.page.goto(adminPath('/tournaments/new'))
 	}
 
 	async clickTeamManagement(): Promise<void> {
@@ -59,15 +71,15 @@ export class AdminPanelPage extends BasePage {
 
 	// Verification methods
 	async expectToBeOnAdminPanel(): Promise<void> {
-		await expect(this.page).toHaveURL(ADMIN_DASHBOARD_URL)
+		await expect(this.page).toHaveURL(adminPath())
 	}
 
 	async expectToBeOnAdminTeams(): Promise<void> {
-		await expect(this.page).toHaveURL(`${ADMIN_DASHBOARD_URL}/teams`)
+		await expect(this.page).toHaveURL(adminPath('/teams'))
 	}
 
 	async expectToBeOnAdminTeamNew(): Promise<void> {
-		await expect(this.page).toHaveURL(`${ADMIN_DASHBOARD_URL}/teams/new`)
+		await expect(this.page).toHaveURL(adminPath('/teams/new'))
 	}
 
 	async expectToBeOnUnauthorizedPage(): Promise<void> {
@@ -82,5 +94,17 @@ export class AdminPanelPage extends BasePage {
 		await expect(this.tournamentManagementPanel).toBeVisible({
 			timeout: 15000,
 		})
+	}
+
+	async expectHeaderVisible(): Promise<void> {
+		await expect(this.header).toBeVisible({ timeout: 15000 })
+	}
+
+	async expectUserMenuTournamentsVisible(): Promise<void> {
+		await expect(this.userMenuTournamentsOption).toBeVisible()
+	}
+
+	async expectSignOutVisible(): Promise<void> {
+		await expect(this.signOutButton).toBeVisible()
 	}
 }

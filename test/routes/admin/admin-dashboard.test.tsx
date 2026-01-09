@@ -4,8 +4,8 @@ import type { ReactElement } from 'react'
 import { MemoryRouter, useLoaderData } from 'react-router'
 
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-
-import AdminDashboard from '~/routes/a7k9m2x5p8w1n4q6r3y8b5t1/a7k9m2x5p8w1n4q6r3y8b5t1._index'
+import AdminDashboard from '~/routes/admin/admin._index'
+import { adminPath } from '~/utils/adminRoutes'
 
 // Mock user data
 const mockUser: User = {
@@ -233,10 +233,7 @@ describe('Admin Dashboard', () => {
 			)
 
 			const teamPanel = screen.getByTestId('admin-panel-team-management')
-			expect(teamPanel).toHaveAttribute(
-				'data-link-to',
-				'/a7k9m2x5p8w1n4q6r3y8b5t1/teams',
-			)
+			expect(teamPanel).toHaveAttribute('data-link-to', adminPath('/teams'))
 			expect(teamPanel).toHaveTextContent('admin.teams.title')
 			expect(teamPanel).toHaveTextContent('admin.teams.description')
 		})
@@ -249,10 +246,7 @@ describe('Admin Dashboard', () => {
 			)
 
 			const tournamentPanel = screen.getByTestId('admin-panel-tournament-management')
-			expect(tournamentPanel).toHaveAttribute(
-				'data-link-to',
-				'/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments',
-			)
+			expect(tournamentPanel).toHaveAttribute('data-link-to', adminPath('/tournaments'))
 			expect(tournamentPanel).toHaveTextContent('admin.tournaments.title')
 			expect(tournamentPanel).toHaveTextContent('admin.tournaments.description')
 		})
@@ -265,10 +259,7 @@ describe('Admin Dashboard', () => {
 			)
 
 			const userPanel = screen.getByTestId('admin-panel-user-management')
-			expect(userPanel).toHaveAttribute(
-				'data-link-to',
-				'/a7k9m2x5p8w1n4q6r3y8b5t1/users',
-			)
+			expect(userPanel).toHaveAttribute('data-link-to', adminPath('/users'))
 			expect(userPanel).toHaveTextContent('admin.users.title')
 			expect(userPanel).toHaveTextContent('admin.users.description')
 		})
@@ -429,10 +420,7 @@ describe('Admin Dashboard', () => {
 			)
 
 			const teamPanel = screen.getByTestId('admin-panel-team-management')
-			expect(teamPanel).toHaveAttribute(
-				'data-link-to',
-				'/a7k9m2x5p8w1n4q6r3y8b5t1/teams',
-			)
+			expect(teamPanel).toHaveAttribute('data-link-to', adminPath('/teams'))
 		})
 
 		test('should provide navigation to tournaments management', () => {
@@ -443,10 +431,7 @@ describe('Admin Dashboard', () => {
 			)
 
 			const tournamentPanel = screen.getByTestId('admin-panel-tournament-management')
-			expect(tournamentPanel).toHaveAttribute(
-				'data-link-to',
-				'/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments',
-			)
+			expect(tournamentPanel).toHaveAttribute('data-link-to', adminPath('/tournaments'))
 		})
 
 		test('should not provide navigation for non-implemented panels', () => {

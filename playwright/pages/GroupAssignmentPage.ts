@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test'
 
-import { ADMIN_DASHBOARD_URL } from '../../app/lib/lib.constants'
+import { adminPath } from '../../app/utils/adminRoutes'
 import { BasePage } from './BasePage'
 
 /**
@@ -91,7 +91,7 @@ export class GroupAssignmentPage extends BasePage {
 
 	// Navigation
 	async goto(groupStageId: string): Promise<void> {
-		await this.page.goto(`${ADMIN_DASHBOARD_URL}/competition/groups/${groupStageId}`)
+		await this.page.goto(adminPath(`/competition/groups/${groupStageId}`))
 		// Wait for page to be fully loaded by checking for the save button
 		await this.saveButton.waitFor({ state: 'visible', timeout: 10000 })
 	}

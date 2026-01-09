@@ -21,6 +21,8 @@
  */
 import { expect, test } from '@playwright/test'
 
+import { adminPath } from '../../app/utils/adminRoutes'
+
 import { AdminUsersPage } from '../pages/AdminUsersPage'
 
 // User Management E2E Tests - USES GLOBAL AUTHENTICATION from auth.json
@@ -77,7 +79,7 @@ test.describe('User Management Workflow', () => {
 		await adminUsersPage.navigateToFirstUser()
 
 		// Should navigate to user detail page
-		await expect(page.url()).toContain('/a7k9m2x5p8w1n4q6r3y8b5t1/users/')
+		await expect(page.url()).toContain(`${adminPath('/users')}/`)
 
 		// Should show user detail card
 		await expect(adminUsersPage.userDetailCard).toBeVisible()
@@ -309,7 +311,7 @@ test.describe('User Management Workflow', () => {
 
 		// Should stay on admin route structure (might show error if user doesn't exist)
 		const url = page.url()
-		expect(url).toContain('/a7k9m2x5p8w1n4q6r3y8b5t1/users')
+		expect(url).toContain(adminPath('/users'))
 
 		// Should see some interface (either user details or error page)
 		await expect(page.locator('body')).toBeVisible()

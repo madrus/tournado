@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router'
 
 import { describe, expect, test, vi } from 'vitest'
 
-import AdminLayout from '~/routes/a7k9m2x5p8w1n4q6r3y8b5t1/a7k9m2x5p8w1n4q6r3y8b5t1'
+import AdminLayout from '~/routes/admin/admin'
 
 // Mock Outlet component
 vi.mock('react-router', async () => {
@@ -78,9 +78,7 @@ describe('Admin Layout', () => {
 	describe('Error Boundary Integration', () => {
 		test('should export AuthErrorBoundary as ErrorBoundary', async () => {
 			// This tests the named export
-			const module = await import(
-				'~/routes/a7k9m2x5p8w1n4q6r3y8b5t1/a7k9m2x5p8w1n4q6r3y8b5t1'
-			)
+			const module = await import('~/routes/admin/admin')
 			expect(module.ErrorBoundary).toBeDefined()
 		})
 

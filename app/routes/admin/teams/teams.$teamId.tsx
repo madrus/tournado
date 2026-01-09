@@ -19,7 +19,14 @@ import { prisma } from '~/db.server'
 import { TeamForm } from '~/features/teams/components/TeamForm'
 import { useTeamFormActions } from '~/features/teams/stores/useTeamFormStore'
 import type { TeamCreateActionData } from '~/features/teams/types'
+import {
+	extractTeamDataFromFormData,
+	validateEntireTeamForm,
+} from '~/features/teams/validation'
+import type { TournamentData } from '~/features/tournaments/types'
+import { transformTournamentData } from '~/features/tournaments/utils'
 import { getDivisionLabel, stringToCategory, stringToDivision } from '~/lib/lib.helpers'
+import { adminPath } from '~/utils/adminRoutes'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 import { toast } from '~/utils/toastUtils'
@@ -80,11 +87,7 @@ type LoaderData = {
 			email: string
 			phone: string
 		}
-		tournament: {
-			id: string
-			name: string
-			location: string
-		}
+		tournament: TournamentData
 	}
 }
 
@@ -131,6 +134,8 @@ export const loader = async ({
 		throw new Response('Team not found', { status: 404 })
 	}
 
+	const tournamentData = transformTournamentData(team.tournament)
+
 	return {
 		team: {
 			id: team.id,
@@ -144,11 +149,7 @@ export const loader = async ({
 				email: team.teamLeader.email,
 				phone: team.teamLeader.phone,
 			},
-			tournament: {
-				id: team.tournament.id,
-				name: team.tournament.name,
-				location: team.tournament.location,
-			},
+			tournament: tournamentData,
 		},
 	}
 }
@@ -168,40 +169,22 @@ export async function action({
 	const intent = formData.get('intent')
 
 	if (intent === 'update') {
-		// Extract all form fields with proper typing
-		const clubName = formData.get('clubName') as string | null
-		const name = formData.get('name') as string | null
-		const division = formData.get('division') as string | null
-		const category = formData.get('category') as string | null
-		const teamLeaderName = formData.get('teamLeaderName') as string | null
-		const teamLeaderPhone = formData.get('teamLeaderPhone') as string | null
-		const teamLeaderEmail = formData.get('teamLeaderEmail') as string | null
-
-		const errors: TeamCreateActionData['errors'] = {}
-
-		// Validate required fields
-		if (!clubName || clubName.length === 0) {
-			errors.clubName = 'clubNameRequired'
-		}
-
-		if (!name || name.length === 0) {
-			errors.name = 'nameRequired'
-		}
-
-		if (!division || division.length === 0) {
-			errors.division = 'divisionRequired'
-		}
+		const teamFormData = extractTeamDataFromFormData(formData)
+		const errors: TeamCreateActionData['errors'] = validateEntireTeamForm(
+			teamFormData,
+			'edit',
+		)
 
 		// Validate division is a valid enum value
-		const validDivision = stringToDivision(division)
-		if (division && !validDivision) {
-			errors.division = 'invalidDivision'
+		const validDivision = stringToDivision(teamFormData.division)
+		if (teamFormData.division && !validDivision) {
+			errors.division = errors.division || 'invalidDivision'
 		}
 
 		// Validate category is a valid enum value
-		const validCategory = stringToCategory(category)
-		if (category && !validCategory) {
-			errors.category = 'invalidCategory'
+		const validCategory = stringToCategory(teamFormData.category)
+		if (teamFormData.category && !validCategory) {
+			errors.category = errors.category || 'invalidCategory'
 		}
 
 		if (Object.keys(errors).length > 0) {
@@ -212,30 +195,22 @@ export async function action({
 		await prisma.team.update({
 			where: { id: teamId },
 			data: {
-				clubName: clubName as string,
-				name: name as string,
+				clubName: teamFormData.clubName,
+				name: teamFormData.name,
 				division: validDivision as Division,
 				...(validCategory ? { category: validCategory as Category } : {}),
 				// Update team leader nested (firstName/lastName split from teamLeaderName)
-				...(teamLeaderName || teamLeaderEmail || teamLeaderPhone
-					? {
-							teamLeader: {
-								update: {
-									...(teamLeaderName
-										? {
-												...parseTeamLeaderName(teamLeaderName),
-											}
-										: {}),
-									...(teamLeaderEmail ? { email: teamLeaderEmail } : {}),
-									...(teamLeaderPhone ? { phone: teamLeaderPhone } : {}),
-								},
-							},
-						}
-					: {}),
+				teamLeader: {
+					update: {
+						...parseTeamLeaderName(teamFormData.teamLeaderName),
+						email: teamFormData.teamLeaderEmail,
+						phone: teamFormData.teamLeaderPhone,
+					},
+				},
 			},
 		})
 
-		return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${teamId}?success=updated`)
+		return redirect(adminPath(`/teams/${teamId}?success=updated`))
 	}
 
 	if (intent === 'delete') {
@@ -243,7 +218,7 @@ export async function action({
 			where: { id: teamId },
 		})
 
-		return redirect('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+		return redirect(adminPath('/teams'))
 	}
 
 	return Response.json({ errors: {} })
@@ -255,13 +230,31 @@ export default function AdminTeamPage(): JSX.Element {
 	const { i18n, t } = useTranslation()
 	const [searchParams, setSearchParams] = useSearchParams()
 	const submit = useSubmit()
-	const { setFormData } = useTeamFormActions()
+	const { setFormData, setAvailableOptionsField } = useTeamFormActions()
 
 	// Runtime guard for strict team name pattern: J|M|JM + 'O' + number-number
 	const isValidTeamName = (
 		value: string,
 	): value is `${'J' | 'M' | 'JM'}O${number}-${number}` =>
 		/^(?:J|M|JM)O\d+-\d+$/.test(value)
+
+	const tournamentForStore = useMemo(
+		() => ({
+			id: team.tournament.id,
+			name: team.tournament.name,
+			location: team.tournament.location,
+			startDate: team.tournament.startDate,
+			endDate: team.tournament.endDate,
+			divisions: team.tournament.divisions,
+			categories: team.tournament.categories,
+		}),
+		[team.tournament],
+	)
+
+	// Set tournament in store so form can compute divisions/categories
+	useEffect(() => {
+		setAvailableOptionsField('tournaments', [tournamentForStore])
+	}, [setAvailableOptionsField, tournamentForStore])
 
 	// Check for success parameter and show toast
 	// biome-ignore lint/correctness/useExhaustiveDependencies: isValidTeamName is a runtime guard and does not need to be a dependency

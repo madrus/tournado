@@ -2,6 +2,7 @@ import { render } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { Language } from '~/i18n/config'
+import { adminPath } from '~/utils/adminRoutes'
 import type { Route } from '../+types/root'
 import App from '../root'
 
@@ -121,14 +122,14 @@ describe('App route cleanup', () => {
 
 	it('clears group assignment store when leaving group assignment route', () => {
 		mockUseLocation.mockReturnValue({
-			pathname: '/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/123',
+			pathname: adminPath('/competition/groups/123'),
 		})
 		const { rerender } = render(<App {...baseProps} />)
 
 		expect(mockClearStore).not.toHaveBeenCalled()
 
 		mockUseLocation.mockReturnValue({
-			pathname: '/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups',
+			pathname: adminPath('/competition/groups'),
 		})
 
 		rerender(<App {...baseProps} />)
@@ -174,7 +175,7 @@ describe('App route cleanup', () => {
 
 	it('clears tournament form store when leaving tournament form routes', () => {
 		mockUseLocation.mockReturnValue({
-			pathname: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new',
+			pathname: adminPath('/tournaments/new'),
 		})
 
 		const { rerender } = render(<App {...baseProps} />)
@@ -182,7 +183,7 @@ describe('App route cleanup', () => {
 		expect(mockResetTournamentForm).not.toHaveBeenCalled()
 
 		mockUseLocation.mockReturnValue({
-			pathname: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments',
+			pathname: adminPath('/tournaments'),
 		})
 
 		rerender(<App {...baseProps} />)
@@ -192,7 +193,7 @@ describe('App route cleanup', () => {
 
 	it('clears tournament form store when leaving tournament edit route', () => {
 		mockUseLocation.mockReturnValue({
-			pathname: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/tournament-123',
+			pathname: adminPath('/tournaments/tournament-123'),
 		})
 
 		const { rerender } = render(<App {...baseProps} />)
@@ -200,7 +201,7 @@ describe('App route cleanup', () => {
 		expect(mockResetTournamentForm).not.toHaveBeenCalled()
 
 		mockUseLocation.mockReturnValue({
-			pathname: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments',
+			pathname: adminPath('/tournaments'),
 		})
 
 		rerender(<App {...baseProps} />)

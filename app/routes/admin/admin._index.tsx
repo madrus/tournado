@@ -17,12 +17,13 @@ import { getAllTeams } from '~/models/team.server'
 import { getAllTournaments } from '~/models/tournament.server'
 import { getActiveUsersCount } from '~/models/user.server'
 import { useSettingsStore } from '~/stores/useSettingsStore'
+import { adminPath } from '~/utils/adminRoutes'
 import { cn } from '~/utils/misc'
 import { canAccess, hasPermission } from '~/utils/rbac'
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
 
-import type { Route } from './+types/a7k9m2x5p8w1n4q6r3y8b5t1._index'
+import type { Route } from './+types/admin._index'
 
 type LoaderData = {
 	user: User
@@ -112,7 +113,7 @@ export default function AdminDashboard(): JSX.Element {
 						mainColor='teal'
 						hoverColor='brand'
 						iconColor='sky'
-						to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
+						to={adminPath('/tournaments')}
 						testId='admin-panel-tournament-management'
 					>
 						<div className='space-y-2'>
@@ -137,7 +138,7 @@ export default function AdminDashboard(): JSX.Element {
 						mainColor='teal'
 						hoverColor='brand'
 						iconColor='green'
-						to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
+						to={adminPath('/teams')}
 						testId='admin-panel-team-management'
 					>
 						<div className='space-y-2'>
@@ -158,7 +159,7 @@ export default function AdminDashboard(): JSX.Element {
 						mainColor='teal'
 						hoverColor='brand'
 						iconColor='lime'
-						to='/a7k9m2x5p8w1n4q6r3y8b5t1/competition'
+						to={adminPath('/competition')}
 						testId='admin-panel-competition-management'
 					>
 						<div className='space-y-2'>
@@ -179,7 +180,7 @@ export default function AdminDashboard(): JSX.Element {
 						mainColor='teal'
 						hoverColor='brand'
 						iconColor='yellow'
-						to='/a7k9m2x5p8w1n4q6r3y8b5t1/users'
+						to={adminPath('/users')}
 						testId='admin-panel-user-management'
 					>
 						<div className='space-y-2'>

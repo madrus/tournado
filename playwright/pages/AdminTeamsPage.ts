@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test'
 
+import { adminPath } from '../../app/utils/adminRoutes'
 import { waitForTournamentInDatabase } from '../helpers/database'
 import { BasePage } from './BasePage'
 
@@ -82,21 +83,19 @@ export class AdminTeamsPage extends BasePage {
 
 	// Navigation methods
 	async goto(): Promise<void> {
-		await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams', {
+		await this.page.goto(adminPath('/teams'), {
 			waitUntil: 'networkidle',
 			timeout: 30000,
 		})
-		await this.page.waitForTimeout(2000) // Wait for hydration/rendering
-		await this.page.waitForFunction(() => document.body.children.length > 0)
+		await this.layoutContainer.waitFor({ state: 'visible', timeout: 10000 })
 	}
 
 	async gotoCreateTeam(): Promise<void> {
-		await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new', {
+		await this.page.goto(adminPath('/teams/new'), {
 			waitUntil: 'networkidle',
 			timeout: 30000,
 		})
-		await this.page.waitForTimeout(2000) // Wait for hydration/rendering
-		await this.page.waitForFunction(() => document.body.children.length > 0)
+		await this.createTeamContainer.waitFor({ state: 'visible', timeout: 10000 })
 	}
 
 	async clickCreateTeam(): Promise<void> {
@@ -146,13 +145,13 @@ export class AdminTeamsPage extends BasePage {
 
 	// Verification methods
 	async expectToBeOnAdminTeamsPage(): Promise<void> {
-		await expect(this.page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/teams$/)
+		await expect(this.page).toHaveURL(adminPath('/teams'))
 		await expect(this.pageTitle).toBeVisible({ timeout: 15000 })
 		await expect(this.layoutContainer).toBeVisible()
 	}
 
 	async expectToBeOnCreateTeamPage(): Promise<void> {
-		await expect(this.page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/teams\/new$/)
+		await expect(this.page).toHaveURL(adminPath('/teams/new'))
 		await expect(this.createTeamContainer).toBeVisible()
 	}
 
@@ -166,8 +165,13 @@ export class AdminTeamsPage extends BasePage {
 	}
 
 	async expectToBeOnTeamFormPage(): Promise<void> {
-		await expect(this.page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/teams\/new/)
+		await expect(this.page).toHaveURL(adminPath('/teams/new'))
 		await expect(this.page.locator('form')).toBeVisible()
+	}
+
+	async expectTeamCreationFormVisible(): Promise<void> {
+		await expect(this.page.locator('form')).toBeVisible({ timeout: 15000 })
+		await expect(this.clubNameInput).toBeVisible({ timeout: 15000 })
 	}
 
 	// Form interaction methods

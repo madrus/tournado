@@ -1,9 +1,9 @@
 import { beforeEach, vi } from 'vitest'
-
 import {
 	handle,
 	loader,
-} from '~/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.$groupStageId'
+} from '~/routes/admin/competition/competition.groups.$groupStageId'
+import { adminPath } from '~/utils/adminRoutes'
 
 import { createLoaderAuthTests } from '~test/utils/loader-authorization.helpers'
 
@@ -40,8 +40,7 @@ beforeEach(() => {
 
 // Generate all authorization tests automatically from route metadata
 createLoaderAuthTests({
-	routePath:
-		'/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/test-id?tournament=test-tournament-id',
+	routePath: adminPath('/competition/groups/test-id?tournament=test-tournament-id'),
 	metadata: handle,
 	loaderFunction: (args) => loader({ ...args, params: { groupStageId: 'test-id' } }),
 })

@@ -2,6 +2,7 @@ import { type JSX, useEffect, useState } from 'react'
 
 import { navigationVariants } from '~/components/navigation/navigation.variants'
 import { useScrollDirection } from '~/hooks/useScrollDirection'
+import { adminPath } from '~/utils/adminRoutes'
 import { breakpoints } from '~/utils/breakpoints'
 import type { IconName } from '~/utils/iconUtils'
 import { canAccess } from '~/utils/rbac'
@@ -43,7 +44,7 @@ function BottomNavigation(): JSX.Element {
 		{ to: '/', icon: 'trophy', label: 'Home' },
 		{
 			// Teams link goes to admin teams if user can manage teams, otherwise public teams
-			to: canManageTeams ? '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' : '/teams',
+			to: canManageTeams ? adminPath('/teams') : '/teams',
 			icon: 'apparel',
 			label: 'Teams',
 		},

@@ -19,6 +19,7 @@ import { useScrollDirection } from '~/hooks/useScrollDirection'
 import type { Language } from '~/i18n/config'
 import { SUPPORTED_LANGUAGES } from '~/i18n/config'
 import { CONTENT_PX } from '~/styles/constants'
+import { adminPath } from '~/utils/adminRoutes'
 import { breakpoints } from '~/utils/breakpoints'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { canAccess, hasAdminPanelAccess } from '~/utils/rbac'
@@ -92,7 +93,7 @@ export function AppBar({
 						{
 							label: t('common.titles.adminPanel'),
 							icon: 'admin_panel_settings' as IconName,
-							href: '/a7k9m2x5p8w1n4q6r3y8b5t1',
+							href: adminPath(),
 							authenticated: true,
 						},
 					]
@@ -103,7 +104,7 @@ export function AppBar({
 						{
 							label: t('common.titles.tournaments'),
 							icon: 'trophy' as IconName,
-							href: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments',
+							href: adminPath('/tournaments'),
 							authenticated: true,
 						},
 					]
@@ -111,7 +112,7 @@ export function AppBar({
 			{
 				label: t('common.titles.teams'),
 				icon: 'apparel' as IconName,
-				href: canManageTeams ? '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' : '/teams',
+				href: canManageTeams ? adminPath('/teams') : '/teams',
 				authenticated: false,
 			},
 			// Competition - only show for users who can manage groups (ADMIN, MANAGER)
@@ -120,7 +121,7 @@ export function AppBar({
 						{
 							label: t('common.titles.competition'),
 							icon: 'sports' as IconName,
-							href: '/a7k9m2x5p8w1n4q6r3y8b5t1/competition',
+							href: adminPath('/competition'),
 							authenticated: true,
 						},
 					]
@@ -131,7 +132,7 @@ export function AppBar({
 						{
 							label: t('common.titles.users'),
 							icon: 'people' as IconName,
-							href: '/a7k9m2x5p8w1n4q6r3y8b5t1/users',
+							href: adminPath('/users'),
 							authenticated: true,
 						},
 					]

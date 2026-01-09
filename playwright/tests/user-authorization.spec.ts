@@ -30,7 +30,7 @@ test.describe('User Authorization - Regular User Access', () => {
 
 	test('should be redirected from admin panel', async () => {
 		// Regular users must be redirected when trying to access the admin panel
-		await adminPanel.goto()
+		await adminPanel.goto({ expectAccess: false })
 
 		// Should land on unauthorized page
 		await adminPanel.expectToBeOnUnauthorizedPage()

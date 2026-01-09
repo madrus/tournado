@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { TournamentFilter } from '~/features/tournaments/components/TournamentFilter'
 import type { TournamentListItem } from '~/features/tournaments/types'
+import { adminPath } from '~/utils/adminRoutes'
 
 import { LayoutHeader } from './LayoutHeader'
 
@@ -36,7 +37,7 @@ export function CompetitionLayoutHeader({
 					tournamentListItems={tournamentListItems}
 					selectedTournamentId={selectedTournamentId}
 					showAllOption={false}
-					basePath='/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups'
+					basePath={adminPath('/competition/groups')}
 				/>
 			}
 			className={className}

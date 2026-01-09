@@ -23,6 +23,7 @@ import {
 	getTournamentById,
 	updateTournament,
 } from '~/models/tournament.server'
+import { adminPath } from '~/utils/adminRoutes'
 import { safeParseJSON } from '~/utils/json'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
@@ -127,7 +128,7 @@ export async function action({
 	// Handle delete
 	if (intent === 'delete') {
 		await deleteTournamentById({ id: tournamentId })
-		return redirect('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')
+		return redirect(adminPath('/tournaments'))
 	}
 
 	// Handle update
@@ -197,9 +198,7 @@ export async function action({
 			categories,
 		})
 
-		return redirect(
-			`/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournamentId}?success=updated`,
-		)
+		return redirect(adminPath(`/tournaments/${tournamentId}?success=updated`))
 	} catch (_error) {
 		return {
 			errors: {
@@ -342,7 +341,7 @@ export default function EditTournamentPage(): JSX.Element {
 					<div className='flex flex-col items-stretch gap-3 md:flex-row md:items-center'>
 						{/* Manage Competition Button */}
 						<ActionLinkButton
-							to={`/a7k9m2x5p8w1n4q6r3y8b5t1/competition?tournament=${tournament.id}`}
+							to={adminPath(`/competition?tournament=${tournament.id}`)}
 							label={t('tournaments.actions.manageCompetition')}
 							icon='trophy'
 							variant='primary'

@@ -31,7 +31,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-      VITE_ADMIN_SLUG: ${{ secrets.VITE_ADMIN_SLUG }}
     outputs:
       code_changed: ${{ steps.check_changes.outputs.code_changed }}
       image_exists: ${{ steps.check_image.outputs.image_exists }}
@@ -64,6 +63,7 @@ jobs:
           fi
 
           # For manual deploys (workflow_dispatch), find the CI run
+          RUN_ID=""  # Initialize to avoid unbound variable error with set -u
           if [[ -n "$MANUAL_WORKFLOW_RUN_ID" ]]; then
             if [[ "$MANUAL_WORKFLOW_RUN_ID" =~ ^[0-9]+$ ]]; then
               RUN_ID="$MANUAL_WORKFLOW_RUN_ID"
@@ -118,17 +118,13 @@ jobs:
 
           rm -f runs.json run.json
 
-      - name: ✅ Check core tests passed and validate secrets
+      - name: ✅ Check core tests passed
         env:
           WORKFLOW_RUN_ID: ${{ steps.prepare_deployment.outputs.workflow_run_id }}
           WORKFLOW_RUN_CONCLUSION: ${{ steps.prepare_deployment.outputs.workflow_run_conclusion }}
         run: |
-          # Validate required secrets first
-          if [ -z "$VITE_ADMIN_SLUG" ]; then
-            echo "❌ VITE_ADMIN_SLUG secret is missing"
-            exit 1
-          fi
-          echo "✅ Required secrets validated"
+          # Note: VITE_ADMIN_SLUG must be set as a Fly secret at runtime
+          # Run: flyctl secrets set VITE_ADMIN_SLUG=your-value --app <app-name>
 
           echo "Checking CI workflow results..."
           echo "Workflow conclusion: $WORKFLOW_RUN_CONCLUSION"
@@ -225,7 +221,6 @@ jobs:
           echo "🔨 Building and deploying new code changes..."
           flyctl deploy --remote-only \
             --build-arg COMMIT_SHA=${{ steps.prepare_deployment.outputs.head_sha }} \
-            --build-arg VITE_ADMIN_SLUG=$VITE_ADMIN_SLUG \
             --app ${{ steps.app_name.outputs.value }}-staging \
             --strategy rolling \
             --max-unavailable 0.33 \
@@ -300,7 +295,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-      VITE_ADMIN_SLUG: ${{ secrets.VITE_ADMIN_SLUG }}
     outputs:
       code_changed: ${{ steps.check_changes.outputs.code_changed }}
       image_exists: ${{ steps.check_image.outputs.image_exists }}
@@ -317,12 +311,20 @@ jobs:
           TARGET_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
+          RUN_ID=""
 
           # Prefer an explicit workflow_run id supplied via the manual dispatch payload
           if [[ -n "$MANUAL_WORKFLOW_RUN_ID" ]]; then
-            RUN_ID="$MANUAL_WORKFLOW_RUN_ID"
-            echo "Using workflow_run id provided via manual trigger: $RUN_ID"
-          else
+            if [[ "$MANUAL_WORKFLOW_RUN_ID" =~ ^[0-9]+$ ]]; then
+              RUN_ID="$MANUAL_WORKFLOW_RUN_ID"
+              echo "Using workflow_run id provided via manual trigger: $RUN_ID"
+            else
+              echo "⚠️ workflow_run_id must be numeric; falling back to latest CI run for branch $TARGET_BRANCH"
+              RUN_ID=""
+            fi
+          fi
+
+          if [[ -z "$RUN_ID" ]]; then
             # Fall back to locating the latest completed CI run for the same commit on the target branch
             echo "Looking up latest completed CI run for branch $TARGET_BRANCH"
             curl -H "Authorization: token $GITHUB_TOKEN" \
@@ -368,17 +370,13 @@ jobs:
 
           rm -f runs.json run.json
 
-      - name: ✅ Check core tests passed and validate secrets
+      - name: ✅ Check core tests passed
         env:
           WORKFLOW_RUN_ID: ${{ steps.prepare_deployment.outputs.workflow_run_id }}
           WORKFLOW_RUN_CONCLUSION: ${{ steps.prepare_deployment.outputs.workflow_run_conclusion }}
         run: |
-          # Validate required secrets first
-          if [ -z "$VITE_ADMIN_SLUG" ]; then
-            echo "❌ VITE_ADMIN_SLUG secret is missing"
-            exit 1
-          fi
-          echo "✅ Required secrets validated"
+          # Note: VITE_ADMIN_SLUG must be set as a Fly secret at runtime
+          # Run: flyctl secrets set VITE_ADMIN_SLUG=your-value --app <app-name>
 
           echo "Checking CI workflow results..."
           echo "Workflow conclusion: $WORKFLOW_RUN_CONCLUSION"
@@ -475,7 +473,6 @@ jobs:
           echo "🔨 Building and deploying new code changes..."
           flyctl deploy --remote-only \
             --build-arg COMMIT_SHA=${{ steps.prepare_deployment.outputs.head_sha }} \
-            --build-arg VITE_ADMIN_SLUG=$VITE_ADMIN_SLUG \
             --app ${{ steps.app_name.outputs.value }} \
             --strategy rolling \
             --max-unavailable 0.33 \

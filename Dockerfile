@@ -1,9 +1,12 @@
+ARG VITE_ADMIN_SLUG
+
 # base node image (runtime dependencies only)
 FROM node:22-bullseye-slim AS base
 
 # set for base and all layer that inherit from it
 ENV NODE_ENV=production
 ENV HUSKY=0
+ENV VITE_ADMIN_SLUG=$VITE_ADMIN_SLUG
 
 # Install runtime dependencies and pnpm
 RUN apt-get update && apt-get install -y \
@@ -70,8 +73,6 @@ WORKDIR /workdir
 
 # Set DATABASE_URL for Prisma generate during build
 ENV DATABASE_URL=file:/data/sqlite.db
-ARG VITE_ADMIN_SLUG
-ENV VITE_ADMIN_SLUG=$VITE_ADMIN_SLUG
 
 # Copy all files needed for the build
 COPY --from=deps /workdir/node_modules /workdir/node_modules

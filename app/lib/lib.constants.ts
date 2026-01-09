@@ -12,7 +12,8 @@ export const DEFAULT_CONTAINER_WIDTH = 400
  *
  * Priority: Client runtime (window.ENV) > Server runtime (process.env)
  *
- * @throws {Error} If VITE_ADMIN_SLUG is not provided or is empty
+ * Throws in production when rawAdminSlug resolves to a falsy value.
+ * Falls back to "admin" in non-production environments.
  *
  * @example
  * // .env or Fly.io secrets
@@ -25,14 +26,25 @@ const rawAdminSlug =
 	// Server-side: from process.env (runtime)
 	(typeof process !== 'undefined' ? process.env.VITE_ADMIN_SLUG : undefined)
 
-export const ADMIN_SLUG = rawAdminSlug?.trim() || 'admin'
+const isProd =
+	(typeof import.meta !== 'undefined' && import.meta.env?.PROD) ||
+	(typeof process !== 'undefined' && process.env.NODE_ENV === 'production')
+
+const normalizedAdminSlug = rawAdminSlug?.trim()
+
+if (!normalizedAdminSlug && isProd) {
+	throw new Error('VITE_ADMIN_SLUG is required in production environments.')
+}
+
+export const ADMIN_SLUG = normalizedAdminSlug || 'admin'
 
 // Only warn in non-test environments
 if (
-	!rawAdminSlug &&
+	!normalizedAdminSlug &&
 	typeof process !== 'undefined' &&
 	!process.env.PLAYWRIGHT &&
-	process.env.NODE_ENV !== 'test'
+	process.env.NODE_ENV !== 'test' &&
+	!isProd
 ) {
 	console.warn(
 		'VITE_ADMIN_SLUG environment variable is missing. Using fallback value "admin".',

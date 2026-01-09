@@ -11,6 +11,7 @@
 .tmp
 /prisma/data.db
 /prisma/data.db-journal
+/prisma/data-test.db
 /prisma/prisma
 build
 coverage

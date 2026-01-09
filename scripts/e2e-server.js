@@ -62,10 +62,7 @@ if (serverStatus.isResponding && serverStatus.isTestServer) {
 // Apply migrations to the test database before starting the dev server
 const migrate = spawnSync('pnpm', ['prisma', 'migrate', 'deploy'], {
 	stdio: 'inherit',
-	env: {
-		...process.env,
-		VITE_ADMIN_SLUG: 'admin',
-	},
+	env: process.env,
 })
 
 if (migrate.status !== 0) {
@@ -75,10 +72,7 @@ if (migrate.status !== 0) {
 // Start the dev server (react-router dev) with explicit port
 const server = spawn('pnpm', ['dev', '--port', PORT.toString()], {
 	stdio: 'inherit',
-	env: {
-		...process.env,
-		VITE_ADMIN_SLUG: 'admin',
-	},
+	env: process.env,
 })
 
 server.on('exit', (code) => {

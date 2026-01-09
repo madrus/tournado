@@ -13,7 +13,7 @@ type TournamentRaw = {
 const filterStringArray = (value: ReadonlyArray<unknown>): string[] =>
 	value.filter((item): item is string => typeof item === 'string')
 
-const parseTournamentList = (value: string | string[]): string[] => {
+function parseTournamentList(value: string | string[]): string[] {
 	if (Array.isArray(value)) return filterStringArray(value)
 	if (!value) return []
 	try {
@@ -30,16 +30,14 @@ const toIsoString = (value: Date | string): string =>
 const toOptionalIsoString = (value: Date | string | null | undefined): string | null =>
 	value ? toIsoString(value) : null
 
-export function transformTournamentData(
+export const transformTournamentData = (
 	tournament: Readonly<TournamentRaw>,
-): TournamentData {
-	return {
-		id: tournament.id,
-		name: tournament.name,
-		location: tournament.location,
-		startDate: toIsoString(tournament.startDate),
-		endDate: toOptionalIsoString(tournament.endDate),
-		divisions: parseTournamentList(tournament.divisions),
-		categories: parseTournamentList(tournament.categories),
-	}
-}
+): TournamentData => ({
+	id: tournament.id,
+	name: tournament.name,
+	location: tournament.location,
+	startDate: toIsoString(tournament.startDate),
+	endDate: toOptionalIsoString(tournament.endDate),
+	divisions: parseTournamentList(tournament.divisions),
+	categories: parseTournamentList(tournament.categories),
+})

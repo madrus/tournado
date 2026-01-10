@@ -5,7 +5,11 @@ import { ActionButton } from '~/components/buttons/ActionButton'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 
-import { getDefaultColorsForIntent, getIconForIntent } from './dialog.utils'
+import {
+	getCancelButtonColor,
+	getDefaultColorsForIntent,
+	getIconForIntent,
+} from './dialog.utils'
 import {
 	type DialogIntent,
 	dialogContentVariants,
@@ -111,7 +115,7 @@ export function ConfirmDialog({
 	const intentColors = getDefaultColorsForIntent(intent)
 	const finalIcon = getIconForIntent(intent)
 	const finalConfirmColor = intentColors.confirm
-	const finalCancelColor = 'brand'
+	const finalCancelColor = getCancelButtonColor()
 	const sharedButtonClasses = 'w-full sm:w-auto h-12 px-6'
 
 	const handleConfirm = (): void => {

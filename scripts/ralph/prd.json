@@ -32,8 +32,8 @@
 				"Verify in browser using dev-browser skill"
 			],
 			"priority": 2,
-			"passes": false,
-			"notes": ""
+			"passes": true,
+			"notes": "Updated button.variants.ts to use amber instead of yellow for warning color in dark mode and icon circle variants"
 		},
 		{
 			"id": "US-003",
@@ -47,8 +47,8 @@
 				"Verify in browser using dev-browser skill"
 			],
 			"priority": 3,
-			"passes": false,
-			"notes": ""
+			"passes": true,
+			"notes": "Standardized cancel button to use slate border and text (secondary variant with color='disabled'). Updated button.variants.ts to use border-disabled-600 for better visibility."
 		},
 		{
 			"id": "US-004",

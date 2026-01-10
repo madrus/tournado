@@ -1,1 +1,53 @@
 # Ralph Progress Log
+
+## Codebase Patterns
+- Warning semantic color is defined in 3 files: colors.css (base), tailwind_theme.css (@theme inline), tailwind_dark.css (dark mode overrides)
+- Adaptive color system has 3 variants: base (600), bg (600), and selected (800) weights
+- Always check all three CSS variable locations when updating semantic colors
+- Dialog components use semantic color classes (warning-*) that inherit from CSS variables
+- Button variants have explicit color mappings in 3 places: DARK_MODE_DARKER_CLASSES, dark mode text colors, and ICON_CIRCLE_COLOR_VARIANTS
+
+---
+
+## 2025-01-10 - US-001
+Thread: https://ampcode.com/threads/T-019ba850-fbd6-7668-947d-5f9c37a54ba7
+- Updated global warning color from yellow to amber
+- Files changed:
+  - app/styles/colors.css (lines 84-95): Changed --color-warning-* from yellow to amber
+  - app/styles/tailwind_theme.css: Changed warning in @theme inline block (lines 401-412) and adaptive variables (lines 243, 261, 299)
+  - app/styles/tailwind_dark.css (line 50): Changed --color-adaptive-bg-warning from yellow-700 to amber-700
+- **Learnings for future iterations:**
+  - Semantic colors are defined in multiple places for light/dark mode and adaptive systems
+  - Use browser devtools or page.evaluate() to verify CSS variable values match expected colors
+  - Amber and yellow have distinctly different oklch values - can be used to verify the mapping
+---
+
+## 2025-01-10 - US-002
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Updated dialog warning intent to use amber colors consistently
+- Files changed:
+  - app/components/buttons/button.variants.ts (lines 86, 572, 598): Changed warning from yellow to amber
+    * DARK_MODE_DARKER_CLASSES: dark:bg-amber-700 dark:border-amber-700
+    * Dark mode text color: dark:text-amber-50
+    * ICON_CIRCLE_COLOR_VARIANTS: border-amber-600/70
+- **Learnings for future iterations:**
+  - Dialog components already use semantic color classes (warning-*) which inherit from CSS variables
+  - Button variants have explicit color mappings that need updating separately from CSS variables
+  - Three places in button.variants.ts map colors: DARK_MODE_DARKER_CLASSES, dark mode text colors, and ICON_CIRCLE_COLOR_VARIANTS
+  - Visual consistency pattern: danger uses brand/red, warning uses warning/amber, both follow same structure
+---
+
+## 2026-01-10 - US-003
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Standardized cancel button styling across all dialogs
+- Files changed:
+  - app/components/buttons/button.variants.ts: Updated 'disabled' secondary variant to use 'border-disabled-600'
+  - app/components/ConfirmDialog/ConfirmDialog.tsx: Use getCancelButtonColor() for cancel button color
+  - app/components/ConfirmDialog/SimpleConfirmDialog.tsx: Use getCancelButtonColor() for cancel button color
+  - app/components/ConfirmDialog/dialog.utils.ts: Updated getDefaultColorsForIntent to use getCancelButtonColor()
+  - app/components/ConfirmDialog/__tests__/SimpleConfirmDialog.test.tsx: Updated expected border class to 'border-disabled-600'
+- **Learnings for future iterations:**
+  - Cancel buttons consistently use 'secondary' variant with 'disabled' color (which maps to slate)
+  - Updated 'disabled' secondary variant border to 600 weight matches other semantic colors and improves visibility
+  - getCancelButtonColor() is the central authority for cancel button styling in dialogs
+---

@@ -327,7 +327,7 @@
  * other CSS variables, we must use @theme inline instead of @theme.
  *
  * These semantic colors map to Tailwind real colors defined in colors.css:
- * - Functional Semantics: brand→red, primary→emerald, success→green, error→red, warning→yellow, info→blue, disabled→slate
+ * - Functional Semantics: brand→red, primary→emerald, success→green, error→red, warning→amber, info→blue, disabled→slate
  * - Visual Accents: accent-amber→amber, accent-indigo→indigo, accent-fuchsia→fuchsia, accent-teal→teal, accent-sky→sky, accent-purple→purple
  *
  * This generates utility classes like: bg-brand-600, text-primary-50, border-success-300, etc.

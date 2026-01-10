@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { ConfirmDialog } from '../ConfirmDialog'
 
@@ -77,5 +78,39 @@ describe('ConfirmDialog', () => {
 	it('does not render when open is false', () => {
 		render(<ConfirmDialog {...defaultProps} open={false} />)
 		expect(screen.queryByText('Test Title')).not.toBeInTheDocument()
+	})
+
+	it('focuses the confirm button on open', () => {
+		render(<ConfirmDialog {...defaultProps} />)
+		expect(screen.getByRole('button', { name: 'Confirm' })).toHaveFocus()
+	})
+
+	it('traps focus within dialog when open', async () => {
+		const user = userEvent.setup()
+		render(<ConfirmDialog {...defaultProps} />)
+
+		await user.tab()
+		expect(screen.getByRole('button', { name: 'Cancel' })).toHaveFocus()
+
+		await user.tab()
+		expect(screen.getByRole('button', { name: 'Confirm' })).toHaveFocus()
+	})
+
+	it('closes dialog on Escape key press', async () => {
+		const user = userEvent.setup()
+		const onOpenChange = vi.fn()
+		render(<ConfirmDialog {...defaultProps} onOpenChange={onOpenChange} />)
+
+		await user.keyboard('{Escape}')
+		expect(onOpenChange).toHaveBeenCalledWith(false)
+	})
+
+	it('links description via aria-describedby', () => {
+		render(<ConfirmDialog {...defaultProps} />)
+		const dialog = screen.getByRole('alertdialog')
+		const description = screen.getByText('Test Description')
+
+		expect(dialog).toHaveAttribute('aria-describedby', 'dialog-description')
+		expect(description).toHaveAttribute('id', 'dialog-description')
 	})
 })

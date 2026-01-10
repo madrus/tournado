@@ -19,7 +19,7 @@
  * Viewport: Mobile (375x812)
  * Note: Comprehensive user management workflow testing
  */
-import { expect, test } from '@playwright/test'
+import { type AccessibilityNode, expect, test } from '@playwright/test'
 
 import { adminPath } from '../../app/utils/adminRoutes'
 
@@ -329,6 +329,17 @@ test.describe('User Management Workflow', () => {
 
 		// Verify table has proper ARIA structure
 		await expect(adminUsersPage.usersTable).toHaveAttribute('role', 'table')
+
+		const mainContent = page.getByRole('main')
+		const mainHandle = await mainContent.elementHandle()
+		expect(mainHandle).not.toBeNull()
+
+		const snapshot = await page.accessibility.snapshot({
+			root: mainHandle ?? undefined,
+		})
+
+		expect(snapshot).not.toBeNull()
+		expect(hasRole(snapshot as AccessibilityNode, 'heading')).toBe(true)
 	})
 
 	test('should maintain proper accessibility on user detail page', async ({ page }) => {
@@ -349,3 +360,9 @@ test.describe('User Management Workflow', () => {
 		await expect(actionButton).toBeVisible()
 	})
 })
+
+function hasRole(node: AccessibilityNode, role: string): boolean {
+	if (node.role === role) return true
+	if (!node.children) return false
+	return node.children.some((child) => hasRole(child, role))
+}

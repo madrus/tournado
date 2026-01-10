@@ -13,35 +13,57 @@ LAST_BRANCH_FILE="$SCRIPT_DIR/.last-branch"
 
 # Archive previous run if branch changed
 if [ -f "$PRD_FILE" ] && [ -f "$LAST_BRANCH_FILE" ]; then
-  CURRENT_BRANCH=$(jq -r '.branchName // empty' "$PRD_FILE" 2>/dev/null || echo "")
-  LAST_BRANCH=$(cat "$LAST_BRANCH_FILE" 2>/dev/null || echo "")
-  
-  if [ -n "$CURRENT_BRANCH" ] && [ -n "$LAST_BRANCH" ] && [ "$CURRENT_BRANCH" != "$LAST_BRANCH" ]; then
-    # Archive the previous run
-    DATE=$(date +%Y-%m-%d)
-    # Strip "ralph/" prefix from branch name for folder
-    # FOLDER_NAME=$(echo "$LAST_BRANCH" | sed 's|^ralph/||')
-    FOLDER_NAME="${LAST_BRANCH#ralph/}"
-    ARCHIVE_FOLDER="$ARCHIVE_DIR/$DATE-$FOLDER_NAME"
-    
-    echo "Archiving previous run: $LAST_BRANCH"
-    mkdir -p "$ARCHIVE_FOLDER"
-    [ -f "$PRD_FILE" ] && cp "$PRD_FILE" "$ARCHIVE_FOLDER/"
-    [ -f "$PROGRESS_FILE" ] && cp "$PROGRESS_FILE" "$ARCHIVE_FOLDER/"
-    echo "   Archived to: $ARCHIVE_FOLDER"
-    
-    # Reset progress file for new run
-    echo "# Ralph Progress Log" > "$PROGRESS_FILE"
-    echo "Started: $(date)" >> "$PROGRESS_FILE"
-    echo "---" >> "$PROGRESS_FILE"
+  if ! command -v jq >/dev/null 2>&1; then
+    echo "Error: jq not found"
+    exit 1
+  elif ! jq empty "$PRD_FILE" >/dev/null 2>&1; then
+    echo "Error: $PRD_FILE is not valid JSON"
+    exit 1
+  else
+    CURRENT_BRANCH=$(jq -r '.branchName // empty' "$PRD_FILE" 2>/dev/null || echo "")
+    LAST_BRANCH=$(cat "$LAST_BRANCH_FILE" 2>/dev/null || echo "")
+
+    if [ -n "$CURRENT_BRANCH" ] && [ -n "$LAST_BRANCH" ] && [ "$CURRENT_BRANCH" != "$LAST_BRANCH" ]; then
+      # Archive the previous run
+      DATE=$(date +%Y-%m-%d)
+      # Strip "ralph/" prefix from branch name for folder
+      # FOLDER_NAME=$(echo "$LAST_BRANCH" | sed 's|^ralph/||')
+      FOLDER_NAME="${LAST_BRANCH#ralph/}"
+
+      if [[ "$FOLDER_NAME" =~ \.\. ]]; then
+        echo "Error: Invalid branch name contains path traversal"
+        exit 1
+      fi
+
+      ARCHIVE_FOLDER="$ARCHIVE_DIR/$DATE-$FOLDER_NAME"
+
+      echo "Archiving previous run: $LAST_BRANCH"
+      mkdir -p "$ARCHIVE_FOLDER"
+      [ -f "$PRD_FILE" ] && cp "$PRD_FILE" "$ARCHIVE_FOLDER/"
+      [ -f "$PROGRESS_FILE" ] && cp "$PROGRESS_FILE" "$ARCHIVE_FOLDER/"
+      echo "   Archived to: $ARCHIVE_FOLDER"
+
+      # Reset progress file for new run
+      echo "# Ralph Progress Log" > "$PROGRESS_FILE"
+      echo "Started: $(date)" >> "$PROGRESS_FILE"
+      echo "---" >> "$PROGRESS_FILE"
+    fi
   fi
 fi
 
 # Track current branch
 if [ -f "$PRD_FILE" ]; then
-  CURRENT_BRANCH=$(jq -r '.branchName // empty' "$PRD_FILE" 2>/dev/null || echo "")
-  if [ -n "$CURRENT_BRANCH" ]; then
-    echo "$CURRENT_BRANCH" > "$LAST_BRANCH_FILE"
+  if ! command -v jq >/dev/null 2>&1; then
+    echo "Error: jq not found"
+    exit 1
+  elif ! jq empty "$PRD_FILE" >/dev/null 2>&1; then
+    echo "Error: $PRD_FILE is not valid JSON"
+    exit 1
+  else
+    CURRENT_BRANCH=$(jq -r '.branchName // empty' "$PRD_FILE" 2>/dev/null || echo "")
+    if [ -n "$CURRENT_BRANCH" ]; then
+      echo "$CURRENT_BRANCH" > "$LAST_BRANCH_FILE"
+    fi
   fi
 fi
 

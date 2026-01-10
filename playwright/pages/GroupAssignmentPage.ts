@@ -76,7 +76,7 @@ export class GroupAssignmentPage extends BasePage {
 
 	get stayOnPageButton(): Locator {
 		return this.navigationBlockerDialog.getByRole('button', {
-			name: /op pagina blijven/i,
+			name: /ja, verlaat/i,
 		})
 	}
 

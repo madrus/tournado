@@ -149,8 +149,8 @@ model GroupSlot {
   groupId      String?
   slotIndex    Int
   teamId       String?    @unique
-  team         Team?      @relation("TeamGroupSlot", fields: [teamId], references: [id])
-  group        Group?     @relation(fields: [groupId], references: [id])
+  team         Team?      @relation("TeamGroupSlot", fields: [teamId], references: [id], onDelete: SetNull)
+  group        Group?     @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupStage   GroupStage @relation(fields: [groupStageId], references: [id], onDelete: Cascade)
 
   @@unique([groupId, slotIndex])

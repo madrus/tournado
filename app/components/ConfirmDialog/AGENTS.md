@@ -9,7 +9,7 @@
 
 - **Cancel Buttons**: Always use `variant='secondary'` and `color='disabled'`. This ensures a consistent slate border and text styling across all dialogs.
 - **Intent Colors**: Dialogs support four intents: `warning`, `danger`, `info`, and `success`.
-  - `warning` intent uses **amber** colors (updated from yellow).
+  - `warning` intent uses **amber** colors.
   - `danger` intent uses **brand/red** colors.
 - **Centralization**: All intent-to-color and intent-to-icon mappings are centralized in `dialog.utils.ts` and `dialog.variants.ts`.
 

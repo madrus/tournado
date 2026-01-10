@@ -83,3 +83,12 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
 - **Learnings for future iterations:**
   - Tailwind 4 OKLCH values can be used to verify semantic color mappings in the browser: amber-500 is oklch(76.9% 0.188 70.08)
 ---
+
+## 2026-01-10 - US-007
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added unit tests for dialog utility functions
+- Files changed:
+  - app/components/ConfirmDialog/__tests__/dialog.utils.test.ts: Added tests for icon, color, and intent mapping helpers
+- **Learnings for future iterations:**
+  - Centralizing intent mapping logic makes testing straightforward and ensures consistency across dialog types
+---

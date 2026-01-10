@@ -108,8 +108,8 @@
 				"Typecheck passes"
 			],
 			"priority": 7,
-			"passes": false,
-			"notes": ""
+			"passes": true,
+			"notes": "Added unit tests for dialog utility functions with 100% coverage."
 		},
 		{
 			"id": "US-008",

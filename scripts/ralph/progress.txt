@@ -92,3 +92,12 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
 - **Learnings for future iterations:**
   - Centralizing intent mapping logic makes testing straightforward and ensures consistency across dialog types
 ---
+
+## 2026-01-10 - US-008
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added unit tests for dialog variant outputs
+- Files changed:
+  - app/components/ConfirmDialog/__tests__/dialog.variants.test.ts: Added tests for CVA variant classes
+- **Learnings for future iterations:**
+  - CVA variants can be tested by verifying the presence of specific utility classes in the output string
+---

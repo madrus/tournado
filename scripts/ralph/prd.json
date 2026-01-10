@@ -124,8 +124,8 @@
 				"Typecheck passes"
 			],
 			"priority": 8,
-			"passes": false,
-			"notes": ""
+			"passes": true,
+			"notes": "Added unit tests for dialog variants with 100% coverage."
 		},
 		{
 			"id": "US-009",

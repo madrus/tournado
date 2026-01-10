@@ -63,8 +63,8 @@
 				"Verify in browser using dev-browser skill"
 			],
 			"priority": 4,
-			"passes": false,
-			"notes": ""
+			"passes": true,
+			"notes": "Updated unsaved changes dialog labels in all 6 locales: added question to description, changed 'Stay on page' to 'Cancel', and 'Leave anyway' to 'Yes, leave'."
 		},
 		{
 			"id": "US-005",
@@ -78,8 +78,8 @@
 				"Typecheck passes"
 			],
 			"priority": 5,
-			"passes": false,
-			"notes": ""
+			"passes": true,
+			"notes": "Removed dead removeTeamFromGroupStage functionality from store, helpers, types, tests, and i18n files."
 		},
 		{
 			"id": "US-006",

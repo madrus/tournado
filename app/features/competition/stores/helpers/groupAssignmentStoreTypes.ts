@@ -22,7 +22,6 @@ export type GroupAssignmentStoreActions = {
 	moveTeamToWaitlist: (teamId: string) => void
 	swapTeamWithSlot: (teamId: string, groupId: string, slotIndex: number) => void
 	promoteFromWaitlist: (teamId: string) => void
-	removeTeamFromGroupStage: (teamId: string) => void
 
 	setActiveGroupIndex: (index: number) => void
 	setSaving: (saving: boolean) => void

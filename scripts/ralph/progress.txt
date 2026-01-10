@@ -51,3 +51,28 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - Updated 'disabled' secondary variant border to 600 weight matches other semantic colors and improves visibility
   - getCancelButtonColor() is the central authority for cancel button styling in dialogs
 ---
+
+## 2026-01-10 - US-004
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Updated unsaved changes dialog labels across all 6 locales
+- Files changed:
+  - app/i18n/locales/{en,nl,fr,ar,tr,de}.json: Updated competition.groupAssignment.unsavedDescription, leaveAnyway, and stayOnPage
+- **Learnings for future iterations:**
+  - Always update all supported locales when changing UI strings
+  - Unsaved changes dialog follows a specific pattern for clarity: description ends with a direct question
+---
+
+## 2026-01-10 - US-005
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Removed dead code for delete team from group functionality
+- Files changed:
+  - app/features/competition/stores/helpers/groupAssignmentStoreHelpers.ts: Removed removeTeamFromGroupStage
+  - app/features/competition/stores/useGroupAssignmentStore.ts: Removed removeTeamFromGroupStage action
+  - app/features/competition/stores/helpers/groupAssignmentStoreTypes.ts: Removed removeTeamFromGroupStage type
+  - app/features/competition/stores/helpers/__tests__/groupAssignmentStoreHelpers.test.ts: Removed related tests
+  - app/features/competition/stores/__tests__/useGroupAssignmentStore.test.ts: Removed related tests
+  - app/i18n/locales/{en,nl,fr,ar,tr,de}.json: Removed unused groupAssignment delete-related keys
+- **Learnings for future iterations:**
+  - When removing functionality, always check i18n files for orphaned keys
+  - Use grep to verify if i18n keys are still used in the codebase before removing them
+---

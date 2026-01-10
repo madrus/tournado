@@ -16,7 +16,6 @@ import {
 	moveTeamToConfirmed,
 	moveTeamToWaitlist,
 	promoteFromWaitlist,
-	removeTeamFromGroupStage,
 	shouldInitialize,
 	swapTeamWithSlot,
 } from '../groupAssignmentStoreHelpers'
@@ -284,15 +283,6 @@ describe('groupAssignmentStoreHelpers', () => {
 			}
 
 			expect(promoteFromWaitlist(snapshot, 'team-c')).toBe(null)
-		})
-
-		it('should remove a team from the group stage', () => {
-			const snapshot = createSnapshot()
-
-			const next = removeTeamFromGroupStage(snapshot, 'team-a')
-
-			expect(next?.groups[0].slots[0].team).toBe(null)
-			expect(next?.unassignedTeams.some((team) => team.id === 'team-a')).toBe(false)
 		})
 	})
 })

@@ -277,20 +277,3 @@ export const promoteFromWaitlist = (
 		unassignedTeams: updatedUnassignedTeams,
 	}
 }
-
-export const removeTeamFromGroupStage = (
-	snapshot: GroupAssignmentSnapshot,
-	teamId: string,
-): GroupAssignmentSnapshot | null => {
-	const found = findTeam(snapshot, teamId)
-	if (!found) return null
-
-	const updatedGroups = clearTeamFromGroups(snapshot.groups, teamId)
-	const updatedUnassignedTeams = withoutTeam(snapshot.unassignedTeams, teamId)
-
-	return {
-		...snapshot,
-		groups: updatedGroups,
-		unassignedTeams: updatedUnassignedTeams,
-	}
-}

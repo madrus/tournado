@@ -83,7 +83,7 @@ export const DARK_MODE_DARKER_CLASSES: Record<ButtonSemanticColor, string> = {
 	primary: 'dark:bg-emerald-700 dark:border-emerald-700',
 	success: 'dark:bg-green-700 dark:border-green-700',
 	error: 'dark:bg-red-700 dark:border-red-700',
-	warning: 'dark:bg-yellow-700 dark:border-yellow-700',
+	warning: 'dark:bg-amber-700 dark:border-amber-700',
 	info: 'dark:bg-blue-700 dark:border-blue-700',
 	disabled: 'dark:bg-slate-700 dark:border-slate-700',
 	// Visual Accents
@@ -455,7 +455,7 @@ export const buttonVariants = cva(
 				class: [
 					'bg-disabled-50',
 					'text-disabled-600',
-					'border-disabled-300',
+					'border-disabled-600',
 					'hover:bg-disabled-100 focus-visible:bg-disabled-100',
 					'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-disabled-600 focus-visible:ring-offset-slate-50',
 					'hover:ring-2 hover:ring-offset-2 hover:ring-disabled-600 hover:ring-offset-slate-50',
@@ -569,7 +569,7 @@ export const buttonVariants = cva(
 			{ variant: 'primary', color: 'primary', class: 'dark:text-emerald-50' },
 			{ variant: 'primary', color: 'success', class: 'dark:text-green-50' },
 			{ variant: 'primary', color: 'error', class: 'dark:text-red-50' },
-			{ variant: 'primary', color: 'warning', class: 'dark:text-yellow-50' },
+			{ variant: 'primary', color: 'warning', class: 'dark:text-amber-50' },
 			{ variant: 'primary', color: 'info', class: 'dark:text-blue-50' },
 			{ variant: 'primary', color: 'disabled', class: 'dark:text-slate-50' },
 
@@ -595,7 +595,7 @@ export const ICON_CIRCLE_COLOR_VARIANTS: Record<ButtonColor, string> = {
 	primary: 'border-primary-600/70',
 	success: 'border-green-600/70',
 	error: 'border-red-600/70',
-	warning: 'border-yellow-600/70',
+	warning: 'border-amber-600/70',
 	info: 'border-blue-600/70',
 	disabled: 'border-button-neutral-secondary-border',
 	// Visual Accents

@@ -201,14 +201,12 @@
 			"backToGroups": "Terug naar poules",
 			"unsavedChanges": "Je hebt niet-opgeslagen wijzigingen",
 			"unsavedTitle": "Niet-opgeslagen wijzigingen",
-			"unsavedDescription": "Je hebt niet-opgeslagen wijzigingen die verloren gaan als je deze pagina verlaat.",
-			"leaveAnyway": "Toch verlaten",
-			"stayOnPage": "Op pagina blijven",
+			"unsavedDescription": "Je hebt niet-opgeslagen wijzigingen die verloren gaan als je deze pagina verlaat. Weet je zeker dat je wilt vertrekken?",
+			"leaveAnyway": "Ja, verlaat",
+			"stayOnPage": "Annuleren",
 			"conflictTitle": "Conflicterende wijzigingen",
 			"conflictDescription": "Een andere gebruiker heeft wijzigingen opgeslagen. Je niet-opgeslagen bewerkingen zijn verwijderd en de pagina is vernieuwd.",
 			"conflictReload": "Pagina herladen",
-			"deleteConfirmTitle": "Team verwijderen",
-			"deleteConfirmDescription": "Weet je zeker dat je dit team uit de poulefase wilt verwijderen? Ze zullen niet langer deelnemen aan deze competitie.",
 			"goToGroup": "Ga naar {{name}}",
 			"errors": {
 				"noCapacity": "Geen ruimte beschikbaar in bevestigde pool. Verwijder eerst een team uit een poule.",
@@ -218,8 +216,7 @@
 				"groupFull": "Deze poule is vol. Laat los op een specifieke plek om teams te verwisselen."
 			},
 			"chip": {
-				"ariaLabel": "{{club}} {{team}} - sleep om toe te wijzen",
-				"deleteAriaLabel": "Verwijder {{club}} {{team}} uit poulefase"
+				"ariaLabel": "{{club}} {{team}} - sleep om toe te wijzen"
 			},
 			"slot": {
 				"label": "Plek {{number}}",

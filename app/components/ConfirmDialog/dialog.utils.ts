@@ -28,12 +28,13 @@ export const getIconForIntent = (
 export const getDefaultColorsForIntent = (
 	intent: DialogIntent,
 ): { confirm: ButtonColor; cancel: ButtonColor } => {
+	const cancel = getCancelButtonColor()
 	const colorMap: Record<DialogIntent, { confirm: ButtonColor; cancel: ButtonColor }> =
 		{
-			warning: { confirm: 'warning', cancel: 'disabled' },
-			danger: { confirm: 'brand', cancel: 'disabled' },
-			info: { confirm: 'info', cancel: 'disabled' },
-			success: { confirm: 'success', cancel: 'disabled' },
+			warning: { confirm: 'warning', cancel },
+			danger: { confirm: 'brand', cancel },
+			info: { confirm: 'info', cancel },
+			success: { confirm: 'success', cancel },
 		}
 
 	return colorMap[intent]
@@ -48,4 +49,12 @@ export const getColorForIntent = (
 ): ButtonColor => {
 	if (customColor) return customColor
 	return getDefaultColorsForIntent(intent).confirm
+}
+
+/**
+ * Get cancel button color - always returns 'disabled' which maps to slate
+ * This ensures consistent slate border and text across all dialog cancel buttons
+ */
+export const getCancelButtonColor = (): ButtonColor => {
+	return 'disabled'
 }

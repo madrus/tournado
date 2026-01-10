@@ -243,7 +243,7 @@ describe('SimpleConfirmDialog', () => {
 				const cancelButton = within(dialog).getByRole('button', {
 					name: 'Cancel',
 				})
-				expect(cancelButton).toHaveClass('border-disabled-300')
+				expect(cancelButton).toHaveClass('border-disabled-600')
 			})
 		})
 	})
@@ -312,7 +312,7 @@ describe('SimpleConfirmDialog', () => {
 				const cancelButton = within(dialog).getByRole('button', {
 					name: 'Cancel',
 				})
-				expect(cancelButton).toHaveClass('border-disabled-300')
+				expect(cancelButton).toHaveClass('border-disabled-600')
 			})
 		})
 	})
@@ -381,7 +381,7 @@ describe('SimpleConfirmDialog', () => {
 				const cancelButton = within(dialog).getByRole('button', {
 					name: 'Cancel',
 				})
-				expect(cancelButton).toHaveClass('border-disabled-300')
+				expect(cancelButton).toHaveClass('border-disabled-600')
 			})
 		})
 	})
@@ -450,7 +450,7 @@ describe('SimpleConfirmDialog', () => {
 				const cancelButton = within(dialog).getByRole('button', {
 					name: 'Cancel',
 				})
-				expect(cancelButton).toHaveClass('border-disabled-300')
+				expect(cancelButton).toHaveClass('border-disabled-600')
 			})
 		})
 	})

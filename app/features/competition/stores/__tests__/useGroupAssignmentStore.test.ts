@@ -204,18 +204,6 @@ describe('useGroupAssignmentStore', () => {
 		).toBe(true)
 	})
 
-	it('should remove a team from the group stage', () => {
-		const snapshot = createSnapshot()
-
-		state().setSnapshotPair(snapshot)
-		state().removeTeamFromGroupStage(teamIds.groupTeam)
-
-		expect(state().snapshot?.groups[0].slots[0].team).toBe(null)
-		expect(
-			state().snapshot?.unassignedTeams.some((team) => team.id === teamIds.groupTeam),
-		).toBe(false)
-	})
-
 	it('should update UI state flags', () => {
 		state().setActiveGroupIndex(2)
 		state().setSaving(true)

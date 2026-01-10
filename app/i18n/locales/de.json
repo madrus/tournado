@@ -208,14 +208,12 @@
 			"backToGroups": "Zurück zu Gruppen",
 			"unsavedChanges": "Sie haben ungespeicherte Änderungen",
 			"unsavedTitle": "Ungespeicherte Änderungen",
-			"unsavedDescription": "Ihre ungespeicherten Änderungen gehen verloren, wenn Sie diese Seite verlassen.",
-			"leaveAnyway": "Trotzdem verlassen",
-			"stayOnPage": "Auf Seite bleiben",
+			"unsavedDescription": "Ihre ungespeicherten Änderungen gehen verloren, wenn Sie diese Seite verlassen. Sind Sie sicher, dass Sie gehen möchten?",
+			"leaveAnyway": "Ja, verlassen",
+			"stayOnPage": "Abbrechen",
 			"conflictTitle": "Änderungskonflikt",
 			"conflictDescription": "Ein anderer Benutzer hat Änderungen gespeichert. Ihre ungespeicherten Änderungen wurden verworfen und die Seite wurde aktualisiert.",
 			"conflictReload": "Seite neu laden",
-			"deleteConfirmTitle": "Team entfernen",
-			"deleteConfirmDescription": "Sind Sie sicher, dass Sie dieses Team aus der Gruppenphase entfernen möchten? Es nimmt dann nicht mehr an diesem Wettbewerb teil.",
 			"goToGroup": "Zu {{name}} gehen",
 			"errors": {
 				"noCapacity": "Kein Platz im bestätigten Pool verfügbar. Entfernen Sie zuerst ein Team aus einer Gruppe.",
@@ -225,8 +223,7 @@
 				"groupFull": "Diese Gruppe ist voll. Auf einen bestimmten Platz loslassen, um Teams zu tauschen."
 			},
 			"chip": {
-				"ariaLabel": "{{club}} {{team}} - ziehen zum Zuweisen",
-				"deleteAriaLabel": "{{club}} {{team}} aus Gruppenphase entfernen"
+				"ariaLabel": "{{club}} {{team}} - ziehen zum Zuweisen"
 			},
 			"slot": {
 				"label": "Platz {{number}}",

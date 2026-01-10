@@ -83,7 +83,23 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
   echo "═══════════════════════════════════════════════════════"
   
   # Run amp with the ralph prompt
-  OUTPUT=$(cat "$SCRIPT_DIR/prompt.md" | amp --dangerously-allow-all 2>&1 | tee /dev/stderr) || true
+  # COMMAND=(amp --dangerously-allow-all)
+  # Run claude with the ralph prompt
+  # COMMAND=(claude --permission-mode acceptEdits)
+  # Run gemini with the ralph prompt
+  # COMMAND=(gemini --yolo)
+  # Run gpt with the ralph prompt
+  COMMAND=(codex exec --dangerously-bypass-approvals-and-sandbox -)
+
+  set +e
+  OUTPUT=$(cat "$SCRIPT_DIR/prompt.md" | "${COMMAND[@]}" 2>&1 | tee /dev/stderr)
+  EXIT_CODE=$?
+  set -e
+
+  if [ $EXIT_CODE -ne 0 ]; then
+    echo "Error: command exited with code $EXIT_CODE"
+    exit $EXIT_CODE
+  fi
   
   # Check for completion signal
   if echo "$OUTPUT" | grep -q "<promise>COMPLETE</promise>"; then

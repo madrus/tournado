@@ -32,7 +32,7 @@ model UserAuditLog {
   newValue      String?
   reason        String?
   createdAt     DateTime @default(now())
-  admin         User     @relation("PerformedAudits", fields: [performedBy], references: [id])
+  admin         User     @relation("PerformedAudits", fields: [performedBy], references: [id], onDelete: Restrict)
   user          User     @relation("UserAuditLogs", fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])

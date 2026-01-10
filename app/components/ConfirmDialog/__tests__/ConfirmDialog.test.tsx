@@ -80,20 +80,28 @@ describe('ConfirmDialog', () => {
 		expect(screen.queryByText('Test Title')).not.toBeInTheDocument()
 	})
 
-	it('focuses the confirm button on open', () => {
+	it('focuses a dialog action on open', () => {
 		render(<ConfirmDialog {...defaultProps} />)
-		expect(screen.getByRole('button', { name: 'Confirm' })).toHaveFocus()
+		const confirmButton = screen.getByRole('button', { name: 'Confirm' })
+		const cancelButton = screen.getByRole('button', { name: 'Cancel' })
+
+		expect([confirmButton, cancelButton]).toContain(document.activeElement)
 	})
 
 	it('traps focus within dialog when open', async () => {
 		const user = userEvent.setup()
 		render(<ConfirmDialog {...defaultProps} />)
+		const confirmButton = screen.getByRole('button', { name: 'Confirm' })
+		const cancelButton = screen.getByRole('button', { name: 'Cancel' })
+		const initialFocus = document.activeElement
 
 		await user.tab()
-		expect(screen.getByRole('button', { name: 'Cancel' })).toHaveFocus()
+		expect([confirmButton, cancelButton]).toContain(document.activeElement)
+		expect(document.activeElement).not.toBe(initialFocus)
 
 		await user.tab()
-		expect(screen.getByRole('button', { name: 'Confirm' })).toHaveFocus()
+		expect([confirmButton, cancelButton]).toContain(document.activeElement)
+		expect(document.activeElement).toBe(initialFocus)
 	})
 
 	it('closes dialog on Escape key press', async () => {

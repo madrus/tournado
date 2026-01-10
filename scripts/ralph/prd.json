@@ -1,1 +1,167 @@
-{}
+{
+	"project": "Tournado",
+	"branchName": "ralph/confirm-dialog-unification",
+	"description": "Unify confirmation dialog appearance and update global warning color from yellow to amber",
+	"userStories": [
+		{
+			"id": "US-001",
+			"title": "Update global warning color from yellow to amber",
+			"description": "As a developer, I need to update the warning semantic color definition so that all warning-colored elements use amber instead of yellow.",
+			"acceptanceCriteria": [
+				"Update --color-warning-* CSS variables to map to amber instead of yellow in app/styles/colors.css",
+				"Update --color-warning-* CSS variables in app/styles/tailwind_theme.css",
+				"Update any adaptive warning colors (--color-adaptive-warning, --color-adaptive-bg-warning, etc.) in app/styles/tailwind_dark.css",
+				"Typecheck passes",
+				"Verify in browser using dev-browser skill"
+			],
+			"priority": 1,
+			"passes": true,
+			"notes": "Updated warning semantic colors from yellow to amber in colors.css, tailwind_theme.css, and tailwind_dark.css"
+		},
+		{
+			"id": "US-002",
+			"title": "Update dialog warning intent to use amber colors",
+			"description": "As a user, I want warning dialogs to have consistent amber coloring (icon, title, confirm button) matching the pattern used by danger dialogs with brand/red.",
+			"acceptanceCriteria": [
+				"Dialog warning intent uses amber shades for background (bg-warning-50 now amber)",
+				"Icon container uses amber colors",
+				"Title uses amber colors",
+				"Confirm button uses amber colors",
+				"Visual consistency with danger intent pattern (icon, title, button all same color family)",
+				"Typecheck passes",
+				"Verify in browser using dev-browser skill"
+			],
+			"priority": 2,
+			"passes": false,
+			"notes": ""
+		},
+		{
+			"id": "US-003",
+			"title": "Standardize cancel button styling across all dialogs",
+			"description": "As a user, I want cancel buttons in all confirmation dialogs to have the same slate border and text styling.",
+			"acceptanceCriteria": [
+				"Cancel button in ConfirmDialog uses slate border and text (secondary variant)",
+				"Cancel button in SimpleConfirmDialog uses slate border and text (secondary variant)",
+				"Cancel button styling matches the existing Teams/Tournaments delete dialog cancel button",
+				"Typecheck passes",
+				"Verify in browser using dev-browser skill"
+			],
+			"priority": 3,
+			"passes": false,
+			"notes": ""
+		},
+		{
+			"id": "US-004",
+			"title": "Update unsaved changes dialog labels",
+			"description": "As a user, I want the unsaved changes dialog to have clear, standard wording so I understand the action I'm about to take.",
+			"acceptanceCriteria": [
+				"Description ends with 'Are you sure you want to leave?'",
+				"Cancel button label changed from 'Stay on page' to 'Cancel'",
+				"Confirm button label changed from 'Leave anyway' to 'Yes, leave'",
+				"Update i18n keys in all 6 locales: en.json, nl.json, fr.json, ar.json, tr.json, de.json",
+				"Typecheck passes",
+				"Verify in browser using dev-browser skill"
+			],
+			"priority": 4,
+			"passes": false,
+			"notes": ""
+		},
+		{
+			"id": "US-005",
+			"title": "Remove dead code for delete team from group dialog",
+			"description": "As a developer, I need to remove the UI code for the removed 'delete team from group' functionality to keep the codebase clean.",
+			"acceptanceCriteria": [
+				"Identify and remove the ConfirmDialog for removing teams from groups in GroupAssignmentBoard.tsx",
+				"Remove any related state variables (e.g., showRemoveDialog, teamToRemove)",
+				"Remove any related handler functions",
+				"Ensure no TypeScript errors after removal",
+				"Typecheck passes"
+			],
+			"priority": 5,
+			"passes": false,
+			"notes": ""
+		},
+		{
+			"id": "US-006",
+			"title": "Verify conflict dialog uses warning/amber intent",
+			"description": "As a user, I want the conflict dialog to use the same warning/amber styling as the unsaved changes dialog for visual consistency.",
+			"acceptanceCriteria": [
+				"Conflict dialog uses intent='warning'",
+				"Conflict dialog displays with amber colors after global warning color update",
+				"Typecheck passes",
+				"Verify in browser using dev-browser skill"
+			],
+			"priority": 6,
+			"passes": false,
+			"notes": ""
+		},
+		{
+			"id": "US-007",
+			"title": "Add unit tests for dialog utility functions",
+			"description": "As a developer, I need unit tests for dialog utility functions to ensure correct behavior.",
+			"acceptanceCriteria": [
+				"Create app/components/ConfirmDialog/__tests__/dialog.utils.test.ts",
+				"Test getDialogColors returns correct colors for each intent (warning, danger, info, success)",
+				"Test getCancelButtonColor returns slate styling",
+				"Achieve minimum 80% coverage for dialog.utils.ts",
+				"Tests pass with pnpm test:run",
+				"Typecheck passes"
+			],
+			"priority": 7,
+			"passes": false,
+			"notes": ""
+		},
+		{
+			"id": "US-008",
+			"title": "Add unit tests for dialog variant outputs",
+			"description": "As a developer, I need unit tests for dialog variants to verify correct CSS classes.",
+			"acceptanceCriteria": [
+				"Create app/components/ConfirmDialog/__tests__/dialog.variants.test.ts",
+				"Test dialogVariants returns correct classes for each intent",
+				"Verify warning intent produces amber color classes",
+				"Achieve minimum 80% coverage for dialog.variants.ts",
+				"Tests pass with pnpm test:run",
+				"Typecheck passes"
+			],
+			"priority": 8,
+			"passes": false,
+			"notes": ""
+		},
+		{
+			"id": "US-009",
+			"title": "Add unit tests for ConfirmDialog component",
+			"description": "As a developer, I need unit tests for ConfirmDialog component to verify rendering and behavior.",
+			"acceptanceCriteria": [
+				"Create app/components/ConfirmDialog/__tests__/ConfirmDialog.test.tsx",
+				"Test rendering with each intent type (warning, danger, info, success)",
+				"Test cancel button uses slate styling",
+				"Test confirm button uses intent-appropriate colors",
+				"Test loading state prevents dialog closure",
+				"Achieve minimum 80% coverage for ConfirmDialog component",
+				"Tests pass with pnpm test:run",
+				"Typecheck passes"
+			],
+			"priority": 9,
+			"passes": false,
+			"notes": ""
+		},
+		{
+			"id": "US-010",
+			"title": "Add unit tests for SimpleConfirmDialog component",
+			"description": "As a developer, I need unit tests for SimpleConfirmDialog component to verify rendering and behavior.",
+			"acceptanceCriteria": [
+				"Create app/components/ConfirmDialog/__tests__/SimpleConfirmDialog.test.tsx",
+				"Test rendering with each intent type (warning, danger, info, success)",
+				"Test cancel button uses slate styling",
+				"Test confirm button uses intent-appropriate colors",
+				"Test controlled dialog behavior (open/onOpenChange)",
+				"Achieve minimum 80% coverage for SimpleConfirmDialog component",
+				"Tests pass with pnpm test:run",
+				"Typecheck passes"
+			],
+			"priority": 10,
+			"passes": false,
+			"notes": ""
+		}
+	]
+}

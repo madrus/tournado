@@ -240,7 +240,7 @@
 	/* Adaptive Background Colors - Functional Semantics (600 weights) */
 	--color-adaptive-bg-success: var(--color-green-600);
 	--color-adaptive-bg-error: var(--color-red-600);
-	--color-adaptive-bg-warning: var(--color-yellow-600);
+	--color-adaptive-bg-warning: var(--color-amber-600);
 	--color-adaptive-bg-info: var(--color-blue-600);
 	--color-adaptive-bg-disabled: var(--color-slate-600);
 
@@ -258,7 +258,7 @@
 	/* Adaptive Color System - Functional Semantics (600 weights) */
 	--color-adaptive-success: var(--color-green-600);
 	--color-adaptive-error: var(--color-red-600);
-	--color-adaptive-warning: var(--color-yellow-600);
+	--color-adaptive-warning: var(--color-amber-600);
 	--color-adaptive-info: var(--color-blue-600);
 	--color-adaptive-disabled: var(--color-slate-600);
 
@@ -296,7 +296,7 @@
 	/* Adaptive Color System - Functional Semantics Selected (800 weights) */
 	--color-adaptive-success-selected: var(--color-green-800);
 	--color-adaptive-error-selected: var(--color-red-800);
-	--color-adaptive-warning-selected: var(--color-yellow-800);
+	--color-adaptive-warning-selected: var(--color-amber-800);
 	--color-adaptive-info-selected: var(--color-blue-800);
 	--color-adaptive-disabled-selected: var(--color-slate-800);
 
@@ -398,18 +398,18 @@
 	--color-error-900: var(--color-red-900);
 	--color-error-950: var(--color-red-950);
 
-	/* Functional Semantics - Warning (yellow-based) */
-	--color-warning-50: var(--color-yellow-50);
-	--color-warning-100: var(--color-yellow-100);
-	--color-warning-200: var(--color-yellow-200);
-	--color-warning-300: var(--color-yellow-300);
-	--color-warning-400: var(--color-yellow-400);
-	--color-warning-500: var(--color-yellow-500);
-	--color-warning-600: var(--color-yellow-600);
-	--color-warning-700: var(--color-yellow-700);
-	--color-warning-800: var(--color-yellow-800);
-	--color-warning-900: var(--color-yellow-900);
-	--color-warning-950: var(--color-yellow-950);
+	/* Functional Semantics - Warning (amber-based) */
+	--color-warning-50: var(--color-amber-50);
+	--color-warning-100: var(--color-amber-100);
+	--color-warning-200: var(--color-amber-200);
+	--color-warning-300: var(--color-amber-300);
+	--color-warning-400: var(--color-amber-400);
+	--color-warning-500: var(--color-amber-500);
+	--color-warning-600: var(--color-amber-600);
+	--color-warning-700: var(--color-amber-700);
+	--color-warning-800: var(--color-amber-800);
+	--color-warning-900: var(--color-amber-900);
+	--color-warning-950: var(--color-amber-950);
 
 	/* Functional Semantics - Info (blue-based) */
 	--color-info-50: var(--color-blue-50);

@@ -160,8 +160,8 @@
 				"Typecheck passes"
 			],
 			"priority": 10,
-			"passes": false,
-			"notes": ""
+			"passes": true,
+			"notes": "Verified unit tests for SimpleConfirmDialog component with 100% coverage."
 		}
 	]
 }

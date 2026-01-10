@@ -111,3 +111,10 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - Radix UI Dialog components in tests can be accessed via screen roles (e.g., 'alertdialog', 'button') once opened
   - Testing intent-based styling can be done by checking for specific semantic color classes on container elements
 ---
+
+## 2026-01-10 - US-010
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Verified unit tests for SimpleConfirmDialog component
+- **Learnings for future iterations:**
+  - Uncontrolled dialogs can be tested by triggering the dialog via user events on the provided trigger element
+---

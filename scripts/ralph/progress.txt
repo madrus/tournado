@@ -101,3 +101,13 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
 - **Learnings for future iterations:**
   - CVA variants can be tested by verifying the presence of specific utility classes in the output string
 ---
+
+## 2026-01-10 - US-009
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added unit tests for ConfirmDialog component
+- Files changed:
+  - app/components/ConfirmDialog/__tests__/ConfirmDialog.test.tsx: Added comprehensive tests for rendering, intent styling, and interactions
+- **Learnings for future iterations:**
+  - Radix UI Dialog components in tests can be accessed via screen roles (e.g., 'alertdialog', 'button') once opened
+  - Testing intent-based styling can be done by checking for specific semantic color classes on container elements
+---

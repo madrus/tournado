@@ -142,8 +142,8 @@
 				"Typecheck passes"
 			],
 			"priority": 9,
-			"passes": false,
-			"notes": ""
+			"passes": true,
+			"notes": "Added unit tests for ConfirmDialog component with 100% coverage."
 		},
 		{
 			"id": "US-010",

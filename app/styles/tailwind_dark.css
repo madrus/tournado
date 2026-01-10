@@ -47,7 +47,7 @@
 	/* Adaptive Background Colors - Functional Semantics Dark Mode (700 weights) */
 	--color-adaptive-bg-success: var(--color-green-700);
 	--color-adaptive-bg-error: var(--color-red-700);
-	--color-adaptive-bg-warning: var(--color-yellow-700);
+	--color-adaptive-bg-warning: var(--color-amber-700);
 	--color-adaptive-bg-info: var(--color-blue-700);
 	--color-adaptive-bg-disabled: var(--color-slate-700);
 

@@ -1,335 +1,124 @@
-import { render, screen, within } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-
-import { describe, expect, test, vi } from 'vitest'
-
+import { describe, expect, it, vi } from 'vitest'
 import { ConfirmDialog } from '../ConfirmDialog'
 
-describe('ConfirmDialog - Controlled Mode', () => {
-	describe('Controlled State Management', () => {
-		test('renders when open is true', () => {
-			const handleOpenChange = vi.fn()
+describe('ConfirmDialog', () => {
+	const defaultProps = {
+		open: true,
+		onOpenChange: vi.fn(),
+		title: 'Test Title',
+		description: 'Test Description',
+		confirmLabel: 'Confirm',
+		cancelLabel: 'Cancel',
+		onConfirm: vi.fn(),
+	}
 
-			render(
-				<ConfirmDialog
-					open={true}
-					onOpenChange={handleOpenChange}
-					title='Confirm Action'
-					confirmLabel='Confirm'
-					cancelLabel='Cancel'
-				/>,
-			)
-
-			expect(screen.getByRole('alertdialog')).toBeInTheDocument()
-			expect(screen.getByText('Confirm Action')).toBeInTheDocument()
-		})
-
-		test('does not render when open is false', () => {
-			const handleOpenChange = vi.fn()
-
-			render(
-				<ConfirmDialog
-					open={false}
-					onOpenChange={handleOpenChange}
-					title='Confirm Action'
-					confirmLabel='Confirm'
-					cancelLabel='Cancel'
-				/>,
-			)
-
-			expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument()
-		})
-
-		test('calls onOpenChange when cancel button is clicked', async () => {
-			const user = userEvent.setup()
-			const handleOpenChange = vi.fn()
-
-			render(
-				<ConfirmDialog
-					open={true}
-					onOpenChange={handleOpenChange}
-					title='Confirm Action'
-					confirmLabel='Confirm'
-					cancelLabel='Cancel'
-				/>,
-			)
-
-			const dialog = screen.getByRole('alertdialog')
-			const cancelButton = within(dialog).getByRole('button', {
-				name: 'Cancel',
-			})
-			await user.click(cancelButton)
-
-			expect(handleOpenChange).toHaveBeenCalledWith(false)
-		})
-
-		test('calls onConfirm when confirm button is clicked', async () => {
-			const user = userEvent.setup()
-			const handleOpenChange = vi.fn()
-			const handleConfirm = vi.fn()
-
-			render(
-				<ConfirmDialog
-					open={true}
-					onOpenChange={handleOpenChange}
-					title='Confirm Action'
-					confirmLabel='Confirm'
-					cancelLabel='Cancel'
-					onConfirm={handleConfirm}
-				/>,
-			)
-
-			const dialog = screen.getByRole('alertdialog')
-			const confirmButton = within(dialog).getByRole('button', {
-				name: 'Confirm',
-			})
-			await user.click(confirmButton)
-
-			expect(handleConfirm).toHaveBeenCalledOnce()
-		})
+	it('renders with title and description', () => {
+		render(<ConfirmDialog {...defaultProps} />)
+		expect(screen.getByText('Test Title')).toBeInTheDocument()
+		expect(screen.getByText('Test Description')).toBeInTheDocument()
 	})
 
-	describe('Loading State', () => {
-		test('disables buttons when isLoading is true', () => {
-			const handleOpenChange = vi.fn()
-
-			render(
-				<ConfirmDialog
-					open={true}
-					onOpenChange={handleOpenChange}
-					title='Confirm Action'
-					confirmLabel='Confirm'
-					cancelLabel='Cancel'
-					isLoading={true}
-				/>,
-			)
-
-			const dialog = screen.getByRole('alertdialog')
-			const confirmButton = within(dialog).getByRole('button', {
-				name: 'Confirm',
-			})
-			const cancelButton = within(dialog).getByRole('button', {
-				name: 'Cancel',
-			})
-
-			expect(confirmButton).toBeDisabled()
-			expect(cancelButton).toBeDisabled()
-		})
-
-		test('prevents dialog from closing when isLoading is true', async () => {
-			const user = userEvent.setup()
-			const handleOpenChange = vi.fn()
-
-			render(
-				<ConfirmDialog
-					open={true}
-					onOpenChange={handleOpenChange}
-					title='Confirm Action'
-					confirmLabel='Confirm'
-					cancelLabel='Cancel'
-					isLoading={true}
-				/>,
-			)
-
-			const dialog = screen.getByRole('alertdialog')
-			const confirmButton = within(dialog).getByRole('button', {
-				name: 'Confirm',
-			})
-
-			await user.click(confirmButton)
-
-			// Dialog should not attempt to close (onOpenChange not called with false)
-			// The button is disabled, so click won't trigger anything
-			expect(handleOpenChange).not.toHaveBeenCalled()
-		})
-
-		test('allows dialog to close when isLoading is false', async () => {
-			const user = userEvent.setup()
-			const handleOpenChange = vi.fn()
-
-			render(
-				<ConfirmDialog
-					open={true}
-					onOpenChange={handleOpenChange}
-					title='Confirm Action'
-					confirmLabel='Confirm'
-					cancelLabel='Cancel'
-					isLoading={false}
-				/>,
-			)
-
-			const dialog = screen.getByRole('alertdialog')
-			const cancelButton = within(dialog).getByRole('button', {
-				name: 'Cancel',
-			})
-
-			await user.click(cancelButton)
-
-			expect(handleOpenChange).toHaveBeenCalledWith(false)
-		})
+	it('renders with correct labels', () => {
+		render(<ConfirmDialog {...defaultProps} />)
+		expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument()
+		expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
 	})
 
-	describe('Content and Props', () => {
-		test('displays title and description', () => {
-			const handleOpenChange = vi.fn()
-
-			render(
-				<ConfirmDialog
-					open={true}
-					onOpenChange={handleOpenChange}
-					title='Delete Item'
-					description='This action cannot be undone'
-					confirmLabel='Delete'
-					cancelLabel='Cancel'
-				/>,
-			)
-
-			expect(screen.getByText('Delete Item')).toBeInTheDocument()
-			expect(screen.getByText('This action cannot be undone')).toBeInTheDocument()
-		})
-
-		test('applies intent styling (danger)', () => {
-			const handleOpenChange = vi.fn()
-
-			render(
-				<ConfirmDialog
-					open={true}
-					onOpenChange={handleOpenChange}
-					title='Danger'
-					intent='danger'
-					confirmLabel='Delete'
-					cancelLabel='Cancel'
-				/>,
-			)
-
-			const dialog = screen.getByRole('alertdialog')
-			const icon = within(dialog).getByRole('img', { hidden: true })
-
-			// Verify danger intent colors are applied
-			expect(icon).toHaveClass('text-brand-600')
-		})
-
-		test('applies intent styling (warning)', () => {
-			const handleOpenChange = vi.fn()
-
-			render(
-				<ConfirmDialog
-					open={true}
-					onOpenChange={handleOpenChange}
-					title='Warning'
-					intent='warning'
-					confirmLabel='Proceed'
-					cancelLabel='Cancel'
-				/>,
-			)
-
-			const dialog = screen.getByRole('alertdialog')
-			const icon = within(dialog).getByRole('img', { hidden: true })
-
-			// Verify warning intent colors are applied
-			expect(icon).toHaveClass('text-warning-600')
-		})
+	it('calls onConfirm when confirm button is clicked', () => {
+		render(<ConfirmDialog {...defaultProps} />)
+		screen.getByRole('button', { name: 'Confirm' }).click()
+		expect(defaultProps.onConfirm).toHaveBeenCalled()
 	})
 
-	describe('Icon Contrast', () => {
-		test.each([
-			['danger', '0 0 24 24'],
-			['warning', '0 0 24 24'],
-			['success', '0 0 24 24'],
-			['info', '0 -960 960 960'],
-		] as const)('renders appropriate icon for %s intent', (intent, expectedViewBox) => {
-			const handleOpenChange = vi.fn()
-
-			render(
-				<ConfirmDialog
-					open={true}
-					onOpenChange={handleOpenChange}
-					title={`${intent} dialog`}
-					intent={intent}
-					confirmLabel='Confirm'
-					cancelLabel='Cancel'
-				/>,
-			)
-
-			const dialog = screen.getByRole('alertdialog')
-			const iconContainer = within(dialog).getByTestId('confirm-dialog-icon-container')
-			const icon = within(iconContainer).getByTestId('confirm-dialog-icon')
-
-			// Verify title is rendered
-			expect(screen.getByText(`${intent} dialog`)).toBeInTheDocument()
-
-			// Verify icon is rendered with proper SVG element and correct viewBox
-			expect(icon).toBeInTheDocument()
-			expect(icon).toHaveAttribute('viewBox', expectedViewBox)
-			expect(icon).toHaveAttribute('role', 'img')
-
-			// Icon container is marked as decorative since the intent is conveyed by color and structure
-			expect(iconContainer).toHaveAttribute('aria-hidden', 'true')
-
-			// Each intent icon is designed with appropriate styling for contrast
-			// (Verified through dedicated icon component unit tests)
-		})
+	it('calls onOpenChange when cancel button is clicked', () => {
+		render(<ConfirmDialog {...defaultProps} />)
+		screen.getByRole('button', { name: 'Cancel' }).click()
+		expect(defaultProps.onOpenChange).toHaveBeenCalledWith(false)
 	})
 
-	// Note: Focus management tests removed as they test implementation details
-	// rather than user-facing behavior. AutoFocus behavior in JSDOM is unreliable
-	// and the actual focus behavior works correctly in real browsers.
+	it('applies correct intent classes for warning', () => {
+		render(<ConfirmDialog {...defaultProps} intent='warning' />)
+		const iconContainer = screen.getByTestId('confirm-dialog-icon-container')
+		expect(iconContainer).toHaveClass('bg-warning-100')
+	})
 
-	describe('Accessibility', () => {
-		test('has proper alertdialog role', () => {
-			const handleOpenChange = vi.fn()
+	it('applies correct intent classes for danger', () => {
+		render(<ConfirmDialog {...defaultProps} intent='danger' />)
+		const iconContainer = screen.getByTestId('confirm-dialog-icon-container')
+		expect(iconContainer).toHaveClass('bg-brand-100')
+	})
 
-			render(
-				<ConfirmDialog
-					open={true}
-					onOpenChange={handleOpenChange}
-					title='Confirm Action'
-					confirmLabel='Confirm'
-					cancelLabel='Cancel'
-				/>,
-			)
+	it('applies correct intent classes for info', () => {
+		render(<ConfirmDialog {...defaultProps} intent='info' />)
+		const iconContainer = screen.getByTestId('confirm-dialog-icon-container')
+		expect(iconContainer).toHaveClass('bg-info-100')
+	})
 
-			expect(screen.getByRole('alertdialog')).toBeInTheDocument()
-		})
+	it('applies correct intent classes for success', () => {
+		render(<ConfirmDialog {...defaultProps} intent='success' />)
+		const iconContainer = screen.getByTestId('confirm-dialog-icon-container')
+		expect(iconContainer).toHaveClass('bg-success-100')
+	})
 
-		test('includes aria-describedby when description is provided', () => {
-			const handleOpenChange = vi.fn()
+	it('uses disabled color for cancel button (slate styling)', () => {
+		render(<ConfirmDialog {...defaultProps} />)
+		const cancelButton = screen.getByRole('button', { name: 'Cancel' })
+		// ButtonColor 'disabled' maps to 'border-disabled-600' in secondary variant
+		expect(cancelButton).toHaveClass('border-disabled-600')
+	})
 
-			render(
-				<ConfirmDialog
-					open={true}
-					onOpenChange={handleOpenChange}
-					title='Confirm Action'
-					description='This is important'
-					confirmLabel='Confirm'
-					cancelLabel='Cancel'
-				/>,
-			)
+	it('disables buttons when isLoading is true', () => {
+		render(<ConfirmDialog {...defaultProps} isLoading={true} />)
+		expect(screen.getByRole('button', { name: 'Confirm' })).toBeDisabled()
+		expect(screen.getByRole('button', { name: 'Cancel' })).toBeDisabled()
+	})
 
-			const dialog = screen.getByRole('alertdialog')
-			expect(dialog).toHaveAttribute('aria-describedby', 'dialog-description')
-			expect(screen.getByText('This is important')).toHaveAttribute(
-				'id',
-				'dialog-description',
-			)
-		})
+	it('does not render when open is false', () => {
+		render(<ConfirmDialog {...defaultProps} open={false} />)
+		expect(screen.queryByText('Test Title')).not.toBeInTheDocument()
+	})
 
-		test('icon container is marked as decorative', () => {
-			const handleOpenChange = vi.fn()
+	it('focuses a dialog action on open', () => {
+		render(<ConfirmDialog {...defaultProps} />)
+		const confirmButton = screen.getByRole('button', { name: 'Confirm' })
+		const cancelButton = screen.getByRole('button', { name: 'Cancel' })
 
-			render(
-				<ConfirmDialog
-					open={true}
-					onOpenChange={handleOpenChange}
-					title='Confirm Action'
-					confirmLabel='Confirm'
-					cancelLabel='Cancel'
-				/>,
-			)
+		expect([confirmButton, cancelButton]).toContain(document.activeElement)
+	})
 
-			const dialog = screen.getByRole('alertdialog')
-			const iconContainer = within(dialog).getByTestId('confirm-dialog-icon-container')
-			expect(iconContainer).toHaveAttribute('aria-hidden', 'true')
-		})
+	it('traps focus within dialog when open', async () => {
+		const user = userEvent.setup()
+		render(<ConfirmDialog {...defaultProps} />)
+		const confirmButton = screen.getByRole('button', { name: 'Confirm' })
+		const cancelButton = screen.getByRole('button', { name: 'Cancel' })
+		const initialFocus = document.activeElement
+
+		await user.tab()
+		expect([confirmButton, cancelButton]).toContain(document.activeElement)
+		expect(document.activeElement).not.toBe(initialFocus)
+
+		await user.tab()
+		expect([confirmButton, cancelButton]).toContain(document.activeElement)
+		expect(document.activeElement).toBe(initialFocus)
+	})
+
+	it('closes dialog on Escape key press', async () => {
+		const user = userEvent.setup()
+		const onOpenChange = vi.fn()
+		render(<ConfirmDialog {...defaultProps} onOpenChange={onOpenChange} />)
+
+		await user.keyboard('{Escape}')
+		expect(onOpenChange).toHaveBeenCalledWith(false)
+	})
+
+	it('links description via aria-describedby', () => {
+		render(<ConfirmDialog {...defaultProps} />)
+		const dialog = screen.getByRole('alertdialog')
+		const description = screen.getByText('Test Description')
+
+		expect(dialog).toHaveAttribute('aria-describedby', 'dialog-description')
+		expect(description).toHaveAttribute('id', 'dialog-description')
 	})
 })

@@ -201,14 +201,12 @@
 			"backToGroups": "Back to Groups",
 			"unsavedChanges": "You have unsaved changes",
 			"unsavedTitle": "Unsaved Changes",
-			"unsavedDescription": "You have unsaved changes that will be lost if you leave this page.",
-			"leaveAnyway": "Leave anyway",
-			"stayOnPage": "Stay on page",
+			"unsavedDescription": "You have unsaved changes that will be lost if you leave this page. Are you sure you want to leave?",
+			"leaveAnyway": "Yes, leave",
+			"stayOnPage": "Cancel",
 			"conflictTitle": "Changes Conflict",
 			"conflictDescription": "Another user saved changes. Your unsaved edits were discarded and the page was refreshed.",
 			"conflictReload": "Reload Page",
-			"deleteConfirmTitle": "Remove Team",
-			"deleteConfirmDescription": "Are you sure you want to remove this team from the group stage? They will no longer be part of this competition.",
 			"goToGroup": "Go to {{name}}",
 			"errors": {
 				"noCapacity": "No space available in confirmed pool. Remove a team from a group first.",
@@ -218,8 +216,7 @@
 				"groupFull": "This group is full. Drop on a specific slot to swap teams."
 			},
 			"chip": {
-				"ariaLabel": "{{club}} {{team}} - drag to assign",
-				"deleteAriaLabel": "Remove {{club}} {{team}} from group stage"
+				"ariaLabel": "{{club}} {{team}} - drag to assign"
 			},
 			"slot": {
 				"label": "Slot {{number}}",

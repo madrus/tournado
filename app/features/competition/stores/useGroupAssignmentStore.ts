@@ -10,7 +10,6 @@ import {
 	moveTeamToConfirmed,
 	moveTeamToWaitlist,
 	promoteFromWaitlist,
-	removeTeamFromGroupStage,
 	shouldInitialize,
 	swapTeamWithSlot,
 } from './helpers/groupAssignmentStoreHelpers'
@@ -159,14 +158,6 @@ export const useGroupAssignmentStore = create<
 						)
 					},
 
-					// Remove a team from the group stage entirely
-					removeTeamFromGroupStage: (teamId: string) => {
-						updateSnapshot(
-							(snapshot) => removeTeamFromGroupStage(snapshot, teamId),
-							'removeTeamFromGroupStage',
-						)
-					},
-
 					// UI state actions
 					setActiveGroupIndex: (index) => {
 						set({ activeGroupIndex: index }, false, 'setActiveGroupIndex')
@@ -247,7 +238,6 @@ export const useGroupAssignmentActions = () =>
 			moveTeamToWaitlist: state.moveTeamToWaitlist,
 			swapTeamWithSlot: state.swapTeamWithSlot,
 			promoteFromWaitlist: state.promoteFromWaitlist,
-			removeTeamFromGroupStage: state.removeTeamFromGroupStage,
 			setActiveGroupIndex: state.setActiveGroupIndex,
 			setSaving: state.setSaving,
 			setSaveError: state.setSaveError,

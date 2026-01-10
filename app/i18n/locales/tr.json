@@ -208,14 +208,12 @@
 			"backToGroups": "Gruplara geri dön",
 			"unsavedChanges": "Kaydedilmemiş değişiklikleriniz var",
 			"unsavedTitle": "Kaydedilmemiş değişiklikler",
-			"unsavedDescription": "Bu sayfadan ayrılırsanız kaydedilmemiş değişiklikleriniz kaybolacak.",
-			"leaveAnyway": "Yine de ayrıl",
-			"stayOnPage": "Sayfada kal",
+			"unsavedDescription": "Bu sayfadan ayrılırsanız kaydedilmemiş değişiklikleriniz kaybolacak. Ayrılmak istediğinizden emin misiniz?",
+			"leaveAnyway": "Evet, ayrıl",
+			"stayOnPage": "İptal",
 			"conflictTitle": "Değişiklik çakışması",
 			"conflictDescription": "Başka bir kullanıcı değişiklikleri kaydetti. Kaydedilmemiş düzenlemeleriniz silindi ve sayfa yenilendi.",
 			"conflictReload": "Sayfayı yenile",
-			"deleteConfirmTitle": "Takımı kaldır",
-			"deleteConfirmDescription": "Bu takımı grup aşamasından kaldırmak istediğinizden emin misiniz? Artık bu yarışmaya katılmayacaklar.",
 			"goToGroup": "{{name}} grubuna git",
 			"errors": {
 				"noCapacity": "Onaylı havuzda yer yok. Önce bir gruptan bir takım çıkarın.",
@@ -225,8 +223,7 @@
 				"groupFull": "Bu grup dolu. Takımları değiştirmek için belirli bir yere bırakın."
 			},
 			"chip": {
-				"ariaLabel": "{{club}} {{team}} - atamak için sürükle",
-				"deleteAriaLabel": "{{club}} {{team}} takımını grup aşamasından kaldır"
+				"ariaLabel": "{{club}} {{team}} - atamak için sürükle"
 			},
 			"slot": {
 				"label": "Yer {{number}}",

@@ -5,7 +5,11 @@ import { ActionButton } from '~/components/buttons/ActionButton'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 
-import { getDefaultColorsForIntent, getIconForIntent } from './dialog.utils'
+import {
+	getCancelButtonColor,
+	getDefaultColorsForIntent,
+	getIconForIntent,
+} from './dialog.utils'
 import {
 	type DialogIntent,
 	dialogContentVariants,
@@ -85,7 +89,7 @@ export function SimpleConfirmDialog({
 	const intentColors = getDefaultColorsForIntent(intent)
 	const finalIcon = getIconForIntent(intent)
 	const finalConfirmColor = intentColors.confirm
-	const finalCancelColor = intentColors.cancel
+	const finalCancelColor = getCancelButtonColor()
 	const buttonClassName = cn('w-full min-w-[120px] md:w-auto')
 
 	const handleConfirm = (): void => {

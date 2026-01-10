@@ -92,8 +92,8 @@
 				"Verify in browser using dev-browser skill"
 			],
 			"priority": 6,
-			"passes": false,
-			"notes": ""
+			"passes": true,
+			"notes": "Verified conflict dialog uses intent='warning' and global warning color is amber."
 		},
 		{
 			"id": "US-007",

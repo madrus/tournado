@@ -6,6 +6,159 @@ datasource db {
   provider = "sqlite"
 }
 
+model User {
+  id              String         @id @default(cuid())
+  firstName       String
+  lastName        String
+  email           String         @unique
+  firebaseUid     String         @unique
+  displayName     String?
+  role            Role
+  active          Boolean        @default(true)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  performedAudits UserAuditLog[] @relation("PerformedAudits")
+  auditLogs       UserAuditLog[] @relation("UserAuditLogs")
+
+  @@index([active, createdAt])
+}
+
+model UserAuditLog {
+  id            String   @id @default(cuid())
+  userId        String
+  performedBy   String
+  action        String
+  previousValue String?
+  newValue      String?
+  reason        String?
+  createdAt     DateTime @default(now())
+  admin         User     @relation("PerformedAudits", fields: [performedBy], references: [id])
+  user          User     @relation("UserAuditLogs", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([performedBy])
+  @@index([createdAt])
+}
+
+model TeamLeader {
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String   @unique
+  phone     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  teams     Team[]
+}
+
+model Team {
+  id           String     @id @default(cuid())
+  name         String
+  tournamentId String
+  category     Category
+  division     Division
+  clubName     String
+  teamLeaderId String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  groupSlot    GroupSlot? @relation("TeamGroupSlot")
+  awayMatches  Match[]    @relation("Match_awayTeam")
+  homeMatches  Match[]    @relation("Match_homeTeam")
+  teamLeader   TeamLeader @relation(fields: [teamLeaderId], references: [id], onDelete: Cascade)
+  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+}
+
+model Tournament {
+  id          String       @id @default(cuid())
+  name        String
+  location    String
+  divisions   String
+  categories  String
+  startDate   DateTime
+  endDate     DateTime
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  groupStages GroupStage[]
+  matches     Match[]
+  teams       Team[]
+}
+
+model Match {
+  id           String       @id @default(cuid())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  date         DateTime
+  time         DateTime
+  location     String
+  status       MatchStatus  @default(UPCOMING)
+  tournamentId String
+  homeTeamId   String
+  awayTeamId   String
+  awayTeam     Team         @relation("Match_awayTeam", fields: [awayTeamId], references: [id], onDelete: Cascade)
+  homeTeam     Team         @relation("Match_homeTeam", fields: [homeTeamId], references: [id], onDelete: Cascade)
+  tournament   Tournament   @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  scores       MatchScore[]
+}
+
+model MatchScore {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  matchId       String
+  homeTeamScore Int
+  awayTeamScore Int
+  match         Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+}
+
+model GroupStage {
+  id           String      @id @default(cuid())
+  tournamentId String
+  name         String
+  categories   String
+  configGroups Int
+  configSlots  Int
+  autoFill     Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  groups       Group[]
+  groupSlots   GroupSlot[]
+  tournament   Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+
+  @@unique([tournamentId, name])
+  @@index([tournamentId])
+}
+
+model Group {
+  id           String      @id @default(cuid())
+  groupStageId String
+  name         String
+  order        Int
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  groupStage   GroupStage  @relation(fields: [groupStageId], references: [id], onDelete: Cascade)
+  slots        GroupSlot[]
+
+  @@unique([groupStageId, name])
+  @@unique([groupStageId, order])
+  @@index([groupStageId])
+}
+
+model GroupSlot {
+  id           String     @id @default(cuid())
+  groupStageId String
+  groupId      String?
+  slotIndex    Int
+  teamId       String?    @unique
+  team         Team?      @relation("TeamGroupSlot", fields: [teamId], references: [id])
+  group        Group?     @relation(fields: [groupId], references: [id])
+  groupStage   GroupStage @relation(fields: [groupStageId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, slotIndex])
+  @@unique([groupStageId, teamId])
+  @@index([groupStageId])
+  @@index([teamId])
+}
+
 enum Role {
   ADMIN
   MANAGER
@@ -58,158 +211,4 @@ enum Category {
   VETERANEN_40_PLUS
   VETERANEN_45_PLUS
   VETERANEN_50_PLUS
-}
-
-model User {
-  id              String         @id @default(cuid())
-  firstName       String
-  lastName        String
-  email           String         @unique
-  firebaseUid     String         @unique
-  displayName     String?
-  role            Role
-  active          Boolean        @default(true)
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  auditLogs       UserAuditLog[] @relation("UserAuditLogs")
-  performedAudits UserAuditLog[] @relation("PerformedAudits")
-
-  @@index([active, createdAt])
-}
-
-model UserAuditLog {
-  id            String   @id @default(cuid())
-  userId        String
-  user          User     @relation("UserAuditLogs", fields: [userId], references: [id], onDelete: Cascade)
-  performedBy   String
-  admin         User     @relation("PerformedAudits", fields: [performedBy], references: [id], onDelete: Restrict)
-  action        String   // "role_change", "approval", "rejection", "profile_update", "deactivate", "reactivate"
-  previousValue String?
-  newValue      String?
-  reason        String?
-  createdAt     DateTime @default(now())
-
-  @@index([userId])
-  @@index([performedBy])
-  @@index([createdAt])
-}
-
-model TeamLeader { // contact person
-  id        String   @id @default(cuid())
-  firstName String
-  lastName  String
-  email     String   @unique
-  phone     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  teams     Team[]
-}
-
-model Team {
-  id            String     @id @default(cuid())
-  name          String
-  tournamentId  String
-  tournament    Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-  category      Category    // e.g., JO8, MO9, VETERANEN_35_PLUS
-  division      Division
-  clubName      String
-  teamLeaderId  String
-  teamLeader    TeamLeader @relation(fields: [teamLeaderId], references: [id], onDelete: Cascade)
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  homeMatches   Match[]    @relation("Match_homeTeam")
-  awayMatches   Match[]    @relation("Match_awayTeam")
-  groupSlot     GroupSlot? @relation("TeamGroupSlot")
-}
-
-model Tournament {
-  id         String     @id @default(cuid())
-  name       String
-  location   String
-  divisions  String     // array of Division enum values as JSON (SQLite stores as TEXT)
-  categories String     // array of category strings (as JSON, SQLite stores as TEXT)
-  startDate  DateTime
-  endDate    DateTime
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  teams      Team[]
-  matches    Match[]
-  groupStages  GroupStage[]
-}
-
-model Match {
-  id            String   @id @default(cuid())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  date          DateTime // scheduled date of the match
-  time          DateTime // scheduled time of the match
-  location      String   // specific field/court
-  status        MatchStatus @default(UPCOMING)
-  tournamentId  String
-  tournament    Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-  homeTeamId    String
-  homeTeam      Team     @relation("Match_homeTeam", fields: [homeTeamId], references: [id], onDelete: Cascade)
-  awayTeamId    String
-  awayTeam      Team     @relation("Match_awayTeam", fields: [awayTeamId], references: [id], onDelete: Cascade)
-  // back-relation for MatchScore
-  scores        MatchScore[]
-}
-
-model MatchScore {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  matchId    String
-  match      Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
-  homeTeamScore Int
-  awayTeamScore Int
-}
-
-model GroupStage {
-  id            String     @id @default(cuid())
-  tournament    Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-  tournamentId  String
-  name          String
-  categories    String     // array of Category enum values as JSON (SQLite stores as TEXT)
-  groups        Group[]
-  configGroups  Int
-  configSlots   Int
-  autoFill      Boolean @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  groupSlots    GroupSlot[]
-
-  @@unique([tournamentId, name])
-  @@index([tournamentId])
-}
-
-model Group {
-  id          String   @id @default(cuid())
-  groupStage    GroupStage @relation(fields: [groupStageId], references: [id], onDelete: Cascade)
-  groupStageId  String
-  name        String   // e.g. "Group A"
-  order       Int
-  slots       GroupSlot[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@unique([groupStageId, name])
-  @@unique([groupStageId, order])
-  @@index([groupStageId])
-}
-
-model GroupSlot {
-  id          String   @id @default(cuid())
-  groupStage    GroupStage @relation(fields: [groupStageId], references: [id], onDelete: Cascade)
-  groupStageId  String
-  group       Group?   @relation(fields: [groupId], references: [id], onDelete: SetNull)
-  groupId     String?         // null ⇒ Reserve
-  slotIndex   Int              // 0..N-1 inside group
-  team        Team?    @relation("TeamGroupSlot", fields: [teamId], references: [id], onDelete: SetNull)
-  teamId      String?  @unique // null ⇒ placeholder
-
-  @@unique([groupId, slotIndex]) // each slot unique inside a group
-  @@unique([groupStageId, teamId]) // team only once in a set
-  @@index([groupStageId])
-  @@index([teamId])
 }

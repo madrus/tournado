@@ -76,3 +76,10 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - When removing functionality, always check i18n files for orphaned keys
   - Use grep to verify if i18n keys are still used in the codebase before removing them
 ---
+
+## 2026-01-10 - US-006
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Verified conflict dialog uses warning/amber intent
+- **Learnings for future iterations:**
+  - Tailwind 4 OKLCH values can be used to verify semantic color mappings in the browser: amber-500 is oklch(76.9% 0.188 70.08)
+---

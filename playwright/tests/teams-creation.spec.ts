@@ -176,12 +176,13 @@ test.describe('Public Teams - Creation', () => {
 				teamId = match[1]
 			}
 
-			await expect(page.locator('body')).toContainText(
-				new RegExp(`J08-1-${uniqueId}|TC Public ${uniqueId}`, 'i'),
-				{
-					timeout: 5000,
-				},
-			)
+			const clubNameValue = page.locator('[name="clubName"]')
+			const teamNameValue = page.locator('[name="name"]')
+
+			await expect(clubNameValue).toBeVisible({ timeout: 5000 })
+			await expect(teamNameValue).toBeVisible({ timeout: 5000 })
+			await expect(clubNameValue).toHaveValue(`TC Public ${uniqueId}`)
+			await expect(teamNameValue).toHaveValue(`J08-1-${uniqueId}`)
 
 			// Verify email notification was sent to team leader
 			const emails = await waitForEmailsCount(1)

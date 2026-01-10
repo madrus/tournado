@@ -76,12 +76,12 @@ export class GroupAssignmentPage extends BasePage {
 
 	get stayOnPageButton(): Locator {
 		return this.navigationBlockerDialog.getByRole('button', {
-			name: /ja, verlaat/i,
+			name: /annuleren/i,
 		})
 	}
 
 	get leaveAnywayButton(): Locator {
-		return this.navigationBlockerDialog.getByRole('button', { name: /toch verlaten/i })
+		return this.navigationBlockerDialog.getByRole('button', { name: /ja, verlaat/i })
 	}
 
 	// Error banner

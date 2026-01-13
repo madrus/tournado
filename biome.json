@@ -9,9 +9,7 @@
 		"ignoreUnknown": false
 	},
 	"formatter": {
-		"enabled": true,
-		"indentStyle": "tab",
-		"lineWidth": 88
+		"enabled": false
 	},
 	"linter": {
 		"enabled": true,

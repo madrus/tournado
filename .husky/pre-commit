@@ -5,9 +5,8 @@ set -euo pipefail
 [ -d "/opt/homebrew/bin" ] && export PATH="/opt/homebrew/bin:$PATH"
 [ -d "/usr/local/bin" ] && export PATH="/usr/local/bin:$PATH"
 
-# Run Biome check with auto-fix on staged files
-# Use --no-errors-on-unmatched to allow YAML and other unsupported files
-pnpm biome check --staged --write --unsafe --no-errors-on-unmatched .
+# Run Prettier on staged files via pretty-quick
+pnpm format:staged
 
 # Re-add formatted files to staging area
 git add -u

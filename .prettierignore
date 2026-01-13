@@ -1,0 +1,12 @@
+node_modules
+.turbo
+dist
+build
+coverage
+playwright-report
+playwright-results
+public
+.cache
+pnpm-lock.yaml
+.DS_Store
+/.next

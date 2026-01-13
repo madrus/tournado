@@ -195,7 +195,7 @@ beforeEach(() => {
   state().resetForm()
 })
 
-const getSubmitButton = (mode: FormMode = 'create') =>
+const getSubmitButton = (mode: FormMode = 'create'): HTMLElement =>
   screen.getByRole('button', {
     name: mode === 'edit' ? 'common.actions.update' : 'common.actions.save',
   })
@@ -788,6 +788,14 @@ describe('TeamForm Component - filling the form', () => {
   })
 
   describe('Unsaved warning', () => {
+    it('does not show unsaved warning when the form is clean', () => {
+      renderTeamForm('create', 'public')
+
+      expect(
+        screen.queryByText('common.confirm.unsavedChanges'),
+      ).not.toBeInTheDocument()
+    })
+
     it('shows unsaved warning when the form becomes dirty', async () => {
       const user = userEvent.setup()
       renderTeamForm('edit', 'public', ALL_PANELS_FORMDATA)

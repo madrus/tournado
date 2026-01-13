@@ -13,20 +13,20 @@ const infoBannerVariants = cva(
     variants: {
       variant: {
         info: [
-          'border-sky-700 bg-sky-700/10 text-sky-700',
-          'dark:border-sky-300 dark:bg-sky-700/10 dark:text-sky-300',
+          'border-info-700 bg-info-700/10 text-info-700',
+          'dark:border-info-300 dark:bg-info-700/10 dark:text-info-300',
         ],
         warning: [
-          'border-orange-700 bg-orange-700/10 text-orange-700',
-          'dark:border-orange-300 dark:bg-orange-700/10 dark:text-orange-300',
+          'border-warning-700 bg-warning-700/10 text-warning-700',
+          'dark:border-warning-300 dark:bg-warning-700/10 dark:text-warning-300',
         ],
         success: [
-          'border-emerald-700 bg-emerald-700/10 text-emerald-700',
-          'dark:border-emerald-300 dark:bg-emerald-700/10 dark:text-emerald-300',
+          'border-success-700 bg-success-700/10 text-success-700',
+          'dark:border-success-300 dark:bg-success-700/10 dark:text-success-300',
         ],
         error: [
-          'border-red-700 bg-red-700/10 text-red-700',
-          'dark:border-red-300 dark:bg-red-700/10 dark:text-red-300',
+          'border-error-700 bg-error-700/10 text-error-700',
+          'dark:border-error-300 dark:bg-error-700/10 dark:text-error-300',
         ],
       },
     },

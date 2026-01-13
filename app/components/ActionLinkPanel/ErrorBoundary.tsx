@@ -91,7 +91,7 @@ const ErrorFallback = ({
 )
 
 // Safe wrapper component that handles translations
-export default function ErrorBoundary(props: ErrorBoundaryProps): JSX.Element {
+export function ErrorBoundary(props: ErrorBoundaryProps): JSX.Element {
   const { t, i18n } = useTranslation()
 
   return (

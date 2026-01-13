@@ -2,7 +2,7 @@
 
 ## Preparation
 
-1. make sure you have `ampcode` installed; if not, follow instruction on its [website](https://ampcode.code)
+1. make sure you have `ampcode` installed; if not, follow instruction on its [website](https://ampcode.com)
 2. install the amp skills:
 
    ```sh

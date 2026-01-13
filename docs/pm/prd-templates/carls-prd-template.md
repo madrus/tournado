@@ -27,7 +27,7 @@ What alternatives did we consider? Why did we land with this?
 1. _Describe high-level goals, ideally in priority order and not too many._
 2. _Include measurable (metrics) and immeasurable (feelings) goals_
 3. _Keep it short and sweet_
-4. _Include gaurdrail metrics_
+4. _Include guardrail metrics_
 
 ## **Non-goals**
 

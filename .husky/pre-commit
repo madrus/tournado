@@ -11,5 +11,8 @@ pnpm format:staged
 # Re-add formatted files to staging area
 git add -u
 
+# Run lint
+pnpm lint
+
 # Run typecheck
 pnpm typecheck

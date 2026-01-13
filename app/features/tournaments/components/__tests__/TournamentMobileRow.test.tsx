@@ -1,13 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { TournamentListItem } from '~/features/tournaments/types'
-// Get the mocked function
-import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { TournamentMobileRow } from '../TournamentMobileRow'
+
+const mockUseLanguageDirection = vi.hoisted(() => vi.fn())
 
 // Mock useLanguageDirection hook
 vi.mock('~/hooks/useLanguageDirection', () => ({
-  useLanguageDirection: vi.fn(),
+  useLanguageDirection: mockUseLanguageDirection,
 }))
 
 // Mock i18next
@@ -16,10 +16,6 @@ vi.mock('react-i18next', () => ({
     t: (key: string) => key,
   }),
 }))
-
-const mockUseLanguageDirection = vi.hoisted(() => vi.fn())
-
-vi.mocked(useLanguageDirection).mockImplementation(mockUseLanguageDirection)
 
 // Mock isBreakpoint
 vi.mock('~/styles/constants', () => ({

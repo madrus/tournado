@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import type { ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 import { getTypographyClasses } from '~/utils/rtlUtils'
-import ErrorBoundary from './ErrorBoundary'
+import { ErrorBoundary } from './ErrorBoundary'
 import { PanelBackground } from './PanelBackground'
 import { PanelLayer } from './PanelLayer'
 import {
@@ -37,7 +37,7 @@ export function ActionLinkPanel({
   children,
   className,
   testId,
-}: ActionLinkPanelProps): JSX.Element {
+}: Readonly<ActionLinkPanelProps>): JSX.Element {
   const typographyClasses = getTypographyClasses()
 
   // Error handler for panel errors - logs and can be extended for telemetry

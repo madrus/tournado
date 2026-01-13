@@ -2,15 +2,14 @@
 
 # Check if issue argument is provided
 if [ $# -eq 0 ]; then
-	echo "Usage: work-on-issue <issue-abbreviation>"
+	echo "Usage: work-on-linear-issue <issue-abbreviation>"
 	echo "Examples:"
-	echo "  work-on-issue AB-123"
-	echo "  work-on-issue https://linear.app/abc/issue/AB-123/issue-title"
+	echo "  work-on-linear-issue AB-123"
+	echo "  work-on-linear-issue https://linear.app/abc/issue/AB-123/issue-title"
 	exit 2
 fi
 
 ISSUE_ARG="$1"
-TEAM_ID="MC" # Default team ID, can be modified
 
 # Find root directory (where .agents directory is located)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -51,10 +50,10 @@ if [ -z "$LINEAR_API_KEY" ]; then
 	exit 1
 fi
 
-# GraphQL query for Linear issue - search by identifier (shorthand)
+# GraphQL query for Linear issue - search by number AND team key
 read -r -d '' QUERY <<'EOF'
-query($number: Float!) {
-  issues(filter: { number: { eq: $number } }) {
+query($number: Float!, $teamKey: String!) {
+  issues(filter: { number: { eq: $number }, team: { key: { eq: $teamKey } } }) {
     nodes {
       id
       identifier
@@ -104,12 +103,13 @@ query($number: Float!) {
 }
 EOF
 
-# Extract just the number part from MC-91 format
+# Extract number and team key from format like MC-91
 ISSUE_NUMBER=$(echo "$ISSUE_ABBREV" | grep -oE '[0-9]+$')
+ISSUE_TEAM_KEY=$(echo "$ISSUE_ABBREV" | grep -oE '^[A-Z]+')
 
 # Execute query - escape the query properly
-JSON_PAYLOAD=$(jq -n --arg query "$QUERY" --argjson number "$ISSUE_NUMBER" \
-	'{query: $query, variables: {number: $number}}')
+JSON_PAYLOAD=$(jq -n --arg query "$QUERY" --argjson number "$ISSUE_NUMBER" --arg teamKey "$ISSUE_TEAM_KEY" \
+	'{query: $query, variables: {number: $number, teamKey: $teamKey}}')
 
 RESPONSE=$(curl -s -X POST https://api.linear.app/graphql \
 	-H "Authorization: $LINEAR_API_KEY" \

@@ -23,36 +23,36 @@ describe('InfoBanner', () => {
       render(<InfoBanner>Info message</InfoBanner>)
 
       const banner = screen.getByRole('status')
-      expect(banner).toHaveClass('bg-sky-700/10')
-      expect(banner).toHaveClass('text-sky-700')
-      expect(banner).toHaveClass('border-sky-700')
+      expect(banner).toHaveClass('bg-info-700/10')
+      expect(banner).toHaveClass('text-info-700')
+      expect(banner).toHaveClass('border-info-700')
     })
 
     it('should render warning variant', () => {
       render(<InfoBanner variant='warning'>Warning message</InfoBanner>)
 
       const banner = screen.getByRole('status')
-      expect(banner).toHaveClass('bg-orange-700/10')
-      expect(banner).toHaveClass('text-orange-700')
-      expect(banner).toHaveClass('border-orange-700')
+      expect(banner).toHaveClass('bg-warning-700/10')
+      expect(banner).toHaveClass('text-warning-700')
+      expect(banner).toHaveClass('border-warning-700')
     })
 
     it('should render success variant', () => {
       render(<InfoBanner variant='success'>Success message</InfoBanner>)
 
       const banner = screen.getByRole('status')
-      expect(banner).toHaveClass('bg-emerald-700/10')
-      expect(banner).toHaveClass('text-emerald-700')
-      expect(banner).toHaveClass('border-emerald-700')
+      expect(banner).toHaveClass('bg-success-700/10')
+      expect(banner).toHaveClass('text-success-700')
+      expect(banner).toHaveClass('border-success-700')
     })
 
     it('should render error variant', () => {
       render(<InfoBanner variant='error'>Error message</InfoBanner>)
 
       const banner = screen.getByRole('alert')
-      expect(banner).toHaveClass('bg-red-700/10')
-      expect(banner).toHaveClass('text-red-700')
-      expect(banner).toHaveClass('border-red-700')
+      expect(banner).toHaveClass('bg-error-700/10')
+      expect(banner).toHaveClass('text-error-700')
+      expect(banner).toHaveClass('border-error-700')
     })
   })
 

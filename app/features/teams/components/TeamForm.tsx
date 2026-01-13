@@ -25,11 +25,23 @@ import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
 import { toast } from '~/utils/toastUtils'
 
+type TeamFormPayload = {
+  tournamentId: string
+  clubName: string
+  name: string
+  division: string
+  category: string
+  teamLeaderName: string
+  teamLeaderPhone: string
+  teamLeaderEmail: string
+  privacyAgreement: boolean
+}
+
 const buildTeamFormPayload = (
   formData?: TeamFormProps['formData'],
   formMode?: 'create' | 'edit',
   hasTournaments?: boolean,
-) => {
+): TeamFormPayload | null => {
   if (!formData) {
     return null
   }

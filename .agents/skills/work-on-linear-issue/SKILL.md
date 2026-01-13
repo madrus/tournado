@@ -21,14 +21,14 @@ Fetches issue details from Linear and guides you through creating a comprehensiv
 ## Usage
 
 ```bash
-builtin:///skills/scripts/work-on-linear-issue <issue-abbreviation>
+.agents/skills/work-on-linear-issue/scripts/work-on-linear-issue <issue-abbreviation>
 ```
 
 Examples:
 
 ```bash
-builtin:///skills/scripts/work-on-linear-issue MC-123
-builtin:///skills/scripts/work-on-linear-issue https://linear.app/abc/issue/MC-123/issue-title
+.agents/skills/work-on-linear-issue/scripts/work-on-linear-issue MC-123
+.agents/skills/work-on-linear-issue/scripts/work-on-linear-issue https://linear.app/abc/issue/MC-123/issue-title
 ```
 
 ## Workflow
@@ -36,9 +36,10 @@ builtin:///skills/scripts/work-on-linear-issue https://linear.app/abc/issue/MC-1
 "AI models are geniuses who start from scratch on every task." - Noam Brown
 
 Onboard yourself to the current task:
-• Use ultrathink.
-• Explore the codebase.
-• Ask questions if needed.
+
+- Use ultrathink.
+- Explore the codebase.
+- Ask questions if needed.
 
 Goal: Be fully prepared to start working on the task.
 

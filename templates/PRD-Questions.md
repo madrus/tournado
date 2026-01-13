@@ -22,13 +22,13 @@
 **TL;DR (complete the blanks)**: For [target user], build [capability] so they can [value] -->
 
 - For PUBLIC (anyone without a user account) build a place to get insight into the tournaments, teams, and matches that the user is interested in so that they can:
-   - view the tournament list
-   - view teams per tournament
-   - view team divisions, groups, playoffs
-   - view matches information like locations and calendar details
-   - view scores and qualifications
-   - register teams and team leaders for existing tournaments
-   - am I missing anything?
+  - view the tournament list
+  - view teams per tournament
+  - view team divisions, groups, playoffs
+  - view matches information like locations and calendar details
+  - view scores and qualifications
+  - register teams and team leaders for existing tournaments
+  - am I missing anything?
 - For ADMIN build a way to manage users so that they can approve/reject user registrations and assign their role(s)
 - For MANAGER build a way to manage their tournaments so that they can CRUD tournaments, teams, group distributions, matches calendar, and allocate REFEREEs to matches
 - For REFEREE build a way to log in via a pre-authenticated link so that they can register scores and make changes to calendar of the matches they were appointed to (e.g. change date/time or cancel)
@@ -44,12 +44,12 @@
 
 - Primary persona(s) for this PRD? --> I need from you more explanation on this as I don't understand your question
 - Top 2 jobs-to-be-done per primary persona? --> I need from you more explanation on this as I don't quite understand your question, but here are some ideas:
-   - ADMIN: max rights for everything but mainly approve all user registrations (not automatic) and their role
-   - MANAGER: CRUD on tournaments, teams, groups, matches, etc., but not on other users except appointing REFEREEs by delegating them the necessary access rights via a temporary pre-authenticated link (without REFEREEs having to create their own account) -- AGENT: we will need to think it over how to best do it in more details in the corresponding technical section
-   - REFEREE: can register scores for matches (or matches?)
-   - PUBLIC: can view public information and register teams for tournaments
-   - EDITOR: (in the far future) can add articles (text, images, videos) to the home page, tournaments and matches (via some 3d party backend like Contentful, NetlifyCMS, or some such -- to be researched later)
-   - BILLING: (in the far future) can view subscriptions and contributions to develop the app
+  - ADMIN: max rights for everything but mainly approve all user registrations (not automatic) and their role
+  - MANAGER: CRUD on tournaments, teams, groups, matches, etc., but not on other users except appointing REFEREEs by delegating them the necessary access rights via a temporary pre-authenticated link (without REFEREEs having to create their own account) -- AGENT: we will need to think it over how to best do it in more details in the corresponding technical section
+  - REFEREE: can register scores for matches (or matches?)
+  - PUBLIC: can view public information and register teams for tournaments
+  - EDITOR: (in the far future) can add articles (text, images, videos) to the home page, tournaments and matches (via some 3d party backend like Contentful, NetlifyCMS, or some such -- to be researched later)
+  - BILLING: (in the far future) can view subscriptions and contributions to develop the app
 
 ### 5. Current state confirmation (I’ll prefill unless you correct)
 
@@ -76,55 +76,55 @@ What’s currently in progress that should appear in “In Progress Features”?
 - From EXTRA.md: Add Google Auth via Firebase; login redirect; logout; credential persistence; auth status indicator --> yes, top prio
 - Include all of these now? --> yes, authentication via Google auth (either with an existing Google account or plain username/password to replace completely the cookie based we have now)
 - Any others? --> yes, although some only in the far future:
-   1. playoffs schema
-   2. game score registration
-   3. real-time qualifications statistics (totals, places, what else?)
-   4. subscriptions for MANAGERs to organize their own tournaments
-   5. payments for subscriptions and contributions to support this app development (via Stripe)
-   6. financial dashboard (BILLING and ADMIN) with totals stats and the possibility to zoom in on details (actual, delayed and expected payments)
-   7. adding articles (text, images, videos) to the homepage, tournament page, game page
-   8. (optionally) uploading images and videos for/during a game
-   9. (optionally and yet to be confirmed) signup for anyone without approval in the PUBLIC role with the extra possibility to chat with each other
-   10.   (optionally) votes on who will get which place
-   11.   (optionally) totalisator = betting on game scores (no money)
+  1.  playoffs schema
+  2.  game score registration
+  3.  real-time qualifications statistics (totals, places, what else?)
+  4.  subscriptions for MANAGERs to organize their own tournaments
+  5.  payments for subscriptions and contributions to support this app development (via Stripe)
+  6.  financial dashboard (BILLING and ADMIN) with totals stats and the possibility to zoom in on details (actual, delayed and expected payments)
+  7.  adding articles (text, images, videos) to the homepage, tournament page, game page
+  8.  (optionally) uploading images and videos for/during a game
+  9.  (optionally and yet to be confirmed) signup for anyone without approval in the PUBLIC role with the extra possibility to chat with each other
+  10. (optionally) votes on who will get which place
+  11. (optionally) totalisator = betting on game scores (no money)
 
 ### 8. Success metrics (targets)
 
-- User engagement (e.g., signup→first-team-created conversion %, admin weekly active, returning users %) — which and target values? -->
-   - signup is only necessary for managers, so an overview per manager of tournaments and registered teams -- targets at this moment are unclear
-- Performance (mobile Lighthouse ≥ 90, TTI < 2s, CLS < 0.1) — confirm targets? --> yes, but not the first priority
-- Business (teams created/week, tournaments created/month, admin retention %) — which and targets? --> targets at this moment are unclear
-   - teams created/week
-   - tournaments created/month
-   - overview of tournaments and teams per tournament, also % played matches per tournament
-   - total subscriptions and total monthly subscription payments
-   - total monthly contributions to develop the app
+- User engagement (e.g., signup→first-team-created conversion %, admin weekly active, returning users %) - which and target values? -->
+  - signup is only necessary for managers, so an overview per manager of tournaments and registered teams -- targets at this moment are unclear
+- Performance (mobile Lighthouse ≥ 90, TTI < 2s, CLS < 0.1) - confirm targets? --> yes, but not the first priority
+- Business (teams created/week, tournaments created/month, admin retention %) - which and targets? --> targets at this moment are unclear
+  - teams created/week
+  - tournaments created/month
+  - overview of tournaments and teams per tournament, also % played matches per tournament
+  - total subscriptions and total monthly subscription payments
+  - total monthly contributions to develop the app
 
 ### 9. Scope table
 
 - Must-have (MVP): list 3–6 bullets? -->
-   - groups and playoffs
-   - Google auth (Google account or username/password)
-   - fetch team club icons via API
-   - matches planning
-   - matches calender
-   - matches scores
-   - competition status (total scores and places)
+  - groups and playoffs
+  - Google auth (Google account or username/password)
+  - fetch team club icons via API
+  - matches planning
+  - matches calender
+  - matches scores
+  - competition status (total scores and places)
 - Nice-to-have (Later): list 2–5 bullets? -->
-   - payments (contributions to develop the app)
+  - payments (contributions to develop the app)
 - Explicitly out (Not now): list 2–5 bullets? -->
-   - CMS + uploading
-   - subscriptions for manager to organize there own tournaments
-   - chat
-   - votes + totalisator
+  - CMS + uploading
+  - subscriptions for manager to organize there own tournaments
+  - chat
+  - votes + totalisator
 
 ### 10. Technical requirements
 
 - Deployment target: Fly.io (per fly.toml)? Confirm. --> yes, it works already
 - Browser support (mobile-first; which minimums)? -->
-   - up to s = mobile phone
-   - m = tablet (same layout as desktop)
-   - l and above = desktop
+  - up to s = mobile phone
+  - m = tablet (same layout as desktop)
+  - l and above = desktop
 - Accessibility bar (WCAG AA)? Confirm. --> yes
 - All components should be LTR/RTL compliant with System-UI font for latin text and Amiri for Arabic. There is a whole library that I'm using to make sure that Amiri looks the same size as the Latin text. It is mostly increased by 20%, and if inside the Arabic we use Latin, then there are Tailwind classes that make sure the font size is consistent visually.
 - Use CVA (Color Variance Authority) variants for colors (see the codebase)
@@ -190,6 +190,6 @@ How much effort would it take to migrate this project from github to gitlab? Wha
 ### 9. Scope table
 
 - Nice-to-have
-   - cookie acceptance
-   - install PWA on (mobile) desktop
-   - needs a feedback loop feature to collect user feedback
+  - cookie acceptance
+  - install PWA on (mobile) desktop
+  - needs a feedback loop feature to collect user feedback

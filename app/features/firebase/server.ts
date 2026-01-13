@@ -1,72 +1,69 @@
 import { Role, type User } from '@prisma/client'
-
 import admin from 'firebase-admin'
 import { type App, getApps, initializeApp } from 'firebase-admin/app'
 import { type Auth, type DecodedIdToken, getAuth } from 'firebase-admin/auth'
-
 import { prisma } from '~/db.server'
 import { logger } from '~/utils/logger.server'
-
 import type { FirebaseUser } from './types'
 
 let adminApp: App | null = null
 let adminAuth: Auth | null = null
 
 function getServiceAccount() {
-	const projectId = process.env.FIREBASE_ADMIN_PROJECT_ID
-	const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL
-	const privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, '\n')
+  const projectId = process.env.FIREBASE_ADMIN_PROJECT_ID
+  const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL
+  const privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, '\n')
 
-	if (!projectId || !clientEmail || !privateKey) {
-		return null
-	}
+  if (!projectId || !clientEmail || !privateKey) {
+    return null
+  }
 
-	return { projectId, clientEmail, privateKey }
+  return { projectId, clientEmail, privateKey }
 }
 
 function initializeFirebaseAdmin(): void {
-	// Use existing Firebase app if available
-	if (getApps().length > 0) {
-		adminApp = getApps()[0]
-		adminAuth = getAuth(adminApp)
-		return
-	}
+  // Use existing Firebase app if available
+  if (getApps().length > 0) {
+    adminApp = getApps()[0]
+    adminAuth = getAuth(adminApp)
+    return
+  }
 
-	// Initialize Firebase Admin SDK
-	try {
-		const serviceAccount = getServiceAccount()
+  // Initialize Firebase Admin SDK
+  try {
+    const serviceAccount = getServiceAccount()
 
-		// Validate that all required environment variables are present
-		if (!serviceAccount) {
-			// Missing required environment variables - adminAuth will remain null
-			if (process.env.NODE_ENV !== 'test') {
-			}
-			return
-		}
+    // Validate that all required environment variables are present
+    if (!serviceAccount) {
+      // Missing required environment variables - adminAuth will remain null
+      if (process.env.NODE_ENV !== 'test') {
+      }
+      return
+    }
 
-		adminApp = initializeApp({
-			credential: admin.credential.cert({
-				projectId: serviceAccount.projectId,
-				clientEmail: serviceAccount.clientEmail,
-				privateKey: serviceAccount.privateKey,
-			}),
-			projectId: serviceAccount.projectId,
-		})
+    adminApp = initializeApp({
+      credential: admin.credential.cert({
+        projectId: serviceAccount.projectId,
+        clientEmail: serviceAccount.clientEmail,
+        privateKey: serviceAccount.privateKey,
+      }),
+      projectId: serviceAccount.projectId,
+    })
 
-		adminAuth = getAuth(adminApp)
-	} catch (_error) {
-		// Firebase Admin SDK initialization failed - adminAuth will remain null
-		if (process.env.NODE_ENV !== 'test') {
-		}
-	}
+    adminAuth = getAuth(adminApp)
+  } catch (_error) {
+    // Firebase Admin SDK initialization failed - adminAuth will remain null
+    if (process.env.NODE_ENV !== 'test') {
+    }
+  }
 }
 
 // Initialize Firebase Admin on module load
 initializeFirebaseAdmin()
 
 type AssignUserRoleProps = {
-	email: string
-	currentRole?: Role
+  email: string
+  currentRole?: Role
 }
 
 /**
@@ -76,42 +73,41 @@ type AssignUserRoleProps = {
  * @returns Promise<Role> - The assigned role
  */
 export const assignUserRole = async (
-	props: Readonly<AssignUserRoleProps>,
+  props: Readonly<AssignUserRoleProps>,
 ): Promise<Role> => {
-	const { email, currentRole } = props
-	const superAdminEmails =
-		process.env.SUPER_ADMIN_EMAILS?.split(',').map((emailItem) => emailItem.trim()) ||
-		[]
+  const { email, currentRole } = props
+  const superAdminEmails =
+    process.env.SUPER_ADMIN_EMAILS?.split(',').map(emailItem => emailItem.trim()) || []
 
-	// Promote to ADMIN if in super admin list
-	if (superAdminEmails.includes(email)) {
-		return Role.ADMIN
-	}
+  // Promote to ADMIN if in super admin list
+  if (superAdminEmails.includes(email)) {
+    return Role.ADMIN
+  }
 
-	// Demote from ADMIN to MANAGER if removed from super admin list
-	if (currentRole === Role.ADMIN) {
-		return Role.MANAGER
-	}
+  // Demote from ADMIN to MANAGER if removed from super admin list
+  if (currentRole === Role.ADMIN) {
+    return Role.MANAGER
+  }
 
-	// For tests, assign roles based on email patterns
-	if (process.env.NODE_ENV === 'test') {
-		if (email.includes('admin')) {
-			return Role.ADMIN
-		}
-		if (email.includes('manager')) {
-			return Role.MANAGER
-		}
-		if (email.includes('referee')) {
-			return Role.REFEREE
-		}
-	}
+  // For tests, assign roles based on email patterns
+  if (process.env.NODE_ENV === 'test') {
+    if (email.includes('admin')) {
+      return Role.ADMIN
+    }
+    if (email.includes('manager')) {
+      return Role.MANAGER
+    }
+    if (email.includes('referee')) {
+      return Role.REFEREE
+    }
+  }
 
-	// Preserve existing role for non-admin users, or default to PUBLIC for new users
-	return currentRole || Role.PUBLIC
+  // Preserve existing role for non-admin users, or default to PUBLIC for new users
+  return currentRole || Role.PUBLIC
 }
 
 type CreateOrUpdateUserProps = {
-	firebaseUser: FirebaseUser
+  firebaseUser: FirebaseUser
 }
 
 /**
@@ -120,103 +116,103 @@ type CreateOrUpdateUserProps = {
  * @returns Promise<User> - The created or updated user
  */
 export const createOrUpdateUser = async (
-	props: Readonly<CreateOrUpdateUserProps>,
+  props: Readonly<CreateOrUpdateUserProps>,
 ): Promise<User> => {
-	const { firebaseUser } = props
+  const { firebaseUser } = props
 
-	if (!firebaseUser.email) {
-		throw new Error('Firebase user must have an email address')
-	}
+  if (!firebaseUser.email) {
+    throw new Error('Firebase user must have an email address')
+  }
 
-	// Check if user already exists by firebaseUid
-	const existingUser = await prisma.user.findUnique({
-		where: { firebaseUid: firebaseUser.uid },
-	})
+  // Check if user already exists by firebaseUid
+  const existingUser = await prisma.user.findUnique({
+    where: { firebaseUid: firebaseUser.uid },
+  })
 
-	if (existingUser) {
-		// Re-check role assignment on every login based on current SUPER_ADMIN_EMAILS
-		const assignedRole = await assignUserRole({
-			email: firebaseUser.email,
-			currentRole: existingUser.role,
-		})
+  if (existingUser) {
+    // Re-check role assignment on every login based on current SUPER_ADMIN_EMAILS
+    const assignedRole = await assignUserRole({
+      email: firebaseUser.email,
+      currentRole: existingUser.role,
+    })
 
-		// Prepare update data
-		const updateData: {
-			email: string
-			firstName: string
-			lastName: string
-			role?: Role
-		} = {
-			email: firebaseUser.email,
-			firstName:
-				firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
-			lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
-		}
+    // Prepare update data
+    const updateData: {
+      email: string
+      firstName: string
+      lastName: string
+      role?: Role
+    } = {
+      email: firebaseUser.email,
+      firstName:
+        firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
+      lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
+    }
 
-		// Only update role if it has changed
-		if (existingUser.role !== assignedRole) {
-			updateData.role = assignedRole
-		}
+    // Only update role if it has changed
+    if (existingUser.role !== assignedRole) {
+      updateData.role = assignedRole
+    }
 
-		return await prisma.user.update({
-			where: { firebaseUid: firebaseUser.uid },
-			data: updateData,
-		})
-	}
+    return await prisma.user.update({
+      where: { firebaseUid: firebaseUser.uid },
+      data: updateData,
+    })
+  }
 
-	// If not found by Firebase UID, attempt to link existing user by email
-	const existingByEmail = await prisma.user.findUnique({
-		where: { email: firebaseUser.email },
-	})
+  // If not found by Firebase UID, attempt to link existing user by email
+  const existingByEmail = await prisma.user.findUnique({
+    where: { email: firebaseUser.email },
+  })
 
-	if (existingByEmail) {
-		// Link firebaseUid to existing user and update profile fields
-		// Re-check role assignment based on current SUPER_ADMIN_EMAILS
-		const assignedRole = await assignUserRole({
-			email: existingByEmail.email,
-			currentRole: existingByEmail.role,
-		})
+  if (existingByEmail) {
+    // Link firebaseUid to existing user and update profile fields
+    // Re-check role assignment based on current SUPER_ADMIN_EMAILS
+    const assignedRole = await assignUserRole({
+      email: existingByEmail.email,
+      currentRole: existingByEmail.role,
+    })
 
-		// Prepare update data
-		const updateData: {
-			firebaseUid: string
-			email: string
-			firstName: string
-			lastName: string
-			role?: Role
-		} = {
-			firebaseUid: firebaseUser.uid,
-			email: firebaseUser.email,
-			firstName:
-				firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
-			lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
-		}
+    // Prepare update data
+    const updateData: {
+      firebaseUid: string
+      email: string
+      firstName: string
+      lastName: string
+      role?: Role
+    } = {
+      firebaseUid: firebaseUser.uid,
+      email: firebaseUser.email,
+      firstName:
+        firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
+      lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
+    }
 
-		// Only update role if it has changed
-		if (existingByEmail.role !== assignedRole) {
-			updateData.role = assignedRole
-		}
-		return await prisma.user.update({
-			where: { id: existingByEmail.id },
-			data: updateData,
-		})
-	}
+    // Only update role if it has changed
+    if (existingByEmail.role !== assignedRole) {
+      updateData.role = assignedRole
+    }
+    return await prisma.user.update({
+      where: { id: existingByEmail.id },
+      data: updateData,
+    })
+  }
 
-	// Create new user with role assignment
-	const assignedRole = await assignUserRole({
-		email: firebaseUser.email,
-	})
+  // Create new user with role assignment
+  const assignedRole = await assignUserRole({
+    email: firebaseUser.email,
+  })
 
-	return await prisma.user.create({
-		data: {
-			firebaseUid: firebaseUser.uid,
-			email: firebaseUser.email,
-			firstName:
-				firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
-			lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
-			role: assignedRole,
-		},
-	})
+  return await prisma.user.create({
+    data: {
+      firebaseUid: firebaseUser.uid,
+      email: firebaseUser.email,
+      firstName:
+        firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
+      lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
+      role: assignedRole,
+    },
+  })
 }
 
 /**
@@ -226,20 +222,20 @@ export const createOrUpdateUser = async (
  * @throws Error if token is invalid or verification fails
  */
 export async function verifyIdToken(idToken: string): Promise<DecodedIdToken> {
-	if (!adminAuth) {
-		throw new Error('Firebase Admin SDK not initialized')
-	}
+  if (!adminAuth) {
+    throw new Error('Firebase Admin SDK not initialized')
+  }
 
-	try {
-		const decodedToken = await adminAuth.verifyIdToken(idToken)
-		return decodedToken
-	} catch (error) {
-		const message =
-			error instanceof Error ? error.message : 'Unknown error during verifyIdToken'
-		if (process.env.NODE_ENV !== 'test') {
-		}
-		throw new Error(`Invalid Firebase ID token: ${message}`)
-	}
+  try {
+    const decodedToken = await adminAuth.verifyIdToken(idToken)
+    return decodedToken
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : 'Unknown error during verifyIdToken'
+    if (process.env.NODE_ENV !== 'test') {
+    }
+    throw new Error(`Invalid Firebase ID token: ${message}`)
+  }
 }
 
 /**
@@ -254,43 +250,43 @@ export async function verifyIdToken(idToken: string): Promise<DecodedIdToken> {
  * @throws Error if disabling fails (but not if Admin SDK is unavailable)
  */
 export async function disableFirebaseUser(firebaseUid: string): Promise<void> {
-	if (!firebaseUid?.trim()) {
-		throw new Error('firebaseUid must be a non-empty string')
-	}
+  if (!firebaseUid?.trim()) {
+    throw new Error('firebaseUid must be a non-empty string')
+  }
 
-	initializeFirebaseAdmin()
-	if (!adminAuth) {
-		const serviceAccount = getServiceAccount()
-		if (!serviceAccount) {
-			logger.warn('[firebase-admin] Cannot disable user - Admin SDK not initialized')
-			return
-		}
-		adminApp =
-			adminApp ??
-			initializeApp({
-				credential: admin.credential.cert(serviceAccount),
-				projectId: serviceAccount.projectId,
-			})
-		adminAuth = getAuth(adminApp)
-	}
-	if (!adminAuth) {
-		logger.warn('[firebase-admin] Cannot disable user - Admin SDK not initialized')
-		return
-	}
+  initializeFirebaseAdmin()
+  if (!adminAuth) {
+    const serviceAccount = getServiceAccount()
+    if (!serviceAccount) {
+      logger.warn('[firebase-admin] Cannot disable user - Admin SDK not initialized')
+      return
+    }
+    adminApp =
+      adminApp ??
+      initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        projectId: serviceAccount.projectId,
+      })
+    adminAuth = getAuth(adminApp)
+  }
+  if (!adminAuth) {
+    logger.warn('[firebase-admin] Cannot disable user - Admin SDK not initialized')
+    return
+  }
 
-	try {
-		await adminAuth.updateUser(firebaseUid, {
-			disabled: true,
-		})
-		logger.info({ firebaseUid }, '[firebase-admin] Successfully disabled Firebase user')
-	} catch (error) {
-		const message =
-			error instanceof Error
-				? error.message
-				: 'Unknown error during disableFirebaseUser'
-		logger.error({ err: error, message }, '[firebase-admin] disableFirebaseUser error')
-		throw new Error(`Failed to disable Firebase user: ${message}`)
-	}
+  try {
+    await adminAuth.updateUser(firebaseUid, {
+      disabled: true,
+    })
+    logger.info({ firebaseUid }, '[firebase-admin] Successfully disabled Firebase user')
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : 'Unknown error during disableFirebaseUser'
+    logger.error({ err: error, message }, '[firebase-admin] disableFirebaseUser error')
+    throw new Error(`Failed to disable Firebase user: ${message}`)
+  }
 }
 
 /**
@@ -305,41 +301,41 @@ export async function disableFirebaseUser(firebaseUid: string): Promise<void> {
  * @throws Error if enabling fails (but not if Admin SDK is unavailable)
  */
 export async function enableFirebaseUser(firebaseUid: string): Promise<void> {
-	if (!firebaseUid?.trim()) {
-		throw new Error('firebaseUid must be a non-empty string')
-	}
+  if (!firebaseUid?.trim()) {
+    throw new Error('firebaseUid must be a non-empty string')
+  }
 
-	initializeFirebaseAdmin()
-	if (!adminAuth) {
-		const serviceAccount = getServiceAccount()
-		if (!serviceAccount) {
-			logger.warn('[firebase-admin] Cannot enable user - Admin SDK not initialized')
-			return
-		}
-		adminApp =
-			adminApp ??
-			initializeApp({
-				credential: admin.credential.cert(serviceAccount),
-				projectId: serviceAccount.projectId,
-			})
-		adminAuth = getAuth(adminApp)
-	}
-	if (!adminAuth) {
-		logger.warn('[firebase-admin] Cannot enable user - Admin SDK not initialized')
-		return
-	}
+  initializeFirebaseAdmin()
+  if (!adminAuth) {
+    const serviceAccount = getServiceAccount()
+    if (!serviceAccount) {
+      logger.warn('[firebase-admin] Cannot enable user - Admin SDK not initialized')
+      return
+    }
+    adminApp =
+      adminApp ??
+      initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        projectId: serviceAccount.projectId,
+      })
+    adminAuth = getAuth(adminApp)
+  }
+  if (!adminAuth) {
+    logger.warn('[firebase-admin] Cannot enable user - Admin SDK not initialized')
+    return
+  }
 
-	try {
-		await adminAuth.updateUser(firebaseUid, {
-			disabled: false,
-		})
-		logger.info({ firebaseUid }, '[firebase-admin] Successfully enabled Firebase user')
-	} catch (error) {
-		const message =
-			error instanceof Error ? error.message : 'Unknown error during enableFirebaseUser'
-		logger.error({ err: error, message }, '[firebase-admin] enableFirebaseUser error')
-		throw new Error(`Failed to enable Firebase user: ${message}`)
-	}
+  try {
+    await adminAuth.updateUser(firebaseUid, {
+      disabled: false,
+    })
+    logger.info({ firebaseUid }, '[firebase-admin] Successfully enabled Firebase user')
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : 'Unknown error during enableFirebaseUser'
+    logger.error({ err: error, message }, '[firebase-admin] enableFirebaseUser error')
+    throw new Error(`Failed to enable Firebase user: ${message}`)
+  }
 }
 
 /**
@@ -354,44 +350,44 @@ export async function enableFirebaseUser(firebaseUid: string): Promise<void> {
  * @throws Error if revoking fails (but not if Admin SDK is unavailable)
  */
 export async function revokeRefreshTokens(firebaseUid: string): Promise<void> {
-	if (!firebaseUid?.trim()) {
-		throw new Error('firebaseUid must be a non-empty string')
-	}
+  if (!firebaseUid?.trim()) {
+    throw new Error('firebaseUid must be a non-empty string')
+  }
 
-	initializeFirebaseAdmin()
-	if (!adminAuth) {
-		const serviceAccount = getServiceAccount()
-		if (!serviceAccount) {
-			logger.warn('[firebase-admin] Cannot revoke tokens - Admin SDK not initialized')
-			return
-		}
-		adminApp =
-			adminApp ??
-			initializeApp({
-				credential: admin.credential.cert(serviceAccount),
-				projectId: serviceAccount.projectId,
-			})
-		adminAuth = getAuth(adminApp)
-	}
-	if (!adminAuth) {
-		logger.warn('[firebase-admin] Cannot revoke tokens - Admin SDK not initialized')
-		return
-	}
+  initializeFirebaseAdmin()
+  if (!adminAuth) {
+    const serviceAccount = getServiceAccount()
+    if (!serviceAccount) {
+      logger.warn('[firebase-admin] Cannot revoke tokens - Admin SDK not initialized')
+      return
+    }
+    adminApp =
+      adminApp ??
+      initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        projectId: serviceAccount.projectId,
+      })
+    adminAuth = getAuth(adminApp)
+  }
+  if (!adminAuth) {
+    logger.warn('[firebase-admin] Cannot revoke tokens - Admin SDK not initialized')
+    return
+  }
 
-	try {
-		await adminAuth.revokeRefreshTokens(firebaseUid)
-		logger.info(
-			{ firebaseUid },
-			'[firebase-admin] Successfully revoked refresh tokens for user',
-		)
-	} catch (error) {
-		const message =
-			error instanceof Error
-				? error.message
-				: 'Unknown error during revokeRefreshTokens'
-		logger.error({ err: error, message }, '[firebase-admin] revokeRefreshTokens error')
-		throw new Error(`Failed to revoke refresh tokens: ${message}`)
-	}
+  try {
+    await adminAuth.revokeRefreshTokens(firebaseUid)
+    logger.info(
+      { firebaseUid },
+      '[firebase-admin] Successfully revoked refresh tokens for user',
+    )
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : 'Unknown error during revokeRefreshTokens'
+    logger.error({ err: error, message }, '[firebase-admin] revokeRefreshTokens error')
+    throw new Error(`Failed to revoke refresh tokens: ${message}`)
+  }
 }
 
 export { adminApp, adminAuth }

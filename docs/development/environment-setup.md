@@ -90,6 +90,7 @@ RESEND_API_KEY="[your-resend-key]"  # Optional for local development
 ## For Complete Environment Variable Documentation
 
 See [docs/environment-variables.md](./environment-variables.md) for:
+
 - Complete catalog with security considerations
 - Firebase configuration details
 - E2E testing strategy and Firebase bypass

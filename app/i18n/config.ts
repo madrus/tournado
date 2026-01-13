@@ -1,6 +1,5 @@
 import i18next, { type i18n as I18nType } from 'i18next'
 import { initReactI18next } from 'react-i18next'
-
 // Import your translation files
 import ar from './locales/ar.json'
 import de from './locales/de.json'
@@ -11,40 +10,40 @@ import tr from './locales/tr.json'
 
 export const defaultNS = 'root'
 export const resources = {
-	nl: {
-		[defaultNS]: nl,
-	},
-	en: {
-		[defaultNS]: en,
-	},
-	de: {
-		[defaultNS]: de,
-	},
-	fr: {
-		[defaultNS]: fr,
-	},
-	ar: {
-		[defaultNS]: ar,
-	},
-	tr: {
-		[defaultNS]: tr,
-	},
+  nl: {
+    [defaultNS]: nl,
+  },
+  en: {
+    [defaultNS]: en,
+  },
+  de: {
+    [defaultNS]: de,
+  },
+  fr: {
+    [defaultNS]: fr,
+  },
+  ar: {
+    [defaultNS]: ar,
+  },
+  tr: {
+    [defaultNS]: tr,
+  },
 } as const
 
 export const SUPPORTED_LANGUAGES = [
-	{ code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
-	{ code: 'en', name: 'English', flag: '🇬🇧' },
-	{ code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-	{ code: 'fr', name: 'Français', flag: '🇫🇷' },
-	{ code: 'ar', name: 'العربية', flag: '🇲🇦' },
-	{ code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
+  { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
+  { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+  { code: 'fr', name: 'Français', flag: '🇫🇷' },
+  { code: 'ar', name: 'العربية', flag: '🇲🇦' },
+  { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
 ] as const
 
 export type Language = (typeof SUPPORTED_LANGUAGES)[number]['code']
 
 // Derived constant for language code validation
 export const SUPPORTED_LANGUAGE_CODES = SUPPORTED_LANGUAGES.map(
-	(lang) => lang.code,
+  lang => lang.code,
 ) as readonly Language[]
 
 export const FALLBACK_LANGUAGE: Language = 'nl'
@@ -54,20 +53,20 @@ export const FALLBACK_LANGUAGE: Language = 'nl'
  * @param language The language code to initialize i18n with.
  */
 export function initI18n(language: string): I18nType {
-	const instance = i18next.createInstance()
-	instance.use(initReactI18next)
-	instance.init({
-		compatibilityJSON: 'v4',
-		resources,
-		defaultNS,
-		fallbackLng: FALLBACK_LANGUAGE,
-		lng: language,
-		interpolation: {
-			escapeValue: false,
-		},
-		initImmediate: false, // Synchronous
-	})
-	return instance
+  const instance = i18next.createInstance()
+  instance.use(initReactI18next)
+  instance.init({
+    compatibilityJSON: 'v4',
+    resources,
+    defaultNS,
+    fallbackLng: FALLBACK_LANGUAGE,
+    lng: language,
+    interpolation: {
+      escapeValue: false,
+    },
+    initImmediate: false, // Synchronous
+  })
+  return instance
 }
 
 // At the bottom of the file
@@ -75,5 +74,5 @@ export const i18n = initI18n(FALLBACK_LANGUAGE) // Default to Dutch (fallback la
 
 // Function to change the language
 export const changeLanguage = (lng: Language): void => {
-	i18n.changeLanguage(lng)
+  i18n.changeLanguage(lng)
 }

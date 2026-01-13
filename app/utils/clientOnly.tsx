@@ -1,11 +1,11 @@
 import { type ReactNode, useEffect, useState } from 'react'
 
 export function ClientOnly({ children }: { children: ReactNode }): ReactNode {
-	const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
-	useEffect(() => {
-		setMounted(true)
-	}, [])
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
-	return mounted ? children : null
+  return mounted ? children : null
 }

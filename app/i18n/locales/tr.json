@@ -1,588 +1,595 @@
 {
-	"about": {
-		"description": "Tournado, organizasyonlar ve takımlar için spor turnuvalarının organizasyonunu ve yönetimini kolaylaştırmak üzere tasarlanmış kapsamlı bir turnuva yönetim platformudur.",
-		"title": "Tournado hakkında"
-	},
-	"admin": {
-		"competition": {
-			"description": "Turnuvalar için grupları, maçları ve sıralamaları yönetin.",
-			"groupStage": "Grup Aşaması",
-			"groupStageDescription": "Grup aşamasında gruplar oluşturun ve yönetin",
-			"groups": "Gruplar",
-			"playoffs": "Playofflar",
-			"title": "Yarışma yönetimi"
-		},
-		"panel": {
-			"description": "Tekrar hoş geldiniz, <email>{{email}}</email>. Turnuva platformunuzu buradan yönetin.",
-			"title": "Yönetici Paneli"
-		},
-		"reports": {
-			"description": "Platform kullanımını ve turnuva istatistiklerini görüntüleyin.",
-			"title": "Raporlar ve analitik"
-		},
-		"settings": {
-			"description": "Uygulama ayarlarını ve tercihlerini yapılandırın.",
-			"title": "Sistem ayarları"
-		},
-		"teams": {
-			"confirmDelete": "Bu takımı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
-			"createNewTeamDescription": "Turnuva detayları ve iletişim bilgileriyle yeni bir takım oluşturun.",
-			"createTeam": "Takım oluştur",
-			"createTeamDescription": "Gerekli tüm ayrıntılarla sisteme yeni bir takım ekleyin.",
-			"description": "Turnuvalardaki takımları yönetin. Takım bilgilerini görüntüleyin, düzenleyin veya silin.",
-			"editTeam": "Takım detaylarını düzenle",
-			"newTeam": "Yeni takım",
-			"saveChanges": "Değişiklikleri kaydet",
-			"teamNotFound": "Takım bulunamadı",
-			"teamNotFoundDescription": "Aradığınız takım bulunamadı veya silinmiş olabilir.",
-			"title": "Takım yönetimi",
-			"totalTeams": "Toplam takım"
-		},
-		"tournaments": {
-			"confirmDelete": "Bu turnuvayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
-			"description": "Sistemdeki turnuvaları yönetin. Turnuva bilgilerini oluşturun, düzenleyin veya silin.",
-			"title": "Turnuva yönetimi",
-			"totalTournaments": "Toplam turnuva sayısı"
-		},
-		"users": {
-			"description": "Kullanıcı hesaplarını ve izinlerini yönetin.",
-			"title": "Kullanıcı yönetimi",
-			"totalUsers": "Toplam kullanıcılar"
-		}
-	},
-	"auth": {
-		"alreadyHaveAccount": "Zaten bir hesabınız var mı?",
-		"continueWithEmail": "Veya e-posta ile devam edin",
-		"createAccount": "Hesap oluştur",
-		"dontHaveAccount": "Henüz hesabınız yok mu?",
-		"emailAddress": "E-posta adresi",
-		"firebase": {
-			"continueWithGoogle": "Google ile devam et",
-			"error": "Kimlik doğrulama başarısız. Lütfen tekrar deneyin.",
-			"signInWithGoogle": "Google ile giriş yap"
-		},
-		"firstName": "Ad",
-		"labels": {
-			"confirmPassword": "Şifreyi onayla",
-			"email": "E-posta",
-			"password": "Şifre"
-		},
-		"lastName": "Soyad",
-		"notSignedIn": "Giriş yapılmadı",
-		"or": "veya",
-		"password": "Şifre",
-		"placeholders": {
-			"confirmPassword": "Şifrenizi onaylayın",
-			"email": "E-postanızı girin",
-			"password": "Şifrenizi girin"
-		},
-		"pleaseSignIn": "Yeni hesabınızla giriş yapın",
-		"registrationSuccess": "Hesap başarıyla oluşturuldu",
-		"rememberMe": "Beni hatırla",
-		"signInPage": {
-			"description": "Tournado hesabınıza giriş yapın",
-			"noAccount": "Hesabınız yok mu?",
-			"signUpLink": "Kayıt ol"
-		},
-		"signInRequiredToCreateTeam": "Bir takım oluşturmak için giriş yapmalısınız.",
-		"signUpPage": {
-			"description": "Tournado hesabınızı oluşturun",
-			"hasAccount": "Zaten hesabınız var mı?",
-			"signInLink": "Giriş yap"
-		},
-		"signin": "Giriş yap",
-		"signout": "Çıkış yap",
-		"signup": "Kayıt ol",
-		"validation": {
-			"emailInvalid": "Lütfen geçerli bir e-posta adresi girin",
-			"passwordMismatch": "Şifreler eşleşmiyor",
-			"passwordRequirements": "Şifre büyük harf, küçük harf ve rakamla birlikte en az 8 karakter olmalıdır",
-			"passwordTooShort": "Şifre en az 8 karakter olmalıdır",
-			"passwordWeak": "Şifre büyük harf, küçük harf ve rakam içermelidir"
-		},
-		"viewTeams": "Takımları görüntüle",
-		"viewTeamsFor": "Takımları görüntüle:"
-	},
-	"common": {
-		"actions": {
-			"actions": "Eylemler",
-			"add": "Ekle",
-			"cancel": "İptal",
-			"confirmDelete": "Evet, sil",
-			"create": "Oluştur",
-			"creating": "Oluşturuluyor...",
-			"delete": "Sil",
-			"edit": "Düzenle",
-			"retry": "Tekrar dene",
-			"save": "Kaydet",
-			"saving": "Kaydediliyor...",
-			"update": "Güncelle",
-			"updating": "Güncelleniyor...",
-			"view": "Görüntüle"
-		},
-		"appName": "Tournado",
-		"auth": {
-			"signIn": "Giriş yap",
-			"signOut": "Çıkış yap",
-			"signUp": "Kayıt ol",
-			"signingIn": "Giriş yapılıyor..."
-		},
-		"backToHome": "Ana sayfaya dön",
-		"comingSoon": "Yakında",
-		"darkMode": "Koyu mod",
-		"error": "Hata",
-		"guest": "Ziyaretçi",
-		"language": "Dil",
-		"lightMode": "Açık mod",
-		"loading": "Yükleniyor...",
-		"optional": "(isteğe bağlı)",
-		"pagination": {
-			"next": "Sonraki",
-			"pageInfo": "Sayfa {{current}} / {{total}}",
-			"previous": "Önceki",
-			"showing": "{{total}} satırdan {{from}}-{{to}} gösteriliyor"
-		},
-		"signedInAs": "Giriş yapıldı: ",
-		"titles": {
-			"about": "Hakkımızda",
-			"addTeam": "Takım ekle",
-			"adminPanel": "Yönetici paneli",
-			"competition": "Yarışma",
-			"more": "Daha fazla",
-			"profile": "Profil",
-			"settings": "Ayarlar",
-			"team": "Takım",
-			"teams": "Takımlar",
-			"tournament": "Turnuva",
-			"tournaments": "Turnuvalar",
-			"users": "Kullanıcılar",
-			"welcome": "Hoş geldiniz"
-		},
-		"toggleMenu": "Menüyü aç/kapat",
-		"toggleTheme": "Temayı değiştir",
-		"welcome": "Hoş geldiniz"
-	},
-	"datatable": {
-		"clearSearch": "Aramayı temizle",
-		"resetFilters": "Sıfırla",
-		"search": "Ara...",
-		"toggleColumns": "Sütunları değiştir",
-		"view": "Görünüm"
-	},
-	"competition": {
-		"description": "Turnuva gruplarını, maçları ve sıralamayı yönetin.",
-		"createGroupStage": "Grup aşaması oluştur",
-		"createGroupStageDescription": "{{tournamentName}} turnuvası için grupları ayarlayın",
-		"selectTournament": "Bir Turnuva Seçin",
-		"selectTournamentDescription": "Grup aşamasını yönetmek için yukarıdaki açılır menüden bir turnuva seçin.",
-		"noGroupStages": "Henüz grup aşaması yok",
-		"noGroupStagesDescription": "Grup aşaması oluşturmaya başlayın.",
-		"groupsCount": "{{count}} grup",
-		"labels": {
-			"categories": "Kategoriler:",
-			"setup": "Kurulum:",
-			"setupSummary": "{{groups}} grup × {{teams}} takım",
-			"created": "Oluşturuldu:"
-		},
-		"status": {
-			"enabled": "Etkin",
-			"disabled": "Devre dışı"
-		},
-		"groupStage": {
-			"name": "Grup aşaması adı",
-			"namePlaceholder": "örn. JO8 Premier, 1. ve 2. Lig",
-			"ageCategories": "Yaş kategorileri",
-			"ageCategoriesDescription": "Bu grup aşamasına hangi yaş kategorilerinin katılacağını seçin",
-			"teamsAvailable": "{{count}} takım mevcut",
-			"configGroups": "Grup sayısı",
-			"configGroupsPlaceholder": "4",
-			"configSlots": "Grup başına takım",
-			"configSlotsPlaceholder": "5",
-			"summary": "Özet",
-			"summaryTeamsAvailable": "Seçilen kategorilerde {{count}} takım mevcut",
-			"summaryWillCreate": "Her biri {{slots}} kontenjanla {{groups}} grup oluşturulacak (toplam {{total}} kontenjan)",
-			"title": "Grup aşaması"
-		},
-		"groupAssignment": {
-			"instruction": "Takımları belirli kontenjanlara atamak için sürükleyin. Boş bir kontenjana veya bir takımın üzerine bırakıp değiştirebilirsiniz.",
-			"backToGroups": "Gruplara geri dön",
-			"unsavedChanges": "Kaydedilmemiş değişiklikleriniz var",
-			"unsavedTitle": "Kaydedilmemiş değişiklikler",
-			"unsavedDescription": "Bu sayfadan ayrılırsanız kaydedilmemiş değişiklikleriniz kaybolacak. Ayrılmak istediğinizden emin misiniz?",
-			"leaveAnyway": "Evet, ayrıl",
-			"stayOnPage": "İptal",
-			"conflictTitle": "Değişiklik çakışması",
-			"conflictDescription": "Başka bir kullanıcı değişiklikleri kaydetti. Kaydedilmemiş düzenlemeleriniz silindi ve sayfa yenilendi.",
-			"conflictReload": "Sayfayı yenile",
-			"goToGroup": "{{name}} grubuna git",
-			"errors": {
-				"noCapacity": "Onaylı havuzda yer yok. Önce bir gruptan bir takım çıkarın.",
-				"waitlistToGroup": "Bekleme listesindeki takımlar doğrudan gruplara atanamaz. Önce onaylı havuza taşıyın."
-			},
-			"hints": {
-				"groupFull": "Bu grup dolu. Takımları değiştirmek için belirli bir yere bırakın."
-			},
-			"chip": {
-				"ariaLabel": "{{club}} {{team}} - atamak için sürükle"
-			},
-			"slot": {
-				"label": "Yer {{number}}",
-				"position": "Yer {{position}}",
-				"dropHere": "Buraya bırak",
-				"empty": "Boş",
-				"emptyAriaLabel": "Boş yer {{position}} - buraya bir takım bırakın",
-				"occupiedAriaLabel": "Yer {{position}} {{team}} tarafından dolu"
-			},
-			"group": {
-				"ariaLabel": "{{name}} - {{total}} takımdan {{filled}} tanesi atandı",
-				"slotsCount": "Takımlar: {{total}} üzerinden {{filled}}",
-				"dropToAssign": "Atamak için bırak"
-			},
-			"reserve": {
-				"title": "Onaylı takımlar",
-				"availableSlots": "Mevcut kontenjan: {{capacity}}",
-				"empty": "Onaylı havuzda takım yok",
-				"dropToAdd": "Yedek kadrosuna taşımak için buraya bırakın",
-				"ariaLabel": "Onaylı takımlar havuzu - {{capacity}} mevcut kontenjan"
-			},
-			"waitlist": {
-				"title": "Bekleme listesi",
-				"count": "Bekleyen: {{count}}",
-				"noCapacity": "Onaylı havuz dolu. Bekleme listesindeki takımları yükseltmek için yer açın.",
-				"helpPromote": "Bekleme listesindeki takımları eklemek için onaylı havuza sürükleyin.",
-				"helpBlocked": "Tüm yerler atandı. Yer açmak için gruplardan takım çıkarın.",
-				"ariaLabel": "Bekleme listesi - {{count}} takım bekliyor",
-				"dropToAdd": "Bekleme listesine taşımak için buraya bırakın"
-			}
-		}
-	},
-	"divisions": {
-		"FIFTH_DIVISION": "Beşinci lig",
-		"FIRST_DIVISION": "Birinci lig",
-		"FOURTH_DIVISION": "Dördüncü lig",
-		"PREMIER_DIVISION": "Premier lig",
-		"SECOND_DIVISION": "İkinci lig",
-		"THIRD_DIVISION": "Üçüncü lig"
-	},
-	"errors": {
-		"emailOutboxInvalidFormat": "E-posta giden kutusunun biçimi geçersiz",
-		"emailOutboxReadFailure": "E-posta giden kutusu okunamadı",
-		"somethingWentWrong": "Bir şeyler ters gitti",
-		"teamLoadFailed": "Takım detayları yüklenemedi. Lütfen daha sonra tekrar deneyin.",
-		"auth": {
-			"accountDeactivatedTitle": "Hesap devre dışı bırakıldı",
-			"accountDeactivatedMessage": "Hesabınız devre dışı bırakıldı. Yardım için lütfen destek ekibiyle iletişime geçin.",
-			"unauthorizedSignInRequiredTitle": "Giriş gerekli",
-			"unauthorizedSignInRequired": "Bu sayfaya erişmek için giriş yapmalısınız.",
-			"unauthorizedAdminRequiredTitle": "Yönetici erişimi gerekli",
-			"unauthorizedAdminRequired": "Bu sayfaya erişmek için yönetici ayrıcalıklarına ihtiyacınız var. Erişim için yöneticinizle iletişime geçin.",
-			"unauthorizedManagerRequiredTitle": "Müdür erişimi gerekli",
-			"unauthorizedManagerRequired": "Bu sayfaya erişmek için müdür ayrıcalıklarına ihtiyacınız var. Erişim için müdürünüzle iletişime geçin.",
-			"unauthorizedSuperAdminRequiredTitle": "Süper yönetici erişimi gerekli",
-			"unauthorizedSuperAdminRequired": "Bu sayfaya erişmek için süper yönetici ayrıcalıklarına ihtiyacınız var. Erişim için süper yöneticinizle iletişime geçin.",
-			"unauthorizedDefaultTitle": "Erişim reddedildi",
-			"unauthorizedDefault": "Bu sayfaya erişim izniniz yok."
-		},
-		"competition": {
-			"nameRequired": "Grup adı gereklidir",
-			"categoriesRequired": "En az bir kategori seçmelisiniz",
-			"groupsRange": "Gruplar 2 ile 8 arasında olmalıdır",
-			"slotsRange": "Her grup için 3 ile 10 arasında oyuncu/konum olmalıdır",
-			"createFailed": "Grup aşamaları oluşturulurken bir hata oluştu. Lütfen tekrar deneyin."
-		}
-	},
-	"landing": {
-		"features": {
-			"description": "Tournado, spor turnuvalarınızı verimli bir şekilde yönetmek için ihtiyacınız olan tüm araçları sunar. Takım kaydından maç planlamasına kadar her şey burada.",
-			"subtitle": "Turnuvalarınızı yönetmek için ihtiyacınız olan her şey",
-			"title": "Turnuva yönetimi kolaylaştı"
-		},
-		"hero": {
-			"description": "Spor turnuvalarınızı kolayca yönetin. Takımlarınızı ve maçlarınızı tek bir yerde oluşturun, organize edin ve takip edin.",
-			"signup": "Ücretsiz kayıt ol",
-			"viewTeams": "Takımları görüntüle"
-		}
-	},
-	"messages": {
-		"auth": {
-			"emailExists": "Bu e-posta adresiyle zaten bir kullanıcı var",
-			"emailInvalid": "E-posta adresi geçersiz",
-			"emailRequired": "E-posta adresi zorunludur",
-			"forbidden": "Bu sayfaya erişiminiz yok",
-			"forbiddenTitle": "Erişim reddedildi",
-			"invalidCredentials": "Geçersiz e-posta adresi veya şifre",
-			"notFound": "Üzgünüz, aradığınız sayfa mevcut değil veya taşınmış. Lütfen URL'yi kontrol edin veya aşağıdaki bağlantıyı kullanarak gezin.",
-			"passwordRequired": "Şifre zorunludur",
-			"passwordTooShort": "Şifre çok kısa",
-			"serverError": "Sunucu hatası, lütfen daha sonra tekrar deneyin",
-			"title": "Kimlik doğrulama hatası",
-			"unauthorized": "Bu sayfayı görüntülemek için giriş yapmalısınız",
-			"unauthorizedAdminRequired": "Bu alan turnuva yöneticileri ve yöneticilerle sınırlıdır.",
-			"unauthorizedAdminRequiredTitle": "Yönetici erişimi gerekli",
-			"unauthorizedDefault": "Bu sayfaya erişim izniniz yok. Bu bir hata olduğunu düşünüyorsanız yöneticinize başvurun.",
-			"unauthorizedDefaultTitle": "Erişim reddedildi",
-			"unauthorizedManagerRequired": "Bu alan turnuva yöneticileri ve yöneticilerle sınırlıdır.",
-			"unauthorizedManagerRequiredTitle": "Yönetici erişimi gerekli",
-			"unauthorizedSignInRequired": "Bu kaynağa erişmek için giriş yapmalısınız.",
-			"unauthorizedSignInRequiredTitle": "Kimlik doğrulama gerekli",
-			"unauthorizedSuperAdminRequired": "Bu özel alan sistem yöneticileriyle sınırlıdır.",
-			"unauthorizedSuperAdminRequiredTitle": "Yönetici erişimi gerekli",
-			"unauthorizedTitle": "Giriş gerekli"
-		},
-		"common": {
-			"accessDenied": "Bu kaynağa erişim izniniz yok",
-			"errorTitle": "Uygulama hatası",
-			"itemNotFound": "{{item}} bulunamadı",
-			"notFoundTitle": "Sayfa bulunamadı",
-			"unexpectedError": "Beklenmeyen bir hata oluştu",
-			"unknownError": "Bilinmeyen bir hata oluştu"
-		},
-		"groupAssignment": {
-			"teamNotFound": "Takım bulunamadı. Yenileyip tekrar deneyin.",
-			"groupNotFound": "Hedef grup bulunamadı. Yenileyip tekrar deneyin.",
-			"slotNotFound": "Hedef slot bulunamadı. Yenileyip tekrar deneyin."
-		},
-		"panel": {
-			"errorTitle": "Bir şeyler ters gitti",
-			"errorBody": "Bu bölümü yüklerken bir hata oluştu. Lütfen sayfayı yenilemeyi deneyin."
-		},
-		"team": {
-			"categoryRequired": "Kategori gereklidir",
-			"clubNameRequired": "Kulüp adı gereklidir",
-			"clubNameTooLong": "Kulüp adı 100 karakterden az olmalıdır",
-			"divisionRequired": "Lig gereklidir",
-			"nameRequired": "Takım adı gereklidir",
-			"nameTooLong": "Takım adı 50 karakterden az olmalıdır",
-			"notFound": "Takım bulunamadı",
-			"phoneNumberInvalid": "Lütfen geçerli bir telefon numarası girin",
-			"phoneNumberRequired": "Telefon numarası gereklidir",
-			"privacyAgreementRequired": "Gizlilik politikasını kabul etmelisiniz",
-			"registrationError": "Takım kayıt başarısız",
-			"registrationErrorDesc": "Takımınızı kaydederken bir hata oluştu. Lütfen tekrar deneyin.",
-			"registrationSuccess": "Takım başarıyla kaydedildi",
-			"registrationSuccessDesc": "Takımınız başarıyla kaydedildi.",
-			"teamLeaderNameRequired": "Takım lideri adı gereklidir",
-			"teamLeaderNameTooLong": "İsim 100 karakterden az olmalıdır",
-			"tournamentRequired": "Turnuva gereklidir",
-			"updateError": "Takım güncelleme başarısız",
-			"updateErrorDesc": "Takımınızı güncellerken bir hata oluştu. Lütfen tekrar deneyin.",
-			"updateSuccess": "Takım başarıyla güncellendi",
-			"updateSuccessDesc": "Takımınız başarıyla güncellendi."
-		},
-		"tournament": {
-			"categoriesRequired": "En az bir kategori zorunludur",
-			"divisionsRequired": "En az bir lig zorunludur",
-			"endDateBeforeStartDate": "Bitiş tarihi başlangıç tarihinde veya sonrasında olmalıdır",
-			"invalidDateFormat": "Lütfen geçerli bir tarih girin",
-			"endDateRequired": "Bitiş tarihi zorunludur",
-			"locationRequired": "Konum zorunludur",
-			"locationTooLong": "Konum 100 karakterden kısa olmalıdır",
-			"nameRequired": "Turnuva adı zorunludur",
-			"nameTooLong": "Turnuva adı 100 karakterden kısa olmalıdır",
-			"registrationError": "Turnuva kayıt başarısız",
-			"registrationErrorDesc": "Turnuvayı kaydederken bir hata oluştu. Lütfen tekrar deneyin.",
-			"registrationSuccess": "Turnuva başarıyla kaydedildi",
-			"registrationSuccessDesc": "Turnuva başarıyla kaydedildi.",
-			"startDateRequired": "Başlangıç tarihi zorunludur",
-			"updateError": "Turnuva güncelleme başarısız",
-			"updateErrorDesc": "Turnuvayı güncellerken bir hata oluştu. Lütfen tekrar deneyin.",
-			"updateSuccess": "Turnuva başarıyla güncellendi",
-			"updateSuccessDesc": "Turnuva başarıyla güncellendi."
-		},
-		"user": {
-			"cannotChangeOwnRole": "Kendi rolünüzü değiştiremezsiniz",
-			"cannotDeactivateOwnAccount": "Kendi hesabınızı devre dışı bırakamazsınız",
-			"cannotReactivateOwnAccount": "Kendi hesabınızı yeniden etkinleştiremezsiniz",
-			"displayNameRequired": "Görünen ad boş olamaz.",
-			"failedToUpdateRole": "Rol güncellenemedi",
-			"missingUserId": "Kullanıcı kimliği eksik",
-			"requestFailed": "Bu isteği işleyemedik. Lütfen tekrar deneyin.",
-			"requestFailedRefresh": "Bu isteği işleyemedik. Lütfen sayfayı yenileyin ve tekrar deneyin.",
-			"unknownError": "Bilinmeyen hata",
-			"userNotFound": "Bu kullanıcıyı bulamadık. Lütfen tekrar deneyin."
-		},
-		"validation": {
-			"emailInvalid": "Lütfen geçerli bir e-posta adresi girin",
-			"emailRequired": "E-posta adresi gereklidir",
-			"fieldRequired": "Bu alan gereklidir",
-			"phoneNumberInvalid": "Lütfen geçerli bir telefon numarası girin",
-			"phoneNumberRequired": "Telefon numarası gereklidir"
-		}
-	},
-	"profile": {
-		"description": "Turnuva yönetimi için profil ayarlarınızı ve hesap bilgilerinizi yönetin.",
-		"title": "Profil bilgileri"
-	},
-	"pwa": {
-		"install": {
-			"android": {
-				"chrome": "Menüye (⋮) dokunun ve 'Uygulamayı yükle'yi seçin",
-				"firefox": "Menüye (⋮) dokunun ve 'Yükle'yi seçin",
-				"samsung": "Menüye (⋮) dokunun, 'Sayfayı ekle' ve ardından 'Ana ekrana' seçin",
-				"title": "Bu uygulamayı cihazınıza yükleyin"
-			},
-			"ios": {
-				"chrome": "Paylaş düğmesine dokunun ve 'Ana ekrana ekle'yi seçin",
-				"firefox": "Hamburger menüsüne dokunun, ardından 'Paylaş' ve 'Ana ekrana ekle'yi seçin",
-				"safari": "Paylaş düğmesine dokunun ve 'Ana ekrana ekle'yi seçin",
-				"title": "Bu uygulamayı iPhone'unuza yükleyin"
-			},
-			"other": {
-				"instruction": "Tarayıcı menüsünü açın ve 'Ana ekrana ekle'yi seçin",
-				"title": "Bu uygulamayı cihazınıza yükleyin"
-			}
-		},
-		"update": {
-			"button": "Güncelle",
-			"instruction": "Uygulamayı güncellemek için yenileyin",
-			"title": "Yeni bir sürüm mevcut"
-		}
-	},
-	"roles": {
-		"admin": "Admin",
-		"billing": "Faturalama",
-		"editor": "Editör",
-		"manager": "Yönetici",
-		"public": "Herkese açık",
-		"referee": "Hakem"
-	},
-	"settings": {
-		"description": "Optimal deneyim için turnuva ayarlarınızı, tercihlerinizi ve hesap seçeneklerinizi yapılandırın.",
-		"title": "Uygulama ayarları"
-	},
-	"teams": {
-		"allTournaments": "Tüm turnuvalar",
-		"count": "{{count}} takım kaydedildi",
-		"count_other": "{{count}} takım kaydedildi",
-		"createNewTeam": "Yeni bir takım oluştur",
-		"deleteTeam": "Takımı sil",
-		"deleteTeamAreYouSure": "Bu takımı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
-		"description": "Bir veya daha fazla turnuva için takım(lar)ınızı kaydedin",
-		"filterByTournament": "Turnuvaya göre filtrele",
-		"form": {
-			"agreeToPrivacyPolicy": "Gizlilik politikasını kabul ediyorum",
-			"category": "Kategori",
-			"clubName": "Kulüp adı",
-			"completeAllThreeFields": "Devam etmek için aşağıdaki üç alanı da doldurun",
-			"division": "Bölüm",
-			"enterContactDetails": "Takım lideri için iletişim bilgilerini girin",
-			"enterTeamDetails": "Takım bilgilerinizi girin",
-			"fillOutForm": "Takımınızı kaydetmek için aşağıdaki formu doldurun",
-			"name": "Takım adı",
-			"placeholders": {
-				"clubName": "Kulüp adınızı girin",
-				"name": "Takım adınızı girin",
-				"teamLeaderEmail": "E-posta adresini girin",
-				"teamLeaderName": "Takım liderinin tam adını girin",
-				"teamLeaderPhone": "Telefon numarasını girin"
-			},
-			"privacyAgreement": "Gizlilik politikası ve hizmet şartlarını kabul ediyorum",
-			"privacyPolicy": "Gizlilik politikası",
-			"readAndAccept": "Devam etmek için lütfen gizlilik politikasını okuyun ve kabul edin",
-			"selectCategory": "Bir kategori seçin",
-			"selectDivision": "Bir sınıf seçin",
-			"selectTournament": "Bir turnuva seçin",
-			"selectTournamentDetails": "Turnuva detaylarını seçin",
-			"teamInfo": "Takım",
-			"teamLeaderEmail": "Takım lideri e-postası",
-			"teamLeaderInfo": "Takım lideri",
-			"teamLeaderName": "Takım lideri adı",
-			"teamLeaderPhone": "Takım lideri telefonu",
-			"teamRegistration": "Takım kaydı",
-			"tournament": "Turnuva",
-			"tournamentDetails": "Turnuva"
-		},
-		"getStarted": {
-			"description": "Bir turnuvaya katılmaya hazır mısınız? Yukarıdaki 'Ekle' düğmesine tıklayarak takımınızı kaydedin ve oynamaya başlayın!",
-			"title": "Takım kaydı ile başlayın"
-		},
-		"noTeamSelected": "Hiçbir takım seçilmedi. Soldan bir takım seçin veya",
-		"noTeams": "Henüz hiçbir takım kaydedilmedi. Yaklaşan turnuvalar için takımınızı kaydeden ilk kişi olun!",
-		"title": "Takımlar"
-	},
-	"tournaments": {
-		"actions": {
-			"manageCompetition": "Yarışma"
-		},
-		"deleteTournament": "Turnuvayı sil",
-		"deleteTournamentAreYouSure": "Bu turnuvayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
-		"description": "Turnuva bilgilerini görüntüle",
-		"endDate": "Bitiş tarihi",
-		"form": {
-			"basicInformation": "Temel bilgiler",
-			"categories": "Kategoriler",
-			"dates": "Turnuva tarihleri",
-			"divisions": "Ligler",
-			"endDate": "Bitiş tarihi",
-			"enterBasicDetails": "Turnuva adı ve konumunu girin",
-			"fillOutForm": "Yeni bir turnuva oluşturmak için aşağıdaki formu doldurun",
-			"location": "Konum",
-			"name": "Turnuva adı",
-			"selectCategories": "Katılacak yaş kategorilerini seçin",
-			"selectDates": "Turnuva için başlangıç ve bitiş tarihlerini seçin",
-			"selectDivisions": "Katılacak ligleri seçin",
-			"selected": "seçildi",
-			"startDate": "Başlangıç tarihi",
-			"tournamentRegistration": "Turnuva kaydı"
-		},
-		"location": "Konum",
-		"name": "Ad",
-		"noTournaments": "Turnuva yok",
-		"noTournamentsDescription": "Henüz hiç turnuva oluşturulmamış. Başlamak için ilk turnuvanızı oluşturun!",
-		"startDate": "Başlangıç tarihi",
-		"title": "Turnuvalar"
-	},
-	"users": {
-		"actions": {
-			"deactivateUser": "Devre dışı bırak",
-			"reactivateUser": "Yeniden etkinleştir",
-			"viewDetails": "Detayları görüntüle"
-		},
-		"auditActions": {
-			"approval": "Kullanıcı onaylandı",
-			"deactivate": "Kullanıcı devre dışı bırakıldı",
-			"profile_update": "Profil güncellendi",
-			"reactivate": "Kullanıcı yeniden etkinleştirildi",
-			"rejection": "Kullanıcı reddedildi",
-			"role_change": "Rol değiştirildi"
-		},
-		"descriptions": {
-			"manageUsersAndRoles": "Kullanıcı hesaplarını yönetin ve roller atayın"
-		},
-		"fields": {
-			"assignedRole": "Atanmış Rol",
-			"createdAt": "Oluşturulma tarihi",
-			"currentRole": "Mevcut rol",
-			"displayName": "Görünen ad",
-			"email": "E-posta",
-			"performedBy": "Gerçekleştiren",
-			"role": "Rol"
-		},
-		"messages": {
-			"confirmDeactivate": "Bu kullanıcıyı devre dışı bırakmak istediğinizden emin misiniz?",
-			"confirmReactivate": "Bu kullanıcıyı yeniden etkinleştirip tekrar oturum açmasına izin verelim mi?",
-			"deactivated": "Devre dışı",
-			"displayNameUpdatedSuccessfully": "Görünen ad başarıyla güncellendi",
-			"noAuditLogs": "Denetim kaydı girişi bulunamadı",
-			"noUsers": "Kullanıcı bulunamadı",
-			"noUsersDescription": "Henüz hiçbir kullanıcı oluşturulmadı.",
-			"roleUpdatedSuccessfully": "Kullanıcı rolü başarıyla güncellendi",
-			"userDeactivatedSuccessfully": "Kullanıcı başarıyla devre dışı bırakıldı",
-			"userIsDeactivated": "Bu kullanıcı şu anda devre dışı",
-			"userReactivatedSuccessfully": "Kullanıcı başarıyla yeniden etkinleştirildi"
-		},
-		"placeholders": {
-			"displayName": "Görünen adı girin"
-		},
-		"titles": {
-			"allUsers": "Tüm kullanıcılar",
-			"auditLog": "Denetim kaydı",
-			"deactivateUser": "Kullanıcıyı devre dışı bırak",
-			"reactivateUser": "Kullanıcıyı yeniden etkinleştir",
-			"totalUsers": "Toplam kullanıcılar",
-			"userDetail": "Kullanıcı detayları",
-			"userInformation": "Kullanıcı bilgileri",
-			"userManagement": "Kullanıcı yönetimi"
-		}
-	}
+  "about": {
+    "description": "Tournado, organizasyonlar ve takımlar için spor turnuvalarının organizasyonunu ve yönetimini kolaylaştırmak üzere tasarlanmış kapsamlı bir turnuva yönetim platformudur.",
+    "title": "Tournado hakkında"
+  },
+  "admin": {
+    "competition": {
+      "description": "Turnuvalar için grupları, maçları ve sıralamaları yönetin.",
+      "groupStage": "Grup Aşaması",
+      "groupStageDescription": "Grup aşamasında gruplar oluşturun ve yönetin",
+      "groups": "Gruplar",
+      "playoffs": "Playofflar",
+      "title": "Yarışma yönetimi"
+    },
+    "panel": {
+      "description": "Tekrar hoş geldiniz, <email>{{email}}</email>. Turnuva platformunuzu buradan yönetin.",
+      "title": "Yönetici Paneli"
+    },
+    "reports": {
+      "description": "Platform kullanımını ve turnuva istatistiklerini görüntüleyin.",
+      "title": "Raporlar ve analitik"
+    },
+    "settings": {
+      "description": "Uygulama ayarlarını ve tercihlerini yapılandırın.",
+      "title": "Sistem ayarları"
+    },
+    "teams": {
+      "confirmDelete": "Bu takımı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+      "createNewTeamDescription": "Turnuva detayları ve iletişim bilgileriyle yeni bir takım oluşturun.",
+      "createTeam": "Takım oluştur",
+      "createTeamDescription": "Gerekli tüm ayrıntılarla sisteme yeni bir takım ekleyin.",
+      "description": "Turnuvalardaki takımları yönetin. Takım bilgilerini görüntüleyin, düzenleyin veya silin.",
+      "editTeam": "Takım detaylarını düzenle",
+      "newTeam": "Yeni takım",
+      "saveChanges": "Değişiklikleri kaydet",
+      "teamNotFound": "Takım bulunamadı",
+      "teamNotFoundDescription": "Aradığınız takım bulunamadı veya silinmiş olabilir.",
+      "title": "Takım yönetimi",
+      "totalTeams": "Toplam takım"
+    },
+    "tournaments": {
+      "confirmDelete": "Bu turnuvayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+      "description": "Sistemdeki turnuvaları yönetin. Turnuva bilgilerini oluşturun, düzenleyin veya silin.",
+      "title": "Turnuva yönetimi",
+      "totalTournaments": "Toplam turnuva sayısı"
+    },
+    "users": {
+      "description": "Kullanıcı hesaplarını ve izinlerini yönetin.",
+      "title": "Kullanıcı yönetimi",
+      "totalUsers": "Toplam kullanıcılar"
+    }
+  },
+  "auth": {
+    "alreadyHaveAccount": "Zaten bir hesabınız var mı?",
+    "continueWithEmail": "Veya e-posta ile devam edin",
+    "createAccount": "Hesap oluştur",
+    "dontHaveAccount": "Henüz hesabınız yok mu?",
+    "emailAddress": "E-posta adresi",
+    "firebase": {
+      "continueWithGoogle": "Google ile devam et",
+      "error": "Kimlik doğrulama başarısız. Lütfen tekrar deneyin.",
+      "signInWithGoogle": "Google ile giriş yap"
+    },
+    "firstName": "Ad",
+    "labels": {
+      "confirmPassword": "Şifreyi onayla",
+      "email": "E-posta",
+      "password": "Şifre"
+    },
+    "lastName": "Soyad",
+    "notSignedIn": "Giriş yapılmadı",
+    "or": "veya",
+    "password": "Şifre",
+    "placeholders": {
+      "confirmPassword": "Şifrenizi onaylayın",
+      "email": "E-postanızı girin",
+      "password": "Şifrenizi girin"
+    },
+    "pleaseSignIn": "Yeni hesabınızla giriş yapın",
+    "registrationSuccess": "Hesap başarıyla oluşturuldu",
+    "rememberMe": "Beni hatırla",
+    "signInPage": {
+      "description": "Tournado hesabınıza giriş yapın",
+      "noAccount": "Hesabınız yok mu?",
+      "signUpLink": "Kayıt ol"
+    },
+    "signInRequiredToCreateTeam": "Bir takım oluşturmak için giriş yapmalısınız.",
+    "signUpPage": {
+      "description": "Tournado hesabınızı oluşturun",
+      "hasAccount": "Zaten hesabınız var mı?",
+      "signInLink": "Giriş yap"
+    },
+    "signin": "Giriş yap",
+    "signout": "Çıkış yap",
+    "signup": "Kayıt ol",
+    "validation": {
+      "emailInvalid": "Lütfen geçerli bir e-posta adresi girin",
+      "passwordMismatch": "Şifreler eşleşmiyor",
+      "passwordRequirements": "Şifre büyük harf, küçük harf ve rakamla birlikte en az 8 karakter olmalıdır",
+      "passwordTooShort": "Şifre en az 8 karakter olmalıdır",
+      "passwordWeak": "Şifre büyük harf, küçük harf ve rakam içermelidir"
+    },
+    "viewTeams": "Takımları görüntüle",
+    "viewTeamsFor": "Takımları görüntüle:"
+  },
+  "common": {
+    "confirm": {
+      "unsavedChanges": "Kaydedilmemiş değişiklikleriniz var",
+      "unsavedTitle": "Kaydedilmemiş değişiklikler",
+      "unsavedDescription": "Bu sayfadan ayrılırsanız kaydedilmemiş değişiklikleriniz kaybolacak. Ayrılmak istediğinizden emin misiniz?",
+      "leaveAnyway": "Evet, ayrıl",
+      "stayOnPage": "İptal"
+    },
+    "actions": {
+      "actions": "Eylemler",
+      "add": "Ekle",
+      "cancel": "İptal",
+      "confirmDelete": "Evet, sil",
+      "create": "Oluştur",
+      "creating": "Oluşturuluyor...",
+      "delete": "Sil",
+      "edit": "Düzenle",
+      "retry": "Tekrar dene",
+      "save": "Kaydet",
+      "saving": "Kaydediliyor...",
+      "update": "Güncelle",
+      "updating": "Güncelleniyor...",
+      "view": "Görüntüle"
+    },
+    "appName": "Tournado",
+    "auth": {
+      "signIn": "Giriş yap",
+      "signOut": "Çıkış yap",
+      "signUp": "Kayıt ol",
+      "signingIn": "Giriş yapılıyor..."
+    },
+    "backToHome": "Ana sayfaya dön",
+    "comingSoon": "Yakında",
+    "darkMode": "Koyu mod",
+    "error": "Hata",
+    "guest": "Ziyaretçi",
+    "language": "Dil",
+    "lightMode": "Açık mod",
+    "loading": "Yükleniyor...",
+    "optional": "(isteğe bağlı)",
+    "pagination": {
+      "next": "Sonraki",
+      "pageInfo": "Sayfa {{current}} / {{total}}",
+      "previous": "Önceki",
+      "showing": "{{total}} satırdan {{from}}-{{to}} gösteriliyor"
+    },
+    "signedInAs": "Giriş yapıldı: ",
+    "titles": {
+      "about": "Hakkımızda",
+      "addTeam": "Takım ekle",
+      "adminPanel": "Yönetici paneli",
+      "competition": "Yarışma",
+      "more": "Daha fazla",
+      "profile": "Profil",
+      "settings": "Ayarlar",
+      "team": "Takım",
+      "teams": "Takımlar",
+      "tournament": "Turnuva",
+      "tournaments": "Turnuvalar",
+      "users": "Kullanıcılar",
+      "welcome": "Hoş geldiniz"
+    },
+    "toggleMenu": "Menüyü aç/kapat",
+    "toggleTheme": "Temayı değiştir",
+    "welcome": "Hoş geldiniz"
+  },
+  "datatable": {
+    "clearSearch": "Aramayı temizle",
+    "resetFilters": "Sıfırla",
+    "search": "Ara...",
+    "toggleColumns": "Sütunları değiştir",
+    "view": "Görünüm"
+  },
+  "competition": {
+    "description": "Turnuva gruplarını, maçları ve sıralamayı yönetin.",
+    "createGroupStage": "Grup aşaması oluştur",
+    "createGroupStageDescription": "{{tournamentName}} turnuvası için grupları ayarlayın",
+    "selectTournament": "Bir Turnuva Seçin",
+    "selectTournamentDescription": "Grup aşamasını yönetmek için yukarıdaki açılır menüden bir turnuva seçin.",
+    "noGroupStages": "Henüz grup aşaması yok",
+    "noGroupStagesDescription": "Grup aşaması oluşturmaya başlayın.",
+    "groupsCount": "{{count}} grup",
+    "labels": {
+      "categories": "Kategoriler:",
+      "setup": "Kurulum:",
+      "setupSummary": "{{groups}} grup × {{teams}} takım",
+      "created": "Oluşturuldu:"
+    },
+    "status": {
+      "enabled": "Etkin",
+      "disabled": "Devre dışı"
+    },
+    "groupStage": {
+      "name": "Grup aşaması adı",
+      "namePlaceholder": "örn. JO8 Premier, 1. ve 2. Lig",
+      "ageCategories": "Yaş kategorileri",
+      "ageCategoriesDescription": "Bu grup aşamasına hangi yaş kategorilerinin katılacağını seçin",
+      "teamsAvailable": "{{count}} takım mevcut",
+      "configGroups": "Grup sayısı",
+      "configGroupsPlaceholder": "4",
+      "configSlots": "Grup başına takım",
+      "configSlotsPlaceholder": "5",
+      "summary": "Özet",
+      "summaryTeamsAvailable": "Seçilen kategorilerde {{count}} takım mevcut",
+      "summaryWillCreate": "Her biri {{slots}} kontenjanla {{groups}} grup oluşturulacak (toplam {{total}} kontenjan)",
+      "title": "Grup aşaması"
+    },
+    "groupAssignment": {
+      "instruction": "Takımları belirli kontenjanlara atamak için sürükleyin. Boş bir kontenjana veya bir takımın üzerine bırakıp değiştirebilirsiniz.",
+      "backToGroups": "Gruplara geri dön",
+      "unsavedChanges": "Kaydedilmemiş değişiklikleriniz var",
+      "unsavedTitle": "Kaydedilmemiş değişiklikler",
+      "unsavedDescription": "Bu sayfadan ayrılırsanız kaydedilmemiş değişiklikleriniz kaybolacak. Ayrılmak istediğinizden emin misiniz?",
+      "leaveAnyway": "Evet, ayrıl",
+      "stayOnPage": "İptal",
+      "conflictTitle": "Değişiklik çakışması",
+      "conflictDescription": "Başka bir kullanıcı değişiklikleri kaydetti. Kaydedilmemiş düzenlemeleriniz silindi ve sayfa yenilendi.",
+      "conflictReload": "Sayfayı yenile",
+      "goToGroup": "{{name}} grubuna git",
+      "errors": {
+        "noCapacity": "Onaylı havuzda yer yok. Önce bir gruptan bir takım çıkarın.",
+        "waitlistToGroup": "Bekleme listesindeki takımlar doğrudan gruplara atanamaz. Önce onaylı havuza taşıyın."
+      },
+      "hints": {
+        "groupFull": "Bu grup dolu. Takımları değiştirmek için belirli bir yere bırakın."
+      },
+      "chip": {
+        "ariaLabel": "{{club}} {{team}} - atamak için sürükle"
+      },
+      "slot": {
+        "label": "Yer {{number}}",
+        "position": "Yer {{position}}",
+        "dropHere": "Buraya bırak",
+        "empty": "Boş",
+        "emptyAriaLabel": "Boş yer {{position}} - buraya bir takım bırakın",
+        "occupiedAriaLabel": "Yer {{position}} {{team}} tarafından dolu"
+      },
+      "group": {
+        "ariaLabel": "{{name}} - {{total}} takımdan {{filled}} tanesi atandı",
+        "slotsCount": "Takımlar: {{total}} üzerinden {{filled}}",
+        "dropToAssign": "Atamak için bırak"
+      },
+      "reserve": {
+        "title": "Onaylı takımlar",
+        "availableSlots": "Mevcut kontenjan: {{capacity}}",
+        "empty": "Onaylı havuzda takım yok",
+        "dropToAdd": "Yedek kadrosuna taşımak için buraya bırakın",
+        "ariaLabel": "Onaylı takımlar havuzu - {{capacity}} mevcut kontenjan"
+      },
+      "waitlist": {
+        "title": "Bekleme listesi",
+        "count": "Bekleyen: {{count}}",
+        "noCapacity": "Onaylı havuz dolu. Bekleme listesindeki takımları yükseltmek için yer açın.",
+        "helpPromote": "Bekleme listesindeki takımları eklemek için onaylı havuza sürükleyin.",
+        "helpBlocked": "Tüm yerler atandı. Yer açmak için gruplardan takım çıkarın.",
+        "ariaLabel": "Bekleme listesi - {{count}} takım bekliyor",
+        "dropToAdd": "Bekleme listesine taşımak için buraya bırakın"
+      }
+    }
+  },
+  "divisions": {
+    "FIFTH_DIVISION": "Beşinci lig",
+    "FIRST_DIVISION": "Birinci lig",
+    "FOURTH_DIVISION": "Dördüncü lig",
+    "PREMIER_DIVISION": "Premier lig",
+    "SECOND_DIVISION": "İkinci lig",
+    "THIRD_DIVISION": "Üçüncü lig"
+  },
+  "errors": {
+    "emailOutboxInvalidFormat": "E-posta giden kutusunun biçimi geçersiz",
+    "emailOutboxReadFailure": "E-posta giden kutusu okunamadı",
+    "somethingWentWrong": "Bir şeyler ters gitti",
+    "teamLoadFailed": "Takım detayları yüklenemedi. Lütfen daha sonra tekrar deneyin.",
+    "auth": {
+      "accountDeactivatedTitle": "Hesap devre dışı bırakıldı",
+      "accountDeactivatedMessage": "Hesabınız devre dışı bırakıldı. Yardım için lütfen destek ekibiyle iletişime geçin.",
+      "unauthorizedSignInRequiredTitle": "Giriş gerekli",
+      "unauthorizedSignInRequired": "Bu sayfaya erişmek için giriş yapmalısınız.",
+      "unauthorizedAdminRequiredTitle": "Yönetici erişimi gerekli",
+      "unauthorizedAdminRequired": "Bu sayfaya erişmek için yönetici ayrıcalıklarına ihtiyacınız var. Erişim için yöneticinizle iletişime geçin.",
+      "unauthorizedManagerRequiredTitle": "Müdür erişimi gerekli",
+      "unauthorizedManagerRequired": "Bu sayfaya erişmek için müdür ayrıcalıklarına ihtiyacınız var. Erişim için müdürünüzle iletişime geçin.",
+      "unauthorizedSuperAdminRequiredTitle": "Süper yönetici erişimi gerekli",
+      "unauthorizedSuperAdminRequired": "Bu sayfaya erişmek için süper yönetici ayrıcalıklarına ihtiyacınız var. Erişim için süper yöneticinizle iletişime geçin.",
+      "unauthorizedDefaultTitle": "Erişim reddedildi",
+      "unauthorizedDefault": "Bu sayfaya erişim izniniz yok."
+    },
+    "competition": {
+      "nameRequired": "Grup adı gereklidir",
+      "categoriesRequired": "En az bir kategori seçmelisiniz",
+      "groupsRange": "Gruplar 2 ile 8 arasında olmalıdır",
+      "slotsRange": "Her grup için 3 ile 10 arasında oyuncu/konum olmalıdır",
+      "createFailed": "Grup aşamaları oluşturulurken bir hata oluştu. Lütfen tekrar deneyin."
+    }
+  },
+  "landing": {
+    "features": {
+      "description": "Tournado, spor turnuvalarınızı verimli bir şekilde yönetmek için ihtiyacınız olan tüm araçları sunar. Takım kaydından maç planlamasına kadar her şey burada.",
+      "subtitle": "Turnuvalarınızı yönetmek için ihtiyacınız olan her şey",
+      "title": "Turnuva yönetimi kolaylaştı"
+    },
+    "hero": {
+      "description": "Spor turnuvalarınızı kolayca yönetin. Takımlarınızı ve maçlarınızı tek bir yerde oluşturun, organize edin ve takip edin.",
+      "signup": "Ücretsiz kayıt ol",
+      "viewTeams": "Takımları görüntüle"
+    }
+  },
+  "messages": {
+    "auth": {
+      "emailExists": "Bu e-posta adresiyle zaten bir kullanıcı var",
+      "emailInvalid": "E-posta adresi geçersiz",
+      "emailRequired": "E-posta adresi zorunludur",
+      "forbidden": "Bu sayfaya erişiminiz yok",
+      "forbiddenTitle": "Erişim reddedildi",
+      "invalidCredentials": "Geçersiz e-posta adresi veya şifre",
+      "notFound": "Üzgünüz, aradığınız sayfa mevcut değil veya taşınmış. Lütfen URL'yi kontrol edin veya aşağıdaki bağlantıyı kullanarak gezin.",
+      "passwordRequired": "Şifre zorunludur",
+      "passwordTooShort": "Şifre çok kısa",
+      "serverError": "Sunucu hatası, lütfen daha sonra tekrar deneyin",
+      "title": "Kimlik doğrulama hatası",
+      "unauthorized": "Bu sayfayı görüntülemek için giriş yapmalısınız",
+      "unauthorizedAdminRequired": "Bu alan turnuva yöneticileri ve yöneticilerle sınırlıdır.",
+      "unauthorizedAdminRequiredTitle": "Yönetici erişimi gerekli",
+      "unauthorizedDefault": "Bu sayfaya erişim izniniz yok. Bu bir hata olduğunu düşünüyorsanız yöneticinize başvurun.",
+      "unauthorizedDefaultTitle": "Erişim reddedildi",
+      "unauthorizedManagerRequired": "Bu alan turnuva yöneticileri ve yöneticilerle sınırlıdır.",
+      "unauthorizedManagerRequiredTitle": "Yönetici erişimi gerekli",
+      "unauthorizedSignInRequired": "Bu kaynağa erişmek için giriş yapmalısınız.",
+      "unauthorizedSignInRequiredTitle": "Kimlik doğrulama gerekli",
+      "unauthorizedSuperAdminRequired": "Bu özel alan sistem yöneticileriyle sınırlıdır.",
+      "unauthorizedSuperAdminRequiredTitle": "Yönetici erişimi gerekli",
+      "unauthorizedTitle": "Giriş gerekli"
+    },
+    "common": {
+      "accessDenied": "Bu kaynağa erişim izniniz yok",
+      "errorTitle": "Uygulama hatası",
+      "itemNotFound": "{{item}} bulunamadı",
+      "notFoundTitle": "Sayfa bulunamadı",
+      "unexpectedError": "Beklenmeyen bir hata oluştu",
+      "unknownError": "Bilinmeyen bir hata oluştu"
+    },
+    "groupAssignment": {
+      "teamNotFound": "Takım bulunamadı. Yenileyip tekrar deneyin.",
+      "groupNotFound": "Hedef grup bulunamadı. Yenileyip tekrar deneyin.",
+      "slotNotFound": "Hedef slot bulunamadı. Yenileyip tekrar deneyin."
+    },
+    "panel": {
+      "errorTitle": "Bir şeyler ters gitti",
+      "errorBody": "Bu bölümü yüklerken bir hata oluştu. Lütfen sayfayı yenilemeyi deneyin."
+    },
+    "team": {
+      "categoryRequired": "Kategori gereklidir",
+      "clubNameRequired": "Kulüp adı gereklidir",
+      "clubNameTooLong": "Kulüp adı 100 karakterden az olmalıdır",
+      "divisionRequired": "Lig gereklidir",
+      "nameRequired": "Takım adı gereklidir",
+      "nameTooLong": "Takım adı 50 karakterden az olmalıdır",
+      "notFound": "Takım bulunamadı",
+      "phoneNumberInvalid": "Lütfen geçerli bir telefon numarası girin",
+      "phoneNumberRequired": "Telefon numarası gereklidir",
+      "privacyAgreementRequired": "Gizlilik politikasını kabul etmelisiniz",
+      "registrationError": "Takım kayıt başarısız",
+      "registrationErrorDesc": "Takımınızı kaydederken bir hata oluştu. Lütfen tekrar deneyin.",
+      "registrationSuccess": "Takım başarıyla kaydedildi",
+      "registrationSuccessDesc": "Takımınız başarıyla kaydedildi.",
+      "teamLeaderNameRequired": "Takım lideri adı gereklidir",
+      "teamLeaderNameTooLong": "İsim 100 karakterden az olmalıdır",
+      "tournamentRequired": "Turnuva gereklidir",
+      "updateError": "Takım güncelleme başarısız",
+      "updateErrorDesc": "Takımınızı güncellerken bir hata oluştu. Lütfen tekrar deneyin.",
+      "updateSuccess": "Takım başarıyla güncellendi",
+      "updateSuccessDesc": "Takımınız başarıyla güncellendi."
+    },
+    "tournament": {
+      "categoriesRequired": "En az bir kategori zorunludur",
+      "divisionsRequired": "En az bir lig zorunludur",
+      "endDateBeforeStartDate": "Bitiş tarihi başlangıç tarihinde veya sonrasında olmalıdır",
+      "invalidDateFormat": "Lütfen geçerli bir tarih girin",
+      "endDateRequired": "Bitiş tarihi zorunludur",
+      "locationRequired": "Konum zorunludur",
+      "locationTooLong": "Konum 100 karakterden kısa olmalıdır",
+      "nameRequired": "Turnuva adı zorunludur",
+      "nameTooLong": "Turnuva adı 100 karakterden kısa olmalıdır",
+      "registrationError": "Turnuva kayıt başarısız",
+      "registrationErrorDesc": "Turnuvayı kaydederken bir hata oluştu. Lütfen tekrar deneyin.",
+      "registrationSuccess": "Turnuva başarıyla kaydedildi",
+      "registrationSuccessDesc": "Turnuva başarıyla kaydedildi.",
+      "startDateRequired": "Başlangıç tarihi zorunludur",
+      "updateError": "Turnuva güncelleme başarısız",
+      "updateErrorDesc": "Turnuvayı güncellerken bir hata oluştu. Lütfen tekrar deneyin.",
+      "updateSuccess": "Turnuva başarıyla güncellendi",
+      "updateSuccessDesc": "Turnuva başarıyla güncellendi."
+    },
+    "user": {
+      "cannotChangeOwnRole": "Kendi rolünüzü değiştiremezsiniz",
+      "cannotDeactivateOwnAccount": "Kendi hesabınızı devre dışı bırakamazsınız",
+      "cannotReactivateOwnAccount": "Kendi hesabınızı yeniden etkinleştiremezsiniz",
+      "displayNameRequired": "Görünen ad boş olamaz.",
+      "failedToUpdateRole": "Rol güncellenemedi",
+      "missingUserId": "Kullanıcı kimliği eksik",
+      "requestFailed": "Bu isteği işleyemedik. Lütfen tekrar deneyin.",
+      "requestFailedRefresh": "Bu isteği işleyemedik. Lütfen sayfayı yenileyin ve tekrar deneyin.",
+      "unknownError": "Bilinmeyen hata",
+      "userNotFound": "Bu kullanıcıyı bulamadık. Lütfen tekrar deneyin."
+    },
+    "validation": {
+      "emailInvalid": "Lütfen geçerli bir e-posta adresi girin",
+      "emailRequired": "E-posta adresi gereklidir",
+      "fieldRequired": "Bu alan gereklidir",
+      "phoneNumberInvalid": "Lütfen geçerli bir telefon numarası girin",
+      "phoneNumberRequired": "Telefon numarası gereklidir"
+    }
+  },
+  "profile": {
+    "description": "Turnuva yönetimi için profil ayarlarınızı ve hesap bilgilerinizi yönetin.",
+    "title": "Profil bilgileri"
+  },
+  "pwa": {
+    "install": {
+      "android": {
+        "chrome": "Menüye (⋮) dokunun ve 'Uygulamayı yükle'yi seçin",
+        "firefox": "Menüye (⋮) dokunun ve 'Yükle'yi seçin",
+        "samsung": "Menüye (⋮) dokunun, 'Sayfayı ekle' ve ardından 'Ana ekrana' seçin",
+        "title": "Bu uygulamayı cihazınıza yükleyin"
+      },
+      "ios": {
+        "chrome": "Paylaş düğmesine dokunun ve 'Ana ekrana ekle'yi seçin",
+        "firefox": "Hamburger menüsüne dokunun, ardından 'Paylaş' ve 'Ana ekrana ekle'yi seçin",
+        "safari": "Paylaş düğmesine dokunun ve 'Ana ekrana ekle'yi seçin",
+        "title": "Bu uygulamayı iPhone'unuza yükleyin"
+      },
+      "other": {
+        "instruction": "Tarayıcı menüsünü açın ve 'Ana ekrana ekle'yi seçin",
+        "title": "Bu uygulamayı cihazınıza yükleyin"
+      }
+    },
+    "update": {
+      "button": "Güncelle",
+      "instruction": "Uygulamayı güncellemek için yenileyin",
+      "title": "Yeni bir sürüm mevcut"
+    }
+  },
+  "roles": {
+    "admin": "Admin",
+    "billing": "Faturalama",
+    "editor": "Editör",
+    "manager": "Yönetici",
+    "public": "Herkese açık",
+    "referee": "Hakem"
+  },
+  "settings": {
+    "description": "Optimal deneyim için turnuva ayarlarınızı, tercihlerinizi ve hesap seçeneklerinizi yapılandırın.",
+    "title": "Uygulama ayarları"
+  },
+  "teams": {
+    "allTournaments": "Tüm turnuvalar",
+    "count": "{{count}} takım kaydedildi",
+    "count_other": "{{count}} takım kaydedildi",
+    "createNewTeam": "Yeni bir takım oluştur",
+    "deleteTeam": "Takımı sil",
+    "deleteTeamAreYouSure": "Bu takımı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+    "description": "Bir veya daha fazla turnuva için takım(lar)ınızı kaydedin",
+    "filterByTournament": "Turnuvaya göre filtrele",
+    "form": {
+      "agreeToPrivacyPolicy": "Gizlilik politikasını kabul ediyorum",
+      "category": "Kategori",
+      "clubName": "Kulüp adı",
+      "completeAllThreeFields": "Devam etmek için aşağıdaki üç alanı da doldurun",
+      "division": "Bölüm",
+      "enterContactDetails": "Takım lideri için iletişim bilgilerini girin",
+      "enterTeamDetails": "Takım bilgilerinizi girin",
+      "fillOutForm": "Takımınızı kaydetmek için aşağıdaki formu doldurun",
+      "name": "Takım adı",
+      "placeholders": {
+        "clubName": "Kulüp adınızı girin",
+        "name": "Takım adınızı girin",
+        "teamLeaderEmail": "E-posta adresini girin",
+        "teamLeaderName": "Takım liderinin tam adını girin",
+        "teamLeaderPhone": "Telefon numarasını girin"
+      },
+      "privacyAgreement": "Gizlilik politikası ve hizmet şartlarını kabul ediyorum",
+      "privacyPolicy": "Gizlilik politikası",
+      "readAndAccept": "Devam etmek için lütfen gizlilik politikasını okuyun ve kabul edin",
+      "selectCategory": "Bir kategori seçin",
+      "selectDivision": "Bir sınıf seçin",
+      "selectTournament": "Bir turnuva seçin",
+      "selectTournamentDetails": "Turnuva detaylarını seçin",
+      "teamInfo": "Takım",
+      "teamLeaderEmail": "Takım lideri e-postası",
+      "teamLeaderInfo": "Takım lideri",
+      "teamLeaderName": "Takım lideri adı",
+      "teamLeaderPhone": "Takım lideri telefonu",
+      "teamRegistration": "Takım kaydı",
+      "tournament": "Turnuva",
+      "tournamentDetails": "Turnuva"
+    },
+    "getStarted": {
+      "description": "Bir turnuvaya katılmaya hazır mısınız? Yukarıdaki 'Ekle' düğmesine tıklayarak takımınızı kaydedin ve oynamaya başlayın!",
+      "title": "Takım kaydı ile başlayın"
+    },
+    "noTeamSelected": "Hiçbir takım seçilmedi. Soldan bir takım seçin veya",
+    "noTeams": "Henüz hiçbir takım kaydedilmedi. Yaklaşan turnuvalar için takımınızı kaydeden ilk kişi olun!",
+    "title": "Takımlar"
+  },
+  "tournaments": {
+    "actions": {
+      "manageCompetition": "Yarışma"
+    },
+    "deleteTournament": "Turnuvayı sil",
+    "deleteTournamentAreYouSure": "Bu turnuvayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+    "description": "Turnuva bilgilerini görüntüle",
+    "endDate": "Bitiş tarihi",
+    "form": {
+      "basicInformation": "Temel bilgiler",
+      "categories": "Kategoriler",
+      "dates": "Turnuva tarihleri",
+      "divisions": "Ligler",
+      "endDate": "Bitiş tarihi",
+      "enterBasicDetails": "Turnuva adı ve konumunu girin",
+      "fillOutForm": "Yeni bir turnuva oluşturmak için aşağıdaki formu doldurun",
+      "location": "Konum",
+      "name": "Turnuva adı",
+      "selectCategories": "Katılacak yaş kategorilerini seçin",
+      "selectDates": "Turnuva için başlangıç ve bitiş tarihlerini seçin",
+      "selectDivisions": "Katılacak ligleri seçin",
+      "selected": "seçildi",
+      "startDate": "Başlangıç tarihi",
+      "tournamentRegistration": "Turnuva kaydı"
+    },
+    "location": "Konum",
+    "name": "Ad",
+    "noTournaments": "Turnuva yok",
+    "noTournamentsDescription": "Henüz hiç turnuva oluşturulmamış. Başlamak için ilk turnuvanızı oluşturun!",
+    "startDate": "Başlangıç tarihi",
+    "title": "Turnuvalar"
+  },
+  "users": {
+    "actions": {
+      "deactivateUser": "Devre dışı bırak",
+      "reactivateUser": "Yeniden etkinleştir",
+      "viewDetails": "Detayları görüntüle"
+    },
+    "auditActions": {
+      "approval": "Kullanıcı onaylandı",
+      "deactivate": "Kullanıcı devre dışı bırakıldı",
+      "profile_update": "Profil güncellendi",
+      "reactivate": "Kullanıcı yeniden etkinleştirildi",
+      "rejection": "Kullanıcı reddedildi",
+      "role_change": "Rol değiştirildi"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "Kullanıcı hesaplarını yönetin ve roller atayın"
+    },
+    "fields": {
+      "assignedRole": "Atanmış Rol",
+      "createdAt": "Oluşturulma tarihi",
+      "currentRole": "Mevcut rol",
+      "displayName": "Görünen ad",
+      "email": "E-posta",
+      "performedBy": "Gerçekleştiren",
+      "role": "Rol"
+    },
+    "messages": {
+      "confirmDeactivate": "Bu kullanıcıyı devre dışı bırakmak istediğinizden emin misiniz?",
+      "confirmReactivate": "Bu kullanıcıyı yeniden etkinleştirip tekrar oturum açmasına izin verelim mi?",
+      "deactivated": "Devre dışı",
+      "displayNameUpdatedSuccessfully": "Görünen ad başarıyla güncellendi",
+      "noAuditLogs": "Denetim kaydı girişi bulunamadı",
+      "noUsers": "Kullanıcı bulunamadı",
+      "noUsersDescription": "Henüz hiçbir kullanıcı oluşturulmadı.",
+      "roleUpdatedSuccessfully": "Kullanıcı rolü başarıyla güncellendi",
+      "userDeactivatedSuccessfully": "Kullanıcı başarıyla devre dışı bırakıldı",
+      "userIsDeactivated": "Bu kullanıcı şu anda devre dışı",
+      "userReactivatedSuccessfully": "Kullanıcı başarıyla yeniden etkinleştirildi"
+    },
+    "placeholders": {
+      "displayName": "Görünen adı girin"
+    },
+    "titles": {
+      "allUsers": "Tüm kullanıcılar",
+      "auditLog": "Denetim kaydı",
+      "deactivateUser": "Kullanıcıyı devre dışı bırak",
+      "reactivateUser": "Kullanıcıyı yeniden etkinleştir",
+      "totalUsers": "Toplam kullanıcılar",
+      "userDetail": "Kullanıcı detayları",
+      "userInformation": "Kullanıcı bilgileri",
+      "userManagement": "Kullanıcı yönetimi"
+    }
+  }
 }

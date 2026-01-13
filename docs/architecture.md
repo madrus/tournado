@@ -29,8 +29,8 @@
 
 ## Testing Strategy
 
-- **Unit tests**: Vitest with React Testing Library (*.test.ts/tsx files)
-- **E2E tests**: Playwright in `playwright/tests/` (*.spec.ts files)
+- **Unit tests**: Vitest with React Testing Library (\*.test.ts/tsx files)
+- **E2E tests**: Playwright in `playwright/tests/` (\*.spec.ts files)
 - **Docker tests**: `pnpm test:docker` - validates Docker builds and native dependencies
 - **Coverage**: Comprehensive coverage thresholds (70% across all metrics)
 - **Test separation**: Clear separation between unit and E2E test files

@@ -6,7 +6,7 @@ Add auditing of mutations - user, what, when
 
 ## QC Remarks
 
-- [ ] continued use of non-semantic Tailwind colors (e.g. text-slate-*, bg-red-50, text-blue-*) which may conflict with your “semantic color tokens” guideline
+- [ ] continued use of non-semantic Tailwind colors (e.g. text-slate-_, bg-red-50, text-blue-_) which may conflict with your “semantic color tokens” guideline
 - [ ] move all messages to the `messages` namespace and add hardcoded messages to it
 - [ ] Competition feature
   - [ ] Create feature
@@ -17,10 +17,10 @@ Add auditing of mutations - user, what, when
 - [ ] non-test environment: replace inline imports like `const { addEmailToOutbox } = await import('test/mocks/handlers/emails.js')`
 - [ ] do we have direct DOM manipulations in our Playwright tests instead of Page Object Model usage?
 - [ ] add getServerT() to all modules that deal with server-side errors (see `users._index.tsx`)
-   - [ ] **Server-Side Translations**: Use `getServerT(request)` in all server
-      - [ ] actions/loaders for localized error messages and server-generated content;
-      - [ ] respects user's language preference from cookie
-        (see `.cursor/rules/PRD.mdc` around line 643)
+  - [ ] **Server-Side Translations**: Use `getServerT(request)` in all server
+    - [ ] actions/loaders for localized error messages and server-generated content;
+    - [ ] respects user's language preference from cookie
+          (see `.cursor/rules/PRD.mdc` around line 643)
 - [ ] check all translation strings in t() function calls in the codebase for existence. make a list of missing/wrong. use MCP servers for that
 - [ ] check code duplication
 - [ ] check LTR/RTL support completeness including left/right mirroring of all design elements
@@ -28,14 +28,14 @@ Add auditing of mutations - user, what, when
 ## 2. To show a block with 2 teams that are going to play a match, you need:
 
 - From Match model (schema.prisma:121-137):
-   - id, date, time, location, status
-   - homeTeamId, awayTeamId
+  - id, date, time, location, status
+  - homeTeamId, awayTeamId
 
 - From Team model (schema.prisma:91-105):
-   - id, name, clubName, category, division
+  - id, name, clubName, category, division
 
 - Optional from MatchScore model (schema.prisma:139-147):
-   - homeTeamScore, awayTeamScore (if match is played)
+  - homeTeamScore, awayTeamScore (if match is played)
 
 So the essential data structure would be:
 

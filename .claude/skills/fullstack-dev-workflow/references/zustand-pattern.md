@@ -77,7 +77,7 @@ export const useMyFeatureStore = create<StoreState & Actions>()(
         },
 
         // Your custom actions
-        setTheme: (theme) => {
+        setTheme: theme => {
           set({ theme }, false, 'setTheme')
           // Optional: sync to cookies for SSR
           if (isBrowser) {
@@ -87,7 +87,7 @@ export const useMyFeatureStore = create<StoreState & Actions>()(
 
         toggleTheme: () => {
           set(
-            (state) => {
+            state => {
               const newTheme = state.theme === 'light' ? 'dark' : 'light'
               if (isBrowser) {
                 setCookie('theme', newTheme)
@@ -95,7 +95,7 @@ export const useMyFeatureStore = create<StoreState & Actions>()(
               return { theme: newTheme }
             },
             false,
-            'toggleTheme'
+            'toggleTheme',
           )
         },
       }),
@@ -111,10 +111,10 @@ export const useMyFeatureStore = create<StoreState & Actions>()(
         skipHydration: !isBrowser,
 
         // Partial persistence: only save specific fields
-        partialize: (state) =>
+        partialize: state =>
           isBrowser
             ? {
-                theme: state.theme
+                theme: state.theme,
                 // Add other fields to persist
               }
             : {},
@@ -123,14 +123,14 @@ export const useMyFeatureStore = create<StoreState & Actions>()(
         merge: (persistedState, currentState) => ({
           ...currentState,
           // Merge only specific fields
-          theme: (persistedState as Partial<StoreState>)?.theme ?? currentState.theme
+          theme: (persistedState as Partial<StoreState>)?.theme ?? currentState.theme,
         }),
       },
     ),
     {
-      name: storeName
+      name: storeName,
     },
-  )
+  ),
 )
 
 // 7. Optional: Hydration hook
@@ -190,8 +190,8 @@ export const useMyStore = create<StoreState & Actions>()(
     (set, _get) => ({
       // ... store implementation
     }),
-    { name: storeName }
-  )
+    { name: storeName },
+  ),
 )
 ```
 
@@ -201,7 +201,7 @@ For state that needs to be available server-side (theme, language, etc.):
 
 ```typescript
 // In your action
-setTheme: (theme) => {
+setTheme: theme => {
   set({ theme }, false, 'setTheme')
   if (isBrowser) {
     setCookie('theme', theme) // Helper function
@@ -225,7 +225,7 @@ Use selectors for derived state:
 
 ```typescript
 // In component
-const isDarkMode = useMyFeatureStore((state) => state.theme === 'dark')
+const isDarkMode = useMyFeatureStore(state => state.theme === 'dark')
 ```
 
 Or add to store:
@@ -266,11 +266,7 @@ fetchData: async () => {
 
 ```typescript
 resetTheme: () => {
-  set(
-    { theme: initialStoreState.theme },
-    false,
-    'resetTheme'
-  )
+  set({ theme: initialStoreState.theme }, false, 'resetTheme')
 }
 ```
 
@@ -287,6 +283,7 @@ resetTheme: () => {
 ## Example: Full Settings Store
 
 See `useSettingsStore.ts` in the codebase for a production example with:
+
 - Theme switching with cookie sync
 - Language selection with RTL computation
 - Partial persistence (theme only)

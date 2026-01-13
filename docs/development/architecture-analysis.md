@@ -334,7 +334,7 @@ import { Team, TeamFormData } from '~/features/teams/types'
 import { Tournament } from '~/features/tournaments/types'
 
 // ❌ WRONG - No re-exports from lib
-import { Team } from '~/lib/lib.types'  // Feature types don't belong in lib
+import { Team } from '~/lib/lib.types' // Feature types don't belong in lib
 ```
 
 **Shared vs. Feature-Specific:**
@@ -468,7 +468,7 @@ app/features/teams/
 // ✅ Good: Clear, explicit dependencies
 import { Team } from '~/features/teams/types'
 import { Tournament } from '~/features/tournaments/types'
-import { IconProps } from '~/lib/lib.types'  // Shared type
+import { IconProps } from '~/lib/lib.types' // Shared type
 
 // ❌ Bad: Hidden dependencies via re-exports
 import { Team, Tournament, IconProps } from '~/lib/lib.types'
@@ -701,16 +701,16 @@ sequenceDiagram
 ```typescript
 // Route metadata for access control
 export const handle: RouteMetadata = {
-   isPublic: false,
-   auth: {
-      required: true,
-      redirectTo: '/auth/signin',
-   },
-   authorization: {
-      requiredRoles: ['ADMIN'],
-      roleMatchMode: 'any',
-      redirectTo: '/unauthorized',
-   },
+  isPublic: false,
+  auth: {
+    required: true,
+    redirectTo: '/auth/signin',
+  },
+  authorization: {
+    requiredRoles: ['ADMIN'],
+    roleMatchMode: 'any',
+    redirectTo: '/unauthorized',
+  },
 }
 ```
 

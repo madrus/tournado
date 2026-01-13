@@ -1,23 +1,23 @@
 /* Semantic color utility classes for homepage and general use */
 .text-accent {
-	color: var(--color-neutral);
+  color: var(--color-neutral);
 }
 .dark .text-accent {
-	color: var(--color-neutral); /* Same as light for now */
+  color: var(--color-neutral); /* Same as light for now */
 }
 
 .text-brand-accent {
-	color: var(--color-brand-accent); /* Uses theme-aware brand color */
+  color: var(--color-brand-accent); /* Uses theme-aware brand color */
 }
 .dark .text-brand-accent {
-	color: var(--color-brand-accent); /* Uses theme-aware brand color */
+  color: var(--color-brand-accent); /* Uses theme-aware brand color */
 }
 
 .text-brand {
-	color: var(--color-brand);
+  color: var(--color-brand);
 }
 .dark .text-brand {
-	color: var(--color-brand); /* Uses theme-aware brand color */
+  color: var(--color-brand); /* Uses theme-aware brand color */
 }
 
 /* DEPRECATED: .text-error class - now using adaptive ErrorMessage component */
@@ -30,76 +30,76 @@
 
 /* ErrorMessage component adaptive text colors - override dark mode defaults */
 .error-message-white {
-	color: var(--color-white);
+  color: var(--color-white);
 }
 .error-message-amber {
-	color: var(--color-amber-900);
+  color: var(--color-amber-900);
 }
 .error-message-indigo {
-	color: var(--color-white);
+  color: var(--color-white);
 }
 .error-message-fuchsia {
-	color: var(--color-white);
+  color: var(--color-white);
 }
 .error-message-slate {
-	color: var(--color-slate-800);
+  color: var(--color-slate-800);
 }
 .error-message-sky {
-	color: var(--color-sky-900);
+  color: var(--color-sky-900);
 }
 .error-message-red {
-	color: var(--color-red-800);
+  color: var(--color-red-800);
 }
 
 /* Dark mode overrides for ErrorMessage component */
 .dark .error-message-white {
-	color: var(--color-white);
+  color: var(--color-white);
 }
 .dark .error-message-amber {
-	color: var(--color-amber-900);
+  color: var(--color-amber-900);
 }
 .dark .error-message-indigo {
-	color: var(--color-white);
+  color: var(--color-white);
 }
 .dark .error-message-fuchsia {
-	color: var(--color-white);
+  color: var(--color-white);
 }
 .dark .error-message-slate {
-	color: var(--color-slate-800);
+  color: var(--color-slate-800);
 }
 .dark .error-message-sky {
-	color: var(--color-sky-900);
+  color: var(--color-sky-900);
 }
 .dark .error-message-red {
-	color: var(--color-red-800);
+  color: var(--color-red-800);
 }
 
 .bg-neutral {
-	background-color: var(--color-neutral);
+  background-color: var(--color-neutral);
 }
 .dark .bg-neutral {
-	background-color: var(--color-neutral); /* Same as light for now */
+  background-color: var(--color-neutral); /* Same as light for now */
 }
 
 .bg-brand-accent {
-	background-color: var(--color-brand-accent);
+  background-color: var(--color-brand-accent);
 }
 .dark .bg-brand-accent {
-	background-color: var(--color-brand-accent);
+  background-color: var(--color-brand-accent);
 }
 
 /* Custom brand/primary CSS classes removed - now using standard Tailwind red/emerald classes */
 
 .bg-error {
-	background-color: var(--color-brand);
+  background-color: var(--color-brand);
 }
 
 .focus-ring-double {
-	outline: none;
-	box-shadow:
-		0 0 0 2px var(--color-button-danger-outline-focus-ring-inner),
-		0 0 0 4px var(--color-button-danger-outline-focus-ring-outer);
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--color-button-danger-outline-focus-ring-inner),
+    0 0 0 4px var(--color-button-danger-outline-focus-ring-outer);
 }
 .dark .font-semibold-accent {
-	color: var(--color-neutral);
+  color: var(--color-neutral);
 }

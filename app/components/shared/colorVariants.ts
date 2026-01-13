@@ -25,35 +25,35 @@
  * - Legacy Real Colors: All 21 Tailwind colors (will be reduced to 12 in Phase 2)
  */
 export const COLOR_VARIANT_KEYS = {
-	// Functional Semantics (ADR-0029)
-	brand: 'brand',
-	primary: 'primary',
-	success: 'success',
-	error: 'error',
-	warning: 'warning',
-	info: 'info',
-	disabled: 'disabled',
-	// Visual Accents (ADR-0029)
-	'accent-amber': 'accent-amber',
-	'accent-indigo': 'accent-indigo',
-	'accent-fuchsia': 'accent-fuchsia',
-	'accent-teal': 'accent-teal',
-	'accent-sky': 'accent-sky',
-	'accent-purple': 'accent-purple',
-	// Legacy Real Colors (reduced to 13 - kept lime for admin panel)
-	emerald: 'emerald',
-	blue: 'blue',
-	slate: 'slate',
-	teal: 'teal',
-	red: 'red',
-	yellow: 'yellow',
-	green: 'green',
-	amber: 'amber',
-	sky: 'sky',
-	indigo: 'indigo',
-	purple: 'purple',
-	fuchsia: 'fuchsia',
-	lime: 'lime',
+  // Functional Semantics (ADR-0029)
+  brand: 'brand',
+  primary: 'primary',
+  success: 'success',
+  error: 'error',
+  warning: 'warning',
+  info: 'info',
+  disabled: 'disabled',
+  // Visual Accents (ADR-0029)
+  'accent-amber': 'accent-amber',
+  'accent-indigo': 'accent-indigo',
+  'accent-fuchsia': 'accent-fuchsia',
+  'accent-teal': 'accent-teal',
+  'accent-sky': 'accent-sky',
+  'accent-purple': 'accent-purple',
+  // Legacy Real Colors (reduced to 13 - kept lime for admin panel)
+  emerald: 'emerald',
+  blue: 'blue',
+  slate: 'slate',
+  teal: 'teal',
+  red: 'red',
+  yellow: 'yellow',
+  green: 'green',
+  amber: 'amber',
+  sky: 'sky',
+  indigo: 'indigo',
+  purple: 'purple',
+  fuchsia: 'fuchsia',
+  lime: 'lime',
 } as const
 
 /**
@@ -79,15 +79,15 @@ export type ColorVariantKey = keyof typeof COLOR_VARIANT_KEYS
  * ```
  */
 export const createColorVariantObject = (
-	defaultValue = '',
+  defaultValue = '',
 ): Record<ColorVariantKey, string> =>
-	Object.keys(COLOR_VARIANT_KEYS).reduce(
-		(acc, key) => {
-			acc[key as ColorVariantKey] = defaultValue
-			return acc
-		},
-		{} as Record<ColorVariantKey, string>,
-	)
+  Object.keys(COLOR_VARIANT_KEYS).reduce(
+    (acc, key) => {
+      acc[key as ColorVariantKey] = defaultValue
+      return acc
+    },
+    {} as Record<ColorVariantKey, string>,
+  )
 
 /**
  * Standard color list as an array for iteration or validation.
@@ -111,12 +111,12 @@ export const COLOR_VARIANT_LIST = Object.keys(COLOR_VARIANT_KEYS) as ColorVarian
  * ```
  */
 export const createColorVariantMapping = (
-	getClassForColor: (color: ColorVariantKey) => string,
+  getClassForColor: (color: ColorVariantKey) => string,
 ): Record<ColorVariantKey, string> =>
-	Object.keys(COLOR_VARIANT_KEYS).reduce(
-		(acc, key) => {
-			acc[key as ColorVariantKey] = getClassForColor(key as ColorVariantKey)
-			return acc
-		},
-		{} as Record<ColorVariantKey, string>,
-	)
+  Object.keys(COLOR_VARIANT_KEYS).reduce(
+    (acc, key) => {
+      acc[key as ColorVariantKey] = getClassForColor(key as ColorVariantKey)
+      return acc
+    },
+    {} as Record<ColorVariantKey, string>,
+  )

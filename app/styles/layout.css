@@ -1,117 +1,117 @@
 :root {
-	/* Fullscreen viewport dimensions for PWA */
-	--content-height: calc(100vh - var(--header-padding, 62px));
-	--content-height-dvh: calc(100dvh - var(--header-padding, 62px));
+  /* Fullscreen viewport dimensions for PWA */
+  --content-height: calc(100vh - var(--header-padding, 62px));
+  --content-height-dvh: calc(100dvh - var(--header-padding, 62px));
 }
 
 html {
-	min-height: 100%;
-	overflow-x: hidden;
+  min-height: 100%;
+  overflow-x: hidden;
 }
 
 body {
-	min-height: 100%;
-	overflow-x: hidden;
-	background: linear-gradient(
-		to bottom,
-		var(--gradient-from) 0%,
-		var(--gradient-to) 100%
-	);
-	background-color: var(--color-background);
+  min-height: 100%;
+  overflow-x: hidden;
+  background: linear-gradient(
+    to bottom,
+    var(--gradient-from) 0%,
+    var(--gradient-to) 100%
+  );
+  background-color: var(--color-background);
 }
 
 /* Mobile viewport and dropdown fixes */
 @media (max-width: 1023px) {
-	body {
-		min-height: 100vh;
-		min-height: 100dvh; /* Dynamic viewport height for mobile */
-	}
+  body {
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for mobile */
+  }
 
-	/* Ensure select dropdowns aren't clipped by containers */
-	select {
-		position: static;
-	}
+  /* Ensure select dropdowns aren't clipped by containers */
+  select {
+    position: static;
+  }
 
-	/* Use full viewport height for fullscreen PWA experience */
-	.min-h-screen {
-		min-height: 100vh;
-		min-height: 100dvh;
-	}
+  /* Use full viewport height for fullscreen PWA experience */
+  .min-h-screen {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
 
-	/* Override content height for mobile fullscreen */
-	:root {
-		--content-height: 100dvh;
-	}
+  /* Override content height for mobile fullscreen */
+  :root {
+    --content-height: 100dvh;
+  }
 }
 
 /* Route transition styles */
 .route-container {
-	transition:
-		opacity 300ms ease-in-out,
-		transform 300ms ease-in-out;
+  transition:
+    opacity 300ms ease-in-out,
+    transform 300ms ease-in-out;
 }
 
 .route-container.entering {
-	opacity: 1;
-	transform: translateX(0);
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .route-container.exiting {
-	opacity: 0;
-	transform: translateX(8px);
+  opacity: 0;
+  transform: translateX(8px);
 }
 
 /* New: Ultra-subtle slide-in animation */
 .animate-slideIn {
-	animation: subtleSlideIn 200ms ease-out both;
-	transform: translateY(12px);
-	opacity: 0.65;
+  animation: subtleSlideIn 200ms ease-out both;
+  transform: translateY(12px);
+  opacity: 0.65;
 }
 
 @keyframes subtleSlideIn {
-	from {
-		opacity: 0.65;
-		transform: translateY(12px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+  from {
+    opacity: 0.65;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* New: Simple fade container for React Router 7 */
 .route-fade-container {
-	animation: fadeIn 300ms ease-in-out;
+  animation: fadeIn 300ms ease-in-out;
 }
 
 @keyframes fadeIn {
-	from {
-		opacity: 0;
-		transform: translateY(10px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Alternative: Simple fade transition */
 .route-fade {
-	transition: opacity 300ms ease-in-out;
+  transition: opacity 300ms ease-in-out;
 }
 
 .route-fade-enter {
-	opacity: 0;
+  opacity: 0;
 }
 
 .route-fade-enter-active {
-	opacity: 1;
+  opacity: 1;
 }
 
 .route-fade-exit {
-	opacity: 1;
+  opacity: 1;
 }
 
 .route-fade-exit-active {
-	opacity: 0;
+  opacity: 0;
 }

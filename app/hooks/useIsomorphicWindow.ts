@@ -12,13 +12,13 @@ import { useEffect, useState } from 'react'
  * @returns boolean indicating if window is available
  */
 export function useIsClient(): boolean {
-	const [isClient, setIsClient] = useState(false)
+  const [isClient, setIsClient] = useState(false)
 
-	useEffect(() => {
-		setIsClient(true)
-	}, [])
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
-	return isClient
+  return isClient
 }
 
 /**
@@ -27,8 +27,8 @@ export function useIsClient(): boolean {
  * @returns window object or null if not available
  */
 export function useSafeWindow(): Window | null {
-	const isClient = useIsClient()
-	return isClient ? window : null
+  const isClient = useIsClient()
+  return isClient ? window : null
 }
 
 /**
@@ -37,34 +37,34 @@ export function useSafeWindow(): Window | null {
  * @returns object with width and height, or null dimensions on server
  */
 export function useWindowDimensions(): {
-	width: number | null
-	height: number | null
+  width: number | null
+  height: number | null
 } {
-	const [dimensions, setDimensions] = useState<{
-		width: number | null
-		height: number | null
-	}>({
-		width: null,
-		height: null,
-	})
+  const [dimensions, setDimensions] = useState<{
+    width: number | null
+    height: number | null
+  }>({
+    width: null,
+    height: null,
+  })
 
-	useEffect(() => {
-		const updateDimensions = () => {
-			setDimensions({
-				width: window.innerWidth,
-				height: window.innerHeight,
-			})
-		}
+  useEffect(() => {
+    const updateDimensions = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      })
+    }
 
-		// Set initial dimensions
-		updateDimensions()
+    // Set initial dimensions
+    updateDimensions()
 
-		// Listen for changes
-		window.addEventListener('resize', updateDimensions)
-		return () => window.removeEventListener('resize', updateDimensions)
-	}, [])
+    // Listen for changes
+    window.addEventListener('resize', updateDimensions)
+    return () => window.removeEventListener('resize', updateDimensions)
+  }, [])
 
-	return dimensions
+  return dimensions
 }
 
 /**
@@ -74,6 +74,6 @@ export function useWindowDimensions(): {
  * @returns result of callback or null if window unavailable
  */
 export function withWindow<T>(handler: (window: Window) => T): T | null {
-	if (typeof window === 'undefined') return null
-	return handler(window)
+  if (typeof window === 'undefined') return null
+  return handler(window)
 }

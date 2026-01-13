@@ -1,34 +1,34 @@
 {
-	"$schema": "https://unpkg.com/knip@5.63.1/schema.json",
-	"entry": ["app/**/*.ts", "app/**/*.tsx"],
-	"ignore": [
-		"app/routes.ts",
-		"app/components/SidebarLayout.tsx",
-		"app/components/examples/SidebarTeamsExample.tsx",
-		"app/hooks/useTeamsNavigation.ts",
-		"app/utils/clientOnly.tsx",
-		"docs/assets/docsify-settings.js",
-		"memories/notes/toast-examples-section.tsx",
-		"playwright/fixtures/auth.fixture.ts",
-		"playwright/helpers/auth.ts",
-		"playwright/pages/AdminTournamentsPage.ts",
-		"public/sw.js",
-		"react-router-config.ts",
-		"playwright/helpers/database.ts",
-		"playwright/helpers/test-utils.ts"
-	],
-	"ignoreDependencies": [
-		"@react-router/fs-routes",
-		"i18next-browser-languagedetector",
-		"modern-normalize",
-		"react-email",
-		"@types/eslint",
-		"memfs",
-		"tailwindcss",
-		"tailwindcss-animate",
-		"tsconfig-paths",
-		"typescript-eslint",
-		"wait-on"
-	],
-	"ignoreBinaries": ["flyctl", "knip"]
+  "$schema": "https://unpkg.com/knip@5.63.1/schema.json",
+  "entry": ["app/**/*.ts", "app/**/*.tsx"],
+  "ignore": [
+    "app/routes.ts",
+    "app/components/SidebarLayout.tsx",
+    "app/components/examples/SidebarTeamsExample.tsx",
+    "app/hooks/useTeamsNavigation.ts",
+    "app/utils/clientOnly.tsx",
+    "docs/assets/docsify-settings.js",
+    "memories/notes/toast-examples-section.tsx",
+    "playwright/fixtures/auth.fixture.ts",
+    "playwright/helpers/auth.ts",
+    "playwright/pages/AdminTournamentsPage.ts",
+    "public/sw.js",
+    "react-router-config.ts",
+    "playwright/helpers/database.ts",
+    "playwright/helpers/test-utils.ts"
+  ],
+  "ignoreDependencies": [
+    "@react-router/fs-routes",
+    "i18next-browser-languagedetector",
+    "modern-normalize",
+    "react-email",
+    "@types/eslint",
+    "memfs",
+    "tailwindcss",
+    "tailwindcss-animate",
+    "tsconfig-paths",
+    "typescript-eslint",
+    "wait-on"
+  ],
+  "ignoreBinaries": ["flyctl", "knip"]
 }

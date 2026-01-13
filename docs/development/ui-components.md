@@ -24,36 +24,36 @@ The application supports three distinct user contexts:
 - **Status**: `authenticated = false`
 - **User Object**: `null`
 - **Visible Menu Items**:
-   - Teams (public access)
-   - About (public access)
-   - Language Selector
-   - Sign In
+  - Teams (public access)
+  - About (public access)
+  - Language Selector
+  - Sign In
 
 ##### 2. **Authenticated Non-Admin Users**
 
 - **Status**: `authenticated = true`
 - **Roles**: `PUBLIC`, `MANAGER`, `REFEREE`, `ADMIN`
 - **Visible Menu Items**:
-   - Teams (public access)
-   - Profile (authenticated only)
-   - Settings (authenticated only)
-   - About (public access)
-   - Language Selector
-   - Sign Out
+  - Teams (public access)
+  - Profile (authenticated only)
+  - Settings (authenticated only)
+  - About (public access)
+  - Language Selector
+  - Sign Out
 
 ##### 3. **Admin Users**
 
 - **Status**: `authenticated = true`
 - **Role**: `ADMIN`
 - **Visible Menu Items**:
-   - **Tournaments** (admin only) - First menu item
-   - Teams (admin view)
-   - **Admin Panel** (admin only)
-   - Profile (authenticated only)
-   - Settings (authenticated only)
-   - About (public access)
-   - Language Selector
-   - Sign Out
+  - **Tournaments** (admin only) - First menu item
+  - Teams (admin view)
+  - **Admin Panel** (admin only)
+  - Profile (authenticated only)
+  - Settings (authenticated only)
+  - About (public access)
+  - Language Selector
+  - Sign Out
 
 #### Menu Structure
 
@@ -166,20 +166,20 @@ The `UserMenu` component is a reusable dropdown/overlay menu that powers the App
 
 ```typescript
 type MenuItemType = {
-   label: string
-   icon: string
-   href?: string
-   todo?: boolean
-   action?: JSX.Element
-   customIcon?: string
-   authenticated?: boolean
-   divider?: boolean
-   subMenu?: Array<{
-      label: string
-      customIcon: string
-      onClick: () => void
-      active: boolean
-   }>
+  label: string
+  icon: string
+  href?: string
+  todo?: boolean
+  action?: JSX.Element
+  customIcon?: string
+  authenticated?: boolean
+  divider?: boolean
+  subMenu?: Array<{
+    label: string
+    customIcon: string
+    onClick: () => void
+    active: boolean
+  }>
 }
 ```
 

@@ -1,7 +1,6 @@
 import { StrictMode } from 'react'
 import { hydrateRoot } from 'react-dom/client'
 import { HydratedRouter } from 'react-router/dom'
-
 import { initI18n } from '~/i18n/config'
 import { setupMSWBrowser } from '~/utils/msw-browser'
 
@@ -12,21 +11,21 @@ const useStrictMode = isDevelopment && !strictModeDisabled
 
 // Suppress hydration warnings for known browser extension attributes
 if (isDevelopment) {
-	const originalConsoleError = console.error
-	console.error = (...args) => {
-		const message = args[0]
-		if (
-			typeof message === 'string' &&
-			(message.includes('cz-shortcut-listen') ||
-				message.includes('data-new-gr-c-s-check-loaded') ||
-				message.includes('data-gr-ext-installed') ||
-				message.includes('browser extension'))
-		) {
-			// Suppress hydration warnings caused by browser extensions
-			return
-		}
-		originalConsoleError.apply(console, args)
-	}
+  const originalConsoleError = console.error
+  console.error = (...args) => {
+    const message = args[0]
+    if (
+      typeof message === 'string' &&
+      (message.includes('cz-shortcut-listen') ||
+        message.includes('data-new-gr-c-s-check-loaded') ||
+        message.includes('data-gr-ext-installed') ||
+        message.includes('browser extension'))
+    ) {
+      // Suppress hydration warnings caused by browser extensions
+      return
+    }
+    originalConsoleError.apply(console, args)
+  }
 }
 
 // Use the SSR-injected language and theme
@@ -35,25 +34,25 @@ initI18n(lang)
 
 // Flag Playwright runtime globally so client code can detect mocks
 if (window.ENV?.PLAYWRIGHT === 'true') {
-	window.playwrightTest = true
+  window.playwrightTest = true
 }
 
 // Initialize MSW browser worker for E2E tests
 setupMSWBrowser()
 
 hydrateRoot(
-	document,
-	useStrictMode ? (
-		<StrictMode>
-			<HydratedRouter />
-		</StrictMode>
-	) : (
-		<HydratedRouter />
-	),
+  document,
+  useStrictMode ? (
+    <StrictMode>
+      <HydratedRouter />
+    </StrictMode>
+  ) : (
+    <HydratedRouter />
+  ),
 )
 
 if (window.ENV?.PLAYWRIGHT === 'true') {
-	queueMicrotask(() => {
-		document.documentElement.setAttribute('data-hydrated', 'true')
-	})
+  queueMicrotask(() => {
+    document.documentElement.setAttribute('data-hydrated', 'true')
+  })
 }

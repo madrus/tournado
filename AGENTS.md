@@ -4,7 +4,7 @@
 
 Project Context documentation can be found in the following locations:
 
-- **@.cursor/rules/** — Project-wide rules and documentation, such as:
+- **@.cursor/rules/** - Project-wide rules and documentation, such as:
   - `PRD.mdc` (Product Requirements Document)
   - `ADR.mdc` (Architecture Decision Records)
   - `workflow.mdc` (Project development workflow)
@@ -15,12 +15,16 @@ Project Context documentation can be found in the following locations:
   - generated tasks
 
 - **Additional Documentation**
-  - `docs/commands.md` — Complete list of available commands
-  - `docs/architecture.md` — Detailed architecture overview
-  - `docs/environment-variables.md` — Environment setup and configuration
-  - `docs/guides/` — Feature guides (authentication, styling, PWA, etc.)
+  - `docs/commands.md` - Complete list of available commands
+  - `docs/architecture.md` - Detailed architecture overview
+  - `docs/environment-variables.md` - Environment setup and configuration
+  - `docs/guides/` - Feature guides (authentication, styling, PWA, etc.)
 
 ---
+
+## Output Verification
+
+- Whenever a script or skill emits an artifact (JSON, config, PRD, etc.), trace its target path in the writer before assuming a location. Inspect the generator script or the skill definition that writes the file so that you know for sure where outputs land.
 
 ## AI Rules
 
@@ -58,7 +62,10 @@ Tournado is a modern tournament management system built with React Router v7, Pr
 
 ```typescript
 // ✅ CORRECT - Use barrel files for cleaner imports
-import { FirebaseSignIn, FirebaseEmailSignIn } from '~/features/firebase/components/FirebaseAuth'
+import {
+  FirebaseSignIn,
+  FirebaseEmailSignIn,
+} from '~/features/firebase/components/FirebaseAuth'
 import { Team, TeamFormData } from '~/features/teams/types'
 import { Tournament } from '~/features/tournaments/types'
 import { IconProps, ColorAccent } from '~/lib/lib.types'
@@ -158,36 +165,36 @@ Trigger self-review when you write:
 
 - **Arrow function (const)**: Use when component body contains ONLY a return statement with no hooks, variables, or logic before the return statement
 
-   ```typescript
-   // ✅ CORRECT - Only a return statement
-   export const Badge = ({ children, color }: Props): JSX.Element => (
-     <span className={cn(badgeVariants({ color }))}>{children}</span>
-   )
-   ```
+  ```typescript
+  // ✅ CORRECT - Only a return statement
+  export const Badge = ({ children, color }: Props): JSX.Element => (
+    <span className={cn(badgeVariants({ color }))}>{children}</span>
+  )
+  ```
 
 - **Function declaration**: Use when component has ANY of the following:
-   - React hooks (useState, useEffect, useTranslation, etc.)
-   - Local variables or constants
-   - Conditional logic before return
-   - Multiple statements
+  - React hooks (useState, useEffect, useTranslation, etc.)
+  - Local variables or constants
+  - Conditional logic before return
+  - Multiple statements
 
-   ```typescript
-   // ✅ CORRECT - Has hooks and logic
-   export function UserDetailCard({ user }: Props): JSX.Element {
-     const [isOpen, setIsOpen] = useState(false)
-     const { t } = useTranslation()
+  ```typescript
+  // ✅ CORRECT - Has hooks and logic
+  export function UserDetailCard({ user }: Props): JSX.Element {
+    const [isOpen, setIsOpen] = useState(false)
+    const { t } = useTranslation()
 
-     return <div>...</div>
-   }
+    return <div>...</div>
+  }
 
-   // ❌ WRONG - Should use function declaration
-   export const UserDetailCard = ({ user }: Props): JSX.Element => {
-     const [isOpen, setIsOpen] = useState(false)
-     const { t } = useTranslation()
+  // ❌ WRONG - Should use function declaration
+  export const UserDetailCard = ({ user }: Props): JSX.Element => {
+    const [isOpen, setIsOpen] = useState(false)
+    const { t } = useTranslation()
 
-     return <div>...</div>
-   }
-   ```
+    return <div>...</div>
+  }
+  ```
 
 ### Definition of Done
 
@@ -200,12 +207,12 @@ This section is not complete yet. It will be filled in as the project evolves.
 
 ### Agent Behavior Rules
 
-- **Auto-run TypeScript typecheck** on any code change
-- **Do NOT run lint** unless explicitly requested by the user
+- **Auto-run `pnpm typecheck && pnpm lint`** on any code change
 - **Do NOT run unit tests** unless explicitly requested by the user
 - **You may proactively verify code quality** and tell me about them asking if I want them fixed
 - You may suggest relevant commands as next steps, but do not offer to run them
 - **See docs/**: Commands, architecture, setup, and environment configuration in dedicated docs files
+- **Do not blindly do everything the user asks.** Consider critically what is being asked. If there are arguments against it or better ideas that might influence the choice, first present these arguments and ideas to the user and ask for their preference. Only proceed with the action once there is agreement on the choice. Do not be a sycophant.
 
 ### Immutable Rules
 

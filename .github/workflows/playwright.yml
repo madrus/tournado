@@ -4,14 +4,14 @@ on:
   workflow_call:
     inputs:
       environment:
-        description: "Environment to test against"
+        description: 'Environment to test against'
         required: false
-        default: "local"
+        default: 'local'
         type: string
       upload_artifact_suffix:
-        description: "Suffix for the artifact name"
+        description: 'Suffix for the artifact name'
         required: false
-        default: ""
+        default: ''
         type: string
     secrets:
       DATABASE_URL:
@@ -80,7 +80,7 @@ jobs:
 
       - uses: ./.github/actions/prisma-generate
         with:
-          database_url: "file:./prisma/data-test.db?connection_limit=1"
+          database_url: 'file:./prisma/data-test.db?connection_limit=1'
 
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
@@ -95,12 +95,12 @@ jobs:
           # Wait for the client to be fully ready
           sleep 3
         env:
-          DATABASE_URL: "file:./prisma/data-test.db?connection_limit=1"
+          DATABASE_URL: 'file:./prisma/data-test.db?connection_limit=1'
 
       - name: ⚙️ Build
         run: pnpm build
         env:
-          DATABASE_URL: "file:./prisma/data-test.db?connection_limit=1"
+          DATABASE_URL: 'file:./prisma/data-test.db?connection_limit=1'
           VITE_ADMIN_SLUG: ${{ secrets.VITE_ADMIN_SLUG }}
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
           VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
@@ -167,10 +167,10 @@ jobs:
           echo "exit_code=$TEST_EXIT_CODE" >> "$GITHUB_OUTPUT"
           exit $TEST_EXIT_CODE
         env:
-          DATABASE_URL: "file:./prisma/data-test.db?connection_limit=1"
+          DATABASE_URL: 'file:./prisma/data-test.db?connection_limit=1'
           PLAYWRIGHT: true
-          PLAYWRIGHT_BASE_URL: "http://localhost:8811"
-          EMAIL_FROM: "Team Registration <noreply@tournado.app>"
+          PLAYWRIGHT_BASE_URL: 'http://localhost:8811'
+          EMAIL_FROM: 'Team Registration <noreply@tournado.app>'
           SESSION_SECRET: ${{ secrets.SESSION_SECRET || format('playwright-session-{0}', github.run_id) }}
           VITE_ADMIN_SLUG: ${{ secrets.VITE_ADMIN_SLUG }}
           FIREBASE_ADMIN_PROJECT_ID: ${{ secrets.FIREBASE_ADMIN_PROJECT_ID }}

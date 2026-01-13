@@ -55,10 +55,9 @@ Use focused selector hooks for reads. Prefer single-field selectors to reduce
 churn.
 
 ```typescript
-export const useSettingsTheme = () => useSettingsStore((state) => state.theme)
-export const useSettingsLanguage = () =>
-  useSettingsStore((state) => state.language)
-export const useSettingsIsRTL = () => useSettingsStore((state) => state.isRTL)
+export const useSettingsTheme = () => useSettingsStore(state => state.theme)
+export const useSettingsLanguage = () => useSettingsStore(state => state.language)
+export const useSettingsIsRTL = () => useSettingsStore(state => state.isRTL)
 ```
 
 ## Action Hooks
@@ -68,7 +67,7 @@ Bundle actions with `useShallow` to avoid unnecessary re-renders in components.
 ```typescript
 export const useSettingsActions = () =>
   useSettingsStore(
-    useShallow((state) => ({
+    useShallow(state => ({
       setTheme: state.setTheme,
       toggleTheme: state.toggleTheme,
       setLanguage: state.setLanguage,
@@ -104,7 +103,7 @@ Actions update the working copy; the baseline is only updated on save.
 ```typescript
 export const useGroupAssignmentActions = () =>
   useGroupAssignmentStore(
-    useShallow((state) => ({
+    useShallow(state => ({
       setSnapshotPair: state.setSnapshotPair,
       resetSnapshotPair: state.resetSnapshotPair,
       markAsSaved: state.markAsSaved,
@@ -118,7 +117,7 @@ Use `persist` + hydration hooks when UI state must survive reloads. Avoid
 persisting transient state like `loading` or `error`.
 
 ```typescript
-partialize: (state) =>
+partialize: state =>
   isBrowser ? { user: state.user, firebaseUser: state.firebaseUser } : {}
 ```
 
@@ -252,7 +251,6 @@ Example:
 
 ```typescript
 import { beforeEach, describe, expect, it } from 'vitest'
-
 import { useGroupAssignmentStore } from '~/features/competition/stores/useGroupAssignmentStore'
 
 const state = useGroupAssignmentStore.getState

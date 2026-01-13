@@ -20,26 +20,25 @@
  * - Date serialization for scheduledAt, startedAt, completedAt
  */
 import type { LoaderFunctionArgs } from 'react-router'
-
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 
 export async function loader({ request }: LoaderFunctionArgs): Promise<Response> {
-	// Permission-based authorization - allows all roles
-	await requireUserWithPermission(request, 'matches:read')
+  // Permission-based authorization - allows all roles
+  await requireUserWithPermission(request, 'matches:read')
 
-	// TODO: Implement when match model is ready
-	// const matches = await getAllMatches()
-	// return Response.json({ matches })
+  // TODO: Implement when match model is ready
+  // const matches = await getAllMatches()
+  // return Response.json({ matches })
 
-	// Placeholder response indicating feature is not yet implemented
-	return Response.json(
-		{
-			error: 'Match API not yet implemented',
-			message: 'The match model needs to be created before this endpoint can function',
-			status: 'placeholder',
-		},
-		{ status: 501 }, // 501 Not Implemented
-	)
+  // Placeholder response indicating feature is not yet implemented
+  return Response.json(
+    {
+      error: 'Match API not yet implemented',
+      message: 'The match model needs to be created before this endpoint can function',
+      status: 'placeholder',
+    },
+    { status: 501 }, // 501 Not Implemented
+  )
 }
 
 // No default export = Resource route (data-only, no UI)

@@ -21,16 +21,16 @@ The Tournado application features a sophisticated dark mode implementation that 
 ```css
 /* ✅ Correct: Semantic tokens */
 .component {
-   background-color: var(--color-background);
-   color: var(--color-foreground);
-   border-color: var(--color-border);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  border-color: var(--color-border);
 }
 
 /* ❌ Incorrect: Hard-coded colors */
 .component {
-   background-color: white;
-   color: black;
-   border-color: #e2e8f0;
+  background-color: white;
+  color: black;
+  border-color: #e2e8f0;
 }
 ```
 
@@ -110,11 +110,11 @@ The application supports 20+ color accents that automatically adapt to dark mode
 ```typescript
 // Color accents automatically work in both themes
 const colorVariants = {
-   brand: 'border-brand-400 bg-panel-brand', // Red-based
-   primary: 'border-primary-400 bg-panel-primary', // Emerald-based
-   blue: 'border-blue-400 bg-panel-blue',
-   green: 'border-green-400 bg-panel-green',
-   // ... all 20+ accents supported
+  brand: 'border-brand-400 bg-panel-brand', // Red-based
+  primary: 'border-primary-400 bg-panel-primary', // Emerald-based
+  blue: 'border-blue-400 bg-panel-blue',
+  green: 'border-green-400 bg-panel-green',
+  // ... all 20+ accents supported
 }
 ```
 
@@ -137,7 +137,7 @@ Use the panel background system for consistent theming:
 ```css
 /* Light Mode → Dark Mode */
 --color-background: white → slate-900 --color-input: white → slate-800
-   --footer-bg: white → primary-800;
+  --footer-bg: white → primary-800;
 ```
 
 ### 2. Text Colors
@@ -145,9 +145,9 @@ Use the panel background system for consistent theming:
 ```css
 /* Light Mode → Dark Mode */
 --color-foreground: slate-900 → slate-100 --color-foreground-light: slate-600 →
-   slate-300 --color-foreground-lighter: slate-400 → slate-400
-   --color-foreground-lightest: slate-400 → slate-500 --color-placeholder: slate-400 →
-   slate-400;
+  slate-300 --color-foreground-lighter: slate-400 → slate-400
+  --color-foreground-lightest: slate-400 → slate-500 --color-placeholder: slate-400 →
+  slate-400;
 ```
 
 ### 3. Border Colors
@@ -162,7 +162,7 @@ Use the panel background system for consistent theming:
 ```css
 /* Light Mode → Dark Mode */
 --color-accent: brand-50 → slate-800 --color-background-hover: slate-100 →
-   [automatically handled];
+  [automatically handled];
 ```
 
 ## 🧪 Testing Guidelines
@@ -217,16 +217,16 @@ Use browser developer tools to verify:
 ```css
 /* ❌ Never do this */
 .component {
-   background: white;
-   color: black;
-   border: 1px solid #e2e8f0;
+  background: white;
+  color: black;
+  border: 1px solid #e2e8f0;
 }
 
 /* ✅ Always use semantic tokens */
 .component {
-   background: var(--color-background);
-   color: var(--color-foreground);
-   border: 1px solid var(--color-border);
+  background: var(--color-background);
+  color: var(--color-foreground);
+  border: 1px solid var(--color-border);
 }
 ```
 
@@ -253,13 +253,13 @@ const Component = () => (
 ```css
 /* ❌ Focus not visible in dark mode */
 .button:focus {
-   outline: 2px solid blue;
+  outline: 2px solid blue;
 }
 
 /* ✅ Theme-aware focus states */
 .button:focus {
-   outline: 2px solid var(--color-primary-600);
-   outline-offset: 2px;
+  outline: 2px solid var(--color-primary-600);
+  outline-offset: 2px;
 }
 ```
 
@@ -315,8 +315,8 @@ Ensure interactive elements have adequate touch targets in both themes:
 
 ```css
 .touch-target {
-   min-height: 44px; /* iOS minimum */
-   min-width: 44px;
+  min-height: 44px; /* iOS minimum */
+  min-width: 44px;
 }
 ```
 
@@ -339,12 +339,12 @@ Use the gradient system for sophisticated backgrounds:
 ```css
 /* Gradients that adapt to theme */
 .gradient-background {
-   background: linear-gradient(
-      to bottom,
-      var(--panel-gradient-from),
-      var(--panel-gradient-via),
-      var(--panel-gradient-to)
-   );
+  background: linear-gradient(
+    to bottom,
+    var(--panel-gradient-from),
+    var(--panel-gradient-via),
+    var(--panel-gradient-to)
+  );
 }
 ```
 
@@ -375,13 +375,13 @@ For complex components, extend the semantic token system:
 ```css
 /* Add component-specific tokens */
 :root {
-   --color-my-component-bg: var(--color-background);
-   --color-my-component-border: var(--color-border);
+  --color-my-component-bg: var(--color-background);
+  --color-my-component-border: var(--color-border);
 }
 
 .dark {
-   --color-my-component-bg: var(--color-slate-800);
-   --color-my-component-border: var(--color-slate-600);
+  --color-my-component-bg: var(--color-slate-800);
+  --color-my-component-border: var(--color-slate-600);
 }
 ```
 

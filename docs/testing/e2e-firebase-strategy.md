@@ -42,13 +42,13 @@ Instead of using Firebase authentication in E2E tests, we create session cookies
 ```typescript
 // playwright/helpers/global-setup.ts
 export default async function globalSetup() {
-   // Create authenticated session cookies directly
-   const adminUser = await createAdminUser()
-   const userUser = await createRegularUser()
+  // Create authenticated session cookies directly
+  const adminUser = await createAdminUser()
+  const userUser = await createRegularUser()
 
-   // Save session states for test contexts
-   await saveAuthState(adminUser, 'admin-auth.json')
-   await saveAuthState(userUser, 'user-auth.json')
+  // Save session states for test contexts
+  await saveAuthState(adminUser, 'admin-auth.json')
+  await saveAuthState(userUser, 'user-auth.json')
 }
 ```
 
@@ -121,9 +121,9 @@ playwright/tests/
    ```typescript
    // Create test users directly in database
    const adminUser = await createAdminUser({
-      email: 'admin@tournado.com',
-      role: 'ADMIN',
-      firebaseUid: 'test-admin-uid',
+     email: 'admin@tournado.com',
+     role: 'ADMIN',
+     firebaseUid: 'test-admin-uid',
    })
    ```
 
@@ -344,13 +344,13 @@ If you previously had E2E tests that used real Firebase authentication:
 ```typescript
 // Don't do this in E2E tests
 test('admin feature', async ({ page }) => {
-   await page.goto('/auth/signin')
-   await page.fill('#email', 'admin@example.com')
-   await page.fill('#password', 'password')
-   await page.click('[type="submit"]')
-   await page.waitForURL('/admin')
+  await page.goto('/auth/signin')
+  await page.fill('#email', 'admin@example.com')
+  await page.fill('#password', 'password')
+  await page.click('[type="submit"]')
+  await page.waitForURL('/admin')
 
-   // Test admin feature...
+  // Test admin feature...
 })
 ```
 
@@ -359,10 +359,10 @@ test('admin feature', async ({ page }) => {
 ```typescript
 // Use pre-authenticated context instead
 test('admin feature', async ({ page }) => {
-   // User is already authenticated as admin
-   await page.goto('/admin')
+  // User is already authenticated as admin
+  await page.goto('/admin')
 
-   // Test admin feature directly...
+  // Test admin feature directly...
 })
 ```
 

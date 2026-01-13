@@ -1,242 +1,241 @@
 import path from 'node:path'
 import { glob } from 'glob'
-
 import { getAdminBasePath } from './adminRoutes'
 
 type RouteEntry = {
-	path?: string
-	file: string
-	index?: boolean
-	children?: RouteEntry[]
+  path?: string
+  file: string
+  index?: boolean
+  children?: RouteEntry[]
 }
 
 type RouteMap = {
-	[routePath: string]: {
-		file: string
-		isLayout?: boolean
-		parentPath?: string
-	}
+  [routePath: string]: {
+    file: string
+    isLayout?: boolean
+    parentPath?: string
+  }
 }
 
 const ADMIN_ROUTE_SEGMENT = 'admin'
 const ADMIN_ROUTE_PREFIX = `/${ADMIN_ROUTE_SEGMENT}`
 
 function applyAdminRoutePrefix(routePath: string): string {
-	if (!routePath) return routePath
-	const adminBasePath = `/${getAdminBasePath()}`
-	if (routePath === ADMIN_ROUTE_PREFIX) return adminBasePath
-	if (routePath.startsWith(`${ADMIN_ROUTE_PREFIX}/`)) {
-		return `${adminBasePath}${routePath.slice(ADMIN_ROUTE_PREFIX.length)}`
-	}
-	return routePath
+  if (!routePath) return routePath
+  const adminBasePath = `/${getAdminBasePath()}`
+  if (routePath === ADMIN_ROUTE_PREFIX) return adminBasePath
+  if (routePath.startsWith(`${ADMIN_ROUTE_PREFIX}/`)) {
+    return `${adminBasePath}${routePath.slice(ADMIN_ROUTE_PREFIX.length)}`
+  }
+  return routePath
 }
 
 export function scanFlatRoutes(): RouteEntry[] {
-	const routesDir = path.join(process.cwd(), 'app/routes')
+  const routesDir = path.join(process.cwd(), 'app/routes')
 
-	// Find all .tsx files in routes directory and subdirectories
-	const files = glob.sync('**/*.{ts,tsx}', {
-		cwd: routesDir,
-		ignore: ['**/*.test.*', '**/*.spec.*', '**/.*'],
-	})
+  // Find all .tsx files in routes directory and subdirectories
+  const files = glob.sync('**/*.{ts,tsx}', {
+    cwd: routesDir,
+    ignore: ['**/*.test.*', '**/*.spec.*', '**/.*'],
+  })
 
-	const routeMap: RouteMap = {}
+  const routeMap: RouteMap = {}
 
-	files.forEach((file) => {
-		const filePath = file.replace(/\.(ts|tsx)$/, '')
-		const fileName = path.basename(filePath)
-		const dirName = path.dirname(file)
+  files.forEach(file => {
+    const filePath = file.replace(/\.(ts|tsx)$/, '')
+    const fileName = path.basename(filePath)
+    const dirName = path.dirname(file)
 
-		// Skip files that start with underscore (except _index)
-		if (fileName.startsWith('_') && fileName !== '_index') {
-			return
-		}
+    // Skip files that start with underscore (except _index)
+    if (fileName.startsWith('_') && fileName !== '_index') {
+      return
+    }
 
-		let routePath = ''
-		let isLayout = false
-		let parentPath: string | undefined
+    let routePath = ''
+    let isLayout = false
+    let parentPath: string | undefined
 
-		// Handle root level files
-		if (dirName === '.') {
-			if (fileName === '_index') {
-				routePath = '/'
-			} else if (fileName === '$') {
-				routePath = '*'
-			} else if (fileName.includes('.')) {
-				// Handle flat route naming: teams.new -> /teams/new
-				// Special handling for favicon route
-				if (fileName.includes('[.]')) {
-					routePath = `/${fileName.replace(/\[/g, '').replace(/\]/g, '')}`
-				} else {
-					routePath = `/${fileName.replace(/\./g, '/').replace(/\$([^/]+)/g, ':$1')}`
-				}
-			} else {
-				// Handle simple files: about -> /about
-				routePath = `/${fileName}`
-			}
-		} else {
-			// Handle files in subdirectories
-			const dirSegments = dirName.split(path.sep)
-			const isLayoutFile = fileName === dirSegments[dirSegments.length - 1]
+    // Handle root level files
+    if (dirName === '.') {
+      if (fileName === '_index') {
+        routePath = '/'
+      } else if (fileName === '$') {
+        routePath = '*'
+      } else if (fileName.includes('.')) {
+        // Handle flat route naming: teams.new -> /teams/new
+        // Special handling for favicon route
+        if (fileName.includes('[.]')) {
+          routePath = `/${fileName.replace(/\[/g, '').replace(/\]/g, '')}`
+        } else {
+          routePath = `/${fileName.replace(/\./g, '/').replace(/\$([^/]+)/g, ':$1')}`
+        }
+      } else {
+        // Handle simple files: about -> /about
+        routePath = `/${fileName}`
+      }
+    } else {
+      // Handle files in subdirectories
+      const dirSegments = dirName.split(path.sep)
+      const isLayoutFile = fileName === dirSegments[dirSegments.length - 1]
 
-			if (isLayoutFile) {
-				// This is a layout file: teams/teams.tsx -> /teams (layout)
-				// or admin/teams/teams.tsx -> /admin/teams (layout)
-				routePath = `/${dirSegments.join('/')}`
-				isLayout = true
+      if (isLayoutFile) {
+        // This is a layout file: teams/teams.tsx -> /teams (layout)
+        // or admin/teams/teams.tsx -> /admin/teams (layout)
+        routePath = `/${dirSegments.join('/')}`
+        isLayout = true
 
-				// If this is nested (e.g., admin/teams), set parent
-				if (dirSegments.length > 1) {
-					parentPath = `/${dirSegments.slice(0, -1).join('/')}`
-				}
-			} else if (fileName.includes('.')) {
-				// Handle flat route naming in subdirectories: teams.new.tsx -> teams/new
-				const segments = fileName.split('.')
-				const baseSegment = segments[0]
-				const parentDirPath = `/${dirName}`
+        // If this is nested (e.g., admin/teams), set parent
+        if (dirSegments.length > 1) {
+          parentPath = `/${dirSegments.slice(0, -1).join('/')}`
+        }
+      } else if (fileName.includes('.')) {
+        // Handle flat route naming in subdirectories: teams.new.tsx -> teams/new
+        const segments = fileName.split('.')
+        const baseSegment = segments[0]
+        const parentDirPath = `/${dirName}`
 
-				if (fileName === baseSegment) {
-					// This shouldn't happen with the layout check above, but just in case
-					routePath = `${parentDirPath}/${baseSegment}`
-				} else {
-					// This is a child route
-					const childPath = segments
-						.slice(1)
-						.join('/')
-						.replace(/\$([^/]+)/g, ':$1')
+        if (fileName === baseSegment) {
+          // This shouldn't happen with the layout check above, but just in case
+          routePath = `${parentDirPath}/${baseSegment}`
+        } else {
+          // This is a child route
+          const childPath = segments
+            .slice(1)
+            .join('/')
+            .replace(/\$([^/]+)/g, ':$1')
 
-					// Special handling for _index
-					if (childPath === '_index') {
-						routePath = `${parentDirPath}::index` // Use special marker for index routes
-						parentPath = parentDirPath
-					} else {
-						routePath = `${parentDirPath}::${childPath}`
-						parentPath = parentDirPath
-					}
-				}
-			} else if (fileName === '_index') {
-				// Handle folder-based routing: users/_index.tsx -> /users (index)
-				routePath = `/${dirName}`
-			} else if (fileName.startsWith('$')) {
-				// Handle folder-based dynamic routes: users/$userId.tsx -> /users/:userId
-				const paramName = fileName.substring(1) // Remove the $
+          // Special handling for _index
+          if (childPath === '_index') {
+            routePath = `${parentDirPath}::index` // Use special marker for index routes
+            parentPath = parentDirPath
+          } else {
+            routePath = `${parentDirPath}::${childPath}`
+            parentPath = parentDirPath
+          }
+        }
+      } else if (fileName === '_index') {
+        // Handle folder-based routing: users/_index.tsx -> /users (index)
+        routePath = `/${dirName}`
+      } else if (fileName.startsWith('$')) {
+        // Handle folder-based dynamic routes: users/$userId.tsx -> /users/:userId
+        const paramName = fileName.substring(1) // Remove the $
 
-				// Validate parameter name to prevent invalid routes
-				if (!paramName) {
-					// Handle $.tsx as a catch-all route (consistent with root-level behavior)
-					routePath = `/${dirName}/*`
-				} else if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(paramName)) {
-					throw new Error(
-						`Invalid dynamic route parameter name "${paramName}" in file: ${file}. ` +
-							'Parameter names must start with a letter or underscore, and contain only alphanumeric characters and underscores.',
-					)
-				} else {
-					routePath = `/${dirName}/:${paramName}`
-				}
-			} else {
-				// Simple file in subdirectory: resources/somefile -> /resources/somefile
-				routePath = `/${dirName}/${fileName}`
-			}
-		}
+        // Validate parameter name to prevent invalid routes
+        if (!paramName) {
+          // Handle $.tsx as a catch-all route (consistent with root-level behavior)
+          routePath = `/${dirName}/*`
+        } else if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(paramName)) {
+          throw new Error(
+            `Invalid dynamic route parameter name "${paramName}" in file: ${file}. ` +
+              'Parameter names must start with a letter or underscore, and contain only alphanumeric characters and underscores.',
+          )
+        } else {
+          routePath = `/${dirName}/:${paramName}`
+        }
+      } else {
+        // Simple file in subdirectory: resources/somefile -> /resources/somefile
+        routePath = `/${dirName}/${fileName}`
+      }
+    }
 
-		routePath = applyAdminRoutePrefix(routePath)
-		if (parentPath) {
-			parentPath = applyAdminRoutePrefix(parentPath)
-		}
+    routePath = applyAdminRoutePrefix(routePath)
+    if (parentPath) {
+      parentPath = applyAdminRoutePrefix(parentPath)
+    }
 
-		routeMap[routePath] = {
-			file: `routes/${file}`,
-			isLayout,
-			parentPath,
-		}
-	})
+    routeMap[routePath] = {
+      file: `routes/${file}`,
+      isLayout,
+      parentPath,
+    }
+  })
 
-	// Convert routeMap to RouteEntry array with proper nesting
-	return buildNestedRoutes(routeMap)
+  // Convert routeMap to RouteEntry array with proper nesting
+  return buildNestedRoutes(routeMap)
 }
 
 function buildNestedRoutes(routeMap: RouteMap): RouteEntry[] {
-	const routes: RouteEntry[] = []
-	const layoutRoutes: { [key: string]: RouteEntry } = {}
+  const routes: RouteEntry[] = []
+  const layoutRoutes: { [key: string]: RouteEntry } = {}
 
-	// First pass: create layout routes
-	Object.entries(routeMap).forEach(([routePath, routeInfo]) => {
-		if (routeInfo.isLayout) {
-			// Calculate the relative path for nested layouts
-			let finalPath = routePath
-			if (routeInfo.parentPath) {
-				// Make the path relative to the parent
-				finalPath = routePath.replace(routeInfo.parentPath, '').replace(/^\//, '')
-			}
+  // First pass: create layout routes
+  Object.entries(routeMap).forEach(([routePath, routeInfo]) => {
+    if (routeInfo.isLayout) {
+      // Calculate the relative path for nested layouts
+      let finalPath = routePath
+      if (routeInfo.parentPath) {
+        // Make the path relative to the parent
+        finalPath = routePath.replace(routeInfo.parentPath, '').replace(/^\//, '')
+      }
 
-			const route: RouteEntry = {
-				path: finalPath,
-				file: routeInfo.file,
-				children: [],
-			}
-			layoutRoutes[routePath] = route
+      const route: RouteEntry = {
+        path: finalPath,
+        file: routeInfo.file,
+        children: [],
+      }
+      layoutRoutes[routePath] = route
 
-			// If this layout has a parent, add it as a child of the parent
-			if (routeInfo.parentPath && layoutRoutes[routeInfo.parentPath]) {
-				layoutRoutes[routeInfo.parentPath].children?.push(route)
-			} else if (!routeInfo.parentPath) {
-				// Top-level layout
-				routes.push(route)
-			}
-		} else if (!routePath.includes('::')) {
-			// Regular non-nested routes
-			routes.push({
-				path: routePath,
-				file: routeInfo.file,
-			})
-		}
-	})
+      // If this layout has a parent, add it as a child of the parent
+      if (routeInfo.parentPath && layoutRoutes[routeInfo.parentPath]) {
+        layoutRoutes[routeInfo.parentPath].children?.push(route)
+      } else if (!routeInfo.parentPath) {
+        // Top-level layout
+        routes.push(route)
+      }
+    } else if (!routePath.includes('::')) {
+      // Regular non-nested routes
+      routes.push({
+        path: routePath,
+        file: routeInfo.file,
+      })
+    }
+  })
 
-	// Second pass: add child routes to layouts
-	Object.entries(routeMap).forEach(([routePath, routeInfo]) => {
-		if (routePath.includes('::')) {
-			const [parentPath, childPath] = routePath.split('::')
-			const parentRoute = layoutRoutes[parentPath]
+  // Second pass: add child routes to layouts
+  Object.entries(routeMap).forEach(([routePath, routeInfo]) => {
+    if (routePath.includes('::')) {
+      const [parentPath, childPath] = routePath.split('::')
+      const parentRoute = layoutRoutes[parentPath]
 
-			if (parentRoute?.children) {
-				if (childPath === 'index') {
-					parentRoute.children.push({
-						index: true,
-						file: routeInfo.file,
-					})
-				} else {
-					parentRoute.children.push({
-						path: childPath,
-						file: routeInfo.file,
-					})
-				}
-			} else {
-				// No layout found - create as a regular nested route
-				const [fallbackParentPath, fallbackChildPath] = routePath.split('::')
-				routes.push({
-					path: `${fallbackParentPath}/${fallbackChildPath}`,
-					file: routeInfo.file,
-				})
-			}
-		}
-	})
+      if (parentRoute?.children) {
+        if (childPath === 'index') {
+          parentRoute.children.push({
+            index: true,
+            file: routeInfo.file,
+          })
+        } else {
+          parentRoute.children.push({
+            path: childPath,
+            file: routeInfo.file,
+          })
+        }
+      } else {
+        // No layout found - create as a regular nested route
+        const [fallbackParentPath, fallbackChildPath] = routePath.split('::')
+        routes.push({
+          path: `${fallbackParentPath}/${fallbackChildPath}`,
+          file: routeInfo.file,
+        })
+      }
+    }
+  })
 
-	// Third pass: handle orphaned layout routes (layouts that weren't added to parents)
-	Object.entries(routeMap).forEach(([routePath, routeInfo]) => {
-		if (
-			routeInfo.isLayout &&
-			routeInfo.parentPath &&
-			!layoutRoutes[routeInfo.parentPath]
-		) {
-			// Parent doesn't exist as a layout, add this as a top-level route
-			const existingRoute = layoutRoutes[routePath]
-			if (existingRoute && !routes.includes(existingRoute)) {
-				routes.push(existingRoute)
-			}
-		}
-	})
+  // Third pass: handle orphaned layout routes (layouts that weren't added to parents)
+  Object.entries(routeMap).forEach(([routePath, routeInfo]) => {
+    if (
+      routeInfo.isLayout &&
+      routeInfo.parentPath &&
+      !layoutRoutes[routeInfo.parentPath]
+    ) {
+      // Parent doesn't exist as a layout, add this as a top-level route
+      const existingRoute = layoutRoutes[routePath]
+      if (existingRoute && !routes.includes(existingRoute)) {
+        routes.push(existingRoute)
+      }
+    }
+  })
 
-	return routes
+  return routes
 }
 
 export const createFlatRoutes = (): RouteEntry[] => scanFlatRoutes()

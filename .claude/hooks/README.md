@@ -6,22 +6,22 @@ Display real-time message count in your Claude Code CLI footer.
 
 1. **Configure Claude Code settings** (`.claude/settings.json`):
 
-  ```json
-  {
-    "statusLine": {
-      "type": "command",
-      "command": ".claude/hooks/message-counter.sh"
-    }
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": ".claude/hooks/message-counter.sh"
   }
-  ```
+}
+```
 
 2. **Restart Claude Code** to activate the status line
 
 3. **See the counter** at the bottom of your CLI:
 
-  ```text
-  💬 Messages: 42
-  ```
+```text
+💬 Messages: 42
+```
 
 ## How It Works
 
@@ -42,21 +42,25 @@ Display real-time message count in your Claude Code CLI footer.
 ## Troubleshooting
 
 **No display?**
+
 - Check settings path is correct
 - Verify script is executable: `chmod +x .claude/hooks/message-counter.sh`
 - Test manually: `echo '{"transcript_path":"path/to/transcript.jsonl"}' | .claude/hooks/message-counter.sh`
 
-**Shows "—"?**
+**Shows " - "?**
+
 - Transcript file not found (normal for new sessions)
 - Wait for first message exchange
 
 **Shows "0"?**
+
 - If messages exist but counter shows 0, ensure script is using the correct JSONL format parsing
 - Check transcript file: `grep '"type":"user"' path/to/transcript.jsonl | grep -v '<system-reminder>' | wc -l`
 
 ## Customization
 
 Edit `.claude/hooks/message-counter.sh` to customize:
+
 - Change emoji: `💬` → `📊`, `🔢`, etc.
 - Add token count from `context_window.total_input_tokens`
 - Format differently: `"Msgs: 42 | Tokens: 15k"`

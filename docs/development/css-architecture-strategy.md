@@ -63,10 +63,10 @@ color: {
 ```typescript
 // Button-specific interaction states
 export const buttonVariants = cva(baseStyles, {
-   variants: {
-      size: { sm: '...', md: '...', lg: '...' }, // Button-specific
-      intent: { primary: '...', secondary: '...' }, // Button-specific
-   },
+  variants: {
+    size: { sm: '...', md: '...', lg: '...' }, // Button-specific
+    intent: { primary: '...', secondary: '...' }, // Button-specific
+  },
 })
 ```
 
@@ -82,12 +82,12 @@ export const buttonVariants = cva(baseStyles, {
 
 ```css
 @layer components {
-   .text-adaptive-red {
-      @apply text-red-600 dark:text-red-400;
-   }
-   .panel-foundation {
-      @apply rounded-xl border shadow-lg;
-   }
+  .text-adaptive-red {
+    @apply text-red-600 dark:text-red-400;
+  }
+  .panel-foundation {
+    @apply rounded-xl border shadow-lg;
+  }
 }
 ```
 
@@ -103,9 +103,9 @@ export const buttonVariants = cva(baseStyles, {
 
 ```css
 @variant dark {
-   .shadow-adaptive-red {
-      box-shadow: 0 10px 15px -3px rgb(var(--color-red-400) / 0.3);
-   }
+  .shadow-adaptive-red {
+    box-shadow: 0 10px 15px -3px rgb(var(--color-red-400) / 0.3);
+  }
 }
 ```
 
@@ -121,8 +121,8 @@ export const buttonVariants = cva(baseStyles, {
 
 ```css
 @theme {
-   --color-adaptive-red-text: var(--color-red-600);
-   --color-adaptive-red-bg: var(--color-red-50);
+  --color-adaptive-red-text: var(--color-red-600);
+  --color-adaptive-red-bg: var(--color-red-50);
 }
 ```
 
@@ -138,14 +138,14 @@ export const buttonVariants = cva(baseStyles, {
 
 ```css
 @layer base {
-   h1,
-   h2,
-   h3,
-   h4,
-   h5,
-   h6 {
-      color: var(--color-title);
-   }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--color-title);
+  }
 }
 ```
 
@@ -198,18 +198,18 @@ color: {
 ```css
 /* @theme - Semantic color tokens that adapt */
 @theme {
-   --color-adaptive-red-text: var(--color-red-600);
-   --color-adaptive-blue-text: var(--color-blue-600);
-   --color-adaptive-emerald-text: var(--color-emerald-600);
+  --color-adaptive-red-text: var(--color-red-600);
+  --color-adaptive-blue-text: var(--color-blue-600);
+  --color-adaptive-emerald-text: var(--color-emerald-600);
 }
 
 /* Dark mode overrides */
 @variant dark {
-   :root {
-      --color-adaptive-red-text: var(--color-red-400);
-      --color-adaptive-blue-text: var(--color-blue-400);
-      --color-adaptive-emerald-text: var(--color-emerald-400);
-   }
+  :root {
+    --color-adaptive-red-text: var(--color-red-400);
+    --color-adaptive-blue-text: var(--color-blue-400);
+    --color-adaptive-emerald-text: var(--color-emerald-400);
+  }
 }
 ```
 
@@ -217,15 +217,15 @@ color: {
 
 ```css
 @layer components {
-   .text-adaptive-red {
-      color: var(--color-adaptive-red-text);
-   }
-   .text-adaptive-blue {
-      color: var(--color-adaptive-blue-text);
-   }
-   .text-adaptive-emerald {
-      color: var(--color-adaptive-emerald-text);
-   }
+  .text-adaptive-red {
+    color: var(--color-adaptive-red-text);
+  }
+  .text-adaptive-blue {
+    color: var(--color-adaptive-blue-text);
+  }
+  .text-adaptive-emerald {
+    color: var(--color-adaptive-emerald-text);
+  }
 }
 ```
 
@@ -234,13 +234,13 @@ color: {
 ```typescript
 // Clean component variants
 export const panelDescriptionVariants = cva(['text-foreground'], {
-   variants: {
-      color: {
-         red: 'text-adaptive-red', // Delegates to infrastructure
-         blue: 'text-adaptive-blue', // Single source of truth
-         emerald: 'text-adaptive-emerald',
-      },
-   },
+  variants: {
+    color: {
+      red: 'text-adaptive-red', // Delegates to infrastructure
+      blue: 'text-adaptive-blue', // Single source of truth
+      emerald: 'text-adaptive-emerald',
+    },
+  },
 })
 ```
 

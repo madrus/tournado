@@ -1,38 +1,37 @@
 import type { JSX, SVGProps } from 'react'
-
 import type { IconVariant, IconWeight } from '~/lib/lib.types'
 
 type VisibilityIconProps = {
-	className?: string
-	size?: number
-	variant?: IconVariant
-	weight?: IconWeight
-	'aria-label'?: string
+  className?: string
+  size?: number
+  variant?: IconVariant
+  weight?: IconWeight
+  'aria-label'?: string
 } & SVGProps<SVGSVGElement>
 
 export const VisibilityIcon = ({
-	className = '',
-	size = 24,
-	variant: _variant = 'outlined',
-	weight = 600,
-	'aria-label': ariaLabel = 'Visibility',
-	...rest
+  className = '',
+  size = 24,
+  variant: _variant = 'outlined',
+  weight = 600,
+  'aria-label': ariaLabel = 'Visibility',
+  ...rest
 }: Readonly<VisibilityIconProps>): JSX.Element => (
-	<svg
-		{...rest}
-		width={size}
-		height={size}
-		viewBox='0 0 24 24'
-		className={`inline-block ${className}`}
-		stroke='currentColor'
-		strokeWidth={weight / 200}
-		strokeLinecap='round'
-		strokeLinejoin='round'
-		fill='none'
-		role='img'
-		aria-label={ariaLabel}
-	>
-		<path d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z' />
-		<circle cx='12' cy='12' r='3' />
-	</svg>
+  <svg
+    {...rest}
+    width={size}
+    height={size}
+    viewBox='0 0 24 24'
+    className={`inline-block ${className}`}
+    stroke='currentColor'
+    strokeWidth={weight / 200}
+    strokeLinecap='round'
+    strokeLinejoin='round'
+    fill='none'
+    role='img'
+    aria-label={ariaLabel}
+  >
+    <path d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z' />
+    <circle cx='12' cy='12' r='3' />
+  </svg>
 )

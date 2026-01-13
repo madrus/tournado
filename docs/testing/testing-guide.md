@@ -270,14 +270,14 @@ Instead of hardcoding error strings in your assertions, import `TEST_TRANSLATION
 import { TEST_TRANSLATIONS } from '~/lib/lib.constants'
 
 it('should display a server-side error for a required field', async () => {
-   // ... form setup and submission logic ...
+  // ... form setup and submission logic ...
 
-   await waitFor(() => {
-      // Assert that the specific error message from the constant is visible
-      expect(
-         screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
-      ).toBeInTheDocument()
-   })
+  await waitFor(() => {
+    // Assert that the specific error message from the constant is visible
+    expect(
+      screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired']),
+    ).toBeInTheDocument()
+  })
 })
 ```
 
@@ -412,15 +412,15 @@ cy.findByText(/invalid email/i).should('be.visible')
 
 ```typescript
 it('should allow user to sign in', () => {
-   // Arrange
-   cy.visit('/signin')
+  // Arrange
+  cy.visit('/signin')
 
-   // Act
-   cy.findByRole('textbox', { name: /email/i }).type('user@example.com')
-   cy.findByLabelText(/password/i).type('password123')
-   cy.findByRole('button', { name: /sign in/i }).click()
+  // Act
+  cy.findByRole('textbox', { name: /email/i }).type('user@example.com')
+  cy.findByLabelText(/password/i).type('password123')
+  cy.findByRole('button', { name: /sign in/i }).click()
 
-   // Assert
-   cy.findByRole('link', { name: /teams/i }).should('be.visible')
+  // Assert
+  cy.findByRole('link', { name: /teams/i }).should('be.visible')
 })
 ```

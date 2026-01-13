@@ -2,16 +2,17 @@
 
 ## Google Authentication Features
 
-- Google Authentication — Allow users to authenticate using their Google accounts via the Firebase SDK.
-- Email/Password Authentication — Enable users to register and login using their email and password; passwords will be securely stored in Firebase Authentication.
-- Login Redirect — Implement secure redirects upon successful login, navigating users to a designated home or profile page using React Router - possibly (partially) implemented
-- Logout Functionality — Allow users to securely log out of the application - possibly partially implemented
+- Google Authentication - Allow users to authenticate using their Google accounts via the Firebase SDK.
+- Email/Password Authentication - Enable users to register and login using their email and password; passwords will be securely stored in Firebase Authentication.
+- Login Redirect - Implement secure redirects upon successful login, navigating users to a designated home or profile page using React Router - possibly (partially) implemented
+- Logout Functionality - Allow users to securely log out of the application - possibly partially implemented
 - Credential Persistence Tool - The AI Tool uses reasoning to identify and then set authentication tokens with appropriate expiration, for continuous access without re-login, unless explicitly logged out.
-- Authentication Status Indicator — Clearly display the user's authentication status (logged in/logged out) and username.
+- Authentication Status Indicator - Clearly display the user's authentication status (logged in/logged out) and username.
 
 ## Credential Persistence Tool Implementation Plan
 
-The 5th item describes a "Credential Persistence Tool" leveraging AI reasoning to manage authentication tokens dynamically—ensuring continuous access (e.g., no forced re-logins during active sessions) while handling expirations intelligently based on context like user role, activity, or device trust. Current implementation uses Firebase's default session persistence (browser session) with server-side cookie bridging and Zustand store hydration, but lacks:
+The 5th item describes a "Credential Persistence Tool" leveraging AI reasoning to manage authentication tokens dynamically - ensuring continuous access (e.g., no forced re-logins during active sessions) while handling expirations intelligently based on context like user role, activity, or device trust. Current implementation uses Firebase's default session persistence (browser session) with server-side cookie bridging and Zustand store hydration, but lacks:
+
 - **AI-driven reasoning**: No logic to evaluate/optimize token lifecycles (e.g., proactive refresh based on predicted expiration or user behavior).
 - **Custom expiration handling**: Relies on Firebase's 1-hour ID tokens + refresh; no explicit modes like `browserLocalPersistence` for longer sessions.
 - **Continuous access guarantees**: Basic persistence exists, but no safeguards for idle timeouts or cross-tab sync.
@@ -49,22 +50,22 @@ I've broken this into prioritized tasks (tracked via internal TODO system for pr
    ```typescript
    // In a new authReasoning.ts (step 1 of plan)
    export function reasonTokenPersistence(
-     tokenExpiration: number,  // From getIdTokenResult()
-     userRole: string,         // e.g., 'ADMIN'
-     idleTime: number,         // From Visibility API
-     deviceTrusted: boolean    // e.g., from localStorage flag
+     tokenExpiration: number, // From getIdTokenResult()
+     userRole: string, // e.g., 'ADMIN'
+     idleTime: number, // From Visibility API
+     deviceTrusted: boolean, // e.g., from localStorage flag
    ): { action: 'renew' | 'warn' | 'expire'; ttl: number } {
      const now = Date.now()
-     const timeLeft = (tokenExpiration - now) / (1000 * 60)  // Minutes left
+     const timeLeft = (tokenExpiration - now) / (1000 * 60) // Minutes left
 
      if (userRole === 'ADMIN' && timeLeft > 30 && !deviceTrusted) {
-       return { action: 'warn', ttl: 15 * 60 * 1000 }  // Shorten for untrusted device
+       return { action: 'warn', ttl: 15 * 60 * 1000 } // Shorten for untrusted device
      }
      if (idleTime > 30 && timeLeft < 5) {
-       return { action: 'expire', ttl: 0 }  // Force re-login after idle
+       return { action: 'expire', ttl: 0 } // Force re-login after idle
      }
      // Default: renew if viable
-     return { action: 'renew', ttl: 60 * 60 * 1000 }  // 1 hour
+     return { action: 'renew', ttl: 60 * 60 * 1000 } // 1 hour
    }
    ```
 
@@ -115,5 +116,5 @@ I've broken this into prioritized tasks (tracked via internal TODO system for pr
 
 - **Immediate**: Review/approve this plan. Start with step 1 (reasoning definition) for quick validation.
 - **Timeline**: 1-2 days for core implementation; 1 day for testing.
-- **Dependencies**: Ensure Firebase env vars are set; run `pnpm typecheck` post-changes.
+- **Dependencies**: Ensure Firebase env vars are set; run `pnpm typecheck && pnpm lint` post-changes.
 - **Metrics for Success**: 100% re-auth-free navigation during active sessions; <5% false expirations in tests.

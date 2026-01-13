@@ -1,22 +1,20 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import type { JSX, ReactNode } from 'react'
-
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
-
 import {
-	getCancelButtonColor,
-	getDefaultColorsForIntent,
-	getIconForIntent,
+  getCancelButtonColor,
+  getDefaultColorsForIntent,
+  getIconForIntent,
 } from './dialog.utils'
 import {
-	type DialogIntent,
-	dialogContentVariants,
-	dialogOverlayVariants,
-	iconColorVariants,
-	iconContainerVariants,
-	titleColorVariants,
+  type DialogIntent,
+  dialogContentVariants,
+  dialogOverlayVariants,
+  iconColorVariants,
+  iconContainerVariants,
+  titleColorVariants,
 } from './dialog.variants'
 
 /**
@@ -25,13 +23,13 @@ import {
  * Confirm button should NOT be wrapped so parent can close dialog after async operation
  */
 const DialogCloseWrapper = ({
-	shouldAutoClose,
-	children,
+  shouldAutoClose,
+  children,
 }: {
-	shouldAutoClose: boolean
-	children: ReactNode
+  shouldAutoClose: boolean
+  children: ReactNode
 }): ReactNode =>
-	shouldAutoClose ? <Dialog.Close asChild>{children}</Dialog.Close> : children
+  shouldAutoClose ? <Dialog.Close asChild>{children}</Dialog.Close> : children
 
 /**
  * ConfirmDialog - Fully controlled confirmation dialog component
@@ -80,124 +78,124 @@ const DialogCloseWrapper = ({
  * → Use `SimpleConfirmDialog` (uncontrolled) instead
  */
 type ConfirmDialogProps = {
-	// Required controlled mode props
-	open: boolean
-	onOpenChange: (open: boolean) => void
+  // Required controlled mode props
+  open: boolean
+  onOpenChange: (open: boolean) => void
 
-	// Content
-	title: string
-	description?: string
-	intent?: DialogIntent
+  // Content
+  title: string
+  description?: string
+  intent?: DialogIntent
 
-	// Button labels
-	confirmLabel: string
-	cancelLabel: string
+  // Button labels
+  confirmLabel: string
+  cancelLabel: string
 
-	// Actions and behavior
-	onConfirm?: () => void
-	destructive?: boolean
-	isLoading?: boolean
+  // Actions and behavior
+  onConfirm?: () => void
+  destructive?: boolean
+  isLoading?: boolean
 }
 
 export function ConfirmDialog({
-	open,
-	onOpenChange,
-	title,
-	description,
-	intent = 'warning',
-	confirmLabel,
-	cancelLabel,
-	onConfirm,
-	destructive = false,
-	isLoading = false,
+  open,
+  onOpenChange,
+  title,
+  description,
+  intent = 'warning',
+  confirmLabel,
+  cancelLabel,
+  onConfirm,
+  destructive = false,
+  isLoading = false,
 }: Readonly<ConfirmDialogProps>): JSX.Element {
-	// Get intent-driven defaults
-	const intentColors = getDefaultColorsForIntent(intent)
-	const finalIcon = getIconForIntent(intent)
-	const finalConfirmColor = intentColors.confirm
-	const finalCancelColor = getCancelButtonColor()
-	const sharedButtonClasses = 'w-full sm:w-auto h-12 px-6'
+  // Get intent-driven defaults
+  const intentColors = getDefaultColorsForIntent(intent)
+  const finalIcon = getIconForIntent(intent)
+  const finalConfirmColor = intentColors.confirm
+  const finalCancelColor = getCancelButtonColor()
+  const sharedButtonClasses = 'w-full sm:w-auto h-12 px-6'
 
-	const handleConfirm = (): void => {
-		onConfirm?.()
-		// Parent is responsible for calling onOpenChange(false) when async operation completes
-	}
+  const handleConfirm = (): void => {
+    onConfirm?.()
+    // Parent is responsible for calling onOpenChange(false) when async operation completes
+  }
 
-	return (
-		<Dialog.Root open={open} onOpenChange={onOpenChange}>
-			<Dialog.Portal>
-				<Dialog.Overlay className={dialogOverlayVariants()} />
+  return (
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
+      <Dialog.Portal>
+        <Dialog.Overlay className={dialogOverlayVariants()} />
 
-				<Dialog.Content
-					role='alertdialog'
-					aria-describedby={description ? 'dialog-description' : undefined}
-					className={dialogContentVariants({ intent, size: 'md' })}
-				>
-					<div className='flex items-start gap-5'>
-						<div
-							aria-hidden='true'
-							className={iconContainerVariants({ intent })}
-							data-testid='confirm-dialog-icon-container'
-						>
-							{renderIcon(finalIcon, {
-								className: iconColorVariants({ intent }),
-								'data-testid': 'confirm-dialog-icon',
-							})}
-						</div>
+        <Dialog.Content
+          role='alertdialog'
+          aria-describedby={description ? 'dialog-description' : undefined}
+          className={dialogContentVariants({ intent, size: 'md' })}
+        >
+          <div className='flex items-start gap-5'>
+            <div
+              aria-hidden='true'
+              className={iconContainerVariants({ intent })}
+              data-testid='confirm-dialog-icon-container'
+            >
+              {renderIcon(finalIcon, {
+                className: iconColorVariants({ intent }),
+                'data-testid': 'confirm-dialog-icon',
+              })}
+            </div>
 
-						<div className='min-w-0 flex-1 pt-1'>
-							<Dialog.Title
-								className={cn(
-									'mb-2 font-semibold text-2xl leading-tight',
-									titleColorVariants({ intent }),
-								)}
-							>
-								{title}
-							</Dialog.Title>
-							{description ? (
-								<Dialog.Description
-									id='dialog-description'
-									className='text-base text-slate-600 leading-relaxed dark:text-slate-400'
-								>
-									{description}
-								</Dialog.Description>
-							) : null}
+            <div className='min-w-0 flex-1 pt-1'>
+              <Dialog.Title
+                className={cn(
+                  'mb-2 font-semibold text-2xl leading-tight',
+                  titleColorVariants({ intent }),
+                )}
+              >
+                {title}
+              </Dialog.Title>
+              {description ? (
+                <Dialog.Description
+                  id='dialog-description'
+                  className='text-base text-slate-600 leading-relaxed dark:text-slate-400'
+                >
+                  {description}
+                </Dialog.Description>
+              ) : null}
 
-							<div className='mt-8 flex flex-col-reverse gap-2 sm:flex-row'>
-								<div className='sm:order-1'>
-									<DialogCloseWrapper shouldAutoClose={true}>
-										<ActionButton
-											variant='secondary'
-											color={finalCancelColor}
-											size='md'
-											className={sharedButtonClasses}
-											autoFocus={destructive}
-											disabled={isLoading}
-										>
-											{cancelLabel}
-										</ActionButton>
-									</DialogCloseWrapper>
-								</div>
+              <div className='mt-8 flex flex-col-reverse gap-2 sm:flex-row'>
+                <div className='sm:order-1'>
+                  <DialogCloseWrapper shouldAutoClose={true}>
+                    <ActionButton
+                      variant='secondary'
+                      color={finalCancelColor}
+                      size='md'
+                      className={sharedButtonClasses}
+                      autoFocus={destructive}
+                      disabled={isLoading}
+                    >
+                      {cancelLabel}
+                    </ActionButton>
+                  </DialogCloseWrapper>
+                </div>
 
-								<div className='sm:order-2'>
-									<ActionButton
-										variant='primary'
-										color={finalConfirmColor}
-										size='md'
-										onClick={handleConfirm}
-										className={sharedButtonClasses}
-										aria-label={confirmLabel}
-										autoFocus={!destructive}
-										disabled={isLoading}
-									>
-										{confirmLabel}
-									</ActionButton>
-								</div>
-							</div>
-						</div>
-					</div>
-				</Dialog.Content>
-			</Dialog.Portal>
-		</Dialog.Root>
-	)
+                <div className='sm:order-2'>
+                  <ActionButton
+                    variant='primary'
+                    color={finalConfirmColor}
+                    size='md'
+                    onClick={handleConfirm}
+                    className={sharedButtonClasses}
+                    aria-label={confirmLabel}
+                    autoFocus={!destructive}
+                    disabled={isLoading}
+                  >
+                    {confirmLabel}
+                  </ActionButton>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  )
 }

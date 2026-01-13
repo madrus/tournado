@@ -3,9 +3,9 @@ on:
   workflow_dispatch: # Manual trigger only
     inputs:
       environment:
-        description: "Environment to test against"
+        description: 'Environment to test against'
         required: false
-        default: "local"
+        default: 'local'
         type: choice
         options:
           - local
@@ -16,5 +16,5 @@ jobs:
     uses: ./.github/workflows/playwright.yml
     with:
       environment: ${{ inputs.environment || 'local' }}
-      upload_artifact_suffix: "-manual"
+      upload_artifact_suffix: '-manual'
     secrets: inherit

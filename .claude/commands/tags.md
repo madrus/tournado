@@ -2,10 +2,10 @@
 name: tags
 description: Upsert tags in the specified document(s) based on provided arguments
 inputs:
-   - name: arguments
-     type: string
-     description: File name(s) or patterns to search and tag
-     required: true
+  - name: arguments
+    type: string
+    description: File name(s) or patterns to search and tag
+    required: true
 ---
 
 # Upsert Tags

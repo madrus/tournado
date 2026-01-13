@@ -1,169 +1,167 @@
 import type { Category } from '@prisma/client'
 import type { JSX } from 'react'
 import { redirect, useActionData, useLoaderData } from 'react-router'
-
 import { CompetitionGroupStageDetails } from '~/features/competition/components'
 import type { GroupStageWithDetails, UnassignedTeam } from '~/models/group.server'
 import {
-	assignTeamToGroupSlot,
-	clearGroupSlot,
-	getGroupStageWithDetails,
-	getUnassignedTeamsByCategories,
-	moveTeamToReserve,
-	swapGroupSlots,
+  assignTeamToGroupSlot,
+  clearGroupSlot,
+  getGroupStageWithDetails,
+  getUnassignedTeamsByCategories,
+  moveTeamToReserve,
+  swapGroupSlots,
 } from '~/models/group.server'
 import { getTournamentById } from '~/models/tournament.server'
 import { adminPath } from '~/utils/adminRoutes'
 import { invariant } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
-
 import type { Route } from './+types/competition.groups.$groupStageId'
 
 type LoaderData = {
-	readonly groupStage: GroupStageWithDetails
-	readonly availableTeams: readonly UnassignedTeam[]
-	readonly tournamentId: string
+  readonly groupStage: GroupStageWithDetails
+  readonly availableTeams: readonly UnassignedTeam[]
+  readonly tournamentId: string
 }
 
 type ActionData = {
-	readonly error?: string
+  readonly error?: string
 }
 
 export const handle: RouteMetadata = {
-	authorization: {
-		requiredRoles: ['REFEREE', 'MANAGER', 'ADMIN'],
-	},
+  authorization: {
+    requiredRoles: ['REFEREE', 'MANAGER', 'ADMIN'],
+  },
 }
 
 export async function loader({
-	request,
-	params,
+  request,
+  params,
 }: Route.LoaderArgs): Promise<LoaderData> {
-	await requireUserWithMetadata(request, handle)
+  await requireUserWithMetadata(request, handle)
 
-	const { groupStageId } = params
-	invariant(groupStageId, 'groupStageId is required')
+  const { groupStageId } = params
+  invariant(groupStageId, 'groupStageId is required')
 
-	const groupStage = await getGroupStageWithDetails(groupStageId)
-	if (!groupStage) throw new Response('Group stage not found', { status: 404 })
+  const groupStage = await getGroupStageWithDetails(groupStageId)
+  if (!groupStage) throw new Response('Group stage not found', { status: 404 })
 
-	// Derive tournamentId from groupStage - this is the source of truth
-	const tournamentId = groupStage.tournamentId
+  // Derive tournamentId from groupStage - this is the source of truth
+  const tournamentId = groupStage.tournamentId
 
-	// Validate query param if provided
-	const url = new URL(request.url)
-	const queryTournamentId = url.searchParams.get('tournament')
-	if (queryTournamentId && queryTournamentId !== tournamentId) {
-		throw new Response(
-			'Tournament ID mismatch: query parameter does not match the selected tournament',
-			{ status: 400 },
-		)
-	}
+  // Validate query param if provided
+  const url = new URL(request.url)
+  const queryTournamentId = url.searchParams.get('tournament')
+  if (queryTournamentId && queryTournamentId !== tournamentId) {
+    throw new Response(
+      'Tournament ID mismatch: query parameter does not match the selected tournament',
+      { status: 400 },
+    )
+  }
 
-	const tournament = await getTournamentById({ id: tournamentId })
-	if (!tournament) throw new Response('Tournament not found', { status: 404 })
+  const tournament = await getTournamentById({ id: tournamentId })
+  if (!tournament) throw new Response('Tournament not found', { status: 404 })
 
-	const availableTeams = await getUnassignedTeamsByCategories(
-		tournamentId,
-		groupStage.categories as Category[],
-	)
+  const availableTeams = await getUnassignedTeamsByCategories(
+    tournamentId,
+    groupStage.categories as Category[],
+  )
 
-	return { groupStage, availableTeams, tournamentId }
+  return { groupStage, availableTeams, tournamentId }
 }
 
 export async function action({
-	request,
-	params,
+  request,
+  params,
 }: Route.ActionArgs): Promise<ActionData | Response> {
-	await requireUserWithMetadata(request, handle)
+  await requireUserWithMetadata(request, handle)
 
-	const { groupStageId } = params
-	invariant(groupStageId, 'groupStageId is required')
+  const { groupStageId } = params
+  invariant(groupStageId, 'groupStageId is required')
 
-	// Fetch groupStage to derive tournamentId - don't trust query params
-	const groupStage = await getGroupStageWithDetails(groupStageId)
-	if (!groupStage) throw new Response('Group stage not found', { status: 404 })
+  // Fetch groupStage to derive tournamentId - don't trust query params
+  const groupStage = await getGroupStageWithDetails(groupStageId)
+  if (!groupStage) throw new Response('Group stage not found', { status: 404 })
 
-	// Derive tournamentId from groupStage - this is the source of truth
-	const tournamentId = groupStage.tournamentId
+  // Derive tournamentId from groupStage - this is the source of truth
+  const tournamentId = groupStage.tournamentId
 
-	// Validate query param if provided (optional validation)
-	const url = new URL(request.url)
-	const queryTournamentId = url.searchParams.get('tournament')
-	if (queryTournamentId && queryTournamentId !== tournamentId) {
-		throw new Response(
-			'Tournament ID mismatch: query parameter does not match the selected tournament',
-			{ status: 400 },
-		)
-	}
+  // Validate query param if provided (optional validation)
+  const url = new URL(request.url)
+  const queryTournamentId = url.searchParams.get('tournament')
+  if (queryTournamentId && queryTournamentId !== tournamentId) {
+    throw new Response(
+      'Tournament ID mismatch: query parameter does not match the selected tournament',
+      { status: 400 },
+    )
+  }
 
-	const formData = await request.formData()
-	const intent = formData.get('intent')?.toString()
+  const formData = await request.formData()
+  const intent = formData.get('intent')?.toString()
 
-	try {
-		switch (intent) {
-			case 'assign': {
-				const groupId = formData.get('groupId')?.toString() || ''
-				const slotIndex = Number(formData.get('slotIndex'))
-				const teamId = formData.get('teamId')?.toString() || ''
-				invariant(
-					groupId && !Number.isNaN(slotIndex) && teamId,
-					'Invalid assign payload',
-				)
-				// assignTeamToGroupSlot now validates tournament consistency internally
-				await assignTeamToGroupSlot({ groupStageId, groupId, slotIndex, teamId })
-				break
-			}
-			case 'clear': {
-				const groupSlotId = formData.get('groupSlotId')?.toString() || ''
-				invariant(groupSlotId, 'Invalid clear payload')
-				await clearGroupSlot({ groupSlotId })
-				break
-			}
-			case 'reserve': {
-				const teamId = formData.get('teamId')?.toString() || ''
-				invariant(teamId, 'Invalid reserve payload')
-				// moveTeamToReserve now validates tournament consistency internally
-				await moveTeamToReserve({ groupStageId, teamId })
-				break
-			}
-			case 'swap': {
-				const sourceSlotId = formData.get('sourceSlotId')?.toString() || ''
-				const targetSlotId = formData.get('targetSlotId')?.toString() || ''
-				invariant(sourceSlotId && targetSlotId, 'Invalid swap payload')
-				await swapGroupSlots({ sourceSlotId, targetSlotId })
-				break
-			}
-			default:
-				break
-		}
+  try {
+    switch (intent) {
+      case 'assign': {
+        const groupId = formData.get('groupId')?.toString() || ''
+        const slotIndex = Number(formData.get('slotIndex'))
+        const teamId = formData.get('teamId')?.toString() || ''
+        invariant(
+          groupId && !Number.isNaN(slotIndex) && teamId,
+          'Invalid assign payload',
+        )
+        // assignTeamToGroupSlot now validates tournament consistency internally
+        await assignTeamToGroupSlot({ groupStageId, groupId, slotIndex, teamId })
+        break
+      }
+      case 'clear': {
+        const groupSlotId = formData.get('groupSlotId')?.toString() || ''
+        invariant(groupSlotId, 'Invalid clear payload')
+        await clearGroupSlot({ groupSlotId })
+        break
+      }
+      case 'reserve': {
+        const teamId = formData.get('teamId')?.toString() || ''
+        invariant(teamId, 'Invalid reserve payload')
+        // moveTeamToReserve now validates tournament consistency internally
+        await moveTeamToReserve({ groupStageId, teamId })
+        break
+      }
+      case 'swap': {
+        const sourceSlotId = formData.get('sourceSlotId')?.toString() || ''
+        const targetSlotId = formData.get('targetSlotId')?.toString() || ''
+        invariant(sourceSlotId && targetSlotId, 'Invalid swap payload')
+        await swapGroupSlots({ sourceSlotId, targetSlotId })
+        break
+      }
+      default:
+        break
+    }
 
-		if (intent === 'reserve') {
-			return {}
-		}
+    if (intent === 'reserve') {
+      return {}
+    }
 
-		// Use derived tournamentId in redirect
-		return redirect(
-			adminPath(`/competition/groups/${groupStageId}?tournament=${tournamentId}`),
-		)
-	} catch (error) {
-		return { error: error instanceof Error ? error.message : 'Unknown error' }
-	}
+    // Use derived tournamentId in redirect
+    return redirect(
+      adminPath(`/competition/groups/${groupStageId}?tournament=${tournamentId}`),
+    )
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : 'Unknown error' }
+  }
 }
 
 export function GroupStageDetails(): JSX.Element {
-	const { groupStage, availableTeams, tournamentId } = useLoaderData<LoaderData>()
-	const actionData = useActionData<ActionData>()
+  const { groupStage, availableTeams, tournamentId } = useLoaderData<LoaderData>()
+  const actionData = useActionData<ActionData>()
 
-	return (
-		<CompetitionGroupStageDetails
-			groupStage={groupStage}
-			availableTeams={availableTeams}
-			tournamentId={tournamentId}
-			actionData={actionData}
-		/>
-	)
+  return (
+    <CompetitionGroupStageDetails
+      groupStage={groupStage}
+      availableTeams={availableTeams}
+      tournamentId={tournamentId}
+      actionData={actionData}
+    />
+  )
 }
 
 // Default export for React Router

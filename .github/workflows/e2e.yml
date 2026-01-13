@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: "Branch or tag to test"
+        description: 'Branch or tag to test'
         required: true
 
 permissions:
@@ -96,8 +96,8 @@ jobs:
     if: ${{ needs.prepare.outputs.should_run == 'true' }}
     uses: ./.github/workflows/playwright.yml
     with:
-      environment: "local"
-      upload_artifact_suffix: "-e2e"
+      environment: 'local'
+      upload_artifact_suffix: '-e2e'
     secrets: inherit
 
   notify:

@@ -1,40 +1,39 @@
 import {
-	DndContext,
-	DragOverlay,
-	KeyboardSensor,
-	type MeasuringConfiguration,
-	MeasuringStrategy,
-	PointerSensor,
-	pointerWithin,
-	TouchSensor,
-	useSensor,
-	useSensors,
+  DndContext,
+  DragOverlay,
+  KeyboardSensor,
+  type MeasuringConfiguration,
+  MeasuringStrategy,
+  PointerSensor,
+  TouchSensor,
+  pointerWithin,
+  useSensor,
+  useSensors,
 } from '@dnd-kit/core'
 import { snapCenterToCursor } from '@dnd-kit/modifiers'
 import type { JSX } from 'react'
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
-import { useBlocker, useFetcher, useRevalidator } from 'react-router'
+import { useFetcher, useRevalidator } from 'react-router'
 import { z } from 'zod'
-
-import { ActionButton } from '~/components/buttons/ActionButton'
 import { ConfirmDialog } from '~/components/ConfirmDialog'
+import { FormActionFooter } from '~/components/shared/FormActionFooter'
+import { useGuardedStoreInitialization } from '~/hooks/useGuardedStoreInitialization'
 import { useMediaQuery } from '~/hooks/useMediaQuery'
 import { useReducedMotion } from '~/hooks/useReducedMotion'
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
-
 import { useGroupStageDnd } from '../hooks/useGroupStageDnd'
 import {
-	getConfirmedCapacity,
-	getWaitlistTeams,
+  getConfirmedCapacity,
+  getWaitlistTeams,
 } from '../stores/helpers/groupAssignmentStoreHelpers'
 import {
-	useGroupAssignmentActions,
-	useGroupAssignmentSnapshot,
-	useGroupAssignmentStatus,
-	useGroupAssignmentUiState,
+  useGroupAssignmentActions,
+  useGroupAssignmentSnapshot,
+  useGroupAssignmentStatus,
+  useGroupAssignmentUiState,
 } from '../stores/useGroupAssignmentStore'
 import { getGroupAssignmentLayoutClasses } from '../utils/groupAssignmentLayout'
 import type { GroupAssignmentSnapshot } from '../utils/groupStageDnd'
@@ -43,437 +42,387 @@ import { DragOverlayChip } from './DraggableTeamChip'
 import { GroupAssignmentErrorBanner } from './GroupAssignmentErrorBanner'
 import { GroupAssignmentMobileTabs } from './GroupAssignmentMobileTabs'
 import { GroupCard } from './GroupCard'
-import {
-	actionButtonGroupVariants,
-	heroStripVariants,
-} from './groupAssignment.variants'
 import { WaitlistPool } from './WaitlistPool'
+import { heroStripVariants } from './groupAssignment.variants'
 
 type GroupAssignmentBoardProps = {
-	initialSnapshot: GroupAssignmentSnapshot
-	tournamentId: string
+  initialSnapshot: GroupAssignmentSnapshot
+  tournamentId: string
 }
 
+const serializeGroupAssignmentSnapshot = (snapshot: GroupAssignmentSnapshot): string =>
+  `${snapshot.groupStageId}-${snapshot.updatedAt}`
+
 const FetcherResponseSchema = z.object({
-	success: z.boolean().optional(),
-	error: z.string().optional(),
-	conflict: z.boolean().optional(),
+  success: z.boolean().optional(),
+  error: z.string().optional(),
+  conflict: z.boolean().optional(),
 })
 
 type FetcherResponse = z.infer<typeof FetcherResponseSchema>
 
 // Configure measuring to improve DragOverlay positioning
 const measuring: MeasuringConfiguration = {
-	droppable: {
-		strategy: MeasuringStrategy.Always,
-	},
+  droppable: {
+    strategy: MeasuringStrategy.Always,
+  },
 }
 
 export function GroupAssignmentBoard({
-	initialSnapshot,
-	tournamentId,
+  initialSnapshot,
+  tournamentId,
 }: GroupAssignmentBoardProps): JSX.Element {
-	const { t } = useTranslation()
-	const fetcher = useFetcher()
-	const revalidator = useRevalidator()
-	const [showConflictDialog, setShowConflictDialog] = useState(false)
-	const [isProceedingNavigation, setIsProceedingNavigation] = useState(false)
-	const [isClient, setIsClient] = useState(false)
-	const [displacedAnimation, setDisplacedAnimation] = useState<{
-		teamId: string
-		fromRect: DOMRect
-	} | null>(null)
-	const prefersReducedMotion = useReducedMotion()
+  const { t } = useTranslation()
+  const fetcher = useFetcher()
+  const revalidator = useRevalidator()
+  const [showConflictDialog, setShowConflictDialog] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+  const [displacedAnimation, setDisplacedAnimation] = useState<{
+    teamId: string
+    fromRect: DOMRect
+  } | null>(null)
+  const prefersReducedMotion = useReducedMotion()
 
-	// Store state
-	const snapshot = useGroupAssignmentSnapshot()
-	const { isDirty } = useGroupAssignmentStatus()
-	const { isSaving, saveError, hasConflict, activeGroupIndex } =
-		useGroupAssignmentUiState()
-	const {
-		setSnapshotPair,
-		resetSnapshotPair,
-		markAsSaved,
-		setActiveGroupIndex,
-		setSaving,
-		setSaveError,
-		setConflict,
-	} = useGroupAssignmentActions()
+  // Store state
+  const snapshot = useGroupAssignmentSnapshot()
+  const { isDirty } = useGroupAssignmentStatus()
+  const { isSaving, saveError, hasConflict, activeGroupIndex } =
+    useGroupAssignmentUiState()
+  const {
+    setSnapshotPair,
+    resetSnapshotPair,
+    markAsSaved,
+    setActiveGroupIndex,
+    setSaving,
+    setSaveError,
+    setConflict,
+  } = useGroupAssignmentActions()
 
-	// DnD hook
-	const handleDisplacedTeam = useCallback(
-		(teamId: string) => {
-			if (prefersReducedMotion || typeof document === 'undefined') return
+  // DnD hook
+  const handleDisplacedTeam = useCallback(
+    (teamId: string) => {
+      if (prefersReducedMotion || typeof document === 'undefined') return
 
-			const teamElement = document.querySelector(
-				`[data-team-id="${teamId}"]`,
-			) as HTMLElement | null
-			if (!teamElement) return
+      const teamElement = document.querySelector(
+        `[data-team-id="${teamId}"]`,
+      ) as HTMLElement | null
+      if (!teamElement) return
 
-			setDisplacedAnimation({
-				teamId,
-				fromRect: teamElement.getBoundingClientRect(),
-			})
-		},
-		[prefersReducedMotion],
-	)
+      setDisplacedAnimation({
+        teamId,
+        fromRect: teamElement.getBoundingClientRect(),
+      })
+    },
+    [prefersReducedMotion],
+  )
 
-	const {
-		activeDragTeam,
-		handleDragStart,
-		handleDragOver,
-		handleDragEnd,
-		handleDragCancel,
-	} = useGroupStageDnd({ onDisplacedTeam: handleDisplacedTeam })
+  const {
+    activeDragTeam,
+    handleDragStart,
+    handleDragOver,
+    handleDragEnd,
+    handleDragCancel,
+  } = useGroupStageDnd({ onDisplacedTeam: handleDisplacedTeam })
 
-	// Initialize store from loader data
-	useEffect(() => {
-		setSnapshotPair(initialSnapshot)
-	}, [initialSnapshot, setSnapshotPair])
+  // Initialize store from loader data
+  useGuardedStoreInitialization(
+    () => initialSnapshot,
+    setSnapshotPair,
+    [initialSnapshot, isDirty],
+    {
+      skipWhen: () => isDirty,
+      serializer: serializeGroupAssignmentSnapshot,
+    },
+  )
 
-	useEffect(() => {
-		setIsClient(true)
-	}, [])
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
-	// Handle conflict dialog
-	useEffect(() => {
-		if (hasConflict) {
-			setShowConflictDialog(true)
-		}
-	}, [hasConflict])
+  // Handle conflict dialog
+  useEffect(() => {
+    if (hasConflict) {
+      setShowConflictDialog(true)
+    }
+  }, [hasConflict])
 
-	// Configure DnD sensors
-	const sensors = useSensors(
-		useSensor(PointerSensor, {
-			activationConstraint: {
-				distance: 8,
-			},
-		}),
-		useSensor(TouchSensor, {
-			activationConstraint: {
-				delay: 200,
-				tolerance: 8,
-			},
-		}),
-		useSensor(KeyboardSensor),
-	)
+  // Configure DnD sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor),
+  )
 
-	// Block navigation if dirty
-	const blocker = useBlocker(
-		({ currentLocation, nextLocation }) =>
-			isDirty && currentLocation.pathname !== nextLocation.pathname,
-	)
+  // Handle fetcher response
+  useEffect(() => {
+    if (fetcher.state === 'idle' && fetcher.data) {
+      setSaving(false)
 
-	// Reset navigation proceeding flag when blocker state changes
-	useEffect(() => {
-		if (blocker.state !== 'blocked') {
-			setIsProceedingNavigation(false)
-		}
-	}, [blocker.state])
+      const parsed = FetcherResponseSchema.safeParse(fetcher.data)
+      if (!parsed.success) {
+        setSaveError('Unexpected server response')
+        return
+      }
 
-	// Handle fetcher response
-	useEffect(() => {
-		if (fetcher.state === 'idle' && fetcher.data) {
-			setSaving(false)
+      const data: FetcherResponse = parsed.data
 
-			const parsed = FetcherResponseSchema.safeParse(fetcher.data)
-			if (!parsed.success) {
-				setSaveError('Unexpected server response')
-				return
-			}
+      if (data.conflict) {
+        setConflict(true)
+      } else if (data.error) {
+        setSaveError(data.error)
+      } else if (data.success) {
+        // Mark current state as saved (resets dirty flag)
+        markAsSaved()
+        setSaveError(null)
+      }
+    }
+  }, [fetcher.state, fetcher.data, markAsSaved, setSaving, setSaveError, setConflict])
 
-			const data: FetcherResponse = parsed.data
+  // Handle save
+  const handleSave = useCallback(() => {
+    if (!snapshot) return
 
-			if (data.conflict) {
-				setConflict(true)
-			} else if (data.error) {
-				setSaveError(data.error)
-			} else if (data.success) {
-				// Mark current state as saved (resets dirty flag)
-				markAsSaved()
-				setSaveError(null)
-			}
-		}
-	}, [fetcher.state, fetcher.data, markAsSaved, setSaving, setSaveError, setConflict])
+    setSaving(true)
+    setSaveError(null)
 
-	// Handle save
-	const handleSave = useCallback(() => {
-		if (!snapshot) return
+    // Build slot assignments from snapshot
+    const assignments = snapshot.groups.flatMap(group =>
+      group.slots
+        .filter(
+          (slot): slot is typeof slot & { team: NonNullable<typeof slot.team> } =>
+            slot.team !== null,
+        )
+        .map(slot => ({
+          groupId: group.id,
+          slotIndex: slot.slotIndex,
+          teamId: slot.team.id,
+        })),
+    )
 
-		setSaving(true)
-		setSaveError(null)
+    fetcher.submit(
+      {
+        intent: 'save',
+        groupStageId: snapshot.groupStageId,
+        tournamentId,
+        updatedAt: snapshot.updatedAt,
+        assignments: JSON.stringify(assignments),
+      },
+      {
+        method: 'POST',
+        action: '/resources/competition/group-assignments',
+      },
+    )
+  }, [snapshot, tournamentId, fetcher, setSaving, setSaveError])
 
-		// Build slot assignments from snapshot
-		const assignments = snapshot.groups.flatMap((group) =>
-			group.slots
-				.filter(
-					(slot): slot is typeof slot & { team: NonNullable<typeof slot.team> } =>
-						slot.team !== null,
-				)
-				.map((slot) => ({
-					groupId: group.id,
-					slotIndex: slot.slotIndex,
-					teamId: slot.team.id,
-				})),
-		)
+  // Handle cancel
+  const handleCancel = useCallback(() => {
+    resetSnapshotPair()
+  }, [resetSnapshotPair])
 
-		fetcher.submit(
-			{
-				intent: 'save',
-				groupStageId: snapshot.groupStageId,
-				tournamentId,
-				updatedAt: snapshot.updatedAt,
-				assignments: JSON.stringify(assignments),
-			},
-			{
-				method: 'POST',
-				action: '/resources/competition/group-assignments',
-			},
-		)
-	}, [snapshot, tournamentId, fetcher, setSaving, setSaveError])
+  // Handle conflict reload
+  const handleConflictReload = useCallback(() => {
+    setShowConflictDialog(false)
+    setConflict(false)
+    revalidator.revalidate()
+  }, [revalidator, setConflict])
 
-	// Handle cancel
-	const handleCancel = useCallback(() => {
-		resetSnapshotPair()
-	}, [resetSnapshotPair])
+  // Responsive layout detection
+  const isMobile = useMediaQuery('(max-width: 1023px)')
 
-	// Handle conflict reload
-	const handleConflictReload = useCallback(() => {
-		setShowConflictDialog(false)
-		setConflict(false)
-		revalidator.revalidate()
-	}, [revalidator, setConflict])
+  const groupCount = snapshot ? snapshot.groups.length : 0
+  const safeGroupIndex =
+    groupCount === 0 ? 0 : Math.max(0, Math.min(activeGroupIndex, groupCount - 1))
 
-	// Responsive layout detection
-	const isMobile = useMediaQuery('(max-width: 1023px)')
+  useEffect(() => {
+    if (activeGroupIndex !== safeGroupIndex) {
+      setActiveGroupIndex(safeGroupIndex)
+    }
+  }, [activeGroupIndex, safeGroupIndex, setActiveGroupIndex])
 
-	const groupCount = snapshot ? snapshot.groups.length : 0
-	const safeGroupIndex =
-		groupCount === 0 ? 0 : Math.max(0, Math.min(activeGroupIndex, groupCount - 1))
+  useLayoutEffect(() => {
+    if (
+      !displacedAnimation ||
+      prefersReducedMotion ||
+      typeof document === 'undefined'
+    ) {
+      return
+    }
 
-	useEffect(() => {
-		if (activeGroupIndex !== safeGroupIndex) {
-			setActiveGroupIndex(safeGroupIndex)
-		}
-	}, [activeGroupIndex, safeGroupIndex, setActiveGroupIndex])
+    const confirmedPool = document.querySelector(
+      '[data-testid="confirmed-pool"]',
+    ) as HTMLElement | null
+    const confirmedTeam = confirmedPool?.querySelector(
+      `[data-team-id="${displacedAnimation.teamId}"]`,
+    ) as HTMLElement | null
+    if (!confirmedTeam) {
+      setDisplacedAnimation(null)
+      return
+    }
 
-	useLayoutEffect(() => {
-		if (
-			!displacedAnimation ||
-			prefersReducedMotion ||
-			typeof document === 'undefined'
-		) {
-			return
-		}
+    const toRect = confirmedTeam.getBoundingClientRect()
+    const deltaX = displacedAnimation.fromRect.left - toRect.left
+    const deltaY = displacedAnimation.fromRect.top - toRect.top
 
-		const confirmedPool = document.querySelector(
-			'[data-testid="confirmed-pool"]',
-		) as HTMLElement | null
-		const confirmedTeam = confirmedPool?.querySelector(
-			`[data-team-id="${displacedAnimation.teamId}"]`,
-		) as HTMLElement | null
-		if (!confirmedTeam) {
-			setDisplacedAnimation(null)
-			return
-		}
+    confirmedTeam.animate(
+      [
+        { transform: `translate(${deltaX}px, ${deltaY}px)` },
+        { transform: 'translate(0, 0)' },
+      ],
+      {
+        duration: 260,
+        easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        fill: 'both',
+      },
+    )
 
-		const toRect = confirmedTeam.getBoundingClientRect()
-		const deltaX = displacedAnimation.fromRect.left - toRect.left
-		const deltaY = displacedAnimation.fromRect.top - toRect.top
+    setDisplacedAnimation(null)
+  }, [displacedAnimation, prefersReducedMotion])
 
-		confirmedTeam.animate(
-			[
-				{ transform: `translate(${deltaX}px, ${deltaY}px)` },
-				{ transform: 'translate(0, 0)' },
-			],
-			{
-				duration: 260,
-				easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-				fill: 'both',
-			},
-		)
+  if (!snapshot) {
+    return (
+      <div className='flex items-center justify-center p-8'>
+        <span className='text-foreground-light'>{t('common.loading')}</span>
+      </div>
+    )
+  }
 
-		setDisplacedAnimation(null)
-	}, [displacedAnimation, prefersReducedMotion])
+  const waitlistTeams = getWaitlistTeams(snapshot)
+  const capacity = getConfirmedCapacity(snapshot)
 
-	if (!snapshot) {
-		return (
-			<div className='flex items-center justify-center p-8'>
-				<span className='text-foreground-light'>{t('common.loading')}</span>
-			</div>
-		)
-	}
+  const { gridColsClass, colSpanClass } = getGroupAssignmentLayoutClasses(groupCount)
 
-	const waitlistTeams = getWaitlistTeams(snapshot)
-	const capacity = getConfirmedCapacity(snapshot)
+  return (
+    <>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={pointerWithin}
+        measuring={measuring}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+        onDragCancel={handleDragCancel}
+      >
+        <div className='space-y-6'>
+          {/* Hero strip */}
+          <div className={heroStripVariants()}>
+            <h2 className={cn('font-bold text-2xl text-title', getLatinTitleClass())}>
+              {snapshot.groupStageName}
+            </h2>
+            <p className='text-foreground-light'>
+              {t('competition.groupAssignment.instruction')}
+            </p>
+          </div>
 
-	const { gridColsClass, colSpanClass } = getGroupAssignmentLayoutClasses(groupCount)
+          {/* Error banner */}
+          <GroupAssignmentErrorBanner
+            error={saveError}
+            onDismiss={() => setSaveError(null)}
+            dismissLabel={t('common.actions.cancel')}
+          />
 
-	return (
-		<>
-			<DndContext
-				sensors={sensors}
-				collisionDetection={pointerWithin}
-				measuring={measuring}
-				onDragStart={handleDragStart}
-				onDragOver={handleDragOver}
-				onDragEnd={handleDragEnd}
-				onDragCancel={handleDragCancel}
-			>
-				<div className='space-y-6'>
-					{/* Hero strip */}
-					<div className={heroStripVariants()}>
-						<h2 className={cn('font-bold text-2xl text-title', getLatinTitleClass())}>
-							{snapshot.groupStageName}
-						</h2>
-						<p className='text-foreground-light'>
-							{t('competition.groupAssignment.instruction')}
-						</p>
-					</div>
+          {/* Mobile group tabs */}
+          {isMobile && snapshot.groups.length > 1 ? (
+            <GroupAssignmentMobileTabs
+              groups={snapshot.groups}
+              activeGroupIndex={safeGroupIndex}
+              onTabChange={setActiveGroupIndex}
+              getAriaLabel={name =>
+                t('competition.groupAssignment.goToGroup', { name })
+              }
+            />
+          ) : null}
 
-					{/* Error banner */}
-					<GroupAssignmentErrorBanner
-						error={saveError}
-						onDismiss={() => setSaveError(null)}
-						dismissLabel={t('common.actions.cancel')}
-					/>
+          {/* Main board */}
+          <div className='space-y-6'>
+            {/* Groups section */}
+            <div className='space-y-4'>
+              {isMobile ? (
+                // Mobile: Show only active group
+                snapshot.groups.length > 0 ? (
+                  <GroupCard
+                    group={snapshot.groups[safeGroupIndex]}
+                    disabled={isSaving}
+                  />
+                ) : null
+              ) : (
+                // Desktop: Show all groups in responsive columns
+                <div className={gridColsClass}>
+                  {snapshot.groups.map(group => (
+                    <GroupCard key={group.id} group={group} disabled={isSaving} />
+                  ))}
+                </div>
+              )}
+            </div>
 
-					{/* Mobile group tabs */}
-					{isMobile && snapshot.groups.length > 1 ? (
-						<GroupAssignmentMobileTabs
-							groups={snapshot.groups}
-							activeGroupIndex={safeGroupIndex}
-							onTabChange={setActiveGroupIndex}
-							getAriaLabel={(name) =>
-								t('competition.groupAssignment.goToGroup', { name })
-							}
-						/>
-					) : null}
+            {/* Reserve section */}
+            <div className={gridColsClass}>
+              <div className={colSpanClass}>
+                <ConfirmedPool
+                  teams={snapshot.unassignedTeams}
+                  capacity={capacity}
+                  disabled={isSaving}
+                />
 
-					{/* Main board */}
-					<div className='space-y-6'>
-						{/* Groups section */}
-						<div className='space-y-4'>
-							{isMobile ? (
-								// Mobile: Show only active group
-								snapshot.groups.length > 0 ? (
-									<GroupCard
-										group={snapshot.groups[safeGroupIndex]}
-										disabled={isSaving}
-									/>
-								) : null
-							) : (
-								// Desktop: Show all groups in responsive columns
-								<div className={gridColsClass}>
-									{snapshot.groups.map((group) => (
-										<GroupCard key={group.id} group={group} disabled={isSaving} />
-									))}
-								</div>
-							)}
-						</div>
+                {waitlistTeams.length > 0 ? (
+                  <WaitlistPool
+                    teams={waitlistTeams}
+                    canPromote={capacity > 0}
+                    disabled={isSaving}
+                  />
+                ) : null}
+              </div>
+            </div>
+          </div>
 
-						{/* Reserve section */}
-						<div className={gridColsClass}>
-							<div className={colSpanClass}>
-								<ConfirmedPool
-									teams={snapshot.unassignedTeams}
-									capacity={capacity}
-									disabled={isSaving}
-								/>
+          <FormActionFooter
+            isDirty={isDirty}
+            primaryLabel={
+              isSaving ? t('common.actions.updating') : t('common.actions.update')
+            }
+            onPrimary={handleSave}
+            primaryDisabled={!isDirty || isSaving}
+            secondaryLabel={t('common.actions.cancel')}
+            onSecondary={handleCancel}
+            secondaryDisabled={!isDirty || isSaving}
+          />
+        </div>
 
-								{waitlistTeams.length > 0 ? (
-									<WaitlistPool
-										teams={waitlistTeams}
-										canPromote={capacity > 0}
-										disabled={isSaving}
-									/>
-								) : null}
-							</div>
-						</div>
-					</div>
+        {/* Drag overlay */}
+        {isClient
+          ? createPortal(
+              <DragOverlay
+                style={{ cursor: 'grabbing', zIndex: 'var(--z-dnd-overlay)' }}
+                modifiers={[snapCenterToCursor]}
+              >
+                {activeDragTeam ? <DragOverlayChip team={activeDragTeam} /> : null}
+              </DragOverlay>,
+              document.body,
+            )
+          : null}
+      </DndContext>
 
-					{/* Action buttons */}
-					<div className={actionButtonGroupVariants()}>
-						<ActionButton
-							type='button'
-							variant='primary'
-							onClick={handleSave}
-							disabled={!isDirty || isSaving}
-							data-testid='group-assignment-save'
-						>
-							{isSaving ? t('common.actions.saving') : t('common.actions.save')}
-						</ActionButton>
-
-						<ActionButton
-							type='button'
-							variant='secondary'
-							onClick={handleCancel}
-							disabled={!isDirty || isSaving}
-							data-testid='group-assignment-cancel'
-						>
-							{t('common.actions.cancel')}
-						</ActionButton>
-
-						{isDirty ? (
-							<span
-								className='ms-auto text-sm text-warning-600 dark:text-warning-400'
-								data-testid='group-assignment-unsaved-warning'
-							>
-								{t('competition.groupAssignment.unsavedChanges')}
-							</span>
-						) : null}
-					</div>
-				</div>
-
-				{/* Drag overlay */}
-				{isClient
-					? createPortal(
-							<DragOverlay
-								style={{ cursor: 'grabbing', zIndex: 'var(--z-dnd-overlay)' }}
-								modifiers={[snapCenterToCursor]}
-							>
-								{activeDragTeam ? <DragOverlayChip team={activeDragTeam} /> : null}
-							</DragOverlay>,
-							document.body,
-						)
-					: null}
-			</DndContext>
-
-			{/* Conflict dialog */}
-			<ConfirmDialog
-				open={showConflictDialog}
-				onOpenChange={(open) => {
-					if (!open) handleConflictReload()
-				}}
-				onConfirm={handleConflictReload}
-				title={t('competition.groupAssignment.conflictTitle')}
-				description={t('competition.groupAssignment.conflictDescription')}
-				confirmLabel={t('competition.groupAssignment.conflictReload')}
-				cancelLabel={t('common.actions.cancel')}
-				intent='warning'
-			/>
-
-			{/* Navigation blocker dialog */}
-			{blocker.state === 'blocked' ? (
-				<ConfirmDialog
-					open
-					onOpenChange={(open) => {
-						// Only reset if user is canceling (not proceeding with navigation)
-						if (!open && !isProceedingNavigation) {
-							blocker.reset()
-						}
-					}}
-					onConfirm={() => {
-						setIsProceedingNavigation(true)
-						blocker.proceed()
-					}}
-					title={t('competition.groupAssignment.unsavedTitle')}
-					description={t('competition.groupAssignment.unsavedDescription')}
-					confirmLabel={t('competition.groupAssignment.leaveAnyway')}
-					cancelLabel={t('competition.groupAssignment.stayOnPage')}
-					intent='warning'
-				/>
-			) : null}
-		</>
-	)
+      {/* Conflict dialog */}
+      <ConfirmDialog
+        open={showConflictDialog}
+        onOpenChange={open => {
+          if (!open) handleConflictReload()
+        }}
+        onConfirm={handleConflictReload}
+        title={t('competition.groupAssignment.conflictTitle')}
+        description={t('competition.groupAssignment.conflictDescription')}
+        confirmLabel={t('competition.groupAssignment.conflictReload')}
+        cancelLabel={t('common.actions.cancel')}
+        intent='warning'
+      />
+    </>
+  )
 }

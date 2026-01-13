@@ -20,19 +20,18 @@ Tournado implements Firebase Authentication with multiple sign-in methods to acc
 ```typescript
 // Firebase Google OAuth
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-
 import { auth, googleProvider } from '~/features/firebase/client'
 
 const signInWithGoogle = async () => {
-   try {
-      const result = await signInWithPopup(auth, googleProvider)
-      const user = result.user
-      // Automatic session cookie creation via callback
-      return user
-   } catch (error) {
-      console.error('Google sign-in failed:', error)
-      throw error
-   }
+  try {
+    const result = await signInWithPopup(auth, googleProvider)
+    const user = result.user
+    // Automatic session cookie creation via callback
+    return user
+  } catch (error) {
+    console.error('Google sign-in failed:', error)
+    throw error
+  }
 }
 ```
 
@@ -50,32 +49,31 @@ const signInWithGoogle = async () => {
 ```typescript
 // Firebase Email/Password Authentication
 import {
-   createUserWithEmailAndPassword,
-   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from 'firebase/auth'
-
 import { auth } from '~/features/firebase/client'
 
 // Sign up with email/password
 const signUpWithEmail = async (email: string, password: string) => {
-   try {
-      const result = await createUserWithEmailAndPassword(auth, email, password)
-      return result.user
-   } catch (error) {
-      console.error('Email sign-up failed:', error)
-      throw error
-   }
+  try {
+    const result = await createUserWithEmailAndPassword(auth, email, password)
+    return result.user
+  } catch (error) {
+    console.error('Email sign-up failed:', error)
+    throw error
+  }
 }
 
 // Sign in with email/password
 const signInWithEmail = async (email: string, password: string) => {
-   try {
-      const result = await signInWithEmailAndPassword(auth, email, password)
-      return result.user
-   } catch (error) {
-      console.error('Email sign-in failed:', error)
-      throw error
-   }
+  try {
+    const result = await signInWithEmailAndPassword(auth, email, password)
+    return result.user
+  } catch (error) {
+    console.error('Email sign-in failed:', error)
+    throw error
+  }
 }
 ```
 
@@ -110,45 +108,44 @@ const signInWithEmail = async (email: string, password: string) => {
 ```typescript
 // Firebase Phone Authentication
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
-
 import { auth } from '~/features/firebase/client'
 
 // Initialize reCAPTCHA verifier
 const recaptchaVerifier = new RecaptchaVerifier(
-   'recaptcha-container',
-   {
-      size: 'invisible',
-      callback: () => {
-         // reCAPTCHA solved, enable phone auth
-      },
-   },
-   auth
+  'recaptcha-container',
+  {
+    size: 'invisible',
+    callback: () => {
+      // reCAPTCHA solved, enable phone auth
+    },
+  },
+  auth,
 )
 
 // Send SMS verification code
 const sendVerificationCode = async (phoneNumber: string) => {
-   try {
-      const confirmationResult = await signInWithPhoneNumber(
-         auth,
-         phoneNumber,
-         recaptchaVerifier
-      )
-      return confirmationResult
-   } catch (error) {
-      console.error('SMS verification failed:', error)
-      throw error
-   }
+  try {
+    const confirmationResult = await signInWithPhoneNumber(
+      auth,
+      phoneNumber,
+      recaptchaVerifier,
+    )
+    return confirmationResult
+  } catch (error) {
+    console.error('SMS verification failed:', error)
+    throw error
+  }
 }
 
 // Verify SMS code
 const verifyPhoneCode = async (confirmationResult: any, code: string) => {
-   try {
-      const result = await confirmationResult.confirm(code)
-      return result.user
-   } catch (error) {
-      console.error('Phone verification failed:', error)
-      throw error
-   }
+  try {
+    const result = await confirmationResult.confirm(code)
+    return result.user
+  } catch (error) {
+    console.error('Phone verification failed:', error)
+    throw error
+  }
 }
 ```
 
@@ -157,57 +154,57 @@ const verifyPhoneCode = async (confirmationResult: any, code: string) => {
 ```typescript
 // Complete phone authentication flow
 export const usePhoneAuth = () => {
-   const [verificationId, setVerificationId] = useState<string | null>(null)
-   const [confirmationResult, setConfirmationResult] = useState<any>(null)
+  const [verificationId, setVerificationId] = useState<string | null>(null)
+  const [confirmationResult, setConfirmationResult] = useState<any>(null)
 
-   const setupRecaptcha = () => {
-      if (!window.recaptchaVerifier) {
-         window.recaptchaVerifier = new RecaptchaVerifier(
-            'recaptcha-container',
-            {
-               size: 'invisible',
-               callback: () => {
-                  // reCAPTCHA solved - can proceed with phone auth
-               },
-               'expired-callback': () => {
-                  // Response expired - ask user to solve reCAPTCHA again
-               },
-            },
-            auth
-         )
+  const setupRecaptcha = () => {
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        'recaptcha-container',
+        {
+          size: 'invisible',
+          callback: () => {
+            // reCAPTCHA solved - can proceed with phone auth
+          },
+          'expired-callback': () => {
+            // Response expired - ask user to solve reCAPTCHA again
+          },
+        },
+        auth,
+      )
+    }
+  }
+
+  const sendOTP = async (phoneNumber: string) => {
+    try {
+      setupRecaptcha()
+      const confirmation = await signInWithPhoneNumber(
+        auth,
+        phoneNumber,
+        window.recaptchaVerifier,
+      )
+      setConfirmationResult(confirmation)
+      return confirmation
+    } catch (error) {
+      console.error('Error sending OTP:', error)
+      throw error
+    }
+  }
+
+  const verifyOTP = async (otp: string) => {
+    try {
+      if (confirmationResult) {
+        const result = await confirmationResult.confirm(otp)
+        return result.user
       }
-   }
+      throw new Error('No confirmation result available')
+    } catch (error) {
+      console.error('Error verifying OTP:', error)
+      throw error
+    }
+  }
 
-   const sendOTP = async (phoneNumber: string) => {
-      try {
-         setupRecaptcha()
-         const confirmation = await signInWithPhoneNumber(
-            auth,
-            phoneNumber,
-            window.recaptchaVerifier
-         )
-         setConfirmationResult(confirmation)
-         return confirmation
-      } catch (error) {
-         console.error('Error sending OTP:', error)
-         throw error
-      }
-   }
-
-   const verifyOTP = async (otp: string) => {
-      try {
-         if (confirmationResult) {
-            const result = await confirmationResult.confirm(otp)
-            return result.user
-         }
-         throw new Error('No confirmation result available')
-      } catch (error) {
-         console.error('Error verifying OTP:', error)
-         throw error
-      }
-   }
-
-   return { sendOTP, verifyOTP }
+  return { sendOTP, verifyOTP }
 }
 ```
 
@@ -349,24 +346,24 @@ Our E2E tests follow the principle "Test your code, not third-party services":
 // Session cookie bridging
 // app/features/firebase/session.server.ts
 export async function createSessionCookie(idToken: string) {
-   if (!adminAuth) throw new Error('Firebase Admin not initialized')
+  if (!adminAuth) throw new Error('Firebase Admin not initialized')
 
-   const sessionCookie = await adminAuth.createSessionCookie(idToken, {
-      expiresIn: 60 * 60 * 24 * 5 * 1000, // 5 days
-   })
+  const sessionCookie = await adminAuth.createSessionCookie(idToken, {
+    expiresIn: 60 * 60 * 24 * 5 * 1000, // 5 days
+  })
 
-   return sessionCookie
+  return sessionCookie
 }
 
 export async function validateSessionCookie(sessionCookie: string) {
-   if (!adminAuth) return null
+  if (!adminAuth) return null
 
-   try {
-      const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true)
-      return decodedClaims
-   } catch {
-      return null
-   }
+  try {
+    const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true)
+    return decodedClaims
+  } catch {
+    return null
+  }
 }
 ```
 
@@ -394,23 +391,23 @@ export async function validateSessionCookie(sessionCookie: string) {
 ```tsx
 // app/routes/auth.signin.tsx
 export default function SignIn() {
-   return (
-      <div className='auth-container'>
-         <h1>Sign In to Tournado</h1>
+  return (
+    <div className='auth-container'>
+      <h1>Sign In to Tournado</h1>
 
-         {/* Google OAuth - Primary option */}
-         <FirebaseSignIn variant='primary' />
+      {/* Google OAuth - Primary option */}
+      <FirebaseSignIn variant='primary' />
 
-         <div className='divider'>or</div>
+      <div className='divider'>or</div>
 
-         {/* Email/Password - Alternative */}
-         <FirebaseEmailSignIn mode='signin' />
+      {/* Email/Password - Alternative */}
+      <FirebaseEmailSignIn mode='signin' />
 
-         <p>
-            Don't have an account? <Link to='/auth/signup'>Sign up</Link>
-         </p>
-      </div>
-   )
+      <p>
+        Don't have an account? <Link to='/auth/signup'>Sign up</Link>
+      </p>
+    </div>
+  )
 }
 ```
 
@@ -515,13 +512,13 @@ export default function SignIn() {
 ```typescript
 // app/features/firebase/client.ts
 import { initializeApp } from 'firebase/app'
-import { getAuth, GoogleAuthProvider } from 'firebase/auth'
+import { GoogleAuthProvider, getAuth } from 'firebase/auth'
 
 const firebaseConfig = {
-   apiKey: process.env.VITE_FIREBASE_API_KEY,
-   authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
-   projectId: process.env.VITE_FIREBASE_PROJECT_ID,
-   // ... other config
+  apiKey: process.env.VITE_FIREBASE_API_KEY,
+  authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.VITE_FIREBASE_PROJECT_ID,
+  // ... other config
 }
 
 export const app = initializeApp(firebaseConfig)
@@ -537,11 +534,11 @@ import { cert, initializeApp } from 'firebase-admin/app'
 import { getAuth } from 'firebase-admin/auth'
 
 const adminApp = initializeApp({
-   credential: cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-   }),
+  credential: cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+  }),
 })
 
 export const adminAuth = getAuth(adminApp)

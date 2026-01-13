@@ -4,8 +4,8 @@ import type { Language } from '~/i18n/config'
 import { useSettingsActions, useSettingsLanguage } from '~/stores/useSettingsStore'
 
 type UseLanguageSwitcherReturn = {
-	switchLanguage: (langCode: Language) => void
-	currentLanguage: Language
+  switchLanguage: (langCode: Language) => void
+  currentLanguage: Language
 }
 
 /**
@@ -15,39 +15,39 @@ type UseLanguageSwitcherReturn = {
  * The i18n instance will be updated automatically when the store changes.
  */
 export function useLanguageSwitcher(): UseLanguageSwitcherReturn {
-	const { i18n } = useTranslation()
-	const storeLanguage = useSettingsLanguage()
-	const { setLanguage } = useSettingsActions()
+  const { i18n } = useTranslation()
+  const storeLanguage = useSettingsLanguage()
+  const { setLanguage } = useSettingsActions()
 
-	const [isHydrated, setIsHydrated] = useState(false)
+  const [isHydrated, setIsHydrated] = useState(false)
 
-	useEffect(() => {
-		setIsHydrated(true)
-	}, [])
+  useEffect(() => {
+    setIsHydrated(true)
+  }, [])
 
-	// Direct cookie read for accuracy until hydrated
-	const getCookieLang = (): Language => {
-		if (typeof document === 'undefined') return 'nl'
-		const match = document.cookie.match(/lang=([^;]+)/)
-		const raw = match ? match[1] : null
-		if (!raw) return 'nl'
-		// Normalize Arabic variants to 'ar' (e.g., 'ar-SA' -> 'ar')
-		const normalized = raw.startsWith('ar') ? 'ar' : raw
-		if (!normalized) return 'nl'
-		// Validate against supported (include 'ar' explicitly)
-		const supported = ['nl', 'en', 'de', 'fr', 'tr', 'ar']
-		return supported.includes(normalized) ? (normalized as Language) : 'nl'
-	}
+  // Direct cookie read for accuracy until hydrated
+  const getCookieLang = (): Language => {
+    if (typeof document === 'undefined') return 'nl'
+    const match = document.cookie.match(/lang=([^;]+)/)
+    const raw = match ? match[1] : null
+    if (!raw) return 'nl'
+    // Normalize Arabic variants to 'ar' (e.g., 'ar-SA' -> 'ar')
+    const normalized = raw.startsWith('ar') ? 'ar' : raw
+    if (!normalized) return 'nl'
+    // Validate against supported (include 'ar' explicitly)
+    const supported = ['nl', 'en', 'de', 'fr', 'tr', 'ar']
+    return supported.includes(normalized) ? (normalized as Language) : 'nl'
+  }
 
-	const effectiveLanguage = isHydrated ? storeLanguage : getCookieLang()
+  const effectiveLanguage = isHydrated ? storeLanguage : getCookieLang()
 
-	const switchLanguage = (lang: Language) => {
-		i18n.changeLanguage(lang)
-		setLanguage(lang)
-	}
+  const switchLanguage = (lang: Language) => {
+    i18n.changeLanguage(lang)
+    setLanguage(lang)
+  }
 
-	return {
-		currentLanguage: effectiveLanguage,
-		switchLanguage,
-	}
+  return {
+    currentLanguage: effectiveLanguage,
+    switchLanguage,
+  }
 }

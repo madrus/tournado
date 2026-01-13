@@ -1,22 +1,20 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import type { JSX, ReactNode } from 'react'
-
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
-
 import {
-	getCancelButtonColor,
-	getDefaultColorsForIntent,
-	getIconForIntent,
+  getCancelButtonColor,
+  getDefaultColorsForIntent,
+  getIconForIntent,
 } from './dialog.utils'
 import {
-	type DialogIntent,
-	dialogContentVariants,
-	dialogOverlayVariants,
-	iconColorVariants,
-	iconContainerVariants,
-	titleColorVariants,
+  type DialogIntent,
+  dialogContentVariants,
+  dialogOverlayVariants,
+  iconColorVariants,
+  iconContainerVariants,
+  titleColorVariants,
 } from './dialog.variants'
 
 /**
@@ -54,127 +52,127 @@ import {
  * → Use `ConfirmDialog` (controlled mode) instead
  */
 type SimpleConfirmDialogProps = {
-	// Trigger element that opens the dialog
-	trigger: ReactNode
+  // Trigger element that opens the dialog
+  trigger: ReactNode
 
-	// Enhanced intent-based theming
-	intent?: DialogIntent
+  // Enhanced intent-based theming
+  intent?: DialogIntent
 
-	// Content
-	title: string
-	description?: string
+  // Content
+  title: string
+  description?: string
 
-	// Button labels
-	confirmLabel: string
-	cancelLabel: string
+  // Button labels
+  confirmLabel: string
+  cancelLabel: string
 
-	// Actions
-	onConfirm?: () => void
+  // Actions
+  onConfirm?: () => void
 
-	// Behavior
-	destructive?: boolean
+  // Behavior
+  destructive?: boolean
 }
 
 export function SimpleConfirmDialog({
-	trigger,
-	intent = 'warning',
-	title,
-	description,
-	confirmLabel,
-	cancelLabel,
-	onConfirm,
-	destructive = false,
+  trigger,
+  intent = 'warning',
+  title,
+  description,
+  confirmLabel,
+  cancelLabel,
+  onConfirm,
+  destructive = false,
 }: Readonly<SimpleConfirmDialogProps>): JSX.Element {
-	// Get intent-driven defaults
-	const intentColors = getDefaultColorsForIntent(intent)
-	const finalIcon = getIconForIntent(intent)
-	const finalConfirmColor = intentColors.confirm
-	const finalCancelColor = getCancelButtonColor()
-	const buttonClassName = cn('w-full min-w-[120px] md:w-auto')
+  // Get intent-driven defaults
+  const intentColors = getDefaultColorsForIntent(intent)
+  const finalIcon = getIconForIntent(intent)
+  const finalConfirmColor = intentColors.confirm
+  const finalCancelColor = getCancelButtonColor()
+  const buttonClassName = cn('w-full min-w-[120px] md:w-auto')
 
-	const handleConfirm = (): void => {
-		onConfirm?.()
-		// Dialog.Close handles closing the dialog automatically
-	}
+  const handleConfirm = (): void => {
+    onConfirm?.()
+    // Dialog.Close handles closing the dialog automatically
+  }
 
-	return (
-		<Dialog.Root>
-			<Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
 
-			<Dialog.Portal>
-				<Dialog.Overlay className={dialogOverlayVariants()} />
+      <Dialog.Portal>
+        <Dialog.Overlay className={dialogOverlayVariants()} />
 
-				<Dialog.Content
-					role='alertdialog'
-					aria-describedby={description ? 'dialog-description' : undefined}
-					className={dialogContentVariants({ intent, size: 'md' })}
-				>
-					<div className='flex items-start gap-5'>
-						<div
-							aria-hidden='true'
-							className={iconContainerVariants({ intent })}
-							data-testid='simple-confirm-dialog-icon-container'
-						>
-							{renderIcon(finalIcon, {
-								className: iconColorVariants({ intent }),
-								'data-testid': 'simple-confirm-dialog-icon',
-							})}
-						</div>
+        <Dialog.Content
+          role='alertdialog'
+          aria-describedby={description ? 'dialog-description' : undefined}
+          className={dialogContentVariants({ intent, size: 'md' })}
+        >
+          <div className='flex items-start gap-5'>
+            <div
+              aria-hidden='true'
+              className={iconContainerVariants({ intent })}
+              data-testid='simple-confirm-dialog-icon-container'
+            >
+              {renderIcon(finalIcon, {
+                className: iconColorVariants({ intent }),
+                'data-testid': 'simple-confirm-dialog-icon',
+              })}
+            </div>
 
-						<div className='min-w-0 flex-1 pt-1'>
-							<Dialog.Title
-								className={cn(
-									'mb-2 font-semibold text-2xl leading-tight',
-									titleColorVariants({ intent }),
-								)}
-							>
-								{title}
-							</Dialog.Title>
-							{description ? (
-								<Dialog.Description
-									id='dialog-description'
-									className='text-base text-slate-600 leading-relaxed dark:text-slate-400'
-								>
-									{description}
-								</Dialog.Description>
-							) : null}
+            <div className='min-w-0 flex-1 pt-1'>
+              <Dialog.Title
+                className={cn(
+                  'mb-2 font-semibold text-2xl leading-tight',
+                  titleColorVariants({ intent }),
+                )}
+              >
+                {title}
+              </Dialog.Title>
+              {description ? (
+                <Dialog.Description
+                  id='dialog-description'
+                  className='text-base text-slate-600 leading-relaxed dark:text-slate-400'
+                >
+                  {description}
+                </Dialog.Description>
+              ) : null}
 
-							<div className='mt-8 flex flex-col-reverse gap-2 sm:flex-row'>
-								<div className='sm:order-1'>
-									<Dialog.Close asChild>
-										<ActionButton
-											variant='secondary'
-											color={finalCancelColor}
-											size='md'
-											className={buttonClassName}
-											aria-label={cancelLabel}
-											autoFocus={destructive}
-										>
-											{cancelLabel}
-										</ActionButton>
-									</Dialog.Close>
-								</div>
+              <div className='mt-8 flex flex-col-reverse gap-2 sm:flex-row'>
+                <div className='sm:order-1'>
+                  <Dialog.Close asChild>
+                    <ActionButton
+                      variant='secondary'
+                      color={finalCancelColor}
+                      size='md'
+                      className={buttonClassName}
+                      aria-label={cancelLabel}
+                      autoFocus={destructive}
+                    >
+                      {cancelLabel}
+                    </ActionButton>
+                  </Dialog.Close>
+                </div>
 
-								<div className='sm:order-2'>
-									<Dialog.Close asChild>
-										<ActionButton
-											variant='primary'
-											color={finalConfirmColor}
-											size='md'
-											onClick={handleConfirm}
-											className={buttonClassName}
-											aria-label={confirmLabel}
-											autoFocus={!destructive}
-										>
-											{confirmLabel}
-										</ActionButton>
-									</Dialog.Close>
-								</div>
-							</div>
-						</div>
-					</div>
-				</Dialog.Content>
-			</Dialog.Portal>
-		</Dialog.Root>
-	)
+                <div className='sm:order-2'>
+                  <Dialog.Close asChild>
+                    <ActionButton
+                      variant='primary'
+                      color={finalConfirmColor}
+                      size='md'
+                      onClick={handleConfirm}
+                      className={buttonClassName}
+                      aria-label={confirmLabel}
+                      autoFocus={!destructive}
+                    >
+                      {confirmLabel}
+                    </ActionButton>
+                  </Dialog.Close>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  )
 }

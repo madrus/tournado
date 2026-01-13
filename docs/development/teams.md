@@ -93,9 +93,9 @@ A comprehensive form component for creating and editing teams with advanced vali
 
 ```typescript
 type TeamFormProps = {
-   team?: Team
-   mode: 'create' | 'edit'
-   tournamentId?: string
+  team?: Team
+  mode: 'create' | 'edit'
+  tournamentId?: string
 }
 ```
 
@@ -153,18 +153,18 @@ Advanced validation hook providing real-time validation feedback.
 
 ```typescript
 const {
-   values,
-   errors,
-   touched,
-   isSubmitting,
-   handleChange,
-   handleBlur,
-   handleSubmit,
-   setFieldValue,
+  values,
+  errors,
+  touched,
+  isSubmitting,
+  handleChange,
+  handleBlur,
+  handleSubmit,
+  setFieldValue,
 } = useTeamFormValidation({
-   initialValues: team || defaultTeamValues,
-   mode,
-   tournamentId,
+  initialValues: team || defaultTeamValues,
+  mode,
+  tournamentId,
 })
 ```
 
@@ -174,41 +174,41 @@ const {
 const PHONE_REGEX = /^[\+]?[0-9\s\-\(\)]+$/
 
 export const baseTeamSchema = z.object({
-   tournamentId: z.string().min(1),
-   name: z.string().min(1).max(50),
-   clubName: z.string().min(1).max(100),
-   division: z.string().min(1),
-   category: z.string().min(1),
-   teamLeaderName: z.string().min(1).max(100),
-   teamLeaderPhone: z
-      .string()
-      .min(1)
-      .pipe(
-         z.string().refine(val => PHONE_REGEX.test(val), {
-            error: 'Invalid phone number format',
-         })
-      ),
-   teamLeaderEmail: z
-      .string()
-      .min(1)
-      .pipe(z.email({ error: 'Invalid email address' })),
-   privacyAgreement: z.boolean().refine(val => val, {
-      error: 'Privacy agreement is required',
-   }),
+  tournamentId: z.string().min(1),
+  name: z.string().min(1).max(50),
+  clubName: z.string().min(1).max(100),
+  division: z.string().min(1),
+  category: z.string().min(1),
+  teamLeaderName: z.string().min(1).max(100),
+  teamLeaderPhone: z
+    .string()
+    .min(1)
+    .pipe(
+      z.string().refine(val => PHONE_REGEX.test(val), {
+        error: 'Invalid phone number format',
+      }),
+    ),
+  teamLeaderEmail: z
+    .string()
+    .min(1)
+    .pipe(z.email({ error: 'Invalid email address' })),
+  privacyAgreement: z.boolean().refine(val => val, {
+    error: 'Privacy agreement is required',
+  }),
 })
 
 // Additional validation for team name uniqueness
 export const TeamFormSchema = TeamSchema.refine(
-   async data => {
-      if (mode === 'edit' && data.name === originalTeam?.name) {
-         return true
-      }
-      return await isTeamNameUnique(data.name, data.tournamentId)
-   },
-   {
-      message: 'A team with this name already exists',
-      path: ['name'],
-   }
+  async data => {
+    if (mode === 'edit' && data.name === originalTeam?.name) {
+      return true
+    }
+    return await isTeamNameUnique(data.name, data.tournamentId)
+  },
+  {
+    message: 'A team with this name already exists',
+    path: ['name'],
+  },
 )
 ```
 
@@ -218,11 +218,11 @@ export const TeamFormSchema = TeamSchema.refine(
 
 ```typescript
 enum Division {
-   SENIORS = 'SENIORS', // Adult competition
-   YOUTH = 'YOUTH', // Under-18 competition
-   VETERANS = 'VETERANS', // Over-35 competition
-   WOMEN = 'WOMEN', // Women's competition
-   MIXED = 'MIXED', // Mixed gender competition
+  SENIORS = 'SENIORS', // Adult competition
+  YOUTH = 'YOUTH', // Under-18 competition
+  VETERANS = 'VETERANS', // Over-35 competition
+  WOMEN = 'WOMEN', // Women's competition
+  MIXED = 'MIXED', // Mixed gender competition
 }
 ```
 
@@ -230,38 +230,38 @@ enum Division {
 
 ```json
 {
-   "divisions": {
-      "SENIORS": {
-         "en": "Seniors",
-         "nl": "Senioren",
-         "tr": "Büyükler",
-         "ar": "الكبار"
-      },
-      "YOUTH": {
-         "en": "Youth",
-         "nl": "Jeugd",
-         "tr": "Gençler",
-         "ar": "الشباب"
-      },
-      "VETERANS": {
-         "en": "Veterans",
-         "nl": "Veteranen",
-         "tr": "Veteranlar",
-         "ar": "المخضرمون"
-      },
-      "WOMEN": {
-         "en": "Women",
-         "nl": "Vrouwen",
-         "tr": "Kadınlar",
-         "ar": "النساء"
-      },
-      "MIXED": {
-         "en": "Mixed",
-         "nl": "Gemengd",
-         "tr": "Karma",
-         "ar": "مختلط"
-      }
-   }
+  "divisions": {
+    "SENIORS": {
+      "en": "Seniors",
+      "nl": "Senioren",
+      "tr": "Büyükler",
+      "ar": "الكبار"
+    },
+    "YOUTH": {
+      "en": "Youth",
+      "nl": "Jeugd",
+      "tr": "Gençler",
+      "ar": "الشباب"
+    },
+    "VETERANS": {
+      "en": "Veterans",
+      "nl": "Veteranen",
+      "tr": "Veteranlar",
+      "ar": "المخضرمون"
+    },
+    "WOMEN": {
+      "en": "Women",
+      "nl": "Vrouwen",
+      "tr": "Kadınlar",
+      "ar": "النساء"
+    },
+    "MIXED": {
+      "en": "Mixed",
+      "nl": "Gemengd",
+      "tr": "Karma",
+      "ar": "مختلط"
+    }
+  }
 }
 ```
 
@@ -297,29 +297,29 @@ export async function loader({ params }: LoaderArgs): Promise<LoaderData> {
 
 ```typescript
 export async function action({ request }: ActionArgs): Promise<Response> {
-   const formData = await request.formData()
-   const intent = formData.get('intent')
+  const formData = await request.formData()
+  const intent = formData.get('intent')
 
-   switch (intent) {
-      case 'create':
-         const createData = await parseTeamFormData(formData)
-         const newTeam = await createTeam(createData)
-         return redirect(`/teams/${newTeam.id}`)
+  switch (intent) {
+    case 'create':
+      const createData = await parseTeamFormData(formData)
+      const newTeam = await createTeam(createData)
+      return redirect(`/teams/${newTeam.id}`)
 
-      case 'update':
-         const updateData = await parseTeamFormData(formData)
-         const teamId = formData.get('teamId') as string
-         await updateTeam(teamId, updateData)
-         return redirect(`/teams/${teamId}`)
+    case 'update':
+      const updateData = await parseTeamFormData(formData)
+      const teamId = formData.get('teamId') as string
+      await updateTeam(teamId, updateData)
+      return redirect(`/teams/${teamId}`)
 
-      case 'delete':
-         const deleteTeamId = formData.get('teamId') as string
-         await deleteTeam(deleteTeamId)
-         return redirect('/teams')
+    case 'delete':
+      const deleteTeamId = formData.get('teamId') as string
+      await deleteTeam(deleteTeamId)
+      return redirect('/teams')
 
-      default:
-         throw new Response('Invalid intent', { status: 400 })
-   }
+    default:
+      throw new Response('Invalid intent', { status: 400 })
+  }
 }
 ```
 
@@ -341,17 +341,17 @@ export async function action({ request }: ActionArgs): Promise<Response> {
 
 ```typescript
 type Team = {
-   id: string
-   name: string
-   clubName?: string
-   captainName: string
-   captainEmail: string
-   captainPhone?: string
-   division: Division
-   tournamentId?: string
-   tournament?: Tournament
-   createdAt: Date
-   updatedAt: Date
+  id: string
+  name: string
+  clubName?: string
+  captainName: string
+  captainEmail: string
+  captainPhone?: string
+  division: Division
+  tournamentId?: string
+  tournament?: Tournament
+  createdAt: Date
+  updatedAt: Date
 }
 
 type TeamListItem = Pick<Team, 'id' | 'name' | 'clubName' | 'division'>
@@ -380,28 +380,28 @@ type TeamFormData = Omit<Team, 'id' | 'createdAt' | 'updatedAt' | 'tournament'>
 ```css
 /* Mobile First Approach */
 .team-grid {
-   @apply grid grid-cols-1 gap-2;
+  @apply grid grid-cols-1 gap-2;
 }
 
 /* Tablet */
 @screen md {
-   .team-grid {
-      @apply grid-cols-2 gap-4;
-   }
+  .team-grid {
+    @apply grid-cols-2 gap-4;
+  }
 }
 
 /* Desktop */
 @screen lg {
-   .team-grid {
-      @apply grid-cols-3 gap-6;
-   }
+  .team-grid {
+    @apply grid-cols-3 gap-6;
+  }
 }
 
 /* Large Desktop */
 @screen xl {
-   .team-grid {
-      @apply grid-cols-4;
-   }
+  .team-grid {
+    @apply grid-cols-4;
+  }
 }
 ```
 
@@ -411,29 +411,29 @@ type TeamFormData = Omit<Team, 'id' | 'createdAt' | 'updatedAt' | 'tournament'>
 
 ```json
 {
-   "teams": {
-      "teamName": "Team name",
-      "clubName": "Club name",
-      "captainName": "Captain name",
-      "captainEmail": "Captain email",
-      "captainPhone": "Captain phone",
-      "division": "Division",
-      "tournament": "Tournament",
-      "createTeam": "Create team",
-      "editTeam": "Edit team",
-      "deleteTeam": "Delete team",
-      "teamInfo": "Team information",
-      "captainInfo": "Captain information",
-      "noTeams": "No teams found",
-      "noTeamsDescription": "Create your first team to get started"
-   },
-   "validation": {
-      "required": "This field is required",
-      "email": "Please enter a valid email address",
-      "phone": "Please enter a valid phone number",
-      "maxLength": "Must be {{max}} characters or less",
-      "teamNameExists": "A team with this name already exists"
-   }
+  "teams": {
+    "teamName": "Team name",
+    "clubName": "Club name",
+    "captainName": "Captain name",
+    "captainEmail": "Captain email",
+    "captainPhone": "Captain phone",
+    "division": "Division",
+    "tournament": "Tournament",
+    "createTeam": "Create team",
+    "editTeam": "Edit team",
+    "deleteTeam": "Delete team",
+    "teamInfo": "Team information",
+    "captainInfo": "Captain information",
+    "noTeams": "No teams found",
+    "noTeamsDescription": "Create your first team to get started"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email address",
+    "phone": "Please enter a valid phone number",
+    "maxLength": "Must be {{max}} characters or less",
+    "teamNameExists": "A team with this name already exists"
+  }
 }
 ```
 
@@ -443,17 +443,17 @@ Following Dutch capitalization rules:
 
 ```json
 {
-   "teams": {
-      "teamName": "Teamnaam",
-      "clubName": "Clubnaam",
-      "captainName": "Aanvoerdernaam",
-      "captainEmail": "Aanvoerder e-mail",
-      "captainPhone": "Aanvoerder telefoon",
-      "division": "Divisie",
-      "createTeam": "Team aanmaken",
-      "teamInfo": "Team informatie",
-      "captainInfo": "Aanvoerder informatie"
-   }
+  "teams": {
+    "teamName": "Teamnaam",
+    "clubName": "Clubnaam",
+    "captainName": "Aanvoerdernaam",
+    "captainEmail": "Aanvoerder e-mail",
+    "captainPhone": "Aanvoerder telefoon",
+    "division": "Divisie",
+    "createTeam": "Team aanmaken",
+    "teamInfo": "Team informatie",
+    "captainInfo": "Aanvoerder informatie"
+  }
 }
 ```
 

@@ -45,10 +45,10 @@ const rateLimitResult = checkRateLimit(`login:${clientIP}`, RATE_LIMITS.ADMIN_LO
 ```ts
 // Usage in admin routes
 export const action = async ({ request }) => {
-   return withAdminRateLimit(request, async () => {
-      // Your admin logic here
-      return Response.json({ success: true })
-   })
+  return withAdminRateLimit(request, async () => {
+    // Your admin logic here
+    return Response.json({ success: true })
+  })
 }
 ```
 
@@ -62,11 +62,11 @@ export const action = async ({ request }) => {
 ```ts
 // Usage for sensitive operations
 export const action = async ({ request }) => {
-   return withAdminSensitiveRateLimit(request, async () => {
-      // Sensitive admin operation
-      await deleteUser(userId)
-      return Response.json({ success: true })
-   })
+  return withAdminSensitiveRateLimit(request, async () => {
+    // Sensitive admin operation
+    await deleteUser(userId)
+    return Response.json({ success: true })
+  })
 }
 ```
 
@@ -96,23 +96,23 @@ The rate limiting system includes sophisticated IP header validation to prevent 
 ```ts
 // Enhanced validation prevents header manipulation
 function validateIPHeader(ip: string, headerName: string): boolean {
-   // Basic validation
-   if (!isValidIP(ip)) return false
+  // Basic validation
+  if (!isValidIP(ip)) return false
 
-   // Security checks for suspicious patterns
-   const suspiciousPatterns = [
-      /^\d{1,3}\.\d{1,3}\.\d{1,3}\.0$/, // Network addresses
-      /^0\./, // Invalid starting octets
-      /^255\.255\.255\.255$/, // Broadcast address
-   ]
+  // Security checks for suspicious patterns
+  const suspiciousPatterns = [
+    /^\d{1,3}\.\d{1,3}\.\d{1,3}\.0$/, // Network addresses
+    /^0\./, // Invalid starting octets
+    /^255\.255\.255\.255$/, // Broadcast address
+  ]
 
-   // Log suspicious attempts in production
-   if (isIPv4 && suspiciousPatterns.some(pattern => pattern.test(ip))) {
-      console.warn(`Suspicious IP in ${headerName} header: ${ip}`)
-      return false
-   }
+  // Log suspicious attempts in production
+  if (isIPv4 && suspiciousPatterns.some(pattern => pattern.test(ip))) {
+    console.warn(`Suspicious IP in ${headerName} header: ${ip}`)
+    return false
+  }
 
-   return true
+  return true
 }
 ```
 
@@ -136,9 +136,9 @@ function validateIPHeader(ip: string, headerName: string): boolean {
 let currentThreshold = cleanupThresholds[0] // 30 minutes default
 
 if (attempts.size > MAX_ENTRIES * 0.9) {
-   currentThreshold = cleanupThresholds[2] // 10 minutes - aggressive
+  currentThreshold = cleanupThresholds[2] // 10 minutes - aggressive
 } else if (attempts.size > MAX_ENTRIES * 0.8) {
-   currentThreshold = cleanupThresholds[1] // 20 minutes - moderate
+  currentThreshold = cleanupThresholds[1] // 20 minutes - moderate
 }
 ```
 
@@ -154,21 +154,21 @@ Rate limits are configured in `RATE_LIMITS` constant:
 
 ```ts
 export const RATE_LIMITS = {
-   ADMIN_LOGIN: {
-      maxAttempts: 5,
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      blockDurationMs: 15 * 60 * 1000, // 15 minutes block
-   },
-   ADMIN_ACTIONS: {
-      maxAttempts: 5,
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      blockDurationMs: 15 * 60 * 1000, // 15 minutes block
-   },
-   USER_REGISTRATION: {
-      maxAttempts: 5, // Allow for form validation errors
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      blockDurationMs: 15 * 60 * 1000, // 15 minutes block
-   },
+  ADMIN_LOGIN: {
+    maxAttempts: 5,
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    blockDurationMs: 15 * 60 * 1000, // 15 minutes block
+  },
+  ADMIN_ACTIONS: {
+    maxAttempts: 5,
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    blockDurationMs: 15 * 60 * 1000, // 15 minutes block
+  },
+  USER_REGISTRATION: {
+    maxAttempts: 5, // Allow for form validation errors
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    blockDurationMs: 15 * 60 * 1000, // 15 minutes block
+  },
 }
 ```
 
@@ -189,15 +189,25 @@ const isTestEnv = process.env.NODE_ENV === 'test' || process.env.PLAYWRIGHT === 
 const isLocalhost = request ? isLocalhostRequest(request) : false
 
 if (isTestEnv && isLocalhost) {
-  return { allowed: true, remaining: config.maxAttempts - 1, resetTime: Date.now() + config.windowMs }
+  return {
+    allowed: true,
+    remaining: config.maxAttempts - 1,
+    resetTime: Date.now() + config.windowMs,
+  }
 }
 
 // Additional header-based bypass with validation
 const testBypassHeader = request?.headers.get('x-test-bypass')
-if (testBypassHeader === 'true' &&
-    (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') &&
-    isLocalhost) {
-  return { allowed: true, remaining: config.maxAttempts - 1, resetTime: Date.now() + config.windowMs }
+if (
+  testBypassHeader === 'true' &&
+  (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') &&
+  isLocalhost
+) {
+  return {
+    allowed: true,
+    remaining: config.maxAttempts - 1,
+    resetTime: Date.now() + config.windowMs,
+  }
 }
 ```
 

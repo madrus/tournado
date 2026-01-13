@@ -67,13 +67,13 @@ Email validation requires special handling to preserve distinct error messages f
 ```typescript
 // Base schema (server-side, no translations)
 teamLeaderEmail: z.string()
-   .min(1)
-   .pipe(z.email({ error: 'Invalid email address' }))
+  .min(1)
+  .pipe(z.email({ error: 'Invalid email address' }))
 
 // With translations (client-side)
 teamLeaderEmail: z.string()
-   .min(1, t('messages.validation.emailRequired'))
-   .pipe(z.email({ error: t('messages.validation.emailInvalid') }))
+  .min(1, t('messages.validation.emailRequired'))
+  .pipe(z.email({ error: t('messages.validation.emailInvalid') }))
 ```
 
 **Why use `.pipe()`?**
@@ -113,13 +113,13 @@ endDate: z.iso.date()
 // With custom error messages
 startDate: z.iso.date({ error: t('messages.tournament.invalidDateFormat') })
 endDate: z.iso
-   .date({ error: t('messages.tournament.invalidDateFormat') })
+  .date({ error: t('messages.tournament.invalidDateFormat') })
 
-   // Cross-field validation (date range)
-   .refine(formData => formData.endDate >= formData.startDate, {
-      error: t('messages.tournament.endDateBeforeStartDate'),
-      path: ['endDate'],
-   })
+  // Cross-field validation (date range)
+  .refine(formData => formData.endDate >= formData.startDate, {
+    error: t('messages.tournament.endDateBeforeStartDate'),
+    path: ['endDate'],
+  })
 ```
 
 **Why ISO dates?**
@@ -156,7 +156,7 @@ For required checkboxes like privacy agreements:
 
 ```typescript
 privacyAgreement: z.boolean().refine(val => val, {
-   error: t('messages.team.privacyAgreementRequired'),
+  error: t('messages.team.privacyAgreementRequired'),
 })
 ```
 
@@ -164,8 +164,8 @@ privacyAgreement: z.boolean().refine(val => val, {
 
 ```typescript
 name: z.string()
-   .min(1, t('messages.team.nameRequired'))
-   .max(50, t('messages.team.nameTooLong'))
+  .min(1, t('messages.team.nameRequired'))
+  .max(50, t('messages.team.nameTooLong'))
 ```
 
 ### Array Validation
@@ -192,15 +192,14 @@ app/features/
 **Example Structure (`app/features/teams/validation.ts`):**
 
 ```typescript
-import { z } from 'zod'
-
 import type { TFunction } from 'i18next'
+import { z } from 'zod'
 
 // Base schema (server-side, no translations)
 const baseTeamSchema = z.object({
-   tournamentId: z.string().min(1),
-   name: z.string().min(1).max(50),
-   // ...
+  tournamentId: z.string().min(1),
+  name: z.string().min(1).max(50),
+  // ...
 })
 
 // Schema for create mode
@@ -211,28 +210,28 @@ const editTeamSchema = baseTeamSchema.omit({ privacyAgreement: true })
 
 // Factory for client-side schemas with translations
 const createTeamFormSchema = (t: TFunction) =>
-   z.object({
-      tournamentId: z.string().min(1, t('messages.team.tournamentRequired')),
-      name: z
-         .string()
-         .min(1, t('messages.team.nameRequired'))
-         .max(50, t('messages.team.nameTooLong')),
-      // ...
-   })
+  z.object({
+    tournamentId: z.string().min(1, t('messages.team.tournamentRequired')),
+    name: z
+      .string()
+      .min(1, t('messages.team.nameRequired'))
+      .max(50, t('messages.team.nameTooLong')),
+    // ...
+  })
 
 // Export factory function
 export function getTeamValidationSchema(mode: 'create' | 'edit', t: TFunction) {
-   const schema = createTeamFormSchema(t)
-   return mode === 'create' ? schema : schema.omit({ privacyAgreement: true })
+  const schema = createTeamFormSchema(t)
+  return mode === 'create' ? schema : schema.omit({ privacyAgreement: true })
 }
 
 // Server-side validation without translations
 export function validateTeamData(
-   teamData: TeamValidationInput,
-   mode: 'create' | 'edit'
+  teamData: TeamValidationInput,
+  mode: 'create' | 'edit',
 ) {
-   const schema = mode === 'create' ? createTeamSchema : editTeamSchema
-   return schema.safeParse(teamData)
+  const schema = mode === 'create' ? createTeamSchema : editTeamSchema
+  return schema.safeParse(teamData)
 }
 ```
 
@@ -258,43 +257,43 @@ export const PHONE_REGEX = /^[\+]?[0-9\s\-\(\)]+$/
  * Email with separate required/invalid errors
  */
 export const createEmailSchema = (errorMsg = 'Invalid email address') =>
-   z
-      .string()
-      .min(1)
-      .pipe(z.email({ error: errorMsg }))
+  z
+    .string()
+    .min(1)
+    .pipe(z.email({ error: errorMsg }))
 
 /**
  * Phone with regex validation
  */
 export const createPhoneSchema = (errorMsg = 'Invalid phone number format') =>
-   z
-      .string()
-      .min(1)
-      .pipe(z.string().refine(val => PHONE_REGEX.test(val), { error: errorMsg }))
+  z
+    .string()
+    .min(1)
+    .pipe(z.string().refine(val => PHONE_REGEX.test(val), { error: errorMsg }))
 
 /**
  * Required string with max length
  */
 export const createRequiredStringSchema = (
-   maxLength: number,
-   requiredMsg = 'This field is required',
-   tooLongMsg?: string
+  maxLength: number,
+  requiredMsg = 'This field is required',
+  tooLongMsg?: string,
 ) => {
-   const schema = z.string().min(1, requiredMsg)
-   return tooLongMsg ? schema.max(maxLength, tooLongMsg) : schema.max(maxLength)
+  const schema = z.string().min(1, requiredMsg)
+  return tooLongMsg ? schema.max(maxLength, tooLongMsg) : schema.max(maxLength)
 }
 
 /**
  * ISO date (YYYY-MM-DD)
  */
 export const createIsoDateSchema = (errorMsg?: string) =>
-   errorMsg ? z.iso.date({ error: errorMsg }) : z.iso.date()
+  errorMsg ? z.iso.date({ error: errorMsg }) : z.iso.date()
 
 /**
  * Required array of strings
  */
 export const createRequiredStringArraySchema = (
-   errorMsg = 'At least one item is required'
+  errorMsg = 'At least one item is required',
 ) => z.array(z.string()).min(1, errorMsg)
 
 // ============================================================================
@@ -304,12 +303,12 @@ export const createRequiredStringArraySchema = (
 export const emailSchema = z.email()
 
 export const validateEmail = (email: unknown): email is string => {
-   const result = emailSchema.safeParse(email)
-   return result.success
+  const result = emailSchema.safeParse(email)
+  return result.success
 }
 
 export const validatePhone = (phone: unknown): phone is string => {
-   return typeof phone === 'string' && PHONE_REGEX.test(phone)
+  return typeof phone === 'string' && PHONE_REGEX.test(phone)
 }
 ```
 
@@ -317,28 +316,28 @@ export const validatePhone = (phone: unknown): phone is string => {
 
 ```typescript
 import {
-   createEmailSchema,
-   createIsoDateSchema,
-   createPhoneSchema,
-   createRequiredStringArraySchema,
-   createRequiredStringSchema,
+  createEmailSchema,
+  createIsoDateSchema,
+  createPhoneSchema,
+  createRequiredStringArraySchema,
+  createRequiredStringSchema,
 } from '~/lib/validation'
 
 // Teams validation
 const baseTeamSchema = z.object({
-   name: createRequiredStringSchema(50),
-   teamLeaderEmail: createEmailSchema('Invalid email'),
-   teamLeaderPhone: createPhoneSchema('Invalid phone'),
+  name: createRequiredStringSchema(50),
+  teamLeaderEmail: createEmailSchema('Invalid email'),
+  teamLeaderPhone: createPhoneSchema('Invalid phone'),
 })
 
 // Tournaments validation
 const baseTournamentSchema = z.object({
-   name: createRequiredStringSchema(100),
-   location: createRequiredStringSchema(100),
-   startDate: createIsoDateSchema(),
-   endDate: createIsoDateSchema(),
-   divisions: createRequiredStringArraySchema(),
-   categories: createRequiredStringArraySchema(),
+  name: createRequiredStringSchema(100),
+  location: createRequiredStringSchema(100),
+  startDate: createIsoDateSchema(),
+  endDate: createIsoDateSchema(),
+  divisions: createRequiredStringArraySchema(),
+  categories: createRequiredStringArraySchema(),
 })
 ```
 
@@ -354,13 +353,13 @@ export type EditTournamentData = z.infer<typeof editTournamentSchema>
 
 // Infer return types from functions
 export function validateTeamData(
-   teamData: TeamValidationInput,
-   mode: 'create' | 'edit'
+  teamData: TeamValidationInput,
+  mode: 'create' | 'edit',
 ):
-   | ReturnType<typeof createTeamSchema.safeParse>
-   | ReturnType<typeof editTeamSchema.safeParse> {
-   const schema = mode === 'create' ? createTeamSchema : editTeamSchema
-   return schema.safeParse(teamData)
+  | ReturnType<typeof createTeamSchema.safeParse>
+  | ReturnType<typeof editTeamSchema.safeParse> {
+  const schema = mode === 'create' ? createTeamSchema : editTeamSchema
+  return schema.safeParse(teamData)
 }
 ```
 
@@ -399,35 +398,35 @@ Map Zod field names and error codes to i18n translation keys:
 
 ```typescript
 export const getFieldErrorTranslationKey = (
-   fieldName: string,
-   zodIssue?: Pick<ZodIssue, 'code'>
+  fieldName: string,
+  zodIssue?: Pick<ZodIssue, 'code'>,
 ): string => {
-   // Handle format validation errors
-   if (fieldName === 'teamLeaderEmail' && zodIssue?.code === 'invalid_format') {
-      return 'messages.validation.emailInvalid'
-   }
+  // Handle format validation errors
+  if (fieldName === 'teamLeaderEmail' && zodIssue?.code === 'invalid_format') {
+    return 'messages.validation.emailInvalid'
+  }
 
-   // Handle custom validation errors
-   if (zodIssue?.code === 'custom') {
-      if (fieldName === 'teamLeaderPhone') {
-         return 'messages.validation.phoneNumberInvalid'
-      }
-   }
+  // Handle custom validation errors
+  if (zodIssue?.code === 'custom') {
+    if (fieldName === 'teamLeaderPhone') {
+      return 'messages.validation.phoneNumberInvalid'
+    }
+  }
 
-   // Handle too long errors
-   if (zodIssue?.code === 'too_big') {
-      if (fieldName === 'name') {
-         return 'messages.team.nameTooLong'
-      }
-   }
+  // Handle too long errors
+  if (zodIssue?.code === 'too_big') {
+    if (fieldName === 'name') {
+      return 'messages.team.nameTooLong'
+    }
+  }
 
-   // Default required field errors (too_small)
-   const errorKeyMap: Record<string, string> = {
-      name: 'messages.team.nameRequired',
-      teamLeaderEmail: 'messages.validation.emailRequired',
-      // ...
-   }
-   return errorKeyMap[fieldName] || 'messages.validation.fieldRequired'
+  // Default required field errors (too_small)
+  const errorKeyMap: Record<string, string> = {
+    name: 'messages.team.nameRequired',
+    teamLeaderEmail: 'messages.validation.emailRequired',
+    // ...
+  }
+  return errorKeyMap[fieldName] || 'messages.validation.fieldRequired'
 }
 ```
 
@@ -489,8 +488,8 @@ export const getFieldErrorTranslationKey = (
 
 ```typescript
 if (validateEmail(value)) {
-   // TypeScript knows value is a string
-   const email: string = value
+  // TypeScript knows value is a string
+  const email: string = value
 }
 ```
 
@@ -502,23 +501,22 @@ Test validation schemas comprehensively:
 
 ```typescript
 import { describe, expect, it } from 'vitest'
-
 import { emailSchema, validateEmail } from '../validation'
 
 describe('emailSchema', () => {
-   it('should validate correct email addresses', () => {
-      expect(emailSchema.safeParse('test@example.com').success).toBe(true)
-      expect(emailSchema.safeParse('user.name@domain.co.uk').success).toBe(true)
-   })
+  it('should validate correct email addresses', () => {
+    expect(emailSchema.safeParse('test@example.com').success).toBe(true)
+    expect(emailSchema.safeParse('user.name@domain.co.uk').success).toBe(true)
+  })
 
-   it('should reject invalid email addresses', () => {
-      expect(emailSchema.safeParse('not-an-email').success).toBe(false)
-      expect(emailSchema.safeParse('a@b').success).toBe(false)
-   })
+  it('should reject invalid email addresses', () => {
+    expect(emailSchema.safeParse('not-an-email').success).toBe(false)
+    expect(emailSchema.safeParse('a@b').success).toBe(false)
+  })
 
-   it('should reject empty strings', () => {
-      expect(emailSchema.safeParse('').success).toBe(false)
-   })
+  it('should reject empty strings', () => {
+    expect(emailSchema.safeParse('').success).toBe(false)
+  })
 })
 ```
 
@@ -528,10 +526,10 @@ Test form validation in user workflows:
 
 ```typescript
 test('should show validation errors for invalid team data', async ({ page }) => {
-   await page.fill('input[name="teamLeaderEmail"]', 'invalid-email')
-   await page.click('button[type="submit"]')
+  await page.fill('input[name="teamLeaderEmail"]', 'invalid-email')
+  await page.click('button[type="submit"]')
 
-   await expect(page.locator('text=Invalid email address')).toBeVisible()
+  await expect(page.locator('text=Invalid email address')).toBeVisible()
 })
 ```
 

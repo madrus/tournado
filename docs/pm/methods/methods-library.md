@@ -5,6 +5,7 @@ A methods library is a collection of reusable frameworks, templates, and thinkin
 ## What is a Methods Library?
 
 **Example from the course:**
+
 - `socratic-questioning.md` - Framework for sharpening feature thinking
 - `prd-templates/` - Reusable PRD structures
 - `frameworks/` - Strategic frameworks (SWOT, RICE, etc.)
@@ -26,6 +27,7 @@ tournado-project/
 ### 2. Structure Each Framework File
 
 Each framework file should include:
+
 - **What it is** - Brief description
 - **When to use it** - When this framework is helpful
 - **How to use it** - Step-by-step guide
@@ -40,9 +42,11 @@ The course already has one! Here's the structure:
 # Socratic Questioning Framework for PRDs
 
 ## Core Philosophy
+
 [What it is and why it works]
 
 ## The Five Question Categories
+
 1. Problem Clarity Questions
 2. Solution Validation Questions
 3. Success Criteria Questions
@@ -50,6 +54,7 @@ The course already has one! Here's the structure:
 5. Strategic Fit Questions
 
 ## Example Question Sequence
+
 [Ready-to-use questions for different scenarios]
 ```
 
@@ -61,9 +66,11 @@ You could create `methods/jobs-to-be-done.md`:
 # Jobs-to-Be-Done Framework
 
 ## What It Is
+
 A framework for understanding what "job" users are hiring your product to do. Focuses on the outcome users want, not the feature.
 
 ## When to Use It
+
 - Defining user problems
 - Understanding why users choose your product
 - Prioritizing features based on job importance
@@ -97,12 +104,14 @@ A framework for understanding what "job" users are hiring your product to do. Fo
 **Job:** "When I'm organizing a tournament, I want to register teams quickly, so I can focus on the actual event planning instead of administrative work."
 
 **Competing Solutions:**
+
 - Excel spreadsheets
 - Email chains
 - Paper forms
 - Other tournament software
 
 **Success Criteria:**
+
 - Registration takes <5 minutes per team
 - No duplicate entries
 - Payment is handled automatically
@@ -117,7 +126,9 @@ You could create `methods/rice-prioritization.md`:
 # RICE Prioritization Framework
 
 ## What It Is
+
 A scoring system for prioritizing features based on:
+
 - **Reach** - How many users will this affect?
 - **Impact** - How much will it impact each user? (0.25, 0.5, 1, 2, 3)
 - **Confidence** - How confident are we? (50%, 80%, 100%)
@@ -126,6 +137,7 @@ A scoring system for prioritizing features based on:
 **Formula:** RICE Score = (Reach × Impact × Confidence) / Effort
 
 ## When to Use It
+
 - Comparing multiple feature ideas
 - Prioritizing roadmap items
 - Making trade-off decisions
@@ -142,6 +154,7 @@ A scoring system for prioritizing features based on:
 ## Example Calculation
 
 **Feature: Voice task creation**
+
 - Reach: 500 users/quarter
 - Impact: 2 (high - saves significant time)
 - Confidence: 80% (we have user research)
@@ -150,6 +163,7 @@ A scoring system for prioritizing features based on:
 **RICE Score = (500 × 2 × 0.8) / 2 = 400**
 
 **Feature: Dark mode**
+
 - Reach: 1000 users/quarter
 - Impact: 0.5 (low - nice to have)
 - Confidence: 100% (straightforward)
@@ -162,6 +176,7 @@ Dark mode scores higher, but voice creation might be more strategic...
 ## Using RICE in PRDs
 
 Include RICE score in your PRD to justify prioritization:
+
 - "This feature scores 400 on RICE, making it our #2 priority"
 - "Compared to alternatives, this has highest RICE score"
 ```
@@ -180,6 +195,7 @@ Use @methods/rice-prioritization.md to justify why we're building this now.
 ```
 
 Claude will:
+
 1. Read the framework files
 2. Apply the frameworks to your feature
 3. Guide you through the questions
@@ -192,11 +208,13 @@ Claude will:
 **Step 2:** You @ mention: `@methods/jobs-to-be-done.md @methods/socratic-questioning.md`
 
 **Step 3:** Claude uses JTBD to help you understand the job:
+
 - "What job is the tournament organizer trying to get done?"
 - "What are they using now? (Excel? Email?)"
 - "What would make them switch?"
 
 **Step 4:** Claude uses Socratic questioning to sharpen:
+
 - "What specific pain point does this solve?"
 - "How do we know this is a real problem?"
 - "What's the simplest version that solves the core problem?"
@@ -226,6 +244,7 @@ Claude will:
 ### **1. Make Frameworks Actionable**
 
 Don't just describe the framework - include:
+
 - Ready-to-use questions
 - Example calculations
 - Template formats
@@ -234,6 +253,7 @@ Don't just describe the framework - include:
 ### **2. Include Examples**
 
 Show how the framework applies to your domain:
+
 - Tournament management examples
 - Football-specific use cases
 - Real scenarios from your project
@@ -241,12 +261,14 @@ Show how the framework applies to your domain:
 ### **3. Link Frameworks Together**
 
 Show how frameworks complement each other:
+
 - "Use JTBD to understand the job, then Socratic questioning to refine the solution"
 - "Use RICE to prioritize, then Impact-Effort to validate"
 
 ### **4. Keep Them Updated**
 
 As you learn what works:
+
 - Update frameworks with new insights
 - Add domain-specific questions
 - Refine based on what helps you think better
@@ -268,12 +290,14 @@ methods/
 ## The Power of Reusable Frameworks
 
 **Without a methods library:**
+
 - You reinvent thinking frameworks each time
 - Inconsistent approach across PRDs
 - Hard to remember all the questions
 - Takes longer to write PRDs
 
 **With a methods library:**
+
 - @ mention the framework, Claude applies it
 - Consistent, structured thinking
 - All questions and templates ready
@@ -285,12 +309,14 @@ methods/
 
 **What It Is:**
 A simple 2x2 matrix for quick prioritization:
+
 - **High Impact / Low Effort** = Quick wins (do these first!)
 - **High Impact / High Effort** = Major projects (plan carefully)
 - **Low Impact / Low Effort** = Fill-ins (do when you have time)
 - **Low Impact / High Effort** = Avoid (don't do these)
 
 **When to Use It:**
+
 - Quick prioritization when you have many ideas
 - Sprint planning
 - Validating RICE scores (if RICE says high priority but effort is huge, reconsider)
@@ -301,6 +327,7 @@ A simple 2x2 matrix for quick prioritization:
 "As a [user type], I want [goal], so that [benefit]"
 
 **When to Use It:**
+
 - Writing user stories for engineering
 - Ensuring features are user-centric
 - Breaking down features into smaller pieces
@@ -314,11 +341,13 @@ A simple 2x2 matrix for quick prioritization:
 A structured way to analyze competitors and identify opportunities
 
 **When to Use It:**
+
 - Before building a feature (see how competitors do it)
 - Positioning your product
 - Finding differentiation opportunities
 
 **Structure:**
+
 - Competitor overview
 - Feature comparison matrix
 - Strengths and weaknesses

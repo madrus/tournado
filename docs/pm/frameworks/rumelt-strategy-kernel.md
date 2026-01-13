@@ -13,6 +13,7 @@ The kernel is the **bare-bones center of a strategy** - the hard core that defin
 ## Why This Matters for Product Strategy
 
 Most "strategies" are actually just lists of goals or features. Real strategy involves:
+
 - **Choices** about where to compete and how to win
 - **Tradeoffs** about what NOT to do
 - **Focus** on a few key actions that reinforce each other
@@ -42,6 +43,7 @@ A diagnosis **simplifies the overwhelming complexity** of reality by identifying
 ### For Product Strategy
 
 Your diagnosis should reveal:
+
 - The core problem or opportunity
 - Why now is the right time
 - What's changed in the market/technology/customer behavior
@@ -69,6 +71,7 @@ A guiding policy is an **overall approach** chosen to cope with or overcome the 
 ### For Product Strategy
 
 Your guiding policy should answer:
+
 - Who are we targeting? (And who are we NOT targeting?)
 - What's our positioning/differentiation?
 - What type of product experience are we building?
@@ -101,6 +104,7 @@ Coherent actions are **feasible coordinated policies, resource commitments, and 
 ### Example: Netflix circa 2007
 
 **Coherent Actions:**
+
 1. Launch streaming service (even with limited content)
 2. License streaming rights aggressively from studios
 3. Invest in recommendation algorithms to help users discover content
@@ -112,6 +116,7 @@ Notice how each action **reinforces** the others. Streaming + recommendations + 
 ### For Product Strategy
 
 Your coherent actions should include:
+
 - Key initiatives on the roadmap (sequenced properly)
 - Resource allocation decisions
 - Technical infrastructure investments
@@ -132,6 +137,7 @@ Your coherent actions should include:
 ### Step 1: Start with Diagnosis
 
 Don't jump to solutions! Spend time really understanding:
+
 - What's the challenge/opportunity?
 - What do we know from data, research, competitive analysis?
 - What are our constraints?
@@ -139,6 +145,7 @@ Don't jump to solutions! Spend time really understanding:
 ### Step 2: Develop Guiding Policy
 
 Make the hard choices:
+
 - Who's our target customer? (Say no to other segments)
 - What's our positioning?
 - What's our angle of attack?
@@ -148,6 +155,7 @@ Use this test: **Would a reasonable person disagree with this?** If not, it's pr
 ### Step 3: Define Coherent Actions
 
 Translate strategy into concrete steps:
+
 - What do we build first, second, third?
 - Why that order?
 - How do these actions reinforce each other?
@@ -187,13 +195,13 @@ Real strategy involves saying NO. If your strategy accommodates everyone's pet p
 When developing your product strategy, ensure you can fill in these blanks:
 
 **DIAGNOSIS:**
-"The key challenge/opportunity is ___________. This matters because ___________. The critical factors are ___________."
+"The key challenge/opportunity is \***\*\_\_\_\*\***. This matters because \***\*\_\_\_\*\***. The critical factors are \***\*\_\_\_\*\***."
 
 **GUIDING POLICY:**
-"Our approach is to ___________ for ___________ [target customer]. We'll differentiate by ___________. This means we won't ___________."
+"Our approach is to \***\*\_\_\_\*\*** for \***\*\_\_\_\*\*** [target customer]. We'll differentiate by \***\*\_\_\_\*\***. This means we won't \***\*\_\_\_\*\***."
 
 **COHERENT ACTIONS:**
-"We'll execute this through: 1) ___________, 2) ___________, 3) ___________. These actions reinforce each other because ___________."
+"We'll execute this through: 1) \***\*\_\_\_\*\***, 2) \***\*\_\_\_\*\***, 3) \***\*\_\_\_\*\***. These actions reinforce each other because \***\*\_\_\_\*\***."
 
 ---
 
@@ -202,6 +210,7 @@ When developing your product strategy, ensure you can fill in these blanks:
 **Strategy is about CHOICES, not documents.**
 
 The kernel framework forces you to:
+
 1. Really understand the situation (diagnosis)
 2. Make hard tradeoffs (guiding policy)
 3. Focus resources coherently (coherent actions)

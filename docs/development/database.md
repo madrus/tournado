@@ -102,6 +102,7 @@ We can hold off on actually running migrations while we iterate on our schema. P
    - create a new SQL migration in `prisma/migrations/.../init/`
    - apply it to your local database
    - regenerate the Prisma client
+
 3. If you need to tweak the schema again, repeat:
 
    ```bash
@@ -109,6 +110,7 @@ We can hold off on actually running migrations while we iterate on our schema. P
    ```
 
    Each run snapshots just the delta since your last migration.
+
 4. If this is still pre-production and you don't care about preserving any existing data, you can also do:
 
    ```bash

@@ -19,6 +19,7 @@ This document outlines how to apply the Claude Code PM Course techniques to the 
 Since you don't have pre-prepared research, create your own context files:
 
 **Create a `company-context.md` or `project-context.md`:**
+
 - Your product vision and goals
 - Target users (football clubs, tournament organizers, players)
 - Current features and what's built
@@ -27,6 +28,7 @@ Since you don't have pre-prepared research, create your own context files:
 - Key metrics you're tracking
 
 **Create a `user-research.md` or `pain-points.md`:**
+
 - Talk to your PM friend (the domain expert) - interview them!
 - Document what they know about user pain points
 - What problems are users facing with current solutions?
@@ -34,6 +36,7 @@ Since you don't have pre-prepared research, create your own context files:
 - What do players/clubs need?
 
 **Create a `product-overview.md`:**
+
 - What you've built so far
 - What's working, what's not
 - Technical constraints
@@ -46,12 +49,14 @@ Since you don't have pre-prepared research, create your own context files:
 Since you have a PM friend who knows the domain:
 
 **Option A: Interview them and document it**
+
 - Ask them the Socratic questions about your feature ideas
 - Record their answers in a doc
 - Use that as your "user research" file
 - @ mention it when writing PRDs
 
 **Option B: Have them review PRDs directly**
+
 - Write a PRD draft
 - Share it with your PM friend
 - Incorporate their feedback
@@ -62,6 +67,7 @@ Since you have a PM friend who knows the domain:
 ### 3. Adapt the Workflow for a Real Project
 
 **The Pattern:**
+
 1. **Gather context** → Create context files (company, users, product)
 2. **Define the problem** → Use Socratic questioning (with your PM friend or solo)
 3. **Write the PRD** → Use templates, @ mention your context files
@@ -69,6 +75,7 @@ Since you have a PM friend who knows the domain:
 5. **Iterate** → Refine based on feedback
 
 **For your halfway-through project:**
+
 - Document what exists (current features, what's built)
 - Document what's missing (gaps, user requests)
 - Use PRDs for new features or improvements
@@ -79,23 +86,27 @@ Since you have a PM friend who knows the domain:
 ### 4. Specific Techniques You Can Use
 
 **A. Competitive Research (No pre-prepared data needed)**
+
 - Ask Claude: "Research competitors in football tournament management software"
 - Claude will web search and synthesize findings
 - Create a `competitive-analysis.md` file
 - @ mention it in your PRDs
 
 **B. User Interview Synthesis**
+
 - Interview your PM friend (or actual users if you have them)
 - Document the interviews
 - Ask Claude: "Synthesize these interview notes and extract pain points"
 - Create a `user-research.md` file
 
 **C. Data Analysis (If you have usage data)**
+
 - Export your app's analytics/data
 - Ask Claude: "Analyze this data and identify patterns"
 - Use insights to inform PRDs
 
 **D. PRD Writing with Limited Context**
+
 - Start with what you know (your vision, your PM friend's insights)
 - Use Socratic questioning to fill gaps
 - Generate multiple approaches
@@ -106,12 +117,14 @@ Since you have a PM friend who knows the domain:
 ### 5. Working Solo vs. With Your PM Friend
 
 **Solo workflow:**
+
 - Create context files yourself
 - Use Socratic questioning to think through problems
 - Use sub-agents for different perspectives (engineer, user researcher, executive)
 - Generate multiple PRD versions and pick the best
 
 **With PM friend workflow:**
+
 - Interview them → document → create research files
 - Share PRD drafts with them for feedback
 - Use Claude to help synthesize their feedback
@@ -132,6 +145,7 @@ Create:
 ```
 
 **Step 2: For each new feature or improvement**
+
 - @ mention your context files
 - Use Socratic questioning to refine the idea
 - Write PRD using a template
@@ -139,6 +153,7 @@ Create:
 - Iterate
 
 **Step 3: Build your knowledge base over time**
+
 - As you learn more, update your context files
 - Document user feedback
 - Track what works and what doesn't
@@ -152,6 +167,7 @@ Create:
 **Real Project:** You create the context files, gather the research, use the same templates
 
 **The techniques are the same:**
+
 - @ mentions to provide context
 - Socratic questioning to sharpen thinking
 - Multiple strategic approaches
@@ -165,6 +181,7 @@ Create:
 ### 8. Quick Start for Your Football Tournament Project
 
 **Right now, you could:**
+
 1. Create `football-tournament-context.md` with what you know
 2. Interview your PM friend → create `domain-expert-insights.md`
 3. Ask Claude to research competitors → create `competitive-analysis.md`
@@ -180,6 +197,7 @@ A methods library is a collection of reusable frameworks, templates, and thinkin
 ### What is a Methods Library?
 
 **Example from the course:**
+
 - `socratic-questioning.md` - Framework for sharpening feature thinking
 - `prd-templates/` - Reusable PRD structures
 - `frameworks/` - Strategic frameworks (SWOT, RICE, etc.)
@@ -201,6 +219,7 @@ tournado-project/
 #### 2. Structure Each Framework File
 
 Each framework file should include:
+
 - **What it is** - Brief description
 - **When to use it** - When this framework is helpful
 - **How to use it** - Step-by-step guide
@@ -210,6 +229,7 @@ Each framework file should include:
 #### 3. Example Frameworks to Include
 
 **Socratic Questioning** (already in course - copy it!)
+
 - Problem Clarity Questions
 - Solution Validation Questions
 - Success Criteria Questions
@@ -217,21 +237,25 @@ Each framework file should include:
 - Strategic Fit Questions
 
 **Jobs-to-Be-Done (JTBD)**
+
 - Focuses on the outcome users want, not the feature
 - Structure: "When [situation], I want to [motivation], so I can [expected outcome]"
 - Key questions: What job is the user trying to get done? What are competing solutions?
 
 **RICE Prioritization**
+
 - Scoring system: (Reach × Impact × Confidence) / Effort
 - Helps compare multiple feature ideas
 - Justifies why one feature comes before another
 
 **Impact-Effort Matrix**
+
 - Simple 2x2 for quick prioritization
 - High Impact / Low Effort = Quick wins
 - Low Impact / High Effort = Avoid
 
 **User Story Format**
+
 - "As a [user], I want [goal], so that [benefit]"
 - Ensures user-centric thinking
 
@@ -249,6 +273,7 @@ Use @methods/rice-prioritization.md to justify why we're building this now.
 ```
 
 Claude will:
+
 1. Read the framework files
 2. Apply the frameworks to your feature
 3. Guide you through the questions
@@ -261,11 +286,13 @@ Claude will:
 **Step 2:** You @ mention: `@methods/jobs-to-be-done.md @methods/socratic-questioning.md`
 
 **Step 3:** Claude uses JTBD to help you understand the job:
+
 - "What job is the tournament organizer trying to get done?"
 - "What are they using now? (Excel? Email?)"
 - "What would make them switch?"
 
 **Step 4:** Claude uses Socratic questioning to sharpen:
+
 - "What specific pain point does this solve?"
 - "How do we know this is a real problem?"
 - "What's the simplest version that solves the core problem?"
@@ -293,23 +320,27 @@ Claude will:
 ### Pro Tips
 
 **1. Make Frameworks Actionable**
+
 - Include ready-to-use questions
 - Example calculations
 - Template formats
 - Common mistakes to avoid
 
 **2. Include Examples**
+
 - Show how the framework applies to your domain
 - Tournament management examples
 - Football-specific use cases
 - Real scenarios from your project
 
 **3. Link Frameworks Together**
+
 - Show how frameworks complement each other
 - "Use JTBD to understand the job, then Socratic questioning to refine the solution"
 - "Use RICE to prioritize, then Impact-Effort to validate"
 
 **4. Keep Them Updated**
+
 - Update frameworks with new insights
 - Add domain-specific questions
 - Refine based on what helps you think better
@@ -331,12 +362,14 @@ methods/
 ### The Power of Reusable Frameworks
 
 **Without a methods library:**
+
 - You reinvent thinking frameworks each time
 - Inconsistent approach across PRDs
 - Hard to remember all the questions
 - Takes longer to write PRDs
 
 **With a methods library:**
+
 - @ mention the framework, Claude applies it
 - Consistent, structured thinking
 - All questions and templates ready
@@ -410,6 +443,7 @@ tournado-project/
 ## Key Insight
 
 **The course techniques work for real projects** - you just build the context yourself instead of having it pre-prepared. The pattern is always the same:
+
 - **You think**
 - **Claude augments**
 - **You decide**

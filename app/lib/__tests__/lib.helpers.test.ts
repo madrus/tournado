@@ -68,16 +68,24 @@ describe('lib.helpers', () => {
 		it.each([
 			[TestDivision.PREMIER_DIVISION, 'xx', 'Hoofdklasse'],
 			[TestDivision.FIRST_DIVISION, 'zz', 'Eerste klasse'],
-		])('should fallback to Dutch when language %s not available for %s', (division, language, expected) => {
-			expect(getDivisionLabel(division as Division, language)).toBe(expected)
-		})
+		])(
+			'should fallback to Dutch when language %s not available for %s',
+			(division, language, expected) => {
+				expect(getDivisionLabel(division as Division, language)).toBe(expected)
+			},
+		)
 
 		it.each([
 			[TestDivision.PREMIER_DIVISION, 'xx', 'nl', 'Hoofdklasse'],
 			[TestDivision.FIRST_DIVISION, 'zz', 'nl', 'Eerste klasse'],
-		])('should fallback to custom fallback language for %s', (division, language, fallback, expected) => {
-			expect(getDivisionLabel(division as Division, language, fallback)).toBe(expected)
-		})
+		])(
+			'should fallback to custom fallback language for %s',
+			(division, language, fallback, expected) => {
+				expect(getDivisionLabel(division as Division, language, fallback)).toBe(
+					expected,
+				)
+			},
+		)
 
 		it('should return division key when no language available', () => {
 			// Test with a valid division but requesting a language that doesn't exist
@@ -123,14 +131,12 @@ describe('lib.helpers', () => {
 			expect(stringToDivision(input)).toBe(expected)
 		})
 
-		it.each([
-			['INVALID_DIVISION'],
-			['random_string'],
-			['123'],
-			[''],
-		])('should return undefined for invalid string %s', (input) => {
-			expect(stringToDivision(input)).toBeUndefined()
-		})
+		it.each([['INVALID_DIVISION'], ['random_string'], ['123'], ['']])(
+			'should return undefined for invalid string %s',
+			(input) => {
+				expect(stringToDivision(input)).toBeUndefined()
+			},
+		)
 
 		it.each([[null], [undefined]])('should return undefined for %s input', (input) => {
 			expect(stringToDivision(input as unknown as string | null)).toBeUndefined()
@@ -149,22 +155,19 @@ describe('lib.helpers', () => {
 			expect(isValidDivision(input)).toBe(true)
 		})
 
-		it.each([
-			['premier_division'],
-			['First_Division'],
-			['SECOND_division'],
-		])('should return true for valid division string %s in any case', (input) => {
-			expect(isValidDivision(input)).toBe(true)
-		})
+		it.each([['premier_division'], ['First_Division'], ['SECOND_division']])(
+			'should return true for valid division string %s in any case',
+			(input) => {
+				expect(isValidDivision(input)).toBe(true)
+			},
+		)
 
-		it.each([
-			['INVALID_DIVISION'],
-			['random_string'],
-			['123'],
-			[''],
-		])('should return false for invalid string %s', (input) => {
-			expect(isValidDivision(input)).toBe(false)
-		})
+		it.each([['INVALID_DIVISION'], ['random_string'], ['123'], ['']])(
+			'should return false for invalid string %s',
+			(input) => {
+				expect(isValidDivision(input)).toBe(false)
+			},
+		)
 
 		it.each([[null], [undefined]])('should return false for %s input', (input) => {
 			expect(isValidDivision(input as unknown as string | null)).toBe(false)
@@ -175,29 +178,31 @@ describe('lib.helpers', () => {
 		it.each([
 			['PREMIER_DIVISION', 'PREMIER_DIVISION', 'Premier Division', 'Hoofdklasse', 1],
 			['FIRST_DIVISION', 'FIRST_DIVISION', 'First Division', 'Eerste klasse', 2],
-		])('should return correct division object for %s', (input, value, enLabel, nlLabel, order) => {
-			const division = getDivisionByValue(input)
-			expect(division).toBeDefined()
-			expect(division?.value).toBe(value)
-			expect(division?.labels.en).toBe(enLabel)
-			expect(division?.labels.nl).toBe(nlLabel)
-			expect(division?.order).toBe(order)
-		})
+		])(
+			'should return correct division object for %s',
+			(input, value, enLabel, nlLabel, order) => {
+				const division = getDivisionByValue(input)
+				expect(division).toBeDefined()
+				expect(division?.value).toBe(value)
+				expect(division?.labels.en).toBe(enLabel)
+				expect(division?.labels.nl).toBe(nlLabel)
+				expect(division?.order).toBe(order)
+			},
+		)
 
-		it.each([
-			['INVALID_DIVISION'],
-			['random_string'],
-			[''],
-		])('should return undefined for invalid value %s', (input) => {
-			expect(getDivisionByValue(input)).toBeUndefined()
-		})
+		it.each([['INVALID_DIVISION'], ['random_string'], ['']])(
+			'should return undefined for invalid value %s',
+			(input) => {
+				expect(getDivisionByValue(input)).toBeUndefined()
+			},
+		)
 
-		it.each([
-			['premier_division'],
-			['Premier_Division'],
-		])('should be case sensitive for %s', (input) => {
-			expect(getDivisionByValue(input)).toBeUndefined()
-		})
+		it.each([['premier_division'], ['Premier_Division']])(
+			'should be case sensitive for %s',
+			(input) => {
+				expect(getDivisionByValue(input)).toBeUndefined()
+			},
+		)
 	})
 
 	describe('getDivisionLabelByValue', () => {
@@ -220,9 +225,12 @@ describe('lib.helpers', () => {
 		it.each<[string, 'en' | 'nl', string]>([
 			['INVALID_DIVISION', 'en', 'INVALID_DIVISION'],
 			['random_string', 'nl', 'random_string'],
-		])('should return the value itself when division %s not found', (value, language, expected) => {
-			expect(getDivisionLabelByValue(value as never, language)).toBe(expected)
-		})
+		])(
+			'should return the value itself when division %s not found',
+			(value, language, expected) => {
+				expect(getDivisionLabelByValue(value as never, language)).toBe(expected)
+			},
+		)
 	})
 
 	describe('getAllDivisions', () => {
@@ -321,14 +329,12 @@ describe('lib.helpers', () => {
 			expect(stringToDivisionValue(input)).toBe(expected)
 		})
 
-		it.each([
-			['INVALID_DIVISION'],
-			['random_string'],
-			['123'],
-			[''],
-		])('should return undefined for invalid string %s', (input) => {
-			expect(stringToDivisionValue(input)).toBeUndefined()
-		})
+		it.each([['INVALID_DIVISION'], ['random_string'], ['123'], ['']])(
+			'should return undefined for invalid string %s',
+			(input) => {
+				expect(stringToDivisionValue(input)).toBeUndefined()
+			},
+		)
 
 		it.each([[null], [undefined]])('should return undefined for %s input', (input) => {
 			expect(stringToDivisionValue(input as unknown as string | null)).toBeUndefined()

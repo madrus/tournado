@@ -1,7 +1,7 @@
 /* Panel background classes using CSS variables to match Tailwind's system */
 
 /* Dark mode panel backgrounds - using CSS selectors that actually work */
-html.dark :not([dir="rtl"]) .panel-amber-bg {
+html.dark :not([dir='rtl']) .panel-amber-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-amber-950),
@@ -10,7 +10,7 @@ html.dark :not([dir="rtl"]) .panel-amber-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-amber-bg {
+html.dark[dir='rtl'] .panel-amber-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-amber-950),
@@ -19,7 +19,7 @@ html.dark[dir="rtl"] .panel-amber-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-blue-bg {
+html.dark :not([dir='rtl']) .panel-blue-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-blue-950),
@@ -28,7 +28,7 @@ html.dark :not([dir="rtl"]) .panel-blue-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-blue-bg {
+html.dark[dir='rtl'] .panel-blue-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-blue-950),
@@ -37,7 +37,7 @@ html.dark[dir="rtl"] .panel-blue-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-brand-bg {
+html.dark :not([dir='rtl']) .panel-brand-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-slate-950),
@@ -46,7 +46,7 @@ html.dark :not([dir="rtl"]) .panel-brand-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-brand-bg {
+html.dark[dir='rtl'] .panel-brand-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-slate-950),
@@ -55,7 +55,7 @@ html.dark[dir="rtl"] .panel-brand-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-cyan-bg {
+html.dark :not([dir='rtl']) .panel-cyan-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-cyan-950),
@@ -64,7 +64,7 @@ html.dark :not([dir="rtl"]) .panel-cyan-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-cyan-bg {
+html.dark[dir='rtl'] .panel-cyan-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-cyan-950),
@@ -73,7 +73,7 @@ html.dark[dir="rtl"] .panel-cyan-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-emerald-bg {
+html.dark :not([dir='rtl']) .panel-emerald-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-emerald-950),
@@ -82,7 +82,7 @@ html.dark :not([dir="rtl"]) .panel-emerald-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-emerald-bg {
+html.dark[dir='rtl'] .panel-emerald-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-emerald-950),
@@ -91,7 +91,7 @@ html.dark[dir="rtl"] .panel-emerald-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-fuchsia-bg {
+html.dark :not([dir='rtl']) .panel-fuchsia-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-fuchsia-950),
@@ -100,7 +100,7 @@ html.dark :not([dir="rtl"]) .panel-fuchsia-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-fuchsia-bg {
+html.dark[dir='rtl'] .panel-fuchsia-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-fuchsia-950),
@@ -109,7 +109,7 @@ html.dark[dir="rtl"] .panel-fuchsia-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-green-bg {
+html.dark :not([dir='rtl']) .panel-green-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-green-950),
@@ -118,7 +118,7 @@ html.dark :not([dir="rtl"]) .panel-green-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-green-bg {
+html.dark[dir='rtl'] .panel-green-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-green-950),
@@ -127,7 +127,7 @@ html.dark[dir="rtl"] .panel-green-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-indigo-bg {
+html.dark :not([dir='rtl']) .panel-indigo-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-indigo-950),
@@ -136,7 +136,7 @@ html.dark :not([dir="rtl"]) .panel-indigo-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-indigo-bg {
+html.dark[dir='rtl'] .panel-indigo-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-indigo-950),
@@ -145,7 +145,7 @@ html.dark[dir="rtl"] .panel-indigo-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-lime-bg {
+html.dark :not([dir='rtl']) .panel-lime-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-lime-950),
@@ -154,7 +154,7 @@ html.dark :not([dir="rtl"]) .panel-lime-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-lime-bg {
+html.dark[dir='rtl'] .panel-lime-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-lime-950),
@@ -163,7 +163,7 @@ html.dark[dir="rtl"] .panel-lime-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-orange-bg {
+html.dark :not([dir='rtl']) .panel-orange-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-orange-950),
@@ -172,7 +172,7 @@ html.dark :not([dir="rtl"]) .panel-orange-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-orange-bg {
+html.dark[dir='rtl'] .panel-orange-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-orange-950),
@@ -181,7 +181,7 @@ html.dark[dir="rtl"] .panel-orange-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-pink-bg {
+html.dark :not([dir='rtl']) .panel-pink-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-pink-950),
@@ -190,7 +190,7 @@ html.dark :not([dir="rtl"]) .panel-pink-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-pink-bg {
+html.dark[dir='rtl'] .panel-pink-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-pink-950),
@@ -199,7 +199,7 @@ html.dark[dir="rtl"] .panel-pink-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-primary-bg {
+html.dark :not([dir='rtl']) .panel-primary-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-emerald-950),
@@ -208,7 +208,7 @@ html.dark :not([dir="rtl"]) .panel-primary-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-primary-bg {
+html.dark[dir='rtl'] .panel-primary-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-emerald-950),
@@ -217,7 +217,7 @@ html.dark[dir="rtl"] .panel-primary-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-purple-bg {
+html.dark :not([dir='rtl']) .panel-purple-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-purple-950),
@@ -226,7 +226,7 @@ html.dark :not([dir="rtl"]) .panel-purple-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-purple-bg {
+html.dark[dir='rtl'] .panel-purple-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-purple-950),
@@ -235,7 +235,7 @@ html.dark[dir="rtl"] .panel-purple-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-red-bg {
+html.dark :not([dir='rtl']) .panel-red-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-red-950),
@@ -244,7 +244,7 @@ html.dark :not([dir="rtl"]) .panel-red-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-red-bg {
+html.dark[dir='rtl'] .panel-red-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-red-950),
@@ -253,7 +253,7 @@ html.dark[dir="rtl"] .panel-red-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-rose-bg {
+html.dark :not([dir='rtl']) .panel-rose-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-rose-950),
@@ -262,7 +262,7 @@ html.dark :not([dir="rtl"]) .panel-rose-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-rose-bg {
+html.dark[dir='rtl'] .panel-rose-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-rose-950),
@@ -271,7 +271,7 @@ html.dark[dir="rtl"] .panel-rose-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-sky-bg {
+html.dark :not([dir='rtl']) .panel-sky-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-sky-950),
@@ -280,7 +280,7 @@ html.dark :not([dir="rtl"]) .panel-sky-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-sky-bg {
+html.dark[dir='rtl'] .panel-sky-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-sky-950),
@@ -289,7 +289,7 @@ html.dark[dir="rtl"] .panel-sky-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-slate-bg {
+html.dark :not([dir='rtl']) .panel-slate-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-slate-950),
@@ -298,7 +298,7 @@ html.dark :not([dir="rtl"]) .panel-slate-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-slate-bg {
+html.dark[dir='rtl'] .panel-slate-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-slate-950),
@@ -307,7 +307,7 @@ html.dark[dir="rtl"] .panel-slate-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-teal-bg {
+html.dark :not([dir='rtl']) .panel-teal-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-teal-950),
@@ -316,7 +316,7 @@ html.dark :not([dir="rtl"]) .panel-teal-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-teal-bg {
+html.dark[dir='rtl'] .panel-teal-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-teal-950),
@@ -325,7 +325,7 @@ html.dark[dir="rtl"] .panel-teal-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-violet-bg {
+html.dark :not([dir='rtl']) .panel-violet-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-violet-950),
@@ -334,7 +334,7 @@ html.dark :not([dir="rtl"]) .panel-violet-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-violet-bg {
+html.dark[dir='rtl'] .panel-violet-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-violet-950),
@@ -343,7 +343,7 @@ html.dark[dir="rtl"] .panel-violet-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-yellow-bg {
+html.dark :not([dir='rtl']) .panel-yellow-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-yellow-950),
@@ -352,7 +352,7 @@ html.dark :not([dir="rtl"]) .panel-yellow-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-yellow-bg {
+html.dark[dir='rtl'] .panel-yellow-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-yellow-950),
@@ -361,7 +361,7 @@ html.dark[dir="rtl"] .panel-yellow-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-zinc-bg {
+html.dark :not([dir='rtl']) .panel-zinc-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-zinc-950),
@@ -370,7 +370,7 @@ html.dark :not([dir="rtl"]) .panel-zinc-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-zinc-bg {
+html.dark[dir='rtl'] .panel-zinc-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-zinc-950),
@@ -379,7 +379,7 @@ html.dark[dir="rtl"] .panel-zinc-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-success-bg {
+html.dark :not([dir='rtl']) .panel-success-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-success-950),
@@ -388,7 +388,7 @@ html.dark :not([dir="rtl"]) .panel-success-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-success-bg {
+html.dark[dir='rtl'] .panel-success-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-success-950),
@@ -397,7 +397,7 @@ html.dark[dir="rtl"] .panel-success-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-error-bg {
+html.dark :not([dir='rtl']) .panel-error-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-error-950),
@@ -406,7 +406,7 @@ html.dark :not([dir="rtl"]) .panel-error-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-error-bg {
+html.dark[dir='rtl'] .panel-error-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-error-950),
@@ -415,7 +415,7 @@ html.dark[dir="rtl"] .panel-error-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-warning-bg {
+html.dark :not([dir='rtl']) .panel-warning-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-warning-950),
@@ -424,7 +424,7 @@ html.dark :not([dir="rtl"]) .panel-warning-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-warning-bg {
+html.dark[dir='rtl'] .panel-warning-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-warning-950),
@@ -433,7 +433,7 @@ html.dark[dir="rtl"] .panel-warning-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-info-bg {
+html.dark :not([dir='rtl']) .panel-info-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-info-950),
@@ -442,7 +442,7 @@ html.dark :not([dir="rtl"]) .panel-info-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-info-bg {
+html.dark[dir='rtl'] .panel-info-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-info-950),
@@ -451,7 +451,7 @@ html.dark[dir="rtl"] .panel-info-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-disabled-bg {
+html.dark :not([dir='rtl']) .panel-disabled-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-disabled-950),
@@ -460,7 +460,7 @@ html.dark :not([dir="rtl"]) .panel-disabled-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-disabled-bg {
+html.dark[dir='rtl'] .panel-disabled-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-disabled-950),
@@ -469,7 +469,7 @@ html.dark[dir="rtl"] .panel-disabled-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-accent-amber-bg {
+html.dark :not([dir='rtl']) .panel-accent-amber-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-accent-amber-950),
@@ -478,7 +478,7 @@ html.dark :not([dir="rtl"]) .panel-accent-amber-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-accent-amber-bg {
+html.dark[dir='rtl'] .panel-accent-amber-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-accent-amber-950),
@@ -487,7 +487,7 @@ html.dark[dir="rtl"] .panel-accent-amber-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-accent-indigo-bg {
+html.dark :not([dir='rtl']) .panel-accent-indigo-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-accent-indigo-950),
@@ -496,7 +496,7 @@ html.dark :not([dir="rtl"]) .panel-accent-indigo-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-accent-indigo-bg {
+html.dark[dir='rtl'] .panel-accent-indigo-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-accent-indigo-950),
@@ -505,7 +505,7 @@ html.dark[dir="rtl"] .panel-accent-indigo-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-accent-fuchsia-bg {
+html.dark :not([dir='rtl']) .panel-accent-fuchsia-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-accent-fuchsia-950),
@@ -514,7 +514,7 @@ html.dark :not([dir="rtl"]) .panel-accent-fuchsia-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-accent-fuchsia-bg {
+html.dark[dir='rtl'] .panel-accent-fuchsia-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-accent-fuchsia-950),
@@ -523,7 +523,7 @@ html.dark[dir="rtl"] .panel-accent-fuchsia-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-accent-teal-bg {
+html.dark :not([dir='rtl']) .panel-accent-teal-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-accent-teal-950),
@@ -532,7 +532,7 @@ html.dark :not([dir="rtl"]) .panel-accent-teal-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-accent-teal-bg {
+html.dark[dir='rtl'] .panel-accent-teal-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-accent-teal-950),
@@ -541,7 +541,7 @@ html.dark[dir="rtl"] .panel-accent-teal-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-accent-sky-bg {
+html.dark :not([dir='rtl']) .panel-accent-sky-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-accent-sky-950),
@@ -550,7 +550,7 @@ html.dark :not([dir="rtl"]) .panel-accent-sky-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-accent-sky-bg {
+html.dark[dir='rtl'] .panel-accent-sky-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-accent-sky-950),
@@ -559,7 +559,7 @@ html.dark[dir="rtl"] .panel-accent-sky-bg {
 	);
 }
 
-html.dark :not([dir="rtl"]) .panel-accent-purple-bg {
+html.dark :not([dir='rtl']) .panel-accent-purple-bg {
 	background: linear-gradient(
 		to bottom right,
 		var(--color-accent-purple-950),
@@ -568,7 +568,7 @@ html.dark :not([dir="rtl"]) .panel-accent-purple-bg {
 	);
 }
 
-html.dark[dir="rtl"] .panel-accent-purple-bg {
+html.dark[dir='rtl'] .panel-accent-purple-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-accent-purple-950),
@@ -578,7 +578,7 @@ html.dark[dir="rtl"] .panel-accent-purple-bg {
 }
 
 /* Light mode panel classes */
-html:not(.dark) :not([dir="rtl"]) .panel-amber-bg {
+html:not(.dark) :not([dir='rtl']) .panel-amber-bg {
 	border-color: var(--color-amber-400);
 	background: linear-gradient(
 		to bottom right,
@@ -588,7 +588,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-amber-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-amber-bg {
+html:not(.dark)[dir='rtl'] .panel-amber-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-amber-50),
@@ -597,7 +597,7 @@ html:not(.dark)[dir="rtl"] .panel-amber-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-blue-bg {
+html:not(.dark) :not([dir='rtl']) .panel-blue-bg {
 	border-color: var(--color-blue-400);
 	background: linear-gradient(
 		to bottom right,
@@ -607,7 +607,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-blue-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-blue-bg {
+html:not(.dark)[dir='rtl'] .panel-blue-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-blue-50),
@@ -616,7 +616,7 @@ html:not(.dark)[dir="rtl"] .panel-blue-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-brand-bg {
+html:not(.dark) :not([dir='rtl']) .panel-brand-bg {
 	border-color: var(--color-red-400);
 	background: linear-gradient(
 		to bottom right,
@@ -626,7 +626,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-brand-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-brand-bg {
+html:not(.dark)[dir='rtl'] .panel-brand-bg {
 	background: linear-gradient(
 		to bottom left,
 		white,
@@ -635,7 +635,7 @@ html:not(.dark)[dir="rtl"] .panel-brand-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-cyan-bg {
+html:not(.dark) :not([dir='rtl']) .panel-cyan-bg {
 	border-color: var(--color-cyan-400);
 	background: linear-gradient(
 		to bottom right,
@@ -645,7 +645,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-cyan-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-cyan-bg {
+html:not(.dark)[dir='rtl'] .panel-cyan-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-cyan-50),
@@ -654,7 +654,7 @@ html:not(.dark)[dir="rtl"] .panel-cyan-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-emerald-bg {
+html:not(.dark) :not([dir='rtl']) .panel-emerald-bg {
 	border-color: var(--color-emerald-400);
 	background: linear-gradient(
 		to bottom right,
@@ -664,7 +664,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-emerald-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-emerald-bg {
+html:not(.dark)[dir='rtl'] .panel-emerald-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-emerald-50),
@@ -673,7 +673,7 @@ html:not(.dark)[dir="rtl"] .panel-emerald-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-fuchsia-bg {
+html:not(.dark) :not([dir='rtl']) .panel-fuchsia-bg {
 	border-color: var(--color-fuchsia-400);
 	background: linear-gradient(
 		to bottom right,
@@ -683,7 +683,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-fuchsia-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-fuchsia-bg {
+html:not(.dark)[dir='rtl'] .panel-fuchsia-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-fuchsia-50),
@@ -692,7 +692,7 @@ html:not(.dark)[dir="rtl"] .panel-fuchsia-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-green-bg {
+html:not(.dark) :not([dir='rtl']) .panel-green-bg {
 	border-color: var(--color-green-400);
 	background: linear-gradient(
 		to bottom right,
@@ -702,7 +702,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-green-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-green-bg {
+html:not(.dark)[dir='rtl'] .panel-green-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-green-50),
@@ -711,7 +711,7 @@ html:not(.dark)[dir="rtl"] .panel-green-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-indigo-bg {
+html:not(.dark) :not([dir='rtl']) .panel-indigo-bg {
 	border-color: var(--color-indigo-400);
 	background: linear-gradient(
 		to bottom right,
@@ -721,7 +721,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-indigo-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-indigo-bg {
+html:not(.dark)[dir='rtl'] .panel-indigo-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-indigo-50),
@@ -730,7 +730,7 @@ html:not(.dark)[dir="rtl"] .panel-indigo-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-lime-bg {
+html:not(.dark) :not([dir='rtl']) .panel-lime-bg {
 	border-color: var(--color-lime-400);
 	background: linear-gradient(
 		to bottom right,
@@ -740,7 +740,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-lime-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-lime-bg {
+html:not(.dark)[dir='rtl'] .panel-lime-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-lime-50),
@@ -749,7 +749,7 @@ html:not(.dark)[dir="rtl"] .panel-lime-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-orange-bg {
+html:not(.dark) :not([dir='rtl']) .panel-orange-bg {
 	border-color: var(--color-orange-400);
 	background: linear-gradient(
 		to bottom right,
@@ -759,7 +759,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-orange-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-orange-bg {
+html:not(.dark)[dir='rtl'] .panel-orange-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-orange-50),
@@ -768,7 +768,7 @@ html:not(.dark)[dir="rtl"] .panel-orange-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-pink-bg {
+html:not(.dark) :not([dir='rtl']) .panel-pink-bg {
 	border-color: var(--color-pink-400);
 	background: linear-gradient(
 		to bottom right,
@@ -778,7 +778,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-pink-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-pink-bg {
+html:not(.dark)[dir='rtl'] .panel-pink-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-pink-50),
@@ -787,7 +787,7 @@ html:not(.dark)[dir="rtl"] .panel-pink-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-primary-bg {
+html:not(.dark) :not([dir='rtl']) .panel-primary-bg {
 	border-color: var(--color-emerald-400);
 	background: linear-gradient(
 		to bottom right,
@@ -797,7 +797,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-primary-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-primary-bg {
+html:not(.dark)[dir='rtl'] .panel-primary-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-emerald-50),
@@ -806,7 +806,7 @@ html:not(.dark)[dir="rtl"] .panel-primary-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-purple-bg {
+html:not(.dark) :not([dir='rtl']) .panel-purple-bg {
 	border-color: var(--color-purple-400);
 	background: linear-gradient(
 		to bottom right,
@@ -816,7 +816,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-purple-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-purple-bg {
+html:not(.dark)[dir='rtl'] .panel-purple-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-purple-50),
@@ -825,7 +825,7 @@ html:not(.dark)[dir="rtl"] .panel-purple-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-red-bg {
+html:not(.dark) :not([dir='rtl']) .panel-red-bg {
 	border-color: var(--color-red-400);
 	background: linear-gradient(
 		to bottom right,
@@ -835,7 +835,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-red-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-red-bg {
+html:not(.dark)[dir='rtl'] .panel-red-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-red-50),
@@ -844,7 +844,7 @@ html:not(.dark)[dir="rtl"] .panel-red-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-rose-bg {
+html:not(.dark) :not([dir='rtl']) .panel-rose-bg {
 	border-color: var(--color-rose-400);
 	background: linear-gradient(
 		to bottom right,
@@ -854,7 +854,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-rose-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-rose-bg {
+html:not(.dark)[dir='rtl'] .panel-rose-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-rose-50),
@@ -863,7 +863,7 @@ html:not(.dark)[dir="rtl"] .panel-rose-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-sky-bg {
+html:not(.dark) :not([dir='rtl']) .panel-sky-bg {
 	border-color: var(--color-sky-400);
 	background: linear-gradient(
 		to bottom right,
@@ -873,7 +873,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-sky-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-sky-bg {
+html:not(.dark)[dir='rtl'] .panel-sky-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-sky-50),
@@ -882,7 +882,7 @@ html:not(.dark)[dir="rtl"] .panel-sky-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-slate-bg {
+html:not(.dark) :not([dir='rtl']) .panel-slate-bg {
 	border-color: var(--color-slate-400);
 	background: linear-gradient(
 		to bottom right,
@@ -892,7 +892,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-slate-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-slate-bg {
+html:not(.dark)[dir='rtl'] .panel-slate-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-slate-50),
@@ -901,7 +901,7 @@ html:not(.dark)[dir="rtl"] .panel-slate-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-teal-bg {
+html:not(.dark) :not([dir='rtl']) .panel-teal-bg {
 	border-color: var(--color-teal-400);
 	background: linear-gradient(
 		to bottom right,
@@ -911,7 +911,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-teal-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-teal-bg {
+html:not(.dark)[dir='rtl'] .panel-teal-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-teal-50),
@@ -920,7 +920,7 @@ html:not(.dark)[dir="rtl"] .panel-teal-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-violet-bg {
+html:not(.dark) :not([dir='rtl']) .panel-violet-bg {
 	border-color: var(--color-violet-400);
 	background: linear-gradient(
 		to bottom right,
@@ -930,7 +930,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-violet-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-violet-bg {
+html:not(.dark)[dir='rtl'] .panel-violet-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-violet-50),
@@ -939,7 +939,7 @@ html:not(.dark)[dir="rtl"] .panel-violet-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-yellow-bg {
+html:not(.dark) :not([dir='rtl']) .panel-yellow-bg {
 	border-color: var(--color-yellow-400);
 	background: linear-gradient(
 		to bottom right,
@@ -949,7 +949,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-yellow-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-yellow-bg {
+html:not(.dark)[dir='rtl'] .panel-yellow-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-yellow-50),
@@ -958,7 +958,7 @@ html:not(.dark)[dir="rtl"] .panel-yellow-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-zinc-bg {
+html:not(.dark) :not([dir='rtl']) .panel-zinc-bg {
 	border-color: var(--color-zinc-400);
 	background: linear-gradient(
 		to bottom right,
@@ -968,7 +968,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-zinc-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-zinc-bg {
+html:not(.dark)[dir='rtl'] .panel-zinc-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-zinc-50),
@@ -977,7 +977,7 @@ html:not(.dark)[dir="rtl"] .panel-zinc-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-success-bg {
+html:not(.dark) :not([dir='rtl']) .panel-success-bg {
 	border-color: var(--color-success-400);
 	background: linear-gradient(
 		to bottom right,
@@ -987,7 +987,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-success-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-success-bg {
+html:not(.dark)[dir='rtl'] .panel-success-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-success-50),
@@ -996,7 +996,7 @@ html:not(.dark)[dir="rtl"] .panel-success-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-error-bg {
+html:not(.dark) :not([dir='rtl']) .panel-error-bg {
 	border-color: var(--color-error-400);
 	background: linear-gradient(
 		to bottom right,
@@ -1006,7 +1006,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-error-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-error-bg {
+html:not(.dark)[dir='rtl'] .panel-error-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-error-50),
@@ -1015,7 +1015,7 @@ html:not(.dark)[dir="rtl"] .panel-error-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-warning-bg {
+html:not(.dark) :not([dir='rtl']) .panel-warning-bg {
 	border-color: var(--color-warning-400);
 	background: linear-gradient(
 		to bottom right,
@@ -1025,7 +1025,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-warning-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-warning-bg {
+html:not(.dark)[dir='rtl'] .panel-warning-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-warning-50),
@@ -1034,7 +1034,7 @@ html:not(.dark)[dir="rtl"] .panel-warning-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-info-bg {
+html:not(.dark) :not([dir='rtl']) .panel-info-bg {
 	border-color: var(--color-info-400);
 	background: linear-gradient(
 		to bottom right,
@@ -1044,7 +1044,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-info-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-info-bg {
+html:not(.dark)[dir='rtl'] .panel-info-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-info-50),
@@ -1053,7 +1053,7 @@ html:not(.dark)[dir="rtl"] .panel-info-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-disabled-bg {
+html:not(.dark) :not([dir='rtl']) .panel-disabled-bg {
 	border-color: var(--color-disabled-400);
 	background: linear-gradient(
 		to bottom right,
@@ -1063,7 +1063,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-disabled-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-disabled-bg {
+html:not(.dark)[dir='rtl'] .panel-disabled-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-disabled-50),
@@ -1072,7 +1072,7 @@ html:not(.dark)[dir="rtl"] .panel-disabled-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-accent-amber-bg {
+html:not(.dark) :not([dir='rtl']) .panel-accent-amber-bg {
 	border-color: var(--color-accent-amber-400);
 	background: linear-gradient(
 		to bottom right,
@@ -1082,7 +1082,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-accent-amber-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-accent-amber-bg {
+html:not(.dark)[dir='rtl'] .panel-accent-amber-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-accent-amber-50),
@@ -1091,7 +1091,7 @@ html:not(.dark)[dir="rtl"] .panel-accent-amber-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-accent-indigo-bg {
+html:not(.dark) :not([dir='rtl']) .panel-accent-indigo-bg {
 	border-color: var(--color-accent-indigo-400);
 	background: linear-gradient(
 		to bottom right,
@@ -1101,7 +1101,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-accent-indigo-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-accent-indigo-bg {
+html:not(.dark)[dir='rtl'] .panel-accent-indigo-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-accent-indigo-50),
@@ -1110,7 +1110,7 @@ html:not(.dark)[dir="rtl"] .panel-accent-indigo-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-accent-fuchsia-bg {
+html:not(.dark) :not([dir='rtl']) .panel-accent-fuchsia-bg {
 	border-color: var(--color-accent-fuchsia-400);
 	background: linear-gradient(
 		to bottom right,
@@ -1120,7 +1120,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-accent-fuchsia-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-accent-fuchsia-bg {
+html:not(.dark)[dir='rtl'] .panel-accent-fuchsia-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-accent-fuchsia-50),
@@ -1129,7 +1129,7 @@ html:not(.dark)[dir="rtl"] .panel-accent-fuchsia-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-accent-teal-bg {
+html:not(.dark) :not([dir='rtl']) .panel-accent-teal-bg {
 	border-color: var(--color-accent-teal-400);
 	background: linear-gradient(
 		to bottom right,
@@ -1139,7 +1139,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-accent-teal-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-accent-teal-bg {
+html:not(.dark)[dir='rtl'] .panel-accent-teal-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-accent-teal-50),
@@ -1148,7 +1148,7 @@ html:not(.dark)[dir="rtl"] .panel-accent-teal-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-accent-sky-bg {
+html:not(.dark) :not([dir='rtl']) .panel-accent-sky-bg {
 	border-color: var(--color-accent-sky-400);
 	background: linear-gradient(
 		to bottom right,
@@ -1158,7 +1158,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-accent-sky-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-accent-sky-bg {
+html:not(.dark)[dir='rtl'] .panel-accent-sky-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-accent-sky-50),
@@ -1167,7 +1167,7 @@ html:not(.dark)[dir="rtl"] .panel-accent-sky-bg {
 	);
 }
 
-html:not(.dark) :not([dir="rtl"]) .panel-accent-purple-bg {
+html:not(.dark) :not([dir='rtl']) .panel-accent-purple-bg {
 	border-color: var(--color-accent-purple-400);
 	background: linear-gradient(
 		to bottom right,
@@ -1177,7 +1177,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-accent-purple-bg {
 	);
 }
 
-html:not(.dark)[dir="rtl"] .panel-accent-purple-bg {
+html:not(.dark)[dir='rtl'] .panel-accent-purple-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-accent-purple-50),

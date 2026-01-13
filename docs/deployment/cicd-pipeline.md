@@ -10,53 +10,53 @@ The project uses several GitHub Actions workflows, each with a specific purpose 
 
 - **Purpose:** Runs on every push and pull request to any branch.
 - **Jobs:**
-   - **lint:** Runs Biome to check code style and quality (format + lint).
-   - **typecheck:** Runs TypeScript type checking.
-   - **vitest:** Runs unit and coverage tests with Vitest.
-   - **e2e-tests:** Triggers Playwright end-to-end tests via the reusable workflow.
+  - **lint:** Runs Biome to check code style and quality (format + lint).
+  - **typecheck:** Runs TypeScript type checking.
+  - **vitest:** Runs unit and coverage tests with Vitest.
+  - **e2e-tests:** Triggers Playwright end-to-end tests via the reusable workflow.
 - **Key Features:**
-   - Uses pnpm for dependency management and caching.
-   - Ensures code quality and correctness before merging or deploying.
+  - Uses pnpm for dependency management and caching.
+  - Ensures code quality and correctness before merging or deploying.
 
 ### 2. deploy.yml (Deployment)
 
 - **Purpose:** Deploys the application to Fly.io after a successful CI run.
 - **Trigger:** Runs when the CI workflow completes successfully.
 - **Jobs:**
-   - **deploy_staging:** Deploys to the staging environment if the branch is `dev`.
-   - **deploy_production:** Deploys to production if the branch is `main`.
+  - **deploy_staging:** Deploys to the staging environment if the branch is `dev`.
+  - **deploy_production:** Deploys to production if the branch is `main`.
 - **Key Features:**
-   - Uses Fly.io CLI for deployment.
-   - Reads app name from `fly.toml`.
-   - Supports rolling deployments and concurrency control.
+  - Uses Fly.io CLI for deployment.
+  - Reads app name from `fly.toml`.
+  - Supports rolling deployments and concurrency control.
 
 ### 3. playwright.yml (Manual Playwright Tests)
 
 - **Purpose:** Allows manual triggering of Playwright end-to-end tests.
 - **Trigger:** Can be started manually from the GitHub Actions UI.
 - **Jobs:**
-   - **e2e-tests:** Runs the reusable Playwright workflow with user-specified environment.
+  - **e2e-tests:** Runs the reusable Playwright workflow with user-specified environment.
 - **Key Features:**
-   - Supports testing against different environments (local, staging).
+  - Supports testing against different environments (local, staging).
 
 ### 4. playwright-reusable.yml (Reusable Playwright Tests)
 
 - **Purpose:** Defines a reusable workflow for running Playwright end-to-end tests.
 - **Trigger:** Called by other workflows (like ci.yml or playwright.yml).
 - **Jobs:**
-   - **playwright:** Runs Playwright tests, builds the app, sets up the database, and uploads test reports.
+  - **playwright:** Runs Playwright tests, builds the app, sets up the database, and uploads test reports.
 - **Key Features:**
-   - Handles environment setup, database migration, and artifact upload.
-   - Can be parameterized for different environments and artifact suffixes.
+  - Handles environment setup, database migration, and artifact upload.
+  - Can be parameterized for different environments and artifact suffixes.
 
 ### 5. slack.yml (Slack Notifications)
 
 - **Purpose:** Sends notifications to Slack about workflow results (successes, failures, etc.).
 - **Trigger:** Runs on every push to `main` and `dev` branches.
 - **Jobs:**
-   - **slack-notifications:** Posts a message to a Slack channel using an incoming webhook.
+  - **slack-notifications:** Posts a message to a Slack channel using an incoming webhook.
 - **Key Features:**
-   - Notifies the team about build results, including links to commits and workflow runs.
+  - Notifies the team about build results, including links to commits and workflow runs.
 
 ---
 
@@ -70,11 +70,11 @@ This project uses a GitHub Actions workflow to send notifications to Slack about
 - It triggers on every push to the `main` and `dev` branches.
 - After each workflow run, a message is sent to a designated Slack channel using an incoming webhook.
 - The message includes:
-   - The build result (success or failure)
-   - The branch name
-   - The GitHub actor who triggered the workflow
-   - The commit message
-   - Direct links to the commit and the workflow run
+  - The build result (success or failure)
+  - The branch name
+  - The GitHub actor who triggered the workflow
+  - The commit message
+  - Direct links to the commit and the workflow run
 
 ### Example Slack Message
 

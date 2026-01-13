@@ -51,9 +51,8 @@ describe('useFirebaseAuth', () => {
 		vi.clearAllMocks()
 
 		// Get the mocked functions
-		const { signInWithPopup, signOut, onAuthStateChanged } = await import(
-			'firebase/auth'
-		)
+		const { signInWithPopup, signOut, onAuthStateChanged } =
+			await import('firebase/auth')
 		mockSignInWithPopup = vi.mocked(signInWithPopup)
 		mockSignOut = vi.mocked(signOut)
 		mockOnAuthStateChanged = vi.mocked(onAuthStateChanged)

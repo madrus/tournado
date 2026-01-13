@@ -1,5 +1,5 @@
 /* User menu dropdown animation - synced with icon animation */
-[data-testid="user-menu-dropdown"] {
+[data-testid='user-menu-dropdown'] {
 	transform-origin: top;
 	animation-duration: 300ms;
 	animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -7,12 +7,12 @@
 }
 
 /* Opening animation */
-[data-testid="user-menu-dropdown"][data-state="open"] {
+[data-testid='user-menu-dropdown'][data-state='open'] {
 	animation-name: menu-open;
 }
 
 /* Closing animation */
-[data-testid="user-menu-dropdown"][data-state="closed"] {
+[data-testid='user-menu-dropdown'][data-state='closed'] {
 	animation-name: menu-close;
 }
 
@@ -39,18 +39,18 @@
 }
 
 /* AppBar title Arabic text - needs higher specificity to override Tailwind size classes */
-[dir="rtl"] header .arabic-text.text-xl {
+[dir='rtl'] header .arabic-text.text-xl {
 	font-size: 1.5625rem; /* 25px = 20px * 1.25 */
 	transform: translateY(4px); /* More downward adjustment */
 }
 
-[dir="rtl"] header .arabic-text.sm\:text-2xl {
+[dir='rtl'] header .arabic-text.sm\:text-2xl {
 	font-size: 1.875rem; /* 30px = 24px * 1.25 */
 	transform: translateY(5px); /* More downward adjustment for larger text */
 }
 
 @media (min-width: 640px) {
-	[dir="rtl"] header .arabic-text.sm\:text-2xl {
+	[dir='rtl'] header .arabic-text.sm\:text-2xl {
 		font-size: 1.875rem; /* 30px = 24px * 1.25 */
 		transform: translateY(5px); /* More downward adjustment for larger text */
 	}

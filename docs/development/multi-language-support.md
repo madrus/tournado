@@ -39,12 +39,12 @@ Supported languages are defined in `app/i18n/config.ts`:
 
 ```ts
 export const SUPPORTED_LANGUAGES = [
-   { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
-   { code: 'en', name: 'English', flag: '🇬🇧' },
-   { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-   { code: 'fr', name: 'Français', flag: '🇫🇷' },
-   { code: 'ar', name: 'العربية', flag: '🇲🇦' },
-   { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
+	{ code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
+	{ code: 'en', name: 'English', flag: '🇬🇧' },
+	{ code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+	{ code: 'fr', name: 'Français', flag: '🇫🇷' },
+	{ code: 'ar', name: 'العربية', flag: '🇲🇦' },
+	{ code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
 ] as const
 ```
 
@@ -65,18 +65,18 @@ Each file contains a nested structure of translation keys. Example (`en.json`):
 
 ```json
 {
-   "common": {
-      "appName": "Tournado",
-      "titles": {
-         "adminPanel": "Admin Panel",
-         "profile": "Profile"
-      }
-   },
-   "admin": {
-      "teams": {
-         "title": "Teams Management"
-      }
-   }
+	"common": {
+		"appName": "Tournado",
+		"titles": {
+			"adminPanel": "Admin Panel",
+			"profile": "Profile"
+		}
+	},
+	"admin": {
+		"teams": {
+			"title": "Teams Management"
+		}
+	}
 }
 ```
 
@@ -97,25 +97,25 @@ import nl from './locales/nl.json'
 import tr from './locales/tr.json'
 
 export const resources = {
-   nl: { translation: nl },
-   en: { translation: en },
-   de: { translation: de },
-   fr: { translation: fr },
-   ar: { translation: ar },
-   tr: { translation: tr },
+	nl: { translation: nl },
+	en: { translation: en },
+	de: { translation: de },
+	fr: { translation: fr },
+	ar: { translation: ar },
+	tr: { translation: tr },
 }
 
 export function initI18n(language: string) {
-   return i18n
-      .createInstance()
-      .use(initReactI18next)
-      .init({
-         resources,
-         lng: language,
-         fallbackLng: 'nl',
-         interpolation: { escapeValue: false },
-         react: { useSuspense: false },
-      })
+	return i18n
+		.createInstance()
+		.use(initReactI18next)
+		.init({
+			resources,
+			lng: language,
+			fallbackLng: 'nl',
+			interpolation: { escapeValue: false },
+			react: { useSuspense: false },
+		})
 }
 ```
 
@@ -131,7 +131,7 @@ Already configured in the project:
 
 ```json
 {
-   "i18n-ally.localesPaths": ["app/i18n/locales"]
+	"i18n-ally.localesPaths": ["app/i18n/locales"]
 }
 ```
 
@@ -141,9 +141,9 @@ If using a VS Code workspace file, add:
 
 ```json
 {
-   "settings": {
-      "i18n-ally.sourceLanguage": "nl"
-   }
+	"settings": {
+		"i18n-ally.sourceLanguage": "nl"
+	}
 }
 ```
 
@@ -153,19 +153,19 @@ Already configured in the project:
 
 ```jsonc
 {
-   "annotationInPlace": true,
-   "enabledFrameworks": ["react-i18next"],
-   "enabledParsers": ["json"],
-   "extract.autoDetect": true,
-   "keepFulfilled": true,
-   "keystyle": "nested",
-   "namespace": false,
-   "pathMatcher": "{locale}.json",
-   "preferredDelimiter": ".",
-   "projectType": "react-i18next",
-   "sortKeys": true,
-   "sourceLanguage": "nl",
-   "targetLanguages": ["en", "ar", "de", "fr", "tr"],
+	"annotationInPlace": true,
+	"enabledFrameworks": ["react-i18next"],
+	"enabledParsers": ["json"],
+	"extract.autoDetect": true,
+	"keepFulfilled": true,
+	"keystyle": "nested",
+	"namespace": false,
+	"pathMatcher": "{locale}.json",
+	"preferredDelimiter": ".",
+	"projectType": "react-i18next",
+	"sortKeys": true,
+	"sourceLanguage": "nl",
+	"targetLanguages": ["en", "ar", "de", "fr", "tr"],
 }
 ```
 
@@ -179,11 +179,11 @@ Already configured in the project:
 
 ```json
 {
-   "i18n-ally.dirStructure": "dir",
-   "i18n-ally.displayLanguage": "en",
-   "i18n-ally.localesPaths": ["app/i18n/locales"],
-   "i18n-ally.namespace": false,
-   "i18n-ally.pathMatcher": "{locale}.json"
+	"i18n-ally.dirStructure": "dir",
+	"i18n-ally.displayLanguage": "en",
+	"i18n-ally.localesPaths": ["app/i18n/locales"],
+	"i18n-ally.namespace": false,
+	"i18n-ally.pathMatcher": "{locale}.json"
 }
 ```
 
@@ -209,11 +209,11 @@ A custom hook handles language changes in `app/hooks/useLanguageSwitcher.ts`:
 import { useTranslation } from 'react-i18next'
 
 export function useLanguageSwitcher(): (language: string) => void {
-   const { i18n } = useTranslation()
+	const { i18n } = useTranslation()
 
-   return (language: string): void => {
-      i18n.changeLanguage(language)
-   }
+	return (language: string): void => {
+		i18n.changeLanguage(language)
+	}
 }
 ```
 
@@ -224,13 +224,13 @@ Language persistence is handled reactively in `app/root.tsx`:
 ```tsx
 // Reactive language persistence
 useEffect(() => {
-   if (typeof window !== 'undefined') {
-      // Write to localStorage
-      localStorage.setItem('language', language)
+	if (typeof window !== 'undefined') {
+		// Write to localStorage
+		localStorage.setItem('language', language)
 
-      // Write to cookie for server-side detection
-      document.cookie = `language=${language}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`
-   }
+		// Write to cookie for server-side detection
+		document.cookie = `language=${language}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`
+	}
 }, [language])
 ```
 
@@ -274,20 +274,20 @@ The server passes this language to the `Document` component, which sets it on th
 ```tsx
 // app/root.tsx - Document component
 const Document = ({ children, language, theme }: DocumentProps) => {
-   // Use server values for SSR, store values after hydration
-   const [isHydrated, setIsHydrated] = useState(false)
+	// Use server values for SSR, store values after hydration
+	const [isHydrated, setIsHydrated] = useState(false)
 
-   useEffect(() => {
-      setIsHydrated(true)
-   }, [])
+	useEffect(() => {
+		setIsHydrated(true)
+	}, [])
 
-   const currentLanguage = isHydrated ? storeLanguage : language
+	const currentLanguage = isHydrated ? storeLanguage : language
 
-   return (
-      <html lang={currentLanguage} dir={getDirection(currentLanguage)}>
-         {/* ... */}
-      </html>
-   )
+	return (
+		<html lang={currentLanguage} dir={getDirection(currentLanguage)}>
+			{/* ... */}
+		</html>
+	)
 }
 ```
 
@@ -336,11 +336,11 @@ The `useSettingsStoreHydration()` hook ensures the store properly rehydrates:
 ```tsx
 // app/stores/useSettingsStore.ts
 export const useSettingsStoreHydration = (): void => {
-   useEffect(() => {
-      if (isBrowser) {
-         useSettingsStore.persist.rehydrate()
-      }
-   }, [])
+	useEffect(() => {
+		if (isBrowser) {
+			useSettingsStore.persist.rehydrate()
+		}
+	}, [])
 }
 ```
 
@@ -349,19 +349,19 @@ export const useSettingsStoreHydration = (): void => {
 ```tsx
 // app/stores/useSettingsStore.ts
 export const useSettingsStore = create<StoreState & Actions>()(
-   devtools(
-      persist(
-         // ... state and actions
-         {
-            name: 'settings-storage',
-            storage: isBrowser
-               ? createJSONStorage(() => localStorage)
-               : createJSONStorage(createServerSideStorage),
-            skipHydration: !isBrowser, // Skip on server
-            partialize: state => (isBrowser ? state : {}), // Only persist on client
-         }
-      )
-   )
+	devtools(
+		persist(
+			// ... state and actions
+			{
+				name: 'settings-storage',
+				storage: isBrowser
+					? createJSONStorage(() => localStorage)
+					: createJSONStorage(createServerSideStorage),
+				skipHydration: !isBrowser, // Skip on server
+				partialize: (state) => (isBrowser ? state : {}), // Only persist on client
+			},
+		),
+	),
 )
 ```
 
@@ -375,37 +375,35 @@ After hydration, the Zustand store becomes the single source of truth, but hooks
 ```tsx
 // Example from useLanguageDirection.ts
 export function useLanguageDirection(): LanguageDirection {
-  const [isHydrated, setIsHydrated] = useState(false)
-  const currentLanguage = useSettingsStore((state) => state.language)
+	const [isHydrated, setIsHydrated] = useState(false)
+	const currentLanguage = useSettingsStore((state) => state.language)
 
-  useEffect(() => {
-    setIsHydrated(true)
-  }, [])
+	useEffect(() => {
+		setIsHydrated(true)
+	}, [])
 
-  // Direct cookie read for accuracy until hydrated
-  const getCookieLang = (): Language => {
-    if (typeof document === 'undefined') return 'nl'
-    const match = document.cookie.match(/lang=([^;]+)/)
-    const raw = match ? match[1] : null
-    if (!raw) return 'nl'
-    // Normalize Arabic variants to 'ar' (e.g., 'ar-SA' -> 'ar')
-    const normalized = raw.startsWith('ar') ? 'ar' : raw
-    // Validate against supported (include 'ar' explicitly)
-    const supported = ['nl', 'en', 'de', 'fr', 'tr', 'ar']
-    return supported.includes(normalized) ? normalized as Language : 'nl'
-  }
+	// Direct cookie read for accuracy until hydrated
+	const getCookieLang = (): Language => {
+		if (typeof document === 'undefined') return 'nl'
+		const match = document.cookie.match(/lang=([^;]+)/)
+		const raw = match ? match[1] : null
+		if (!raw) return 'nl'
+		// Normalize Arabic variants to 'ar' (e.g., 'ar-SA' -> 'ar')
+		const normalized = raw.startsWith('ar') ? 'ar' : raw
+		// Validate against supported (include 'ar' explicitly)
+		const supported = ['nl', 'en', 'de', 'fr', 'tr', 'ar']
+		return supported.includes(normalized) ? (normalized as Language) : 'nl'
+	}
 
-  const effectiveLanguage = isHydrated
-    ? currentLanguage
-    : getCookieLang()
+	const effectiveLanguage = isHydrated ? currentLanguage : getCookieLang()
 
-  return useMemo(
-    () => ({
-      direction: getDirection(effectiveLanguage),
-      // ... other values
-    }),
-    [effectiveLanguage],
-  )
+	return useMemo(
+		() => ({
+			direction: getDirection(effectiveLanguage),
+			// ... other values
+		}),
+		[effectiveLanguage],
+	)
 }
 ```
 
@@ -417,13 +415,13 @@ When `setLanguage()` is called:
 
 ```tsx
 // app/stores/useSettingsStore.ts
-setLanguage: language => {
-  // Persist to both localStorage and cookies
-  if (isBrowser) {
-     document.cookie = `lang=${language}; path=/; max-age=31536000`
-  }
-  const isRTL = language.split('-')[0] === 'ar'
-  set({ language, isRTL }, false, 'setLanguage')
+setLanguage: (language) => {
+	// Persist to both localStorage and cookies
+	if (isBrowser) {
+		document.cookie = `lang=${language}; path=/; max-age=31536000`
+	}
+	const isRTL = language.split('-')[0] === 'ar'
+	set({ language, isRTL }, false, 'setLanguage')
 }
 ```
 
@@ -433,10 +431,10 @@ To prevent hydration mismatches, components use a special pattern for reactive s
 
 ```tsx
 // CORRECT: Hydration-safe pattern in subcomponents
-const { direction } = useLanguageDirection()  // Uses effectiveLanguage from hook (cookie until hydrated)
+const { direction } = useLanguageDirection() // Uses effectiveLanguage from hook (cookie until hydrated)
 
 // WRONG: Direct store access (causes mismatch)
-const isRTL = useSettingsStore((state) => state.isRTL)  // Sees default 'nl' during hydration
+const isRTL = useSettingsStore((state) => state.isRTL) // Sees default 'nl' during hydration
 ```
 
 This pattern ensures:
@@ -449,12 +447,12 @@ This pattern ensures:
 
 ```tsx
 // app/components/AppBar.tsx
-subMenu: SUPPORTED_LANGUAGES.map(lang => ({
-  label: lang.name,
-  customIcon: lang.flag,
-  onClick: () => switchLanguage(lang.code),
-  // Hydration-safe active state (uses effectiveLanguage from hook)
-  active: lang.code === currentLanguage,
+subMenu: SUPPORTED_LANGUAGES.map((lang) => ({
+	label: lang.name,
+	customIcon: lang.flag,
+	onClick: () => switchLanguage(lang.code),
+	// Hydration-safe active state (uses effectiveLanguage from hook)
+	active: lang.code === currentLanguage,
 }))
 ```
 
@@ -482,20 +480,20 @@ Language switching is integrated into the UserMenu component as a submenu:
 // app/components/UserMenu.tsx
 const changeLanguage = useLanguageSwitcher()
 
-const languageSubMenu = SUPPORTED_LANGUAGES.map(lang => ({
-  label: lang.name,
-  customIcon: lang.flag,
-  onClick: () => changeLanguage(lang.code),
-  active: currentLanguage === lang.code,  // currentLanguage from hydration-safe hook
+const languageSubMenu = SUPPORTED_LANGUAGES.map((lang) => ({
+	label: lang.name,
+	customIcon: lang.flag,
+	onClick: () => changeLanguage(lang.code),
+	active: currentLanguage === lang.code, // currentLanguage from hydration-safe hook
 }))
 
 const menuItems = [
-  // ... other menu items
-  {
-     label: t('common.language'),
-     icon: 'language',
-     subMenu: languageSubMenu,
-  },
+	// ... other menu items
+	{
+		label: t('common.language'),
+		icon: 'language',
+		subMenu: languageSubMenu,
+	},
 ]
 ```
 
@@ -523,21 +521,21 @@ The font system uses a mobile-first approach with automatic font switching:
 ```css
 /* Default to Arabic font when Arabic is active */
 .text-arabic {
-   font-family: 'Amiri', system-ui, sans-serif;
-   font-size: 1.25em; /* 25% larger for Arabic readability */
+	font-family: 'Amiri', system-ui, sans-serif;
+	font-size: 1.25em; /* 25% larger for Arabic readability */
 }
 
 /* Latin content within Arabic context */
 .text-arabic .latin-content,
 .text-arabic [lang='en'],
 .text-arabic .text-latin-content {
-   font-family: 'Inter', system-ui, sans-serif !important;
-   font-size: 0.8em !important; /* Compensate for 25% Arabic scaling */
+	font-family: 'Inter', system-ui, sans-serif !important;
+	font-size: 0.8em !important; /* Compensate for 25% Arabic scaling */
 }
 
 /* Default Latin font for non-Arabic languages */
 .text-latin {
-   font-family: 'Inter', system-ui, sans-serif;
+	font-family: 'Inter', system-ui, sans-serif;
 }
 ```
 
@@ -563,13 +561,13 @@ For large titles (like the homepage "Tournado"), special CSS rules prevent the A
 ```css
 /* App name title specific styling - override latin-content scaling for large titles */
 .text-arabic h1.app-name.latin-content {
-   font-size: 2.25rem !important; /* text-4xl equivalent in rem to bypass all em scaling */
+	font-size: 2.25rem !important; /* text-4xl equivalent in rem to bypass all em scaling */
 }
 
 @media (min-width: 640px) {
-   .text-arabic h1.app-name.latin-content {
-      font-size: 3.75rem !important; /* text-6xl equivalent in rem for sm: breakpoint */
-   }
+	.text-arabic h1.app-name.latin-content {
+		font-size: 3.75rem !important; /* text-6xl equivalent in rem for sm: breakpoint */
+	}
 }
 ```
 
@@ -591,25 +589,25 @@ RTL support is enabled for Arabic using utility functions and Tailwind classes. 
 
 // Basic RTL detection (now handles variants like 'ar-SA' via startsWith('ar'))
 export function isRTL(lang: string) {
-  return String(lang).startsWith('ar')
+	return String(lang).startsWith('ar')
 }
 
 export function getDirection(lang: string) {
-  return isRTL(lang) ? 'rtl' : 'ltr'
+	return isRTL(lang) ? 'rtl' : 'ltr'
 }
 
 // Typography helpers
 export function getTypographyClass(languageCode: string): string {
-  return isRTL(languageCode) ? 'arabic-text' : ''
+	return isRTL(languageCode) ? 'arabic-text' : ''
 }
 
 export function getLatinTextClass(languageCode: string): string {
-  return isRTL(languageCode) ? 'latin-text' : ''
+	return isRTL(languageCode) ? 'latin-text' : ''
 }
 
 // Latin font family for numbers and Latin content in RTL
 export function getLatinFontFamily(languageCode: string): string {
-  return isRTL(languageCode) ? '!font-sans' : ''
+	return isRTL(languageCode) ? '!font-sans' : ''
 }
 ```
 
@@ -623,16 +621,16 @@ When displaying Latin content (names, numbers, dates) in Arabic mode, use `getLa
 import { getLatinFontFamily } from '~/utils/rtlUtils'
 
 function Component() {
-   const { i18n } = useTranslation()
-   const latinFontClass = getLatinFontFamily(i18n.language)
+	const { i18n } = useTranslation()
+	const latinFontClass = getLatinFontFamily(i18n.language)
 
-   return (
-      <div>
-         {/* Numbers and Latin text use system font in Arabic mode */}
-         <span className={latinFontClass}>42</span>
-         <span className={latinFontClass}>Tournament Name</span>
-      </div>
-   )
+	return (
+		<div>
+			{/* Numbers and Latin text use system font in Arabic mode */}
+			<span className={latinFontClass}>42</span>
+			<span className={latinFontClass}>Tournament Name</span>
+		</div>
+	)
 }
 ```
 
@@ -658,13 +656,13 @@ For touch interactions like swipeable rows, the system provides direction-aware 
 ```ts
 // Direction multiplier for swipe calculations
 export type SwipeRowConfig = {
-   directionMultiplier: 1 | -1 // 1 for LTR, -1 for RTL
+	directionMultiplier: 1 | -1 // 1 for LTR, -1 for RTL
 }
 
 export function getSwipeRowConfig(languageCode: string): SwipeRowConfig {
-   return {
-      directionMultiplier: isRTL(languageCode) ? -1 : 1,
-   }
+	return {
+		directionMultiplier: isRTL(languageCode) ? -1 : 1,
+	}
 }
 ```
 
@@ -674,18 +672,18 @@ export function getSwipeRowConfig(languageCode: string): SwipeRowConfig {
 import { getSwipeRowConfig } from '~/utils/rtlUtils'
 
 function SwipeableRow() {
-   const { i18n } = useTranslation()
-   const { directionMultiplier } = getSwipeRowConfig(i18n.language)
+	const { i18n } = useTranslation()
+	const { directionMultiplier } = getSwipeRowConfig(i18n.language)
 
-   const handleTouchMove = (event: TouchEvent) => {
-      const deltaX = (currentTouch.clientX - startX) * directionMultiplier
-      // LTR: left swipe = negative deltaX
-      // RTL: right swipe = negative deltaX (inverted by multiplier)
-   }
+	const handleTouchMove = (event: TouchEvent) => {
+		const deltaX = (currentTouch.clientX - startX) * directionMultiplier
+		// LTR: left swipe = negative deltaX
+		// RTL: right swipe = negative deltaX (inverted by multiplier)
+	}
 
-   const transform = `translateX(${position * directionMultiplier}px)`
-   // LTR: negative position moves left
-   // RTL: negative position moves right (inverted by multiplier)
+	const transform = `translateX(${position * directionMultiplier}px)`
+	// LTR: negative position moves left
+	// RTL: negative position moves right (inverted by multiplier)
 }
 ```
 
@@ -711,9 +709,9 @@ When you have exactly **2 elements** (e.g., icon + label), use `rtl:order-last` 
 
 ```tsx
 // Button with icon + text (2 elements)
-<button className="inline-flex items-center gap-2">
-  <IconComponent className="h-5 w-5 rtl:order-last" />
-  <span>Label Text</span>
+<button className='inline-flex items-center gap-2'>
+	<IconComponent className='h-5 w-5 rtl:order-last' />
+	<span>Label Text</span>
 </button>
 
 // LTR: icon(0) → label(0) = visual: [Icon] [Text]
@@ -725,22 +723,25 @@ When you have exactly **2 elements** (e.g., icon + label), use `rtl:order-last` 
 ```tsx
 // app/components/buttons/ActionButton.tsx
 const iconElement = rawIcon ? (
-  iconNeedsCircle ? (
-    <span className={cn(iconCircleVariants({ size, color }), 'rtl:order-last')} aria-hidden>
-      {rawIcon}
-    </span>
-  ) : (
-    <span className='icon-spacing rtl:order-last' aria-hidden>
-      {rawIcon}
-    </span>
-  )
+	iconNeedsCircle ? (
+		<span
+			className={cn(iconCircleVariants({ size, color }), 'rtl:order-last')}
+			aria-hidden
+		>
+			{rawIcon}
+		</span>
+	) : (
+		<span className='icon-spacing rtl:order-last' aria-hidden>
+			{rawIcon}
+		</span>
+	)
 ) : null
 
 return (
-  <button className={buttonClasses}>
-    {iconElement}
-    {children}
-  </button>
+	<button className={buttonClasses}>
+		{iconElement}
+		{children}
+	</button>
 )
 ```
 
@@ -750,14 +751,12 @@ When you have **3+ elements** (e.g., icon + label + badge), you must use explici
 
 ```tsx
 // Competition page tabs with icon, label, and badge (3 elements)
-<button className="flex items-center gap-2">
-  {/* LTR: icon(0) → label(0) → badge(0) = visual: icon, label, badge
+<button className='flex items-center gap-2'>
+	{/* LTR: icon(0) → label(0) → badge(0) = visual: icon, label, badge
       RTL: icon(1) → label(2) → badge(3) = visual: badge, label, icon */}
-  <tab.icon className="h-6 w-6 rtl:order-1" />
-  <span className="rtl:order-2">{t(tab.nameKey)}</span>
-  {tab.disabled ? (
-    <span className="latin-text ... rtl:order-3">Soon</span>
-  ) : null}
+	<tab.icon className='h-6 w-6 rtl:order-1' />
+	<span className='rtl:order-2'>{t(tab.nameKey)}</span>
+	{tab.disabled ? <span className='latin-text ... rtl:order-3'>Soon</span> : null}
 </button>
 
 // LTR: [Icon] [Label] [Badge]
@@ -798,24 +797,24 @@ rtl:order-3
 Add explicit CSS rules to `app/styles/tailwind_rtl_typography.css`:
 
 ```css
-[dir="rtl"] .rtl\:order-last {
-  order: 9999;
+[dir='rtl'] .rtl\:order-last {
+	order: 9999;
 }
 
-[dir="rtl"] .rtl\:order-first {
-  order: -9999;
+[dir='rtl'] .rtl\:order-first {
+	order: -9999;
 }
 
-[dir="rtl"] .rtl\:order-1 {
-  order: 1;
+[dir='rtl'] .rtl\:order-1 {
+	order: 1;
 }
 
-[dir="rtl"] .rtl\:order-2 {
-  order: 2;
+[dir='rtl'] .rtl\:order-2 {
+	order: 2;
 }
 
-[dir="rtl"] .rtl\:order-3 {
-  order: 3;
+[dir='rtl'] .rtl\:order-3 {
+	order: 3;
 }
 /* Add more numeric orders as needed */
 ```
@@ -827,6 +826,7 @@ Radix UI components (Select, Dropdown, Dialog, etc.) require explicit `dir` attr
 **The Problem:**
 
 Radix components default to `dir="ltr"` even when the page is in RTL mode, causing:
+
 - Text aligned to the left instead of right in Arabic mode
 - Icons and content in wrong visual order
 
@@ -872,6 +872,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 - ❌ Don't use `getDirection()` without the hydration-safe hook
 
 **Applies to these Radix components:**
+
 - Select (ComboField, DropdownField)
 - DropdownMenu
 - Dialog
@@ -887,22 +888,22 @@ Panel backgrounds use directional gradients that must mirror in RTL layouts to m
 ```css
 /* LTR: Gradient flows from top-left to bottom-right */
 .panel-fuchsia-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-fuchsia-50),
-    var(--color-fuchsia-100),
-    var(--color-fuchsia-50)
-  );
+	background: linear-gradient(
+		to bottom right,
+		var(--color-fuchsia-50),
+		var(--color-fuchsia-100),
+		var(--color-fuchsia-50)
+	);
 }
 
 /* RTL: Gradient flows from top-right to bottom-left (mirrored) */
-html[dir="rtl"] .panel-fuchsia-bg {
-  background: linear-gradient(
-    to bottom left,  /* ← Changed direction, NOT color order */
-    var(--color-fuchsia-50),
-    var(--color-fuchsia-100),
-    var(--color-fuchsia-50)
-  );
+html[dir='rtl'] .panel-fuchsia-bg {
+	background: linear-gradient(
+		to bottom left,
+		/* ← Changed direction, NOT color order */ var(--color-fuchsia-50),
+		var(--color-fuchsia-100),
+		var(--color-fuchsia-50)
+	);
 }
 ```
 
@@ -925,42 +926,42 @@ html.dark [dir="rtl"] .panel-fuchsia-bg { ... }
 ```css
 /* Light mode - LTR */
 .panel-fuchsia-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-fuchsia-50),
-    var(--color-fuchsia-100),
-    var(--color-fuchsia-50)
-  );
+	background: linear-gradient(
+		to bottom right,
+		var(--color-fuchsia-50),
+		var(--color-fuchsia-100),
+		var(--color-fuchsia-50)
+	);
 }
 
 /* Light mode - RTL */
-html[dir="rtl"] .panel-fuchsia-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-fuchsia-50),
-    var(--color-fuchsia-100),
-    var(--color-fuchsia-50)
-  );
+html[dir='rtl'] .panel-fuchsia-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-fuchsia-50),
+		var(--color-fuchsia-100),
+		var(--color-fuchsia-50)
+	);
 }
 
 /* Dark mode - LTR */
 html.dark .panel-fuchsia-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-fuchsia-950),
-    var(--color-fuchsia-800),
-    var(--color-fuchsia-950)
-  );
+	background: linear-gradient(
+		to bottom right,
+		var(--color-fuchsia-950),
+		var(--color-fuchsia-800),
+		var(--color-fuchsia-950)
+	);
 }
 
 /* Dark mode - RTL */
-html.dark[dir="rtl"] .panel-fuchsia-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-fuchsia-950),
-    var(--color-fuchsia-800),
-    var(--color-fuchsia-950)
-  );
+html.dark[dir='rtl'] .panel-fuchsia-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-fuchsia-950),
+		var(--color-fuchsia-800),
+		var(--color-fuchsia-950)
+	);
 }
 ```
 
@@ -987,10 +988,10 @@ When panels have rounded corners positioned differently in RTL:
 ```tsx
 // Panel in Competition layout
 <Panel
-  color='fuchsia'
-  className='rounded-tl-none rtl:rounded-tl-xl rtl:rounded-tr-none border-t shadow-lg'
+	color='fuchsia'
+	className='rounded-tl-none rtl:rounded-tl-xl rtl:rounded-tr-none border-t shadow-lg'
 >
-  <Outlet />
+	<Outlet />
 </Panel>
 ```
 
@@ -1034,12 +1035,12 @@ The `getMenuItemLineHeight()` utility applies tighter line-height to RTL menus, 
 ```tsx
 // app/utils/rtlUtils.ts
 export const getMenuItemLineHeight = (languageOverride?: Language | string): string => {
-   const isRTL = resolveIsRTL(languageOverride)
+	const isRTL = resolveIsRTL(languageOverride)
 
-   // In RTL (Arabic): use tighter line-height to compensate for 25% larger font
-   // 1.5 / 1.25 = 1.2 (maintains same visual height as LTR's leading-normal)
-   // In LTR: use normal line-height (1.5)
-   return isRTL ? 'leading-tight' : 'leading-normal'
+	// In RTL (Arabic): use tighter line-height to compensate for 25% larger font
+	// 1.5 / 1.25 = 1.2 (maintains same visual height as LTR's leading-normal)
+	// In LTR: use normal line-height (1.5)
+	return isRTL ? 'leading-tight' : 'leading-normal'
 }
 ```
 
@@ -1050,19 +1051,18 @@ Apply the line-height class to the **button container**, not individual text spa
 ```tsx
 // app/components/UserMenu.tsx
 import { getMenuItemLineHeight } from '~/utils/rtlUtils'
-
 ;<button
-   className={cn(
-      'h-10 w-full items-center px-3 py-2 focus:outline-none',
-      getMenuItemLineHeight(), // ← Applied to container, no parameters
-      'hover:bg-neutral',
-      menuClasses.menuItem
-   )}
+	className={cn(
+		'h-10 w-full items-center px-3 py-2 focus:outline-none',
+		getMenuItemLineHeight(), // ← Applied to container, no parameters
+		'hover:bg-neutral',
+		menuClasses.menuItem,
+	)}
 >
-   <span className={menuClasses.iconContainer}>{subItem.customIcon}</span>
-   <span className={cn(menuClasses.textContainer, subItem.className || '')}>
-      {subItem.label}
-   </span>
+	<span className={menuClasses.iconContainer}>{subItem.customIcon}</span>
+	<span className={cn(menuClasses.textContainer, subItem.className || '')}>
+		{subItem.label}
+	</span>
 </button>
 ```
 
@@ -1095,19 +1095,19 @@ Additional typography helpers for specific use cases:
 ```ts
 // Layout helpers
 export function getChipClasses(languageCode: string) {
-  // Returns RTL-aware chip container classes with flex-row-reverse
+	// Returns RTL-aware chip container classes with flex-row-reverse
 }
 
 export function getMenuClasses(languageCode: string) {
-  // Returns RTL-aware menu spacing and alignment
+	// Returns RTL-aware menu spacing and alignment
 }
 
 export function getDropdownProps(languageCode: string) {
-  // Returns Radix UI dropdown positioning for RTL
+	// Returns Radix UI dropdown positioning for RTL
 }
 
 export function getTypographyClasses(languageCode: string) {
-  // Returns typography-specific classes for titles, headings, etc.
+	// Returns typography-specific classes for titles, headings, etc.
 }
 ```
 
@@ -1118,14 +1118,14 @@ To ensure correct text direction (LTR for most languages, RTL for Arabic), the `
 ```tsx
 // app/root.tsx
 return (
-  <html
-    lang={language}
-    dir={getDirection(language)} // 'ltr' for most, 'rtl' for Arabic
-    className={`h-full overflow-x-hidden ${isRTL(language) ? 'text-arabic' : 'text-latin'}`}
-  >
-    <head>...</head>
-    <body>...</body>
-  </html>
+	<html
+		lang={language}
+		dir={getDirection(language)} // 'ltr' for most, 'rtl' for Arabic
+		className={`h-full overflow-x-hidden ${isRTL(language) ? 'text-arabic' : 'text-latin'}`}
+	>
+		<head>...</head>
+		<body>...</body>
+	</html>
 )
 ```
 
@@ -1196,26 +1196,26 @@ The root loader in `app/root.tsx` reads the `lang` cookie on every server reques
 ```tsx
 // app/root.tsx
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
-  // Read 'lang' cookie from request headers
-  const cookieHeader = request.headers.get('Cookie') || ''
-  const langMatch = cookieHeader.match(/lang=([^;]+)/)
+	// Read 'lang' cookie from request headers
+	const cookieHeader = request.headers.get('Cookie') || ''
+	const langMatch = cookieHeader.match(/lang=([^;]+)/)
 
-  // Validate against supported languages
-  const rawLanguage = langMatch ? langMatch[1] : undefined
-  const supportedLanguageCodes = SUPPORTED_LANGUAGES.map(l => l.code)
-  const language = supportedLanguageCodes.includes(rawLanguage as Language)
-     ? (rawLanguage as Language)
-     : 'nl' // Default to Dutch
+	// Validate against supported languages
+	const rawLanguage = langMatch ? langMatch[1] : undefined
+	const supportedLanguageCodes = SUPPORTED_LANGUAGES.map((l) => l.code)
+	const language = supportedLanguageCodes.includes(rawLanguage as Language)
+		? (rawLanguage as Language)
+		: 'nl' // Default to Dutch
 
-  return {
-     authenticated: !!user,
-     username: user?.email ?? '',
-     user,
-     ENV: getEnv(),
-     language, // ← Passed to client
-     theme,
-     tournaments,
-  }
+	return {
+		authenticated: !!user,
+		username: user?.email ?? '',
+		user,
+		ENV: getEnv(),
+		language, // ← Passed to client
+		theme,
+		tournaments,
+	}
 }
 ```
 

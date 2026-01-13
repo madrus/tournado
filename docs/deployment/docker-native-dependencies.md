@@ -18,6 +18,7 @@ ELIFECYCLE Command failed
 ```
 
 **Why it fails**:
+
 - Husky tries to install git hooks during `pnpm install`
 - Docker containers don't have Husky CLI available globally
 - The postinstall script runs `husky &&` which fails before `|| true` can catch it
@@ -41,11 +42,13 @@ Error: Could not locate the bindings file. Tried:
 ```
 
 **Why it fails**:
+
 - `better-sqlite3` is a native C++ addon that must be compiled with node-gyp
 - Using `--ignore-scripts` prevents the build script from running
 - Simply installing the package doesn't compile the native bindings
 
 **Failed approaches**:
+
 1. ❌ **Remove `--ignore-scripts`**: Husky fails and breaks the build
 2. ❌ **Use `pnpm rebuild better-sqlite3`**: Doesn't work because `--ignore-scripts` doesn't download source code needed for rebuild
 3. ❌ **Copy pre-built bindings from deps stage**: Deps stage also didn't have bindings built
@@ -90,6 +93,7 @@ RUN apt-get update && apt-get install -y \
 ```
 
 **What `build-essential` provides**:
+
 - `gcc` - GNU C compiler
 - `g++` - GNU C++ compiler
 - `make` - Build automation tool
@@ -128,6 +132,7 @@ RUN SQLITE_DIR=$(find /workdir/node_modules/.pnpm -type d -name "better-sqlite3"
 ```
 
 **How this works**:
+
 1. `find` locates the better-sqlite3 package in pnpm's `.pnpm` store (version-agnostic)
 2. `cd "$SQLITE_DIR"` changes to the package directory
 3. `npm run build-release` runs the package's build script (invokes node-gyp)
@@ -166,6 +171,7 @@ docker run --rm test-deps find /workdir/node_modules -name "better_sqlite3.node"
 ### 1. Avoid `--ignore-scripts` Side Effects
 
 When you use `--ignore-scripts`:
+
 - ✅ Prevents Husky from running
 - ❌ Also prevents native modules from building
 - ❌ Doesn't download source code (rebuild won't work)
@@ -189,6 +195,7 @@ RUN SQLITE_DIR=$(find ... -name "better-sqlite3" ...)
 ### 3. Build in the Right Stage
 
 Build native modules in the same stage where they'll be used:
+
 - `production-deps` stage: Build bindings here
 - `build` stage: Copy pre-built bindings from production-deps
 - Final stage: Copy pre-built bindings from production-deps
@@ -217,6 +224,7 @@ This approach works for any native Node.js module:
 | `node-gyp` modules | `npm run build` or `node-gyp rebuild` | Check package.json scripts          |
 
 **General pattern**:
+
 1. Install with `--ignore-scripts`
 2. Find package location with `find`
 3. Run the package's specific build command
@@ -357,6 +365,7 @@ While currently designed for local validation, the test can be added to CI/CD pi
 ```
 
 **Note**: Running in CI will increase build time, so consider running only on:
+
 - Pull requests that modify `Dockerfile`
 - Scheduled weekly builds
 - Release branches

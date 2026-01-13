@@ -31,14 +31,14 @@ export type FormVariant = 'public' | 'admin'
  * Team form data structure with strict types
  */
 export type TeamFormData = {
-   tournamentId: string
-   clubName: string
-   teamName: TeamName // Strict template literal type
-   division: TeamClass // Strict enum-based type
-   teamLeaderName: string
-   teamLeaderPhone: string
-   teamLeaderEmail: Email // Strict email pattern type
-   privacyAgreement: boolean
+	tournamentId: string
+	clubName: string
+	teamName: TeamName // Strict template literal type
+	division: TeamClass // Strict enum-based type
+	teamLeaderName: string
+	teamLeaderPhone: string
+	teamLeaderEmail: Email // Strict email pattern type
+	privacyAgreement: boolean
 }
 ```
 
@@ -70,15 +70,15 @@ To bridge the gap between database strings and strict types, the application pro
  * Converts database string to TeamName type
  */
 export const stringToTeamName = (value: string): TeamName =>
-   // Type assertion with future validation capability
-   value as TeamName
+	// Type assertion with future validation capability
+	value as TeamName
 
 /**
  * Converts database string to Email type
  */
 export const stringToEmail = (value: string): Email =>
-   // Type assertion with future validation capability
-   value as Email
+	// Type assertion with future validation capability
+	value as Email
 
 /**
  * Converts database string to TeamClass type
@@ -134,12 +134,12 @@ The type conversion functions are designed for easy enhancement:
 
 ```typescript
 export const stringToTeamName = (value: string): TeamName => {
-   // Future: Add runtime validation
-   if (!isValidTeamNameFormat(value)) {
-      throw new Error(`Invalid team name format: ${value}`)
-   }
+	// Future: Add runtime validation
+	if (!isValidTeamNameFormat(value)) {
+		throw new Error(`Invalid team name format: ${value}`)
+	}
 
-   return value as TeamName
+	return value as TeamName
 }
 ```
 

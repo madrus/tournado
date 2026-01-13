@@ -5,20 +5,20 @@ modified: 2025-09-06
 type: guide
 status: active
 tags:
-   - guide
-   - ollama
-   - ai
-   - local
-   - models
-   - setup
-   - continue
-   - cursor
-   - vscode
-   - ide-integration
-   - intellisense
-   - autocomplete
-   - limitations
-   - performance
+  - guide
+  - ollama
+  - ai
+  - local
+  - models
+  - setup
+  - continue
+  - cursor
+  - vscode
+  - ide-integration
+  - intellisense
+  - autocomplete
+  - limitations
+  - performance
 ---
 
 # Use Ollama Locally With Continue Extension in Cursor & VS Code
@@ -168,87 +168,87 @@ name: Local Agent
 version: 1.0.0
 schema: v1
 models:
-   # Chat models - available in dropdown for conversations
-   - name: 🦙 Llama 3.1 8B (General)
-     provider: ollama
-     model: llama3.1:8b
-     roles:
-        - chat
-   - name: ⭐ StarCoder2 Instruct (Code Generation)
-     provider: ollama
-     model: starcoder2:instruct
-     roles:
-        - chat
-   - name: 🔥 CodeLlama 13B Instruct (Code Analysis)
-     provider: ollama
-     model: codellama:13b-instruct
-     roles:
-        - chat
-   - name: 🎯 Qwen 2.5 Coder 7B Instruct (Balanced)
-     provider: ollama
-     model: qwen2.5-coder:7b-instruct
-     roles:
-        - chat
-   - name: 🧠 DeepSeek Coder 6.7B Instruct (Fast)
-     provider: ollama
-     model: deepseek-coder:6.7b-instruct
-     roles:
-        - chat
-   - name: 💪 Qwen 2.5 Coder 14B (Large)
-     provider: ollama
-     model: qwen2.5-coder:14b
-     roles:
-        - chat
-   - name: 🚀 DeepSeek Coder V2 16B (Advanced)
-     provider: ollama
-     model: deepseek-coder-v2:16b
-     roles:
-        - chat
+  # Chat models - available in dropdown for conversations
+  - name: 🦙 Llama 3.1 8B (General)
+    provider: ollama
+    model: llama3.1:8b
+    roles:
+      - chat
+  - name: ⭐ StarCoder2 Instruct (Code Generation)
+    provider: ollama
+    model: starcoder2:instruct
+    roles:
+      - chat
+  - name: 🔥 CodeLlama 13B Instruct (Code Analysis)
+    provider: ollama
+    model: codellama:13b-instruct
+    roles:
+      - chat
+  - name: 🎯 Qwen 2.5 Coder 7B Instruct (Balanced)
+    provider: ollama
+    model: qwen2.5-coder:7b-instruct
+    roles:
+      - chat
+  - name: 🧠 DeepSeek Coder 6.7B Instruct (Fast)
+    provider: ollama
+    model: deepseek-coder:6.7b-instruct
+    roles:
+      - chat
+  - name: 💪 Qwen 2.5 Coder 14B (Large)
+    provider: ollama
+    model: qwen2.5-coder:14b
+    roles:
+      - chat
+  - name: 🚀 DeepSeek Coder V2 16B (Advanced)
+    provider: ollama
+    model: deepseek-coder-v2:16b
+    roles:
+      - chat
 
-   # Specialized role assignments for optimal performance
-   - name: Chat Default
-     provider: ollama
-     model: llama3.1:8b
-     roles:
-        - chat
+  # Specialized role assignments for optimal performance
+  - name: Chat Default
+    provider: ollama
+    model: llama3.1:8b
+    roles:
+      - chat
 
-   - name: Edit Specialist
-     provider: ollama
-     model: deepseek-coder-v2:16b
-     roles:
-        - edit
+  - name: Edit Specialist
+    provider: ollama
+    model: deepseek-coder-v2:16b
+    roles:
+      - edit
 
-   - name: Apply Specialist
-     provider: ollama
-     model: starcoder2:instruct
-     roles:
-        - apply
+  - name: Apply Specialist
+    provider: ollama
+    model: starcoder2:instruct
+    roles:
+      - apply
 
-   - name: Rerank Model
-     provider: ollama
-     model: qwen2.5-coder:7b-instruct
-     roles:
-        - rerank
+  - name: Rerank Model
+    provider: ollama
+    model: qwen2.5-coder:7b-instruct
+    roles:
+      - rerank
 
-   - name: Autocomplete Engine
-     provider: ollama
-     model: qwen2.5-coder:1.5b-base
-     roles:
-        - autocomplete
+  - name: Autocomplete Engine
+    provider: ollama
+    model: qwen2.5-coder:1.5b-base
+    roles:
+      - autocomplete
 
-   - name: Embed Engine
-     provider: ollama
-     model: nomic-embed-text
-     roles:
-        - embed
+  - name: Embed Engine
+    provider: ollama
+    model: nomic-embed-text
+    roles:
+      - embed
 context:
-   - provider: code
-   - provider: docs
-   - provider: diff
-   - provider: terminal
-   - provider: problems
-   - provider: folder
-   - provider: codebase
+  - provider: code
+  - provider: docs
+  - provider: diff
+  - provider: terminal
+  - provider: problems
+  - provider: folder
+  - provider: codebase
 ```
 
 #### What This Configuration Does:
@@ -330,39 +330,39 @@ After configuration:
 ### **Conversational & Explanations**
 
 - **`llama3.1:8b`** - General conversations, explaining concepts, documentation, non-coding questions
-   - _Use when:_ You need clear explanations, brainstorming, or general AI assistance
+  - _Use when:_ You need clear explanations, brainstorming, or general AI assistance
 
 ### **Code Generation & Writing**
 
 - **`starcoder2:instruct`** - Generating new code from scratch, following specific instructions
-   - _Use when:_ You want to create new functions, classes, or entire code files
+  - _Use when:_ You want to create new functions, classes, or entire code files
 
 - **`qwen2.5-coder:14b`** - Complex code generation, advanced algorithms, system design
-   - _Use when:_ Building complex features or need sophisticated coding solutions
+  - _Use when:_ Building complex features or need sophisticated coding solutions
 
 - **`deepseek-coder-v2:16b`** - Most advanced coding tasks, debugging complex issues
-   - _Use when:_ Tackling the hardest coding problems or need the best possible solution
+  - _Use when:_ Tackling the hardest coding problems or need the best possible solution
 
 ### **Code Analysis & Learning**
 
 - **`codellama:13b-instruct`** - Understanding existing code, code reviews, refactoring suggestions
-   - _Use when:_ You need to understand legacy code or want code improvement suggestions
+  - _Use when:_ You need to understand legacy code or want code improvement suggestions
 
 ### **Quick Coding Tasks**
 
 - **`qwen2.5-coder:7b-instruct`** - Balanced choice for everyday coding tasks
-   - _Use when:_ General coding help, moderate complexity tasks
+  - _Use when:_ General coding help, moderate complexity tasks
 
 - **`deepseek-coder:6.7b-instruct`** - Fast coding assistance, quick fixes, simple functions
-   - _Use when:_ You need quick answers or help with straightforward coding tasks
+  - _Use when:_ You need quick answers or help with straightforward coding tasks
 
 ### **Automatic Background Functions**
 
 - **`qwen2.5-coder:1.5b-base`** - Real-time code autocomplete (Continue handles this automatically)
-   - _Function:_ Provides instant suggestions as you type
+  - _Function:_ Provides instant suggestions as you type
 
 - **`nomic-embed-text`** - Code context understanding (Continue uses this automatically)
-   - _Function:_ Helps Continue understand your codebase for better suggestions
+  - _Function:_ Helps Continue understand your codebase for better suggestions
 
 ## Model Management
 
@@ -409,23 +409,23 @@ Add these to your VS Code `settings.json` for optimal Continue experience:
 
 ```json
 {
-   // Disable conflicting AI features
-   "github.copilot.enable": false,
-   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-   "editor.inlineSuggest.enabled": true,
+	// Disable conflicting AI features
+	"github.copilot.enable": false,
+	"vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+	"editor.inlineSuggest.enabled": true,
 
-   // Optimize for Continue
-   "editor.quickSuggestions": {
-      "other": true,
-      "comments": true,
-      "strings": true
-   },
-   "editor.suggestOnTriggerCharacters": true,
-   "editor.wordBasedSuggestions": "off",
+	// Optimize for Continue
+	"editor.quickSuggestions": {
+		"other": true,
+		"comments": true,
+		"strings": true
+	},
+	"editor.suggestOnTriggerCharacters": true,
+	"editor.wordBasedSuggestions": "off",
 
-   // Performance optimizations
-   "editor.suggest.snippetsPreventQuickSuggestions": false,
-   "editor.acceptSuggestionOnCommitCharacter": false
+	// Performance optimizations
+	"editor.suggest.snippetsPreventQuickSuggestions": false,
+	"editor.acceptSuggestionOnCommitCharacter": false
 }
 ```
 
@@ -443,8 +443,8 @@ For project-specific Continue settings, create `.vscode/settings.json` in your p
 
 ```json
 {
-   "continue.enableTabAutocomplete": true,
-   "continue.manuallyTriggerCompletion": false
+	"continue.enableTabAutocomplete": true,
+	"continue.manuallyTriggerCompletion": false
 }
 ```
 
@@ -556,20 +556,20 @@ For VS Code projects, create `.vscode/settings.json` in your project root:
 
 ```json
 {
-   "continue.enableTabAutocomplete": true,
-   "continue.manuallyTriggerCompletion": false,
-   "continue.maxAutocompleteCharacters": 10000,
-   "continue.enableContinueForTeams": false,
+	"continue.enableTabAutocomplete": true,
+	"continue.manuallyTriggerCompletion": false,
+	"continue.maxAutocompleteCharacters": 10000,
+	"continue.enableContinueForTeams": false,
 
-   "editor.inlineSuggest.enabled": true,
-   "editor.quickSuggestions": {
-      "other": true,
-      "comments": true,
-      "strings": true
-   },
+	"editor.inlineSuggest.enabled": true,
+	"editor.quickSuggestions": {
+		"other": true,
+		"comments": true,
+		"strings": true
+	},
 
-   "github.copilot.enable": false,
-   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"
+	"github.copilot.enable": false,
+	"vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"
 }
 ```
 
@@ -579,20 +579,20 @@ For Cursor projects, create `.cursor/settings.json` in your project root:
 
 ```json
 {
-   "continue.enableTabAutocomplete": true,
-   "continue.manuallyTriggerCompletion": false,
-   "continue.maxAutocompleteCharacters": 10000,
+	"continue.enableTabAutocomplete": true,
+	"continue.manuallyTriggerCompletion": false,
+	"continue.maxAutocompleteCharacters": 10000,
 
-   "cursor.cpp.disabledLanguages": [],
-   "cursor.general.enableCursorPredictions": false,
-   "cursor.chat.useOpenAIKey": false,
+	"cursor.cpp.disabledLanguages": [],
+	"cursor.general.enableCursorPredictions": false,
+	"cursor.chat.useOpenAIKey": false,
 
-   "editor.inlineSuggest.enabled": true,
-   "editor.quickSuggestions": {
-      "other": true,
-      "comments": true,
-      "strings": true
-   }
+	"editor.inlineSuggest.enabled": true,
+	"editor.quickSuggestions": {
+		"other": true,
+		"comments": true,
+		"strings": true
+	}
 }
 ```
 
@@ -761,13 +761,13 @@ Add to your `.cursor/settings.json`:
 
 ```json
 {
-   "cursor.general.enableCursorPredictions": false,
-   "cursor.chat.useOpenAIKey": false,
-   "cursor.cpp.enableAutocomplete": false,
-   "cursor.general.enableTab": false,
+	"cursor.general.enableCursorPredictions": false,
+	"cursor.chat.useOpenAIKey": false,
+	"cursor.cpp.enableAutocomplete": false,
+	"cursor.general.enableTab": false,
 
-   "continue.enableTabAutocomplete": true,
-   "editor.inlineSuggest.enabled": true
+	"continue.enableTabAutocomplete": true,
+	"editor.inlineSuggest.enabled": true
 }
 ```
 

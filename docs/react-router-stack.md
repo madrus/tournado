@@ -27,15 +27,15 @@ Click this button to create a [Gitpod](https://gitpod.io) workspace with the pro
 
 - Initial setup:
 
-   ```sh
-   pnpm setup
-   ```
+  ```sh
+  pnpm setup
+  ```
 
 - Start dev server:
 
-   ```sh
-   pnpm dev
-   ```
+  ```sh
+  pnpm dev
+  ```
 
 This starts your app in development mode, rebuilding assets on file changes.
 
@@ -62,90 +62,90 @@ Prior to your first deployment, you'll need to do a few things:
 
 - Sign up and sign in to Fly
 
-   ```sh
-   fly launch
-   # or
-   #  fly auth signup
-   ```
+  ```sh
+  fly launch
+  # or
+  #  fly auth signup
+  ```
 
-   > **Note:** If you have more than one Fly account, ensure that you are signed into the same account in the Fly CLI as you are in the browser. In your terminal, run `fly auth whoami` and ensure the email matches the Fly account signed into the browser.
+  > **Note:** If you have more than one Fly account, ensure that you are signed into the same account in the Fly CLI as you are in the browser. In your terminal, run `fly auth whoami` and ensure the email matches the Fly account signed into the browser.
 
 - Create two apps on Fly, one for staging and one for production:
 
-   ```sh
-   fly apps create tournado
-   fly apps create tournado-staging
-   ```
+  ```sh
+  fly apps create tournado
+  fly apps create tournado-staging
+  ```
 
-   > **Note:** Make sure this name matches the `app` set in your `fly.toml` file. Otherwise, you will not be able to deploy.
-   - Initialize Git.
+  > **Note:** Make sure this name matches the `app` set in your `fly.toml` file. Otherwise, you will not be able to deploy.
+  - Initialize Git.
 
-   ```sh
-   git init
-   ```
+  ```sh
+  git init
+  ```
 
 - Create a new [GitHub Repository](https://repo.new), and then add it as the remote for your project. **Do not push your app yet!**
 
-   ```sh
-   git remote add origin <ORIGIN_URL>
-   ```
+  ```sh
+  git remote add origin <ORIGIN_URL>
+  ```
 
 - Add a `FLY_API_TOKEN` to your GitHub repo. To do this, go to your user settings on [Fly.io](https://fly.io) and create a new [token](https://web.fly.io/user/personal_access_tokens/new), then add it to [your repo secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) with the name `FLY_API_TOKEN`.
   It is also possible to run `fly tokens create deploy` command.
 
 - Add a `SESSION_SECRET` to your fly app secrets, to do this you can run the following commands:
 
-   ```sh
-   fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app tournado
-   fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app tournado-staging
-   ```
+  ```sh
+  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app tournado
+  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app tournado-staging
+  ```
 
-   You should see something like this:
+  You should see something like this:
 
-   ```text
-   Secrets are staged for the first deployment
-   Secrets are staged for the first deployment
-   ```
+  ```text
+  Secrets are staged for the first deployment
+  Secrets are staged for the first deployment
+  ```
 
-   > **Note:** If you don't have openssl installed, you can also use [1Password](https://1password.com/password-generator) to generate a random secret, just replace `$(openssl rand -hex 32)` with the generated secret.
+  > **Note:** If you don't have openssl installed, you can also use [1Password](https://1password.com/password-generator) to generate a random secret, just replace `$(openssl rand -hex 32)` with the generated secret.
 
 - Create a persistent volume for the sqlite database for both your staging and production environments. Run the following:
 
-   ```sh
-   fly volumes create data --size 1 --app tournado
-   fly volumes create data --size 1 --app tournado-staging
-   ```
+  ```sh
+  fly volumes create data --size 1 --app tournado
+  fly volumes create data --size 1 --app tournado-staging
+  ```
 
-   You should see something like this:
+  You should see something like this:
 
-   ```text
-   Warning! Every volume is pinned to a specific physical host. You should create two or more volumes per application to avoid downtime. Learn more at https://fly.io/docs/volumes/overview/
-   ? Do you still want to use the volumes feature? Yes
-   ? Select region: Amsterdam, Netherlands (ams)
-                     ID: vol_vpzq5yo98zlo5jk4
-                   Name: data
-                   App: tournado
-                 Region: ams
-                   Zone: ed57
-               Size GB: 1
-             Encrypted: true
-             Created at: 15 Apr 25 15:13 UTC
-     Snapshot retention: 5
-   Scheduled snapshots: true
-   Warning! Every volume is pinned to a specific physical host. You should create two or more volumes per application to avoid downtime. Learn more at https://fly.io/docs/volumes/overview/
-   ? Do you still want to use the volumes feature? Yes
-   ? Select region: Amsterdam, Netherlands (ams)
-                     ID: vol_453yz9koxd0xeg9r
-                   Name: data
-                   App: tournado-staging
-                 Region: ams
-                   Zone: ed57
-               Size GB: 1
-             Encrypted: true
-             Created at: 15 Apr 25 15:13 UTC
-     Snapshot retention: 5
-   Scheduled snapshots: true
-   ```
+  ```text
+  Warning! Every volume is pinned to a specific physical host. You should create two or more volumes per application to avoid downtime. Learn more at https://fly.io/docs/volumes/overview/
+  ? Do you still want to use the volumes feature? Yes
+  ? Select region: Amsterdam, Netherlands (ams)
+                    ID: vol_vpzq5yo98zlo5jk4
+                  Name: data
+                  App: tournado
+                Region: ams
+                  Zone: ed57
+              Size GB: 1
+            Encrypted: true
+            Created at: 15 Apr 25 15:13 UTC
+    Snapshot retention: 5
+  Scheduled snapshots: true
+  Warning! Every volume is pinned to a specific physical host. You should create two or more volumes per application to avoid downtime. Learn more at https://fly.io/docs/volumes/overview/
+  ? Do you still want to use the volumes feature? Yes
+  ? Select region: Amsterdam, Netherlands (ams)
+                    ID: vol_453yz9koxd0xeg9r
+                  Name: data
+                  App: tournado-staging
+                Region: ams
+                  Zone: ed57
+              Size GB: 1
+            Encrypted: true
+            Created at: 15 Apr 25 15:13 UTC
+    Snapshot retention: 5
+  Scheduled snapshots: true
+  ```
 
 Now that everything is set up you can commit and push your changes to your repo. Every commit to your `main` branch will trigger a deployment to your production environment, and every commit to your `dev` branch will trigger a deployment to your staging environment.
 
@@ -176,12 +176,12 @@ We have global authentication setup for admin features and different test projec
 ```ts
 // Admin tests use pre-authenticated state
 test.describe('Admin Features', () => {
-   // These tests run with admin authentication already set up
+	// These tests run with admin authentication already set up
 })
 
 // Public tests run without authentication
 test.describe('Public Features', () => {
-   test.use({ storageState: { cookies: [], origins: [] } })
+	test.use({ storageState: { cookies: [], origins: [] } })
 })
 ```
 
@@ -191,9 +191,9 @@ Test cleanup is handled automatically through our database helpers:
 import { cleanupUser, createAdminUser } from '../helpers/database'
 
 test('admin feature test', async ({ page }) => {
-   const user = await createAdminUser()
-   // ... test logic ...
-   await cleanupUser(user.email)
+	const user = await createAdminUser()
+	// ... test logic ...
+	await cleanupUser(user.email)
 })
 ```
 
@@ -219,37 +219,37 @@ It's recommended to install the Biome VS Code extension for format-on-save funct
 
 - Verify that your `SESSION_SECRET` is properly set in the staging environment:
 
-   ```bash
-   fly secrets list --app tournado-staging
-   ```
+  ```bash
+  fly secrets list --app tournado-staging
+  ```
 
 - Monitor the application logs in your staging environment:
 
-   ```sh
-   fly logs --app tournado-staging
-   ```
+  ```sh
+  fly logs --app tournado-staging
+  ```
 
 - Check the status of your Fly.io machines and volumes:
 
-   ```sh
-   fly machines list --app tournado-staging
-   ```
+  ```sh
+  fly machines list --app tournado-staging
+  ```
 
-   Example output:
+  Example output:
 
-   ```text
-   1 machines have been retrieved from app tournado-staging.
-   View them in the UI here (​https://fly.io/apps/tournado-staging/machines/)
+  ```text
+  1 machines have been retrieved from app tournado-staging.
+  View them in the UI here (​https://fly.io/apps/tournado-staging/machines/)
 
-   tournado-staging
-   ID              NAME                       STATE    CHECKS  REGION  ROLE  IMAGE                                                   IP ADDRESS                       VOLUME                CREATED               LAST UPDATED          PROCESS GROUP  SIZE
-   7815677a50d578  sparkling-wildflower-9325  stopped  0/2     iad           tournado-staging:deployment-01JRXM5WCTP3S2C0J2JWW3JR6X  fdaa:16:cce:a7b:2f7:a39b:1bad:2  vol_4qpmz25gyggywxwv  2025-04-15T21:06:25Z  2025-04-15T21:32:54Z  app            shared-cpu-1x:256MB
-   ```
+  tournado-staging
+  ID              NAME                       STATE    CHECKS  REGION  ROLE  IMAGE                                                   IP ADDRESS                       VOLUME                CREATED               LAST UPDATED          PROCESS GROUP  SIZE
+  7815677a50d578  sparkling-wildflower-9325  stopped  0/2     iad           tournado-staging:deployment-01JRXM5WCTP3S2C0J2JWW3JR6X  fdaa:16:cce:a7b:2f7:a39b:1bad:2  vol_4qpmz25gyggywxwv  2025-04-15T21:06:25Z  2025-04-15T21:32:54Z  app            shared-cpu-1x:256MB
+  ```
 
-   The machine `7815677a50d578` is currently stopped but still has the volume vol_4qpmz25gyggywxwv attached to it. To delete the volume, we need to first destroy the machine that's using it.
+  The machine `7815677a50d578` is currently stopped but still has the volume vol_4qpmz25gyggywxwv attached to it. To delete the volume, we need to first destroy the machine that's using it.
 
 - Let's destroy the machine:
 
-   ```sh
-   fly machines destroy 7815677a50d578 --app tournado-staging
-   ```
+  ```sh
+  fly machines destroy 7815677a50d578 --app tournado-staging
+  ```

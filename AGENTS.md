@@ -58,7 +58,10 @@ Tournado is a modern tournament management system built with React Router v7, Pr
 
 ```typescript
 // ✅ CORRECT - Use barrel files for cleaner imports
-import { FirebaseSignIn, FirebaseEmailSignIn } from '~/features/firebase/components/FirebaseAuth'
+import {
+	FirebaseSignIn,
+	FirebaseEmailSignIn,
+} from '~/features/firebase/components/FirebaseAuth'
 import { Team, TeamFormData } from '~/features/teams/types'
 import { Tournament } from '~/features/tournaments/types'
 import { IconProps, ColorAccent } from '~/lib/lib.types'
@@ -158,36 +161,36 @@ Trigger self-review when you write:
 
 - **Arrow function (const)**: Use when component body contains ONLY a return statement with no hooks, variables, or logic before the return statement
 
-   ```typescript
-   // ✅ CORRECT - Only a return statement
-   export const Badge = ({ children, color }: Props): JSX.Element => (
-     <span className={cn(badgeVariants({ color }))}>{children}</span>
-   )
-   ```
+  ```typescript
+  // ✅ CORRECT - Only a return statement
+  export const Badge = ({ children, color }: Props): JSX.Element => (
+    <span className={cn(badgeVariants({ color }))}>{children}</span>
+  )
+  ```
 
 - **Function declaration**: Use when component has ANY of the following:
-   - React hooks (useState, useEffect, useTranslation, etc.)
-   - Local variables or constants
-   - Conditional logic before return
-   - Multiple statements
+  - React hooks (useState, useEffect, useTranslation, etc.)
+  - Local variables or constants
+  - Conditional logic before return
+  - Multiple statements
 
-   ```typescript
-   // ✅ CORRECT - Has hooks and logic
-   export function UserDetailCard({ user }: Props): JSX.Element {
-     const [isOpen, setIsOpen] = useState(false)
-     const { t } = useTranslation()
+  ```typescript
+  // ✅ CORRECT - Has hooks and logic
+  export function UserDetailCard({ user }: Props): JSX.Element {
+    const [isOpen, setIsOpen] = useState(false)
+    const { t } = useTranslation()
 
-     return <div>...</div>
-   }
+    return <div>...</div>
+  }
 
-   // ❌ WRONG - Should use function declaration
-   export const UserDetailCard = ({ user }: Props): JSX.Element => {
-     const [isOpen, setIsOpen] = useState(false)
-     const { t } = useTranslation()
+  // ❌ WRONG - Should use function declaration
+  export const UserDetailCard = ({ user }: Props): JSX.Element => {
+    const [isOpen, setIsOpen] = useState(false)
+    const { t } = useTranslation()
 
-     return <div>...</div>
-   }
-   ```
+    return <div>...</div>
+  }
+  ```
 
 ### Definition of Done
 

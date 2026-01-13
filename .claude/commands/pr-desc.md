@@ -2,10 +2,10 @@
 name: pr-desc
 description: Generate a PR description by analyzing commits and changes between two branches
 inputs:
-   - name: arguments
-     type: string
-     description: "Branch names and optional flags: 'compare base [--verbose|-v]' (e.g., 'dev main' or 'dev main -v')"
-     required: false
+  - name: arguments
+    type: string
+    description: "Branch names and optional flags: 'compare base [--verbose|-v]' (e.g., 'dev main' or 'dev main -v')"
+    required: false
 ---
 
 # Generate Pull Request Description
@@ -23,9 +23,9 @@ Parse the arguments as follows:
 - If remaining arguments are empty: compare current branch to `dev`
 - If one branch provided: compare that branch to `dev`
 - If two branches provided: accept either order
-   - GitHub style "base compare": normalize to compare=compare, base=base (second arg is head/compare)
-   - Legacy style "compare base": use first arg as compare, second as base
-   - Auto-detect by checking which branch is ahead using `git rev-list --count base..compare`
+  - GitHub style "base compare": normalize to compare=compare, base=base (second arg is head/compare)
+  - Legacy style "compare base": use first arg as compare, second as base
+  - Auto-detect by checking which branch is ahead using `git rev-list --count base..compare`
 
 **Output Format:**
 
@@ -67,9 +67,9 @@ Parse the arguments as follows:
    - Identify the type of changes (feature, fix, refactor, docs, etc.)
    - Note any breaking changes, database migrations, or deployment notes
    - **Heuristics for auto-detection**:
-      - Look for changes under `prisma/migrations/`, `schema.prisma`, or `*/migrations/*.sql` to detect database migrations
-      - Check for RBAC-related changes in files containing `roles`, `permissions`, `rbac`, or policy files
-      - Identify config changes in `.env`, `*.config.*`, or deployment files
+     - Look for changes under `prisma/migrations/`, `schema.prisma`, or `*/migrations/*.sql` to detect database migrations
+     - Check for RBAC-related changes in files containing `roles`, `permissions`, `rbac`, or policy files
+     - Identify config changes in `.env`, `*.config.*`, or deployment files
    - Determine the most appropriate conventional commit type prefix based on the dominant change type
 
 6. **Generate PR title**:

@@ -76,9 +76,9 @@ export function UserMenu({
 		const nextLocation = navigation.location
 		const isNavigatingToDifferentRoute = Boolean(
 			nextLocation &&
-				(nextLocation.pathname !== location.pathname ||
-					nextLocation.search !== location.search ||
-					nextLocation.hash !== location.hash),
+			(nextLocation.pathname !== location.pathname ||
+				nextLocation.search !== location.search ||
+				nextLocation.hash !== location.hash),
 		)
 
 		if (navigation.state === 'loading' && isNavigatingToDifferentRoute) {

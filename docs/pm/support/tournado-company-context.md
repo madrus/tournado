@@ -26,6 +26,7 @@ Tournado is a comprehensive tournament management platform with four core module
 **Primary:** Amateur football clubs and local sports organizations running tournaments (8-64 teams)
 
 **Personas:**
+
 - **Tournament Organizers** - Need bracket generation, schedule management, venue coordination, results tracking
 - **Club Managers** - Need team registration, player roster management, payment processing, communication with families
 - **Coaches** - Need match schedules, lineup management, real-time updates during events
@@ -35,6 +36,7 @@ Tournado is a comprehensive tournament management platform with four core module
 ## Market Position
 
 **Competitors:**
+
 - **TourneyEngine** - Feature-rich but complex, expensive for small clubs
 - **Challonge** - Simple brackets but limited management features
 - **LeagueRepublic** - Strong UK presence but not multilingual
@@ -46,12 +48,14 @@ Tournado is a comprehensive tournament management platform with four core module
 ## Current Priorities
 
 **2025 Goals:**
+
 1. Launch MVP and acquire first 20 paying tournaments
 2. Validate core tournament workflows (registration → scheduling → results)
 3. Build mobile check-in and scoring tools
 4. Establish partnerships with 3-5 local football clubs
 
 **Strategic Initiatives:**
+
 - **Mobile Experience** - Organizers need on-field updates during events (scoring, check-in, referee management)
 - **Payment Integration** - Automated invoicing and payment collection for registration fees
 - **Federation Integration** - Import team/player data from local football federation systems
@@ -60,11 +64,13 @@ Tournado is a comprehensive tournament management platform with four core module
 ## Team & Culture
 
 **Team:**
+
 - 2-person startup (1 PM + 1 developer)
 - Bootstrap mentality - build what's essential, iterate based on real usage
 - Close to the problem - both founders have organized amateur football tournaments
 
 **Development Approach:**
+
 - Ship small increments, validate with real tournaments
 - Talk to organizers weekly, attend events to observe workflows
 - Focus on mobile-first workflows that work on the sidelines
@@ -73,12 +79,14 @@ Tournado is a comprehensive tournament management platform with four core module
 ## Customer Insights
 
 **Pain points from organizers:**
+
 - "We use WhatsApp, Excel, and paper clipboards - it's chaos"
 - "Parents keep asking 'when does my kid play?' - need automated notifications"
 - "Creating brackets for 32 teams takes hours in Excel"
 - "Collecting payments and tracking who paid is painful"
 
 **Key requirements:**
+
 - Must work offline or with poor stadium WiFi
 - Mobile check-in on tournament morning (100+ teams arriving)
 - Real-time score updates visible to spectators
@@ -86,6 +94,7 @@ Tournado is a comprehensive tournament management platform with four core module
 - Simple enough for volunteer referees to report results
 
 **Early feedback (from beta organizers):**
+
 - Bracket generation saves 2-3 hours setup time
 - Mobile check-in reduces registration bottlenecks
 - Parents love automated notifications and live scores
@@ -93,17 +102,20 @@ Tournado is a comprehensive tournament management platform with four core module
 ## Business Context
 
 **Revenue Model (Planned):**
+
 - **Per-tournament pricing:** €49-199 per event (based on team count)
 - **Annual club subscription:** €299/year for unlimited tournaments
 - **Payment processing fee:** 2.5% on collected registration fees
 - **Premium features:** Photo packages, custom branding, federation API access
 
 **Target Economics:**
+
 - Average tournament: 16-32 teams, €99 per event
 - Organizers run 3-4 tournaments per year
 - Target: 100 tournaments in year 1 (€10-15K revenue)
 
 **Market Dynamics:**
+
 - Amateur football clubs operate on tight budgets
 - Tournament entry fees typically €50-150 per team
 - Most organizers currently use free tools (Excel, WhatsApp)
@@ -112,6 +124,7 @@ Tournado is a comprehensive tournament management platform with four core module
 ## Why This Matters
 
 You're building an **MVP in a niche market**:
+
 - Extremely limited resources (2 people, no funding)
 - Need to validate product-market fit with real tournaments
 - Every feature must solve an acute organizer pain point

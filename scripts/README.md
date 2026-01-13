@@ -9,6 +9,7 @@ This directory contains utility scripts for the Tournado project.
 Automated test suite for validating Docker builds and native dependencies.
 
 **Purpose**: Ensures that Docker configuration changes don't break:
+
 - Native module compilation (better-sqlite3)
 - Multi-stage build process
 - Production image assembly
@@ -47,6 +48,7 @@ pnpm test:docker
      - `/workdir/prisma`
 
 **When to run**:
+
 - Before pushing Dockerfile changes
 - After updating Docker base images
 - When changing native dependency versions
@@ -55,10 +57,12 @@ pnpm test:docker
 **Test duration**: ~2-3 minutes (builds 3 Docker stages)
 
 **Requirements**:
+
 - Docker installed and running
 - Bash shell
 
 **Exit codes**:
+
 - `0` - All tests passed
 - `1` - One or more tests failed
 

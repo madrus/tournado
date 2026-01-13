@@ -142,11 +142,11 @@ This project uses a GitHub Actions workflow to send notifications to Slack about
 - It triggers on every push to the `main` and `dev` branches.
 - After each workflow run, a message is sent to a designated Slack channel using an incoming webhook.
 - The message includes:
-   - The build result (success or failure)
-   - The branch name
-   - The GitHub actor who triggered the workflow
-   - The commit message
-   - Direct links to the commit and the workflow run
+  - The build result (success or failure)
+  - The branch name
+  - The GitHub actor who triggered the workflow
+  - The commit message
+  - Direct links to the commit and the workflow run
 
 ### Example Slack Message
 

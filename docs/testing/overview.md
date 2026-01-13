@@ -164,13 +164,13 @@ Use Playwright for testing user flows and critical paths:
 import { expect, test } from '@playwright/test'
 
 test.describe('Authentication', () => {
-   test('should allow users to sign in', async ({ page }) => {
-      await page.goto('/auth/signin')
-      await page.locator('#email').fill('test@example.com')
-      await page.locator('#password').fill('password')
-      await page.getByRole('button', { name: 'Inloggen' }).click()
-      await expect(page).toHaveURL('/')
-   })
+	test('should allow users to sign in', async ({ page }) => {
+		await page.goto('/auth/signin')
+		await page.locator('#email').fill('test@example.com')
+		await page.locator('#password').fill('password')
+		await page.getByRole('button', { name: 'Inloggen' }).click()
+		await expect(page).toHaveURL('/')
+	})
 })
 ```
 
@@ -207,10 +207,10 @@ import { LoginPage } from '../pages/LoginPage'
 
 // Create and use test users for auth flow tests
 test('admin feature', async ({ page }) => {
-   const user = await createAdminUser()
-   const loginPage = new LoginPage(page)
-   await loginPage.login(user.email, 'MyReallyStr0ngPassw0rd!!!')
-   // Test logic here...
+	const user = await createAdminUser()
+	const loginPage = new LoginPage(page)
+	await loginPage.login(user.email, 'MyReallyStr0ngPassw0rd!!!')
+	// Test logic here...
 })
 
 // Tests can also use pre-authenticated state via projects:

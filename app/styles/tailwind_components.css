@@ -439,67 +439,67 @@
 	}
 
 	/* ActionLinkPanel children color support - children opt-in with data-color="action" */
-	.action-panel-brand strong[data-color="action"] {
+	.action-panel-brand strong[data-color='action'] {
 		color: var(--color-adaptive-brand-text);
 	}
-	.action-panel-red strong[data-color="action"] {
+	.action-panel-red strong[data-color='action'] {
 		color: var(--color-adaptive-red-text);
 	}
-	.action-panel-blue strong[data-color="action"] {
+	.action-panel-blue strong[data-color='action'] {
 		color: var(--color-adaptive-blue-text);
 	}
-	.action-panel-emerald strong[data-color="action"] {
+	.action-panel-emerald strong[data-color='action'] {
 		color: var(--color-adaptive-emerald-text);
 	}
-	.action-panel-teal strong[data-color="action"] {
+	.action-panel-teal strong[data-color='action'] {
 		color: var(--color-adaptive-teal-text);
 	}
-	.action-panel-cyan strong[data-color="action"] {
+	.action-panel-cyan strong[data-color='action'] {
 		color: var(--color-adaptive-cyan-text);
 	}
-	.action-panel-green strong[data-color="action"] {
+	.action-panel-green strong[data-color='action'] {
 		color: var(--color-adaptive-green-text);
 	}
-	.action-panel-yellow strong[data-color="action"] {
+	.action-panel-yellow strong[data-color='action'] {
 		color: var(--color-adaptive-yellow-text);
 	}
-	.action-panel-orange strong[data-color="action"] {
+	.action-panel-orange strong[data-color='action'] {
 		color: var(--color-adaptive-orange-text);
 	}
-	.action-panel-amber strong[data-color="action"] {
+	.action-panel-amber strong[data-color='action'] {
 		color: var(--color-adaptive-amber-text);
 	}
-	.action-panel-lime strong[data-color="action"] {
+	.action-panel-lime strong[data-color='action'] {
 		color: var(--color-adaptive-lime-text);
 	}
-	.action-panel-violet strong[data-color="action"] {
+	.action-panel-violet strong[data-color='action'] {
 		color: var(--color-adaptive-violet-text);
 	}
-	.action-panel-purple strong[data-color="action"] {
+	.action-panel-purple strong[data-color='action'] {
 		color: var(--color-adaptive-purple-text);
 	}
-	.action-panel-fuchsia strong[data-color="action"] {
+	.action-panel-fuchsia strong[data-color='action'] {
 		color: var(--color-adaptive-fuchsia-text);
 	}
-	.action-panel-pink strong[data-color="action"] {
+	.action-panel-pink strong[data-color='action'] {
 		color: var(--color-adaptive-pink-text);
 	}
-	.action-panel-rose strong[data-color="action"] {
+	.action-panel-rose strong[data-color='action'] {
 		color: var(--color-adaptive-rose-text);
 	}
-	.action-panel-slate strong[data-color="action"] {
+	.action-panel-slate strong[data-color='action'] {
 		color: var(--color-adaptive-slate-text);
 	}
-	.action-panel-zinc strong[data-color="action"] {
+	.action-panel-zinc strong[data-color='action'] {
 		color: var(--color-adaptive-zinc-text);
 	}
-	.action-panel-indigo strong[data-color="action"] {
+	.action-panel-indigo strong[data-color='action'] {
 		color: var(--color-adaptive-indigo-text);
 	}
-	.action-panel-sky strong[data-color="action"] {
+	.action-panel-sky strong[data-color='action'] {
 		color: var(--color-adaptive-sky-text);
 	}
-	.action-panel-primary strong[data-color="action"] {
+	.action-panel-primary strong[data-color='action'] {
 		color: var(--color-adaptive-emerald-text);
 	}
 
@@ -767,7 +767,7 @@
 	}
 
 	/* Nuclear option: completely disable all visual changes on disabled buttons (except combobox) */
-	button:disabled:not([role="combobox"]):is(
+	button:disabled:not([role='combobox']):is(
 			&,
 			:hover,
 			:focus,
@@ -787,7 +787,7 @@
 	}
 
 	/* Direct fix for reset button to match light mode exactly */
-	.dark button[class*="text-brand-600"][class*="bg-transparent"] {
+	.dark button[class*='text-brand-600'][class*='bg-transparent'] {
 		background: var(--color-white);
 		background-color: var(--color-white);
 		color: var(--color-red-600);
@@ -795,9 +795,9 @@
 	}
 
 	/* Ensure ring system works on hover/focus for secondary buttons in dark mode */
-	.dark button[class*="text-brand-600"][class*="bg-transparent"]:hover,
-	.dark button[class*="text-brand-600"][class*="bg-transparent"]:focus,
-	.dark button[class*="text-brand-600"][class*="bg-transparent"]:focus-visible {
+	.dark button[class*='text-brand-600'][class*='bg-transparent']:hover,
+	.dark button[class*='text-brand-600'][class*='bg-transparent']:focus,
+	.dark button[class*='text-brand-600'][class*='bg-transparent']:focus-visible {
 		--tw-ring-color: var(--color-red-600);
 		--tw-ring-offset-color: var(--color-white);
 		--tw-ring-width: 2px;
@@ -805,7 +805,7 @@
 	}
 
 	/* Force border color to stay consistent on disabled buttons (except combobox) */
-	button:disabled:not([role="combobox"]):is(
+	button:disabled:not([role='combobox']):is(
 			&,
 			:hover,
 			:focus,
@@ -817,86 +817,86 @@
 
 	/* Dark mode disabled button border override (except combobox) */
 	.dark
-	button:disabled:not([role="combobox"]):is(
-		&,
-		:hover,
-		:focus,
-		:focus-visible,
-		:active
-	) {
+		button:disabled:not([role='combobox']):is(
+			&,
+			:hover,
+			:focus,
+			:focus-visible,
+			:active
+		) {
 		border-color: rgb(var(--color-button-neutral-secondary-border));
 	}
 
 	/* ComboField disabled variant - restore border width, allow utility classes to set border color */
-	button[role="combobox"]:disabled:is(&, :hover, :focus, :focus-visible, :active) {
+	button[role='combobox']:disabled:is(&, :hover, :focus, :focus-visible, :active) {
 		border-width: 2px;
 	}
 
 	/* UserMenu light mode - force red colors */
-	.light [data-testid="user-menu-dropdown"] {
+	.light [data-testid='user-menu-dropdown'] {
 		border-color: var(--color-usermenu-border);
 	}
 
-	.light [data-testid="user-menu-dropdown"] .bg-red-500 {
+	.light [data-testid='user-menu-dropdown'] .bg-red-500 {
 		background-color: var(--color-usermenu-accent-bg);
 	}
 
 	/* UserMenu dark mode specific styling */
-	.dark [data-testid="user-menu-dropdown"] {
+	.dark [data-testid='user-menu-dropdown'] {
 		border-color: var(--color-usermenu-border);
 	}
 
-	.dark [data-testid="user-menu-dropdown"] .bg-emerald-500 {
+	.dark [data-testid='user-menu-dropdown'] .bg-emerald-500 {
 		background-color: var(--color-usermenu-accent-bg);
 	}
 
 	/* Language submenu styling - light mode */
-	.light [data-testid="user-menu-dropdown"] .bg-background {
+	.light [data-testid='user-menu-dropdown'] .bg-background {
 		background-color: var(--color-background);
 		border-color: var(--color-usermenu-border);
 	}
 
-	.light [data-testid="user-menu-dropdown"] .bg-neutral {
+	.light [data-testid='user-menu-dropdown'] .bg-neutral {
 		background-color: var(--color-usermenu-bg);
 	}
 
-	.light [data-testid="user-menu-dropdown"] .hover\:bg-neutral:hover {
+	.light [data-testid='user-menu-dropdown'] .hover\:bg-neutral:hover {
 		background-color: var(--color-usermenu-hover-bg);
 	}
 
 	/* Language submenu styling - dark mode */
-	.dark [data-testid="user-menu-dropdown"] .bg-neutral {
+	.dark [data-testid='user-menu-dropdown'] .bg-neutral {
 		background-color: var(--color-usermenu-bg);
 	}
 
 	/* All text elements in UserMenu dropdown - dark mode only */
-	.dark [data-testid="user-menu-dropdown"] .text-foreground-darker,
-	.dark [data-testid="user-menu-dropdown"] .text-main,
-	.dark [data-testid="user-menu-dropdown"] span {
+	.dark [data-testid='user-menu-dropdown'] .text-foreground-darker,
+	.dark [data-testid='user-menu-dropdown'] .text-main,
+	.dark [data-testid='user-menu-dropdown'] span {
 		color: var(--color-usermenu-text);
 	}
 
 	/* All icons in UserMenu dropdown inherit text color via currentColor */
-	.dark [data-testid="user-menu-dropdown"] svg {
+	.dark [data-testid='user-menu-dropdown'] svg {
 		color: var(--color-usermenu-text);
 	}
 
 	/* All hover states in UserMenu dropdown - background only, no borders */
-	.dark [data-testid="user-menu-dropdown"] .hover\:bg-neutral:hover,
-	.dark [data-testid="user-menu-dropdown"] .hover\:bg-background-hover:hover,
-	.dark [data-testid="user-menu-dropdown"] .hover\:bg-neutral\/50:hover {
+	.dark [data-testid='user-menu-dropdown'] .hover\:bg-neutral:hover,
+	.dark [data-testid='user-menu-dropdown'] .hover\:bg-background-hover:hover,
+	.dark [data-testid='user-menu-dropdown'] .hover\:bg-neutral\/50:hover {
 		background-color: var(--color-usermenu-hover-bg);
 		border-color: transparent;
 	}
 
 	/* Ensure no borders on hover elements */
-	.dark [data-testid="user-menu-dropdown"] button:hover,
-	.dark [data-testid="user-menu-dropdown"] a:hover {
+	.dark [data-testid='user-menu-dropdown'] button:hover,
+	.dark [data-testid='user-menu-dropdown'] a:hover {
 		border-color: transparent;
 		outline: none;
 	}
 
-	.dark [data-testid="user-menu-dropdown"] .bg-border {
+	.dark [data-testid='user-menu-dropdown'] .bg-border {
 		background-color: var(--color-border);
 	}
 

@@ -16,11 +16,11 @@ import { useRevalidator } from 'react-router'
 
 const revalidator = useRevalidator()
 useEffect(() => {
-   const handlePopState = () => {
-      revalidator.revalidate()
-   }
-   window.addEventListener('popstate', handlePopState)
-   return () => window.removeEventListener('popstate', handlePopState)
+	const handlePopState = () => {
+		revalidator.revalidate()
+	}
+	window.addEventListener('popstate', handlePopState)
+	return () => window.removeEventListener('popstate', handlePopState)
 }, [revalidator])
 ```
 

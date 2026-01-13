@@ -80,12 +80,12 @@ model Team {
 
 ```json
 {
-   "teams": {
-      "form": {
-         "category": "Category",
-         "selectCategory": "Select category"
-      }
-   }
+	"teams": {
+		"form": {
+			"category": "Category",
+			"selectCategory": "Select category"
+		}
+	}
 }
 ```
 
@@ -105,15 +105,15 @@ model Team {
 
 ```typescript
 type TournamentData = {
-   // ... existing fields ...
-   categories: string[]
-   // ... existing fields ...
+	// ... existing fields ...
+	categories: string[]
+	// ... existing fields ...
 }
 
 type TeamFormData = {
-   // ... existing fields ...
-   category: string
-   // ... existing fields ...
+	// ... existing fields ...
+	category: string
+	// ... existing fields ...
 }
 ```
 
@@ -123,15 +123,15 @@ type TeamFormData = {
 
 ```typescript
 export const teamFormSchema = z.object({
-   // ... existing fields ...
-   category: z.string().min(1, 'teams.form.errors.categoryRequired'),
-   // ... existing fields ...
+	// ... existing fields ...
+	category: z.string().min(1, 'teams.form.errors.categoryRequired'),
+	// ... existing fields ...
 })
 
 export const tournamentSchema = z.object({
-   // ... existing fields ...
-   categories: z.array(z.string()).min(1),
-   // ... existing fields ...
+	// ... existing fields ...
+	categories: z.array(z.string()).min(1),
+	// ... existing fields ...
 })
 ```
 
@@ -174,14 +174,14 @@ UPDATE Team SET category = 'JO8' WHERE category IS NULL;
 
 ```typescript
 const mockTournaments = [
-   {
-      id: 'tournament-1',
-      name: 'Spring Tournament',
-      location: 'Sports Center',
-      categories: ['JO8', 'JO9', 'JO10'], // Added categories
-      divisions: ['PREMIER_DIVISION', 'FIRST_DIVISION'],
-      startDate: '2024-03-15',
-   },
+	{
+		id: 'tournament-1',
+		name: 'Spring Tournament',
+		location: 'Sports Center',
+		categories: ['JO8', 'JO9', 'JO10'], // Added categories
+		divisions: ['PREMIER_DIVISION', 'FIRST_DIVISION'],
+		startDate: '2024-03-15',
+	},
 ]
 ```
 
@@ -223,12 +223,12 @@ const mockTournaments = [
 
 ```typescript
 const tournamentData = {
-   name: 'Youth Soccer Tournament',
-   location: 'City Sports Complex',
-   divisions: ['PREMIER_DIVISION', 'FIRST_DIVISION'],
-   categories: ['JO8', 'JO9', 'JO10', 'MO8', 'MO9'], // New field
-   startDate: '2024-06-15',
-   endDate: '2024-06-16',
+	name: 'Youth Soccer Tournament',
+	location: 'City Sports Complex',
+	divisions: ['PREMIER_DIVISION', 'FIRST_DIVISION'],
+	categories: ['JO8', 'JO9', 'JO10', 'MO8', 'MO9'], // New field
+	startDate: '2024-06-15',
+	endDate: '2024-06-16',
 }
 ```
 
@@ -236,14 +236,14 @@ const tournamentData = {
 
 ```typescript
 const teamData = {
-   tournamentId: 'tournament-123',
-   category: 'JO8', // New field
-   division: 'PREMIER_DIVISION',
-   clubName: 'FC Ajax',
-   teamName: 'Eagles',
-   teamLeaderName: 'John Doe',
-   teamLeaderEmail: 'john@example.com',
-   teamLeaderPhone: '+1234567890',
+	tournamentId: 'tournament-123',
+	category: 'JO8', // New field
+	division: 'PREMIER_DIVISION',
+	clubName: 'FC Ajax',
+	teamName: 'Eagles',
+	teamLeaderName: 'John Doe',
+	teamLeaderEmail: 'john@example.com',
+	teamLeaderPhone: '+1234567890',
 }
 ```
 

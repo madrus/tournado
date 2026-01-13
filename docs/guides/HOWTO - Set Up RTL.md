@@ -37,10 +37,10 @@ The first step is creating utility functions to detect RTL languages and provide
 export const isRTL = (languageCode: string): boolean => ['ar'].includes(languageCode)
 
 export const getDirection = (languageCode: string): 'ltr' | 'rtl' =>
-   isRTL(languageCode) ? 'rtl' : 'ltr'
+	isRTL(languageCode) ? 'rtl' : 'ltr'
 
 export const getTypographyClass = (languageCode: string): string =>
-   isRTL(languageCode) ? 'text-arabic' : ''
+	isRTL(languageCode) ? 'text-arabic' : ''
 ```
 
 **Key Benefits:**
@@ -129,25 +129,25 @@ export const LANGUAGE_COOKIE_NAME = 'lang'
 export const COOKIE_MAX_AGE = 31536000 // 1 year in seconds
 
 export function setLanguageCookie(language: string): void {
-   if (typeof document !== 'undefined') {
-      document.cookie = `${LANGUAGE_COOKIE_NAME}=${language}; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax`
-   }
+	if (typeof document !== 'undefined') {
+		document.cookie = `${LANGUAGE_COOKIE_NAME}=${language}; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax`
+	}
 }
 
 export function getLanguageCookie(): string | null {
-   if (typeof document === 'undefined') return null
+	if (typeof document === 'undefined') return null
 
-   const match = document.cookie.match(
-      new RegExp(`(^| )${LANGUAGE_COOKIE_NAME}=([^;]+)`)
-   )
-   return match ? match[2] : null
+	const match = document.cookie.match(
+		new RegExp(`(^| )${LANGUAGE_COOKIE_NAME}=([^;]+)`),
+	)
+	return match ? match[2] : null
 }
 
 // Server-side cookie reading for SSR
 export function getLanguageFromRequest(request: Request): string {
-   const cookieHeader = request.headers.get('Cookie') || ''
-   const langMatch = cookieHeader.match(/lang=([^;]+)/)
-   return langMatch ? langMatch[1] : 'nl' // Default to Dutch
+	const cookieHeader = request.headers.get('Cookie') || ''
+	const langMatch = cookieHeader.match(/lang=([^;]+)/)
+	return langMatch ? langMatch[1] : 'nl' // Default to Dutch
 }
 ```
 
@@ -158,16 +158,16 @@ In your Remix loader, read the language preference from cookies:
 ```typescript
 // app/root.tsx - Loader function
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
-   const user = await getUser(request)
-   const language = getLanguageFromRequest(request)
+	const user = await getUser(request)
+	const language = getLanguageFromRequest(request)
 
-   return {
-      authenticated: !!user,
-      username: user?.email ?? '',
-      user,
-      ENV: getEnv(),
-      language, // Pass language to client
-   }
+	return {
+		authenticated: !!user,
+		username: user?.email ?? '',
+		user,
+		ENV: getEnv(),
+		language, // Pass language to client
+	}
 }
 ```
 
@@ -241,18 +241,18 @@ For production applications, consider these security enhancements:
 ```typescript
 // app/utils/cookieUtils.ts - Production-ready version
 export function setLanguageCookie(language: string): void {
-   if (typeof document !== 'undefined') {
-      const isProduction = process.env.NODE_ENV === 'production'
-      const secure = isProduction ? '; Secure' : ''
+	if (typeof document !== 'undefined') {
+		const isProduction = process.env.NODE_ENV === 'production'
+		const secure = isProduction ? '; Secure' : ''
 
-      document.cookie = [
-         `${LANGUAGE_COOKIE_NAME}=${language}`,
-         'path=/',
-         `max-age=${COOKIE_MAX_AGE}`,
-         'SameSite=Lax',
-         secure,
-      ].join('; ')
-   }
+		document.cookie = [
+			`${LANGUAGE_COOKIE_NAME}=${language}`,
+			'path=/',
+			`max-age=${COOKIE_MAX_AGE}`,
+			'SameSite=Lax',
+			secure,
+		].join('; ')
+	}
 }
 ```
 
@@ -270,29 +270,29 @@ Implement a robust fallback strategy for language detection:
 ```typescript
 // app/utils/languageDetection.ts
 export function detectUserLanguage(request?: Request): string {
-   // 1. Try server-side cookie (SSR)
-   if (request) {
-      const cookieLanguage = getLanguageFromRequest(request)
-      if (cookieLanguage) return cookieLanguage
-   }
+	// 1. Try server-side cookie (SSR)
+	if (request) {
+		const cookieLanguage = getLanguageFromRequest(request)
+		if (cookieLanguage) return cookieLanguage
+	}
 
-   // 2. Try client-side cookie
-   if (typeof window !== 'undefined') {
-      const cookieLanguage = getLanguageCookie()
-      if (cookieLanguage) return cookieLanguage
-   }
+	// 2. Try client-side cookie
+	if (typeof window !== 'undefined') {
+		const cookieLanguage = getLanguageCookie()
+		if (cookieLanguage) return cookieLanguage
+	}
 
-   // 3. Try browser language preference
-   if (typeof navigator !== 'undefined') {
-      const browserLanguage = navigator.language.split('-')[0]
-      const supportedLanguages = ['nl', 'en', 'ar']
-      if (supportedLanguages.includes(browserLanguage)) {
-         return browserLanguage
-      }
-   }
+	// 3. Try browser language preference
+	if (typeof navigator !== 'undefined') {
+		const browserLanguage = navigator.language.split('-')[0]
+		const supportedLanguages = ['nl', 'en', 'ar']
+		if (supportedLanguages.includes(browserLanguage)) {
+			return browserLanguage
+		}
+	}
 
-   // 4. Default fallback
-   return 'nl'
+	// 4. Default fallback
+	return 'nl'
 }
 ```
 
@@ -432,27 +432,25 @@ For more complex components, create reusable helper functions:
 
 // Chip/Tag component layout helper
 export function getChipClasses(languageCode: string): { container: string } {
-   const isRtl = isRTL(languageCode)
+	const isRtl = isRTL(languageCode)
 
-   return {
-      // ps-3 = more space where content starts
-      // pe-2 = less space where delete button is placed
-      container: isRtl
-         ? 'ps-3 pe-2 gap-2 flex-row-reverse'
-         : 'ps-3 pe-2 gap-2 flex-row',
-   }
+	return {
+		// ps-3 = more space where content starts
+		// pe-2 = less space where delete button is placed
+		container: isRtl ? 'ps-3 pe-2 gap-2 flex-row-reverse' : 'ps-3 pe-2 gap-2 flex-row',
+	}
 }
 
 // Dropdown positioning helper
 export function getDropdownProps(languageCode: string): DropdownProps {
-   const isRtl = isRTL(languageCode)
+	const isRtl = isRTL(languageCode)
 
-   return {
-      align: isRtl ? 'end' : 'start',
-      side: 'bottom',
-      sideOffset: 8,
-      alignOffset: isRtl ? 8 : -8,
-   }
+	return {
+		align: isRtl ? 'end' : 'start',
+		side: 'bottom',
+		sideOffset: 8,
+		alignOffset: isRtl ? 8 : -8,
+	}
 }
 ```
 
@@ -468,19 +466,19 @@ Arabic text often requires special typography treatment for optimal readability,
 /* Script-aware typography system */
 /* Global Arabic sizing - applied to body when app language is Arabic */
 .text-arabic {
-   font-size: 1.2em; /* Make all text 20% larger for Arabic readability */
+	font-size: 1.2em; /* Make all text 20% larger for Arabic readability */
 }
 
 /* Latin text - always normal size regardless of context */
 .text-latin {
-   font-size: 1em; /* Normal size */
+	font-size: 1em; /* Normal size */
 }
 
 /* Form inputs in RTL */
 [dir='rtl'] input,
 [dir='rtl'] textarea,
 [dir='rtl'] select {
-   text-align: right;
+	text-align: right;
 }
 ```
 
@@ -547,21 +545,21 @@ When the interface is in Arabic but contains technical terms or app names:
 // app/utils/rtlUtils.ts - Typography helpers
 
 export const getLatinTextClass = (languageCode: string): string =>
-   isRTL(languageCode) ? 'text-latin' : ''
+	isRTL(languageCode) ? 'text-latin' : ''
 
 export const getArabicTextClass = (): string => 'text-arabic'
 
 export function getTypographyClasses(languageCode: string): TypographyClasses {
-   const isRtl = isRTL(languageCode)
+	const isRtl = isRTL(languageCode)
 
-   return {
-      title: isRtl ? 'leading-tight' : 'leading-normal',
-      heading: isRtl ? 'tracking-normal' : 'tracking-tight',
-      textAlign: isRtl ? 'text-right' : 'text-left',
-      centerAlign: 'text-center', // Keep center for hero sections
-      mixedContent: isRtl ? 'leading-snug text-center' : 'leading-normal text-center',
-      appName: 'leading-normal text-center font-bold', // App name stays Latin
-   }
+	return {
+		title: isRtl ? 'leading-tight' : 'leading-normal',
+		heading: isRtl ? 'tracking-normal' : 'tracking-tight',
+		textAlign: isRtl ? 'text-right' : 'text-left',
+		centerAlign: 'text-center', // Keep center for hero sections
+		mixedContent: isRtl ? 'leading-snug text-center' : 'leading-normal text-center',
+		appName: 'leading-normal text-center font-bold', // App name stays Latin
+	}
 }
 ```
 
@@ -597,17 +595,17 @@ Create a custom hook to simplify RTL logic in components:
 ```typescript
 // app/utils/rtlUtils.ts - React hook
 export function useRTLDropdown(): {
-   dropdownProps: DropdownProps
-   menuClasses: MenuClasses
-   isRTL: boolean
+	dropdownProps: DropdownProps
+	menuClasses: MenuClasses
+	isRTL: boolean
 } {
-   const { i18n } = useTranslation()
+	const { i18n } = useTranslation()
 
-   return {
-      dropdownProps: getDropdownProps(i18n.language),
-      menuClasses: getMenuClasses(i18n.language),
-      isRTL: isRTL(i18n.language),
-   }
+	return {
+		dropdownProps: getDropdownProps(i18n.language),
+		menuClasses: getMenuClasses(i18n.language),
+		isRTL: isRTL(i18n.language),
+	}
 }
 ```
 
@@ -763,69 +761,69 @@ In Arabic (RTL), menus should:
 ```typescript
 // Enhanced menu classes for RTL support
 export type MenuClasses = {
-   spacing: string
-   alignment: string
-   menuItem: string // Flex direction for menu items
-   iconContainer: string // Icon positioning and alignment
-   textContainer: string // Text alignment
+	spacing: string
+	alignment: string
+	menuItem: string // Flex direction for menu items
+	iconContainer: string // Icon positioning and alignment
+	textContainer: string // Text alignment
 }
 
 export function getMenuClasses(languageCode: string): MenuClasses {
-   const isRtl = isRTL(languageCode)
+	const isRtl = isRTL(languageCode)
 
-   return {
-      spacing: isRtl ? 'me-4' : 'ms-4',
-      alignment: isRtl ? 'end-0' : 'start-0',
-      // Menu item layout - icons on correct side for RTL
-      menuItem: isRtl ? 'flex-row-reverse' : 'flex-row',
-      // Icon container positioning
-      iconContainer: isRtl
-         ? 'flex w-8 items-center justify-end ps-2 pe-0 text-end' // Icon on right in RTL
-         : 'flex w-8 items-center justify-start ps-0 pe-2 text-start', // Icon on left in LTR
-      // Text container alignment
-      textContainer: isRtl ? 'text-right' : 'text-left',
-   }
+	return {
+		spacing: isRtl ? 'me-4' : 'ms-4',
+		alignment: isRtl ? 'end-0' : 'start-0',
+		// Menu item layout - icons on correct side for RTL
+		menuItem: isRtl ? 'flex-row-reverse' : 'flex-row',
+		// Icon container positioning
+		iconContainer: isRtl
+			? 'flex w-8 items-center justify-end ps-2 pe-0 text-end' // Icon on right in RTL
+			: 'flex w-8 items-center justify-start ps-0 pe-2 text-start', // Icon on left in LTR
+		// Text container alignment
+		textContainer: isRtl ? 'text-right' : 'text-left',
+	}
 }
 
 // Language switcher specific classes
 export type LanguageSwitcherClasses = {
-   container: string
-   select: string
-   arrow: string
+	container: string
+	select: string
+	arrow: string
 }
 
 export function getLanguageSwitcherClasses(
-   languageCode: string
+	languageCode: string,
 ): LanguageSwitcherClasses {
-   const isRtl = isRTL(languageCode)
+	const isRtl = isRTL(languageCode)
 
-   return {
-      container: isRtl ? 'text-end' : 'text-start',
-      // Padding: more space on text side, less on arrow side
-      select: isRtl
-         ? 'ps-8 pe-2' // More padding on right (text side), less on left (arrow side)
-         : 'ps-2 pe-8', // More padding on left (text side), less on right (arrow side)
-      // Arrow positioning
-      arrow: isRtl ? 'start-0 ps-2' : 'end-0 pe-2',
-   }
+	return {
+		container: isRtl ? 'text-end' : 'text-start',
+		// Padding: more space on text side, less on arrow side
+		select: isRtl
+			? 'ps-8 pe-2' // More padding on right (text side), less on left (arrow side)
+			: 'ps-2 pe-8', // More padding on left (text side), less on right (arrow side)
+		// Arrow positioning
+		arrow: isRtl ? 'start-0 ps-2' : 'end-0 pe-2',
+	}
 }
 
 // React hooks for easy usage
 export function useRTLDropdown() {
-   const { i18n } = useTranslation()
-   return {
-      dropdownProps: getDropdownProps(i18n.language),
-      menuClasses: getMenuClasses(i18n.language),
-      isRTL: isRTL(i18n.language),
-   }
+	const { i18n } = useTranslation()
+	return {
+		dropdownProps: getDropdownProps(i18n.language),
+		menuClasses: getMenuClasses(i18n.language),
+		isRTL: isRTL(i18n.language),
+	}
 }
 
 export function useRTLLanguageSwitcher() {
-   const { i18n } = useTranslation()
-   return {
-      classes: getLanguageSwitcherClasses(i18n.language),
-      isRTL: isRTL(i18n.language),
-   }
+	const { i18n } = useTranslation()
+	return {
+		classes: getLanguageSwitcherClasses(i18n.language),
+		isRTL: isRTL(i18n.language),
+	}
 }
 ```
 

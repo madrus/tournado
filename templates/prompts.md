@@ -71,22 +71,22 @@ Examples:
 ### Placement
 
 - Recommended now: Keep a single catalog file /.cursor/rules/ADR.mdc (what you have).
-   - Pros: Simple, one place to read/search; Cursor picks it up automatically; low overhead.
-   - When to split: If ADRs grow past ~20–30 or merge conflicts become frequent.
+  - Pros: Simple, one place to read/search; Cursor picks it up automatically; low overhead.
+  - When to split: If ADRs grow past ~20–30 or merge conflicts become frequent.
 - If/when splitting: Create /.cursor/rules/adrs/ and keep /.cursor/rules/ADR.mdc as the index.
-   - Files: /.cursor/rules/adrs/ADR-0001-….mdc, etc.
-   - Index: /.cursor/rules/ADR.mdc keeps the table linking to anchors in each ADR file.
+  - Files: /.cursor/rules/adrs/ADR-0001-….mdc, etc.
+  - Index: /.cursor/rules/ADR.mdc keeps the table linking to anchors in each ADR file.
 
 ### Remembering Future ADRs
 
 - Best practice in your current single-file setup: Add minimal “Proposed” ADR entries with IDs reserved and basic context (these live in ADR.mdc, appear in the Index, and keep numbering contiguous).
-   - Example placeholders to add:
-      - ADR-0010 — CI/CD and Fly.io Deployment (Proposed)
-      - ADR-0011 — Security Headers and CSP Baseline (Proposed)
-      - ADR-0012 — Analytics and Privacy (GA4 scope) (Proposed)
+  - Example placeholders to add:
+    - ADR-0010 — CI/CD and Fly.io Deployment (Proposed)
+    - ADR-0011 — Security Headers and CSP Baseline (Proposed)
+    - ADR-0012 — Analytics and Privacy (GA4 scope) (Proposed)
 - Alternative (if you don’t want placeholders yet):
-   - Add GitHub issues titled “ADR: CI/CD and Fly.io Deployment”, etc.
-   - Or add a short “ADR Backlog” note at the end of ADR.mdc (but placeholders are cleaner and conform to your protocol).
+  - Add GitHub issues titled “ADR: CI/CD and Fly.io Deployment”, etc.
+  - Or add a short “ADR Backlog” note at the end of ADR.mdc (but placeholders are cleaner and conform to your protocol).
 
 ### Recommendation
 

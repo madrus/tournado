@@ -34,18 +34,18 @@ type SettingsSelector<T> = (state: SettingsStore) => T
 const useSettingsStoreBase = create<StoreState & Actions>()(/* ... */)
 
 export const useSettingsStore = Object.assign(
-  <T>(selector: SettingsSelector<T>) => useSettingsStoreBase(selector),
-  {
-    getState: useSettingsStoreBase.getState,
-    setState: useSettingsStoreBase.setState,
-    subscribe: useSettingsStoreBase.subscribe,
-    persist: useSettingsStoreBase.persist,
-  },
+	<T>(selector: SettingsSelector<T>) => useSettingsStoreBase(selector),
+	{
+		getState: useSettingsStoreBase.getState,
+		setState: useSettingsStoreBase.setState,
+		subscribe: useSettingsStoreBase.subscribe,
+		persist: useSettingsStoreBase.persist,
+	},
 ) as (<T>(selector: SettingsSelector<T>) => T) & {
-  getState: typeof useSettingsStoreBase.getState
-  setState: typeof useSettingsStoreBase.setState
-  subscribe: typeof useSettingsStoreBase.subscribe
-  persist: typeof useSettingsStoreBase.persist
+	getState: typeof useSettingsStoreBase.getState
+	setState: typeof useSettingsStoreBase.setState
+	subscribe: typeof useSettingsStoreBase.subscribe
+	persist: typeof useSettingsStoreBase.persist
 }
 ```
 
@@ -56,8 +56,7 @@ churn.
 
 ```typescript
 export const useSettingsTheme = () => useSettingsStore((state) => state.theme)
-export const useSettingsLanguage = () =>
-  useSettingsStore((state) => state.language)
+export const useSettingsLanguage = () => useSettingsStore((state) => state.language)
 export const useSettingsIsRTL = () => useSettingsStore((state) => state.isRTL)
 ```
 
@@ -67,14 +66,14 @@ Bundle actions with `useShallow` to avoid unnecessary re-renders in components.
 
 ```typescript
 export const useSettingsActions = () =>
-  useSettingsStore(
-    useShallow((state) => ({
-      setTheme: state.setTheme,
-      toggleTheme: state.toggleTheme,
-      setLanguage: state.setLanguage,
-      resetSettingsStoreState: state.resetSettingsStoreState,
-    })),
-  )
+	useSettingsStore(
+		useShallow((state) => ({
+			setTheme: state.setTheme,
+			toggleTheme: state.toggleTheme,
+			setLanguage: state.setLanguage,
+			resetSettingsStoreState: state.resetSettingsStoreState,
+		})),
+	)
 ```
 
 ## Pure Helpers
@@ -84,11 +83,11 @@ state. This keeps store actions small and testable.
 
 ```typescript
 export const isSnapshotDirty = (
-  snapshot: GroupAssignmentSnapshot | null,
-  originalSnapshot: GroupAssignmentSnapshot | null,
+	snapshot: GroupAssignmentSnapshot | null,
+	originalSnapshot: GroupAssignmentSnapshot | null,
 ): boolean => {
-  if (!snapshot || !originalSnapshot) return false
-  return JSON.stringify(snapshot) !== JSON.stringify(originalSnapshot)
+	if (!snapshot || !originalSnapshot) return false
+	return JSON.stringify(snapshot) !== JSON.stringify(originalSnapshot)
 }
 ```
 
@@ -103,13 +102,13 @@ Actions update the working copy; the baseline is only updated on save.
 
 ```typescript
 export const useGroupAssignmentActions = () =>
-  useGroupAssignmentStore(
-    useShallow((state) => ({
-      setSnapshotPair: state.setSnapshotPair,
-      resetSnapshotPair: state.resetSnapshotPair,
-      markAsSaved: state.markAsSaved,
-    })),
-  )
+	useGroupAssignmentStore(
+		useShallow((state) => ({
+			setSnapshotPair: state.setSnapshotPair,
+			resetSnapshotPair: state.resetSnapshotPair,
+			markAsSaved: state.markAsSaved,
+		})),
+	)
 ```
 
 ## Hydration and Persistence
@@ -119,16 +118,16 @@ persisting transient state like `loading` or `error`.
 
 ```typescript
 partialize: (state) =>
-  isBrowser ? { user: state.user, firebaseUser: state.firebaseUser } : {}
+	isBrowser ? { user: state.user, firebaseUser: state.firebaseUser } : {}
 ```
 
 ```typescript
 export const useAuthStoreHydration = (): void => {
-  useEffect(() => {
-    if (isBrowser) {
-      useAuthStore.persist.rehydrate()
-    }
-  }, [])
+	useEffect(() => {
+		if (isBrowser) {
+			useAuthStore.persist.rehydrate()
+		}
+	}, [])
 }
 ```
 
@@ -258,15 +257,15 @@ import { useGroupAssignmentStore } from '~/features/competition/stores/useGroupA
 const state = useGroupAssignmentStore.getState
 
 describe('useGroupAssignmentStore', () => {
-  beforeEach(() => {
-    state().clearStore()
-  })
+	beforeEach(() => {
+		state().clearStore()
+	})
 
-  it('assigns a team to a slot', () => {
-    state().setSnapshotPair(mockSnapshot)
-    state().assignTeamToSlot('team-1', 'group-1', 0)
+	it('assigns a team to a slot', () => {
+		state().setSnapshotPair(mockSnapshot)
+		state().assignTeamToSlot('team-1', 'group-1', 0)
 
-    expect(state().snapshot?.groups[0].slots[0].team?.id).toBe('team-1')
-  })
+		expect(state().snapshot?.groups[0].slots[0].team?.id).toBe('team-1')
+	})
 })
 ```

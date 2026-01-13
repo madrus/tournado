@@ -13,6 +13,7 @@ The goal is to **kill your bad ideas before you waste months building them.**
 ### The Problem: Confirmation Bias
 
 When you've developed a strategy, you naturally:
+
 - Look for evidence that supports it
 - Downplay evidence against it
 - Rationalize away concerns
@@ -23,6 +24,7 @@ This leads to expensive mistakes.
 ### The Solution: Structured Criticism
 
 By systematically attacking your own strategy, you:
+
 - Find weaknesses early (when they're cheap to fix)
 - Validate critical assumptions
 - Strengthen your strategy before presenting it
@@ -35,6 +37,7 @@ By systematically attacking your own strategy, you:
 ### Step 1: State Your Strategy Clearly
 
 Write out your strategy in one paragraph using Rumelt's Kernel:
+
 - **Diagnosis:** The challenge/opportunity
 - **Guiding Policy:** Your approach
 - **Coherent Actions:** Key initiatives
@@ -53,16 +56,19 @@ Go through each part of your strategy and ask devil's advocate questions.
 ### DIAGNOSIS CHALLENGES
 
 **"Are we solving the right problem?"**
+
 - What if the problem isn't as important as we think?
 - What evidence do we have that this is actually THE constraint?
 - Could we be solving a symptom instead of the root cause?
 
 **"Is our timing right?"**
+
 - What if the market isn't ready for this yet?
 - What if we're too late and the window has closed?
 - What needs to be true about market timing?
 
 **"Do we really understand the customer?"**
+
 - What if our customer research is biased or unrepresentative?
 - What if we're listening to the loudest customers, not the majority?
 - What if stated preferences don't match actual behavior?
@@ -72,21 +78,25 @@ Go through each part of your strategy and ask devil's advocate questions.
 ### GUIDING POLICY CHALLENGES
 
 **"Why will customers choose us?"**
+
 - What if customers don't actually care about our differentiation?
 - What if our "unique value prop" isn't unique at all?
 - What's our honest answer to "why not just use [competitor]?"
 
 **"Why can't competitors copy this?"**
+
 - What prevents a larger, better-funded competitor from copying this in 6 months?
 - What if our "moat" is actually just a speed bump?
 - Which parts are truly defensible vs. just execution?
 
 **"What are we giving up?"**
+
 - What customer segments are we explicitly NOT serving?
 - What features/opportunities are we saying NO to?
 - What if the thing we're deprioritizing is actually more valuable?
 
 **"Do we have the right to win?"**
+
 - What gives us an unfair advantage here?
 - What if we're not uniquely positioned to execute this?
 - Why us, why now?
@@ -96,21 +106,25 @@ Go through each part of your strategy and ask devil's advocate questions.
 ### COHERENT ACTIONS CHALLENGES
 
 **"Can we actually execute this?"**
+
 - What if we don't have the technical capability?
 - What if we're underestimating how long this takes?
 - What resources/skills are we assuming we have?
 
 **"Are these actions truly coherent?"**
+
 - Do these initiatives reinforce each other, or are they independent?
 - What if we're spreading ourselves too thin?
 - Could we cut half of these and still execute the strategy?
 
 **"What could kill this?"**
+
 - What's the single point of failure?
 - What external event would make this strategy obsolete?
 - What if our key assumption is wrong?
 
 **"What's the opportunity cost?"**
+
 - What are we NOT doing because we're doing this?
 - What if the path not taken was actually better?
 - How do we know this is the highest-leverage use of our resources?
@@ -122,11 +136,13 @@ Go through each part of your strategy and ask devil's advocate questions.
 ### For AI/Technology Strategies
 
 **"What if the technology doesn't work as expected?"**
+
 - What if AI accuracy isn't good enough?
 - What if infrastructure costs are prohibitive?
 - What if users don't trust AI for this use case?
 
 **"What if the technology becomes commoditized?"**
+
 - OpenAI/Google release this as an API tomorrow - then what?
 - What if our "AI moat" disappears in 6 months?
 - What's the strategy if the tech becomes table stakes?
@@ -134,11 +150,13 @@ Go through each part of your strategy and ask devil's advocate questions.
 ### For Market Positioning Strategies
 
 **"What if we're targeting the wrong segment?"**
+
 - What if founder-led companies don't have budget?
 - What if they churn faster than enterprise?
 - What if this segment is actually too small to build a business?
 
 **"What if the positioning doesn't resonate?"**
+
 - What if "AI-native" is just buzzword bingo?
 - What if customers just want "better Notion" not something new?
 - How do we test positioning before betting everything on it?
@@ -146,11 +164,13 @@ Go through each part of your strategy and ask devil's advocate questions.
 ### For Growth Strategies
 
 **"What if our growth assumptions are wrong?"**
+
 - What if virality doesn't work in this market?
 - What if our conversion rate is half what we projected?
 - What if CAC is 3x higher than expected?
 
 **"What if we can't reach our target customers?"**
+
 - What if founder-led companies don't hang out where we think?
 - What if our community strategy takes 2 years to work?
 - What's our backup plan for distribution?
@@ -168,6 +188,7 @@ Then validate each one.
 **Strategic Bet:** "Build AI voice interface for task management"
 
 **What needs to be true:**
+
 1. Voice accuracy must be >95% in noisy environments
    - **Validation:** Run test with 50 users in real settings
 
@@ -242,6 +263,7 @@ The real mistake: we built what was cool, not what users actually needed. Voice 
 [Your strategy]
 
 Please challenge this aggressively:
+
 1. What assumptions am I making that might be wrong?
 2. What could kill this strategy?
 3. Why might customers not care about this?
@@ -257,24 +279,31 @@ Don't hold back - I need the harshest criticism to make this better."
 If you hear yourself saying these things, you're not thinking critically:
 
 ❌ **"We'll just execute better than competitors"**
+
 - That's not a strategy, that's wishful thinking
 
 ❌ **"This is obviously a good idea"**
+
 - If it's obvious, why isn't someone else doing it successfully?
 
 ❌ **"Customers will love this"**
+
 - Based on what evidence? Real validation or your intuition?
 
 ❌ **"We'll be first to market"**
+
 - First-mover advantage is rare. Why do you think you'll be the exception?
 
 ❌ **"It's a big market"**
+
 - Doesn't mean YOU can capture any of it
 
 ❌ **"We don't have direct competitors"**
+
 - You have substitute competitors (what people do today instead)
 
 ❌ **"This is just like [successful company]"**
+
 - Context is different. What's different about YOUR situation?
 
 ---
@@ -323,23 +352,27 @@ After devil's advocate, you should kill your strategy if:
 When stress-testing your strategy, ask:
 
 **DIAGNOSIS**
+
 - [ ] Are we solving the right problem? What's our evidence?
 - [ ] Is our timing right? What needs to be true about the market?
 - [ ] Do we really understand customers? How have we validated?
 
 **GUIDING POLICY**
+
 - [ ] Why will customers choose us over alternatives?
 - [ ] What prevents competitors from copying this?
 - [ ] What are we explicitly saying NO to?
 - [ ] Do we have the right to win here?
 
 **COHERENT ACTIONS**
+
 - [ ] Can we actually execute this with our resources?
 - [ ] Are these actions truly reinforcing each other?
 - [ ] What's the single point of failure?
 - [ ] What's the opportunity cost?
 
 **VALIDATION**
+
 - [ ] What needs to be true for this to work?
 - [ ] How can we test each critical assumption?
 - [ ] What would a pre-mortem say about why this failed?
@@ -354,6 +387,7 @@ When stress-testing your strategy, ask:
 **The goal isn't to kill your strategy - it's to make it stronger.**
 
 Good strategies survive devil's advocate questioning because they're grounded in:
+
 - Real customer insights
 - Honest assessment of capabilities
 - Clear differentiation

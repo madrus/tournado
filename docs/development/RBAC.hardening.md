@@ -12,36 +12,36 @@ Purpose: align the implementation with the PRD RBAC matrix and scopes, give admi
 ## Scope
 
 - Permissions additions
-   - `groups:manage`, `referees:assign`, `assignments:manage`, `refereeTokens:manage`
-   - Admin-only: `users:approve`, `roles:assign`
+  - `groups:manage`, `referees:assign`, `assignments:manage`, `refereeTokens:manage`
+  - Admin-only: `users:approve`, `roles:assign`
 - Admin responsibilities
-   - Review new users, approve, and assign roles (ADMIN, MANAGER)
+  - Review new users, approve, and assign roles (ADMIN, MANAGER)
 - Manager responsibilities
-   - Assign referees to matches
-   - Issue and revoke referee pre-auth links
+  - Assign referees to matches
+  - Issue and revoke referee pre-auth links
 - Referee access model
-   - Token-based access, scoped to tournament and assigned matches
-   - No general Admin Panel navigation; dedicated referee dashboard only
+  - Token-based access, scoped to tournament and assigned matches
+  - No general Admin Panel navigation; dedicated referee dashboard only
 
 ## Implementation Tasks
 
 1. RBAC utilities
 
 - Update `app/utils/rbac.ts`:
-   - Extend `Permission` with new keys
-   - Add to `ROLE_PERMISSIONS` for MANAGER and ADMIN where applicable
+  - Extend `Permission` with new keys
+  - Add to `ROLE_PERMISSIONS` for MANAGER and ADMIN where applicable
 
 2. Middleware and redirects
 
 - `app/utils/rbacMiddleware.server.ts` and `app/utils/rbac.ts`:
-   - Referee must not have general Admin Panel access
+  - Referee must not have general Admin Panel access
 - `app/utils/roleBasedRedirects.ts`:
-   - Send referees to dedicated referee dashboard only
+  - Send referees to dedicated referee dashboard only
 
 3. Referee scoping checks
 
 - In match loaders/actions that allow score updates or edits:
-   - Verify referee is assigned to the match before permitting changes
+  - Verify referee is assigned to the match before permitting changes
 
 4. Referee tokens
 

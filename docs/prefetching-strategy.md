@@ -59,13 +59,13 @@ Our prefetching strategy uses React Router v7's built-in prefetching capabilitie
 
 ```typescript
 export const routePrefetchOverrides: Record<string, PrefetchStrategy> = {
-   '/teams': 'render', // High-traffic page from homepage CTA
-   '/profile': 'intent', // Frequently accessed after login
-   '/settings': 'intent', // Secondary but important
-   '/auth/signin': 'intent', // Critical auth flows
-   '/auth/signup': 'intent',
-   '/admin': 'intent', // Administrative access
-   '/about': 'intent', // Lower priority informational page
+	'/teams': 'render', // High-traffic page from homepage CTA
+	'/profile': 'intent', // Frequently accessed after login
+	'/settings': 'intent', // Secondary but important
+	'/auth/signin': 'intent', // Critical auth flows
+	'/auth/signup': 'intent',
+	'/admin': 'intent', // Administrative access
+	'/about': 'intent', // Lower priority informational page
 }
 ```
 
@@ -83,12 +83,12 @@ The system automatically adapts prefetching behavior based on:
 
 ```typescript
 export function getAdaptivePrefetchStrategy(
-   baseStrategy: PrefetchStrategy,
-   context?: {
-      isSlowConnection?: boolean
-      isLowDataMode?: boolean
-      isMobile?: boolean
-   }
+	baseStrategy: PrefetchStrategy,
+	context?: {
+		isSlowConnection?: boolean
+		isLowDataMode?: boolean
+		isMobile?: boolean
+	},
 ): PrefetchStrategy
 ```
 
@@ -221,10 +221,10 @@ export function getAdaptivePrefetchStrategy(
 ```typescript
 // Update prefetch-types.ts
 export const defaultPrefetchConfig: PrefetchConfig = {
-   primaryNavigation: 'intent', // Adjust based on analytics
-   actionButtons: 'render', // Keep for critical flows
-   listItems: 'intent', // Balance browsing vs. performance
-   // ... other contexts
+	primaryNavigation: 'intent', // Adjust based on analytics
+	actionButtons: 'render', // Keep for critical flows
+	listItems: 'intent', // Balance browsing vs. performance
+	// ... other contexts
 }
 ```
 

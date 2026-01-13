@@ -27,6 +27,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 ### Component Structure
 
 **GroupAssignmentBoard.tsx**
+
 - [x] Orchestrates the entire assignment interface
 - [x] Manages DndContext with configured sensors and collision detection
 - [x] Renders DragOverlay with cursor-centered positioning
@@ -34,34 +35,40 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - [x] Provides mobile/desktop responsive layout switching
 
 **GroupCard.tsx**
+
 - [x] Visual container for a single group
 - [x] Displays group name and slot count
 - [x] Renders vertical list of GroupSlotDropZone components
 - [x] NOT a drop target - purely presentational
 
 **GroupSlotDropZone.tsx**
+
 - [x] The only drop target for group assignments
 - [x] Renders either an empty slot placeholder or a DraggableTeamChip
 - [x] Highlights when cursor is directly over it (empty and occupied slots)
 - [x] Handles occupied/empty states with distinct styling
 
 **DraggableTeamChip.tsx**
+
 - [x] Wraps team data with `useDraggable` hook
 - [x] Becomes completely invisible (`opacity: 0`) during drag
 - [x] No transform applied to original element
 - [x] Can be dragged to waitlist for soft delete functionality
 
 **DragOverlayChip.tsx**
+
 - [x] Separate component rendered in DragOverlay
 - [x] Follows cursor during drag with enhanced shadow
 - [x] Only visible element during drag operation
 
 **ConfirmedPool.tsx**
+
 - [x] Container for confirmed teams (teams that can be assigned to groups)
 - [x] Droppable area for teams being moved out of groups
 - [x] Capacity-limited based on total group slots minus assigned teams
 
 **WaitlistPool.tsx**
+
 - [x] Container for waitlist teams
 - [x] Droppable area for teams being soft-deleted from groups or confirmed pool
 - [x] Teams can be promoted to confirmed pool when capacity exists
@@ -70,6 +77,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 ### State Management
 
 **useGroupAssignmentStore (Zustand)**
+
 - [x] Maintains snapshot of groups, slots, and unassigned teams (confirmed + waitlist)
 - [x] Tracks dirty state for unsaved changes warning
 - [x] Calculates confirmed capacity dynamically
@@ -80,6 +88,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - [x] Resets on cancel or successful save
 
 **useGroupStageDnd Hook**
+
 - [x] Isolates drag-and-drop event handling
 - [x] Manages activeDragTeam state for DragOverlay rendering
 - [x] Handles dragStart, dragOver, dragEnd, dragCancel events
@@ -90,23 +99,28 @@ The group stage assignment interface provides a drag-and-drop experience where t
 ### Utility Functions (groupStageDnd.ts)
 
 **ID Creators**
+
 - [x] `createTeamDragId(teamId)` - generates draggable team IDs
 - [x] `createSlotDropId(groupId, slotIndex)` - generates droppable slot IDs
 
 **ID Parsers**
+
 - [x] `parseTeamDragId(id)` - extracts team ID from drag ID
 - [x] `parseSlotDropId(id)` - extracts groupId and slotIndex from drop ID
 
 **Pool Identifiers**
+
 - [x] `CONFIRMED_POOL_ID` - constant for confirmed pool drop target
 - [x] `WAITLIST_POOL_ID` - constant for waitlist pool drop target
 - [x] `isConfirmedPoolId(id)` - checks if ID is confirmed pool
 - [x] `isWaitlistPoolId(id)` - checks if ID is waitlist pool
 
 **Collision Helpers**
+
 - [x] `findSlotById(groups, slotId)` - locates slot across all groups
 
 **Type Definitions**
+
 - [x] `DndUnassignedTeam` - teams not assigned to any slot (includes both confirmed and waitlist)
 - [x] `GroupAssignmentSnapshot` - contains groups and unassignedTeams array
 
@@ -128,25 +142,30 @@ The group stage assignment interface provides a drag-and-drop experience where t
 ### Drop Operations
 
 **Drop on Empty Slot**
+
 - [x] Assigns the dragged team to that specific slot
 - [x] Team is removed from source location (confirmed pool, waitlist, or other slot)
 
 **Drop on Occupied Slot**
+
 - [x] If both teams are in the same group: swap slots
 - [x] Otherwise: existing team moves to confirmed pool (explicit `isWaitlist: false`)
 - [x] Dragged team takes the slot
 
 **Drop on Confirmed Pool**
+
 - [x] Team moves to confirmed pool (explicit `isWaitlist: false`)
 - [x] Group slot becomes empty if team was assigned
 - [x] Team retains confirmed status if already confirmed
 
 **Drop on Waitlist Pool**
+
 - [x] Team moves to waitlist pool (explicit `isWaitlist: true`)
 - [x] Provides soft delete functionality for removing teams
 - [x] Group slot becomes empty if team was assigned
 
 **Drop on Same Slot**
+
 - [x] No action - prevents unnecessary state updates
 
 ### Waitlist Behavior
@@ -161,6 +180,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 ### Visual Feedback
 
 **During Drag**
+
 - [x] Original chip: completely invisible (`opacity: 0`)
 - [x] DragOverlay: visible, centered on cursor, enhanced shadow
 - [x] Hovered slot: highlighted with visual indicator (empty slots only)
@@ -168,12 +188,14 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - [x] Hovering an occupied slot shows the same highlight as empty slots
 
 **Slot States**
+
 - [x] Empty: dashed border, subtle slate tint, "Slot N" label
 - [x] Occupied: team chip fills slot, no wrapper border
 - [x] Highlighted: animate-pulse, brand color accent
 - [x] Drop target: visual glow when cursor is over
 
 **Cursor States**
+
 - Idle: default cursor
 - Dragging: `cursor-grabbing` on DragOverlay
 - Over valid drop: appropriate cursor feedback
@@ -229,21 +251,25 @@ The group stage assignment interface provides a drag-and-drop experience where t
 ### Component Variants (CVA)
 
 **draggableChipVariants**
+
 - [x] `isDragging: true` - `opacity: 0` (invisible)
 - [x] `isDragging: false` - normal state with hover effects
 - [x] Variants: default, confirmed, waitlist
 - [x] Sizes: sm, md, lg
 
 **groupSlotVariants**
+
 - [x] States: empty, occupied, dropTarget, highlighted (highlighted not wired)
 - [x] Fixed height for all states
 - [x] Smooth transitions between states
 
 **groupCardVariants**
+
 - Base styling for all group cards
 - No drop target states (not droppable)
 
 **unassignedPoolVariants**
+
 - Variants: confirmed, waitlist
 - States: normal, dropTarget
 - Color-coded borders and backgrounds for each variant
@@ -314,14 +340,17 @@ The group stage assignment interface provides a drag-and-drop experience where t
 **Path**: `/resources/competition/group-assignments`
 
 **Intents**
+
 - `save` - persist store snapshot, validate version, return success/conflict/error
 
 **Validation**
+
 - Group stage version check (optimistic locking)
 - Tournament consistency (all teams belong to same tournament)
 - Slot index validity (within group bounds)
 
 **Response Format**
+
 - JSON (not redirect) to keep UI route stable
 - `{ success: true }` on successful save
 - `{ conflict: true }` if version mismatch
@@ -351,6 +380,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 ## Internationalization
 
 All user-facing text internationalized in 6 languages:
+
 - English (en)
 - Dutch (nl)
 - German (de)

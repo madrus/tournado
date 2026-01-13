@@ -11,5 +11,5 @@
 	"projectType": "react-i18next",
 	"sortKeys": true,
 	"sourceLanguage": "nl",
-	"targetLanguages": ["en", "ar", "de", "fr", "tr"]
+	"targetLanguages": ["en", "ar", "de", "fr", "tr"],
 }

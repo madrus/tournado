@@ -25,9 +25,9 @@ This addendum complements `.cursor/rules/PRD.mdc` with deeper implementation not
 - Constraints: field availability, team blackout windows, referee availability, category/division separation, rest time between matches.
 - Detection: validate proposed timeslots against constraints; flag conflicts with actionable reasons.
 - Resolution strategies:
-   - Greedy shift within venue/day window (nearest valid slot).
-   - Swap candidates in same division to eliminate cross‑team conflicts.
-   - Rebalance across fields using minimal movement cost.
+  - Greedy shift within venue/day window (nearest valid slot).
+  - Swap candidates in same division to eliminate cross‑team conflicts.
+  - Rebalance across fields using minimal movement cost.
 - UX: inline suggestions in the scheduler; batch “auto‑resolve” with preview + undo.
 
 <a id="referee-experience"></a>
@@ -45,12 +45,12 @@ This addendum complements `.cursor/rules/PRD.mdc` with deeper implementation not
 ## Live Updates Architecture
 
 - Transport options:
-   - WebSocket (bi‑directional, low latency) for live scoring and dashboards.
-   - Server‑Sent Events (SSE) for simpler uni‑directional streaming.
-   - Polling + HTTP cache revalidation as a fallback.
+  - WebSocket (bi‑directional, low latency) for live scoring and dashboards.
+  - Server‑Sent Events (SSE) for simpler uni‑directional streaming.
+  - Polling + HTTP cache revalidation as a fallback.
 - Delivery:
-   - Public: tournament dashboard streams match events + standings diffs.
-   - Staff: scheduler/referee views subscribe to scoped events only.
+  - Public: tournament dashboard streams match events + standings diffs.
+  - Staff: scheduler/referee views subscribe to scoped events only.
 - Back‑pressure: coalesce high‑frequency goal/events; debounce standings recompute on server.
 
 <a id="notifications"></a>
@@ -199,15 +199,15 @@ This addendum complements `.cursor/rules/PRD.mdc` with deeper implementation not
 import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
-   appId: 'com.example.tournado',
-   appName: 'Tournado',
-   webDir: 'dist',
-   server: {
-      // Point to your SSR origin to preserve SSR in WebView
-      url: 'https://tournado.fly.io',
-      cleartext: false,
-      allowNavigation: ['tournado.fly.io', 'tournado-staging.fly.io'],
-   },
+	appId: 'com.example.tournado',
+	appName: 'Tournado',
+	webDir: 'dist',
+	server: {
+		// Point to your SSR origin to preserve SSR in WebView
+		url: 'https://tournado.fly.io',
+		cleartext: false,
+		allowNavigation: ['tournado.fly.io', 'tournado-staging.fly.io'],
+	},
 }
 
 export default config
@@ -267,15 +267,15 @@ export default config
 ## Data Model Touchpoints & Migrations
 
 - Anticipated changes:
-   - `Team.clubIcon: String?` (URL to an icon)
-   - Playoffs: new models for brackets/rounds (TBD after design)
-   - Subscriptions and Payments/Transactions (Stripe)
-   - Referee pre‑auth tokens (scoped, expiring) for match access
-   - Notification subscriptions for team/match alerts (channels, consent, scope)
+  - `Team.clubIcon: String?` (URL to an icon)
+  - Playoffs: new models for brackets/rounds (TBD after design)
+  - Subscriptions and Payments/Transactions (Stripe)
+  - Referee pre‑auth tokens (scoped, expiring) for match access
+  - Notification subscriptions for team/match alerts (channels, consent, scope)
 - Migration workflow (development):
-   - `pnpm prisma generate`
-   - `pnpm prisma migrate dev --name <descriptive_name>`
-   - `pnpm prisma migrate reset` as needed
+  - `pnpm prisma generate`
+  - `pnpm prisma migrate dev --name <descriptive_name>`
+  - `pnpm prisma migrate reset` as needed
 - Seed data updates: `prisma/seed.ts` (or `seed.js`).
 - Note: Keep schema changes minimal per iteration. Document details in implementation PRDs.
 
@@ -324,8 +324,8 @@ export default config
 - Goal: Allow referees to submit scores and manage assigned matches without creating or managing standard user accounts.
 - Access: Pre‑validated, expiring links scoped to a tournament and the referee’s assigned matches; revocable by managers.
 - Identity options:
-   - Shadow user (recommended): create a virtual `REFEREE` user record marked `isVirtual: true`, without credentials. Tokens map to this user for auditability; no password nor interactive login.
-   - Token-only claims: mint tokens with role and scope claims, without a backing user record; lighter but less auditable.
+  - Shadow user (recommended): create a virtual `REFEREE` user record marked `isVirtual: true`, without credentials. Tokens map to this user for auditability; no password nor interactive login.
+  - Token-only claims: mint tokens with role and scope claims, without a backing user record; lighter but less auditable.
 - Tokens: include `tournamentId`, `matchIds` scope, `exp`, `jti` (revocable); store issued/revoked states.
 - Lifecycle: managers issue/revoke tokens; admins can override/revoke; tokens expire automatically.
 - UI: a dedicated “Referee dashboard” route that reads token scope and shows assigned matches only.

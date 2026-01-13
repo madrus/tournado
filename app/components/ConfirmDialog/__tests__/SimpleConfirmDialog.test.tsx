@@ -461,25 +461,28 @@ describe('SimpleConfirmDialog', () => {
 			['warning', 'Confirm'],
 			['success', 'Continue'],
 			['info', 'OK'],
-		] as const)('renders white icon details for %s intent', async (intent, confirmLabel) => {
-			const user = userEvent.setup()
+		] as const)(
+			'renders white icon details for %s intent',
+			async (intent, confirmLabel) => {
+				const user = userEvent.setup()
 
-			render(
-				<SimpleConfirmDialog
-					trigger={<button type='button'>Open Dialog</button>}
-					intent={intent}
-					title='Icon Contrast'
-					confirmLabel={confirmLabel}
-					cancelLabel='Cancel'
-				/>,
-			)
+				render(
+					<SimpleConfirmDialog
+						trigger={<button type='button'>Open Dialog</button>}
+						intent={intent}
+						title='Icon Contrast'
+						confirmLabel={confirmLabel}
+						cancelLabel='Cancel'
+					/>,
+				)
 
-			await user.click(screen.getByRole('button', { name: 'Open Dialog' }))
+				await user.click(screen.getByRole('button', { name: 'Open Dialog' }))
 
-			const dialog = await screen.findByRole('alertdialog')
-			const icon = within(dialog).getByTestId('simple-confirm-dialog-icon')
-			expect(icon).toBeInTheDocument()
-		})
+				const dialog = await screen.findByRole('alertdialog')
+				const icon = within(dialog).getByTestId('simple-confirm-dialog-icon')
+				expect(icon).toBeInTheDocument()
+			},
+		)
 	})
 
 	// Note: Focus management tests removed as they test implementation details

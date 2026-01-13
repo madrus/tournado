@@ -7,12 +7,14 @@
 **Why**: Improve user experience for tournament organizers managing team assignments with smooth, intuitive interactions.
 
 **Impact**:
+
 - Significant UX improvement for a core tournament management workflow
 - Reduces time-to-assign teams by eliminating manual form submissions
 - Enhances mobile usability with touch-optimized drag interactions
 - Maintains existing data model (no schema changes = low risk)
 
 **Resource Requirements**:
+
 - Estimated 2-3 weeks development time
 - New dependency (@dnd-kit) with minimal bundle impact
 - Testing effort for drag interactions across devices
@@ -37,6 +39,7 @@
 **Estimated Effort: 2-3 weeks**
 
 **Breakdown:**
+
 - Week 1: Component architecture + DnD integration (5-7 days)
 - Week 2: State management + server-side persistence (3-4 days)
 - Week 3: Polish, animations, RTL support, testing (3-4 days)
@@ -71,11 +74,13 @@
 ### Performance & Scalability
 
 **Concerns:**
+
 - Large tournaments (64+ teams) may cause performance issues with many draggable items
 - Zustand store holding full group stage state in memory
 - Animation performance with 20+ groups visible
 
 **Recommendations:**
+
 - Virtualize reserve pool if >50 teams
 - Lazy load groups on mobile (one at a time as specified)
 - Debounce store updates during rapid drag operations
@@ -100,12 +105,14 @@ The plan demonstrates solid architectural thinking but needs some structural imp
 ### Architecture & Structure
 
 **Strengths:**
+
 - ✅ Feature-based organization (`app/features/competition/components/`)
 - ✅ Clear separation of concerns (components, stores, models)
 - ✅ Follows existing patterns (Zustand stores, resource routes)
 - ✅ No cross-feature re-exports (explicitly avoided)
 
 **Concerns:**
+
 - ⚠️ **Component Granularity**: 8 new components may be over-engineered
   - Consider: Can `GroupAssignmentHeader` be part of `GroupAssignmentBoard`?
   - Consider: Is `DraggableTeamChip` necessary or can `TeamChip` accept drag props?
@@ -115,12 +122,14 @@ The plan demonstrates solid architectural thinking but needs some structural imp
 ### Design Patterns Used
 
 **Correct Patterns:**
+
 - ✅ **Optimistic Updates**: Client-side state with server sync on SAVE
 - ✅ **Resource Routes**: Non-navigating mutations (React Router v7 pattern)
 - ✅ **CVA Variants**: Consistent styling approach
 - ✅ **Container/Presentational**: Board orchestrates, components present
 
 **Missing Patterns:**
+
 - ⚠️ **Error Boundaries**: No mention of error handling for DnD failures
 - ⚠️ **Loading States**: Plan doesn't specify loading indicators during SAVE
 - ⚠️ **Validation Layer**: Client-side validation before SAVE (prevent invalid states)
@@ -128,6 +137,7 @@ The plan demonstrates solid architectural thinking but needs some structural imp
 ### Best Practices Compliance
 
 **Project Standards:**
+
 - ✅ Mobile-first design (explicitly stated)
 - ✅ RTL support (explicitly stated)
 - ✅ Semantic color classes (explicitly stated)
@@ -135,6 +145,7 @@ The plan demonstrates solid architectural thinking but needs some structural imp
 - ✅ No cross-feature re-exports (explicitly avoided)
 
 **Gaps:**
+
 - ⚠️ **Type Safety**: Plan doesn't specify TypeScript types for store state
 - ⚠️ **Accessibility**: Keyboard navigation mentioned in tests but not in component design
 - ⚠️ **Error Messages**: Waitlist errors specified but no general error handling strategy
@@ -142,11 +153,13 @@ The plan demonstrates solid architectural thinking but needs some structural imp
 ### Readability & Clarity
 
 **Strengths:**
+
 - Clear component responsibilities
 - Well-defined data flow (loader → store → SAVE)
 - Explicit drop behavior rules
 
 **Improvements Needed:**
+
 - Add state machine diagram for drag/drop states
 - Clarify reserve calculation formula with example
 - Document edge cases (e.g., what if all slots filled but team dragged?)
@@ -154,6 +167,7 @@ The plan demonstrates solid architectural thinking but needs some structural imp
 ### Performance Considerations
 
 **Potential Bottlenecks:**
+
 1. **Re-renders**: Zustand store updates may trigger unnecessary re-renders
    - Solution: Use selectors, memoize components
 2. **Animation Calculations**: Drop animations with many items
@@ -164,6 +178,7 @@ The plan demonstrates solid architectural thinking but needs some structural imp
 ### Security Review
 
 **Low Risk** - No security concerns identified:
+
 - Server-side validation maintained (resource route validates)
 - No new attack surfaces introduced
 - Tournament consistency checks preserved
@@ -171,11 +186,13 @@ The plan demonstrates solid architectural thinking but needs some structural imp
 ### Testing Coverage
 
 **Plan Specifies:**
+
 - ✅ Unit tests for slot replacement logic
 - ✅ Component tests for drag/drop behavior
 - ✅ Pointer and keyboard interactions
 
 **Missing:**
+
 - ⚠️ **Integration Tests**: End-to-end flow (drag → drop → save → verify DB)
 - ⚠️ **Edge Case Tests**: Concurrent edits, network failures, invalid drops
 - ⚠️ **Performance Tests**: Animation smoothness with 50+ items
@@ -184,11 +201,13 @@ The plan demonstrates solid architectural thinking but needs some structural imp
 ### Technical Debt Assessment
 
 **Low to Moderate Debt Created:**
+
 - New dependency (@dnd-kit) adds ~15-20KB to bundle (acceptable)
 - Zustand store pattern is consistent with existing code
 - Component structure may need refactoring if requirements change
 
 **Recommendations to Minimize Debt:**
+
 1. Extract DnD logic into custom hook (`useGroupStageDnd.ts`) - already in optional list
 2. Create shared DnD utilities (`groupStageDnd.ts`) - already in optional list
 3. Consider making these required, not optional
@@ -262,11 +281,13 @@ The plan demonstrates solid architectural thinking but needs some structural imp
 ### Risk Mitigation
 
 **High Risk Items:**
+
 1. **Mobile Touch Interactions** - Mitigate with larger touch targets (44px minimum)
 2. **State Synchronization** - Mitigate with clear SAVE/CANCEL boundaries
 3. **Animation Performance** - Mitigate with CSS transforms, test on real devices
 
 **Medium Risk Items:**
+
 1. **Concurrent Editing** - Add version checking, show conflicts
 2. **Large Tournament Performance** - Virtualize if needed, monitor metrics
 
@@ -277,6 +298,7 @@ The plan demonstrates solid architectural thinking but needs some structural imp
 ### Overall Assessment: **Shipping-ready with refinements**
 
 **Breakdown:**
+
 - **Technical Feasibility**: ✅ High (8/10) - Well-scoped, achievable
 - **Architecture Quality**: ✅ Good (7/10) - Solid patterns, minor improvements needed
 - **Code Quality**: ✅ Good (7/10) - Follows conventions, needs error handling
@@ -288,6 +310,7 @@ The plan demonstrates solid architectural thinking but needs some structural imp
 ### Go/No-Go Decision
 
 **✅ GO** - Proceed with implementation after addressing:
+
 1. Error handling strategy
 2. Loading states specification
 3. Concurrent editing approach
@@ -323,6 +346,7 @@ The plan demonstrates solid architectural thinking but needs some structural imp
 **My Answer:** Group container drop is enough for most use cases. Specific slot targeting is only relevant when all are occupied and we want to swap a team. If the users ask for the possibility to target specific empty slots, we can always add that later.
 
 **Additional Questions to Resolve:**
+
 1. What happens if user closes browser during editing? (Store persistence strategy)
    **My Answer:** Zustand persists to session storage, so all edits will be lost and that is by design.
 2. Should we show a "You have unsaved changes" warning on navigation?

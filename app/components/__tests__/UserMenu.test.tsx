@@ -278,31 +278,31 @@ describe('UserMenu', () => {
 			{ label: 'About', href: '/about' },
 			{ label: 'Settings', href: '/settings' },
 			{ label: 'Profile', href: '/profile' },
-		])('should navigate to $href when $label menu item is clicked', async ({
-			label,
-			href,
-		}) => {
-			const user = userEvent.setup()
+		])(
+			'should navigate to $href when $label menu item is clicked',
+			async ({ label, href }) => {
+				const user = userEvent.setup()
 
-			render(
-				<MemoryRouter>
-					<UserMenu
-						authenticated={true}
-						username='admin'
-						menuItems={mockMenuItems}
-						isOpen={true}
-						onOpenChange={mockOnOpenChange}
-					/>
-				</MemoryRouter>,
-			)
+				render(
+					<MemoryRouter>
+						<UserMenu
+							authenticated={true}
+							username='admin'
+							menuItems={mockMenuItems}
+							isOpen={true}
+							onOpenChange={mockOnOpenChange}
+						/>
+					</MemoryRouter>,
+				)
 
-			const link = screen.getByText(label)
-			await user.click(link)
+				const link = screen.getByText(label)
+				await user.click(link)
 
-			// Should navigate to the correct route
-			expect(mockNavigate).toHaveBeenCalledWith(href)
-			// Menu should close when navigation link is clicked
-			expect(mockOnOpenChange).toHaveBeenCalledWith(false)
-		})
+				// Should navigate to the correct route
+				expect(mockNavigate).toHaveBeenCalledWith(href)
+				// Menu should close when navigation link is clicked
+				expect(mockOnOpenChange).toHaveBeenCalledWith(false)
+			},
+		)
 	})
 })

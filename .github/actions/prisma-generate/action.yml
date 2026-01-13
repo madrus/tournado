@@ -1,13 +1,13 @@
-name: "Enhanced Prisma Client Generation"
-description: "Generate Prisma client with debugging information"
+name: 'Enhanced Prisma Client Generation'
+description: 'Generate Prisma client with debugging information'
 inputs:
   database_url:
-    description: "The database URL to use for Prisma client generation"
+    description: 'The database URL to use for Prisma client generation'
     required: true
-    default: "file:./prisma/data.db"
+    default: 'file:./prisma/data.db'
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: 🛠 Generate Prisma Client
       shell: bash
@@ -33,4 +33,4 @@ runs:
         grep -E "Team|TeamLeader" node_modules/.prisma/client/index.d.ts || echo "Types not found!"
       env:
         DATABASE_URL: ${{ inputs.database_url }}
-        DEBUG: "prisma:*"
+        DEBUG: 'prisma:*'

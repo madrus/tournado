@@ -6,8 +6,5 @@
     "source.fixAll.biome": "always"
   },
   "files.insertFinalNewline": true,
-  "files.trimFinalNewlines": false,
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
-  }
+  "files.trimFinalNewlines": false
 }

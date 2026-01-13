@@ -15,7 +15,7 @@ type InternalErrorBoundaryProps = ErrorBoundaryProps & {
   language: Language
 }
 
-interface State {
+type State = {
   hasError: boolean
   error: Error | null
 }
@@ -52,7 +52,7 @@ class InternalErrorBoundary extends Component<InternalErrorBoundaryProps, State>
       )
     }
 
-    return this.props.children as JSX.Element
+    return <>{this.props.children}</>
   }
 }
 

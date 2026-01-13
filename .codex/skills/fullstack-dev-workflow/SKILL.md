@@ -17,7 +17,8 @@ Primary stack:
 - **Zustand** (UI state management)
 - **Vitest + React Testing Library** (unit tests)
 - **Playwright** (e2e tests)
-- **Biome** (linting/formatting)
+- **Biome** (linting)
+- **Prettier** (formatting)
 
 ## Project Architecture
 

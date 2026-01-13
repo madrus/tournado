@@ -1,14 +1,9 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { RouteTransitionFixed } from '../RouteTransitionFixed'
 
 describe('RouteTransitionFixed', () => {
-  beforeEach(() => {
-    vi.clearAllTimers()
-    vi.useFakeTimers()
-  })
-
   describe('Rendering', () => {
     it('should render children via Outlet', () => {
       render(
@@ -83,7 +78,8 @@ describe('RouteTransitionFixed', () => {
       )
 
       const wrapper = container.querySelector('.transition-opacity') as HTMLElement
-      expect(wrapper?.style.transitionDuration).toBe('300ms')
+      expect(wrapper).not.toBeNull()
+      expect(wrapper.style.transitionDuration).toBe('300ms')
     })
 
     it('should accept custom duration', () => {
@@ -98,7 +94,8 @@ describe('RouteTransitionFixed', () => {
       )
 
       const wrapper = container.querySelector('.transition-opacity') as HTMLElement
-      expect(wrapper?.style.transitionDuration).toBe('500ms')
+      expect(wrapper).not.toBeNull()
+      expect(wrapper.style.transitionDuration).toBe('500ms')
     })
   })
 
@@ -115,7 +112,8 @@ describe('RouteTransitionFixed', () => {
       )
 
       const wrapper = container.querySelector('.transition-opacity') as HTMLElement
-      expect(wrapper?.style.opacity).toBe('1')
+      expect(wrapper).not.toBeNull()
+      expect(wrapper.style.opacity).toBe('1')
     })
   })
 
@@ -135,11 +133,12 @@ describe('RouteTransitionFixed', () => {
 
       // Initial state: stable (opacity 1)
       const wrapper = container.querySelector('.transition-opacity') as HTMLElement
-      expect(wrapper?.style.opacity).toBe('1')
+      expect(wrapper).not.toBeNull()
+      expect(wrapper.style.opacity).toBe('1')
       expect(screen.getByText('Page 1')).toBeInTheDocument()
 
       // Verify transition duration is set correctly
-      expect(wrapper?.style.transitionDuration).toBe(`${duration}ms`)
+      expect(wrapper.style.transitionDuration).toBe(`${duration}ms`)
     })
 
     it('should have correct opacity value for stable stage', () => {
@@ -154,9 +153,10 @@ describe('RouteTransitionFixed', () => {
       )
 
       const wrapper = container.querySelector('.transition-opacity') as HTMLElement
+      expect(wrapper).not.toBeNull()
 
       // When in stable stage, opacity should be 1
-      expect(wrapper?.style.opacity).toBe('1')
+      expect(wrapper.style.opacity).toBe('1')
     })
   })
 

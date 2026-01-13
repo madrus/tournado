@@ -1,4 +1,7 @@
-import { TOURNAMENT_PANELS_FIELD_MAP } from './tournamentFormConstants'
+import {
+  TOURNAMENT_PANELS_FIELD_MAP,
+  initialStoreState,
+} from './tournamentFormConstants'
 import type {
   FormFieldName,
   FormFields,
@@ -173,15 +176,13 @@ export const shouldValidateField = (
 export function resetStatePreserving<T extends keyof StoreState>(
   preserveKeys: T[],
   get: () => StoreState,
-): Pick<StoreState, T> {
+): StoreState {
+  const preserved: Partial<StoreState> = {}
   const currentState = get()
-  const preservedState = {} as Pick<StoreState, T>
-
-  preserveKeys.forEach(key => {
-    preservedState[key] = currentState[key]
-  })
-
-  return preservedState
+  for (const key of preserveKeys) {
+    preserved[key] = currentState[key]
+  }
+  return { ...initialStoreState, ...preserved } as StoreState
 }
 
 /**

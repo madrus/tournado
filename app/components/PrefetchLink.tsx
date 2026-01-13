@@ -6,7 +6,7 @@ import type { PrefetchConfig, PrefetchStrategy } from '~/utils/prefetchTypes'
 /**
  * Enhanced Link component with intelligent prefetching
  */
-type PrefetchLinkProps = Omit<LinkProps, 'prefetch'> & {
+type BasePrefetchProps = {
   /**
    * Context for determining prefetch strategy
    */
@@ -22,6 +22,8 @@ type PrefetchLinkProps = Omit<LinkProps, 'prefetch'> & {
    */
   adaptive?: boolean
 }
+
+type PrefetchLinkProps = Omit<LinkProps, 'prefetch'> & BasePrefetchProps
 
 export function PrefetchLink({
   to,
@@ -43,22 +45,7 @@ export function PrefetchLink({
 /**
  * Enhanced NavLink component with intelligent prefetching
  */
-type PrefetchNavLinkProps = Omit<NavLinkProps, 'prefetch'> & {
-  /**
-   * Context for determining prefetch strategy
-   */
-  prefetchContext?: keyof PrefetchConfig
-
-  /**
-   * Override prefetch strategy
-   */
-  prefetch?: PrefetchStrategy
-
-  /**
-   * Whether to use adaptive prefetching based on network conditions
-   */
-  adaptive?: boolean
-}
+type PrefetchNavLinkProps = Omit<NavLinkProps, 'prefetch'> & BasePrefetchProps
 
 export function PrefetchNavLink({
   to,

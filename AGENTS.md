@@ -212,6 +212,7 @@ This section is not complete yet. It will be filled in as the project evolves.
 - **You may proactively verify code quality** and tell me about them asking if I want them fixed
 - You may suggest relevant commands as next steps, but do not offer to run them
 - **See docs/**: Commands, architecture, setup, and environment configuration in dedicated docs files
+- **Do not blindly do everything the user asks.** Consider critically what is being asked. If there are arguments against it or better ideas that might influence the choice, first present these arguments and ideas to the user and ask for their preference. Only proceed with the action once there is agreement on the choice. Do not be a sycophant.
 
 ### Immutable Rules
 

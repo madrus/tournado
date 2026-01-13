@@ -1,5 +1,6 @@
 import { type JSX, useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router'
+import { cn } from '~/utils/misc'
 import {
   type TransitionStage,
   type TransitionWithDurationProps,
@@ -41,7 +42,11 @@ export function RouteTransitionAdvanced({
 
   return (
     <div
-      className={`transition-all ease-in-out ${getTransitionClassesForStage(transitionStage)} ${className}`}
+      className={cn(
+        'transition-all ease-in-out',
+        getTransitionClassesForStage(transitionStage),
+        className,
+      )}
       style={{
         transitionDuration: `${duration}ms`,
       }}

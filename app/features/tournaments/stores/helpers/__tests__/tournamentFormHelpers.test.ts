@@ -338,36 +338,35 @@ describe('tournamentFormHelpers', () => {
 
     const mockGet = () => mockStoreState
 
-    it('should preserve specified keys', () => {
+    it('should preserve specified keys and return full initial state', () => {
       const result = resetStatePreserving(['availableOptions'], mockGet)
 
-      expect(result).toEqual({
-        availableOptions: {
-          divisions: ['PREMIER_DIVISION'],
-          categories: ['JO8'],
-        },
+      expect(result.availableOptions).toEqual({
+        divisions: ['PREMIER_DIVISION'],
+        categories: ['JO8'],
       })
+      expect(result.formFields.name).toBe('') // should be reset
     })
 
-    it('should preserve multiple keys', () => {
+    it('should preserve multiple keys and return full initial state', () => {
       const result = resetStatePreserving(['formMeta', 'availableOptions'], mockGet)
 
-      expect(result).toEqual({
-        formMeta: {
-          mode: 'create',
-          isSubmitting: false,
-          isValid: false,
-        },
-        availableOptions: {
-          divisions: ['PREMIER_DIVISION'],
-          categories: ['JO8'],
-        },
+      expect(result.formMeta).toEqual({
+        mode: 'create',
+        isSubmitting: false,
+        isValid: false,
       })
+      expect(result.availableOptions).toEqual({
+        divisions: ['PREMIER_DIVISION'],
+        categories: ['JO8'],
+      })
+      expect(result.formFields.name).toBe('') // should be reset
     })
 
-    it('should return empty object when preserving no keys', () => {
+    it('should return initial store state when preserving no keys', () => {
       const result = resetStatePreserving([], mockGet)
-      expect(result).toEqual({})
+      expect(result.formFields.name).toBe('')
+      expect(result.availableOptions.divisions).toEqual([])
     })
   })
 

@@ -61,9 +61,8 @@ export function Panel({
   isHover = false,
   'data-testid': testId,
 }: PanelProps): JSX.Element {
-  const { direction, latinFontClass } = useLanguageDirection()
+  const { latinFontClass } = useLanguageDirection()
   const { currentLanguage } = useLanguageSwitcher()
-  const _isRTL = direction === 'rtl'
   const effectiveIconColor = iconColor || color
   const effectiveChildrenIconColor = childrenIconColor || effectiveIconColor
 

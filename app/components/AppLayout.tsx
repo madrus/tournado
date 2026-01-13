@@ -126,7 +126,7 @@ export const AppLayout = ({
         <script
           // biome-ignore lint/security/noDangerouslySetInnerHtml: necessary for SSR hydration
           dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(env)}`,
+            __html: `window.ENV = ${JSON.stringify(env).replace(/</g, '\\u003c')}`,
           }}
         />
       ) : null}

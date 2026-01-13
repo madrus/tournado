@@ -1,15 +1,15 @@
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { Language } from '~/i18n/config'
+import { useGroupAssignmentStore } from '~/features/competition/stores/useGroupAssignmentStore'
+import { useTeamFormStore } from '~/features/teams/stores/useTeamFormStore'
+import { useTournamentFormStore } from '~/features/tournaments/stores/useTournamentFormStore'
+import { useAuthStore } from '~/stores/useAuthStore'
+import { useSettingsStore } from '~/stores/useSettingsStore'
 import { adminPath } from '~/utils/adminRoutes'
 import type { Route } from '../+types/root'
 import App from '../root'
 
-const mockClearStore = vi.fn()
-const mockResetTeamForm = vi.fn()
-const mockResetTournamentForm = vi.fn()
 const mockUseLocation = vi.fn()
-const mockSetAvailableOptionsField = vi.fn()
 
 vi.mock('react-router', async importOriginal => {
   const actual = await importOriginal<typeof import('react-router')>()
@@ -35,27 +35,6 @@ vi.mock('~/components/RouteTransition', () => ({
   SubtleRouteTransition: () => null,
 }))
 
-vi.mock('~/features/competition/stores/useGroupAssignmentStore', () => ({
-  useGroupAssignmentActions: () => ({
-    clearStore: mockClearStore,
-  }),
-}))
-
-vi.mock('~/features/teams/stores/useTeamFormStore', () => ({
-  useTeamFormActions: () => ({
-    resetForm: mockResetTeamForm,
-  }),
-  useTeamFormStore: () => ({
-    setAvailableOptionsField: mockSetAvailableOptionsField,
-  }),
-}))
-
-vi.mock('~/features/tournaments/stores/useTournamentFormStore', () => ({
-  useTournamentFormActions: () => ({
-    resetForm: mockResetTournamentForm,
-  }),
-}))
-
 vi.mock('~/i18n/config', async () => {
   const actual = await vi.importActual<typeof import('~/i18n/config')>('~/i18n/config')
   return {
@@ -65,25 +44,6 @@ vi.mock('~/i18n/config', async () => {
     }),
   }
 })
-
-vi.mock('~/stores/useAuthStore', () => ({
-  useAuthActions: () => ({
-    setUser: vi.fn(),
-    setFirebaseUser: vi.fn(),
-  }),
-  useAuthStoreHydration: () => undefined,
-  useAuthUser: () => null,
-}))
-
-vi.mock('~/stores/useSettingsStore', () => ({
-  useSettingsActions: () => ({
-    setTheme: vi.fn(),
-    setLanguage: vi.fn(),
-  }),
-  useSettingsLanguage: () => 'nl' as Language,
-  useSettingsStoreHydration: () => undefined,
-  useSettingsTheme: () => 'light' as const,
-}))
 
 describe('App route cleanup', () => {
   const loaderData: Route.ComponentProps['loaderData'] = {
@@ -112,20 +72,24 @@ describe('App route cleanup', () => {
   }
 
   beforeEach(() => {
-    mockClearStore.mockReset()
-    mockResetTeamForm.mockReset()
-    mockResetTournamentForm.mockReset()
     mockUseLocation.mockReset()
-    mockSetAvailableOptionsField.mockReset()
+    useGroupAssignmentStore.getState().clearStore()
+    useTeamFormStore.getState().resetStoreState()
+    useTeamFormStore.getState().resetForm()
+    useTournamentFormStore.getState().resetStoreState()
+    useTournamentFormStore.getState().resetForm()
+    useAuthStore.getState().resetStoreState()
+    useSettingsStore.getState().resetSettingsStoreState()
   })
 
-  it('clears group assignment store when leaving group assignment route', () => {
+  it('clears group assignment store when leaving group assignment route', async () => {
+    useGroupAssignmentStore.setState({ activeGroupIndex: 2 })
     mockUseLocation.mockReturnValue({
       pathname: adminPath('/competition/groups/123'),
     })
     const { rerender } = render(<App {...baseProps} />)
 
-    expect(mockClearStore).not.toHaveBeenCalled()
+    expect(useGroupAssignmentStore.getState().activeGroupIndex).toBe(2)
 
     mockUseLocation.mockReturnValue({
       pathname: adminPath('/competition/groups'),
@@ -133,17 +97,26 @@ describe('App route cleanup', () => {
 
     rerender(<App {...baseProps} />)
 
-    expect(mockClearStore).toHaveBeenCalledTimes(1)
+    await waitFor(() => {
+      expect(useGroupAssignmentStore.getState().activeGroupIndex).toBe(0)
+    })
   })
 
-  it('clears team form store when leaving team form routes', () => {
+  it('clears team form store when leaving team form routes', async () => {
+    const teamFormState = useTeamFormStore.getState()
+    useTeamFormStore.setState({
+      formFields: {
+        ...teamFormState.formFields,
+        name: 'Dirty Team',
+      },
+    })
     mockUseLocation.mockReturnValue({
       pathname: '/teams/new',
     })
 
     const { rerender } = render(<App {...baseProps} />)
 
-    expect(mockResetTeamForm).not.toHaveBeenCalled()
+    expect(useTeamFormStore.getState().formFields.name).toBe('Dirty Team')
 
     mockUseLocation.mockReturnValue({
       pathname: '/teams',
@@ -151,17 +124,26 @@ describe('App route cleanup', () => {
 
     rerender(<App {...baseProps} />)
 
-    expect(mockResetTeamForm).toHaveBeenCalledTimes(1)
+    await waitFor(() => {
+      expect(useTeamFormStore.getState().formFields.name).toBe('')
+    })
   })
 
-  it('clears team form store when leaving team edit route', () => {
+  it('clears team form store when leaving team edit route', async () => {
+    const teamFormState = useTeamFormStore.getState()
+    useTeamFormStore.setState({
+      formFields: {
+        ...teamFormState.formFields,
+        name: 'Dirty Team',
+      },
+    })
     mockUseLocation.mockReturnValue({
       pathname: '/teams/team-123',
     })
 
     const { rerender } = render(<App {...baseProps} />)
 
-    expect(mockResetTeamForm).not.toHaveBeenCalled()
+    expect(useTeamFormStore.getState().formFields.name).toBe('Dirty Team')
 
     mockUseLocation.mockReturnValue({
       pathname: '/teams',
@@ -169,17 +151,26 @@ describe('App route cleanup', () => {
 
     rerender(<App {...baseProps} />)
 
-    expect(mockResetTeamForm).toHaveBeenCalledTimes(1)
+    await waitFor(() => {
+      expect(useTeamFormStore.getState().formFields.name).toBe('')
+    })
   })
 
-  it('clears tournament form store when leaving tournament form routes', () => {
+  it('clears tournament form store when leaving tournament form routes', async () => {
+    const tournamentFormState = useTournamentFormStore.getState()
+    useTournamentFormStore.setState({
+      formFields: {
+        ...tournamentFormState.formFields,
+        name: 'Dirty Tournament',
+      },
+    })
     mockUseLocation.mockReturnValue({
       pathname: adminPath('/tournaments/new'),
     })
 
     const { rerender } = render(<App {...baseProps} />)
 
-    expect(mockResetTournamentForm).not.toHaveBeenCalled()
+    expect(useTournamentFormStore.getState().formFields.name).toBe('Dirty Tournament')
 
     mockUseLocation.mockReturnValue({
       pathname: adminPath('/tournaments'),
@@ -187,17 +178,26 @@ describe('App route cleanup', () => {
 
     rerender(<App {...baseProps} />)
 
-    expect(mockResetTournamentForm).toHaveBeenCalledTimes(1)
+    await waitFor(() => {
+      expect(useTournamentFormStore.getState().formFields.name).toBe('')
+    })
   })
 
-  it('clears tournament form store when leaving tournament edit route', () => {
+  it('clears tournament form store when leaving tournament edit route', async () => {
+    const tournamentFormState = useTournamentFormStore.getState()
+    useTournamentFormStore.setState({
+      formFields: {
+        ...tournamentFormState.formFields,
+        name: 'Dirty Tournament',
+      },
+    })
     mockUseLocation.mockReturnValue({
       pathname: adminPath('/tournaments/tournament-123'),
     })
 
     const { rerender } = render(<App {...baseProps} />)
 
-    expect(mockResetTournamentForm).not.toHaveBeenCalled()
+    expect(useTournamentFormStore.getState().formFields.name).toBe('Dirty Tournament')
 
     mockUseLocation.mockReturnValue({
       pathname: adminPath('/tournaments'),
@@ -205,6 +205,8 @@ describe('App route cleanup', () => {
 
     rerender(<App {...baseProps} />)
 
-    expect(mockResetTournamentForm).toHaveBeenCalledTimes(1)
+    await waitFor(() => {
+      expect(useTournamentFormStore.getState().formFields.name).toBe('')
+    })
   })
 })

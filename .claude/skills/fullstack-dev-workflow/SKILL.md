@@ -17,7 +17,8 @@ Primary stack:
 - **Zustand** (UI state management)
 - **Vitest + React Testing Library** (unit tests)
 - **Playwright** (e2e tests)
-- **Biome** (linting/formatting)
+- **Biome** (linting)
+- **Prettier** (formatting)
 
 ## Project Architecture
 
@@ -295,7 +296,7 @@ Before creating a pull request or moving to next major task:
 ### Running Checks
 
 **Auto-run `pnpm typecheck && pnpm lint`** on any code change.
-Do not run lint, tests, or build unless explicitly requested by the developer.
+Do not run tests or build unless explicitly requested by the developer.
 If it is useful, list the relevant commands as next-step suggestions without offering to run them.
 
 ### Explanation Depth

@@ -2,7 +2,14 @@
   "arrowParens": "avoid",
   "bracketSpacing": true,
   "endOfLine": "lf",
-  "importOrder": ["<BUILTIN_MODULES>", "<THIRD_PARTY_MODULES>", "^~/(.*)$", "^[./]"],
+  "importOrder": [
+    "<BUILTIN_MODULES>",
+    "<THIRD_PARTY_MODULES>",
+    "^~test/(.*)$",
+    "^~/(.*)$",
+    "^[./]"
+  ],
+  "importOrderCaseInsensitive": false,
   "importOrderSeparation": false,
   "importOrderSortSpecifiers": true,
   "jsxSingleQuote": true,

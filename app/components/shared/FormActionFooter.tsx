@@ -9,20 +9,24 @@ import type { Permission } from '~/utils/rbac'
 
 type FormActionFooterProps = {
   isDirty: boolean
-  primaryLabel: string
+  isValid?: boolean
+  loading?: boolean
+  mode?: 'create' | 'edit'
+  primaryLabel?: string
   onPrimary?: ButtonHTMLAttributes<HTMLButtonElement>['onClick']
   buttonsDisabled?: boolean
-  isValid?: boolean
   permission?: Permission
   onSecondary?: ButtonHTMLAttributes<HTMLButtonElement>['onClick']
 }
 
 export function FormActionFooter({
   isDirty,
+  isValid = true,
+  loading = false,
+  mode = 'create',
   primaryLabel,
   onPrimary,
   buttonsDisabled,
-  isValid = true,
   permission,
   onSecondary,
 }: Readonly<FormActionFooterProps>): JSX.Element {
@@ -49,6 +53,22 @@ export function FormActionFooter({
     blocker.reset?.()
   }
 
+  // Derive label logic
+  const primaryLabelText =
+    primaryLabel ??
+    (loading
+      ? mode === 'edit'
+        ? t('common.actions.updating')
+        : t('common.actions.saving')
+      : mode === 'edit'
+        ? t('common.actions.update')
+        : t('common.actions.save'))
+
+  // Derive disabled states
+  const isPrimaryDisabled =
+    buttonsDisabled ?? (loading || !isValid || (mode === 'edit' && !isDirty))
+  const isSecondaryDisabled = loading
+
   return (
     <>
       <div
@@ -71,7 +91,7 @@ export function FormActionFooter({
             variant='secondary'
             color='brand'
             onClick={onSecondary}
-            disabled={!isValid ? false : buttonsDisabled}
+            disabled={isSecondaryDisabled}
             permission={permission}
             className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
             data-testid='form-action-secondary'
@@ -87,12 +107,12 @@ export function FormActionFooter({
             color='brand'
             icon='check_circle'
             onClick={onPrimary}
-            disabled={buttonsDisabled}
+            disabled={isPrimaryDisabled}
             permission={permission}
             className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
             data-testid='form-action-primary'
           >
-            {primaryLabel}
+            {primaryLabelText}
           </ActionButton>
         </div>
       </div>

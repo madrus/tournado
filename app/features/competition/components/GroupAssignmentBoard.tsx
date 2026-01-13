@@ -385,11 +385,9 @@ export function GroupAssignmentBoard({
 
           <FormActionFooter
             isDirty={isDirty}
-            primaryLabel={
-              isSaving ? t('common.actions.updating') : t('common.actions.update')
-            }
+            loading={isSaving}
+            mode='edit'
             onPrimary={handleSave}
-            buttonsDisabled={!isDirty || isSaving}
             onSecondary={handleCancel}
           />
         </div>

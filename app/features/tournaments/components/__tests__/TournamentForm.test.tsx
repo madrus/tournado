@@ -358,6 +358,15 @@ const mockDivisions = [
 ]
 const mockCategories = ['JO8', 'JO9', 'JO10', 'JO11', 'JO12', 'MO8', 'MO9', 'MO10']
 
+const EDIT_FORM_DATA = {
+	name: 'Test Tournament',
+	location: 'Test Location',
+	startDate: '2025-01-01',
+	endDate: '2025-01-02',
+	divisions: ['FIRST_DIVISION'],
+	categories: ['JO8'],
+}
+
 const renderTournamentForm = (props: Parameters<typeof TournamentForm>[0] = {}) => {
 	// Reset store first
 	getState().resetStoreState()
@@ -407,6 +416,10 @@ const renderTournamentForm = (props: Parameters<typeof TournamentForm>[0] = {}) 
 }
 
 // Store reset is now handled in renderTournamentForm for better control
+const getSubmitButton = (mode: 'create' | 'edit' = 'edit') =>
+	screen.getByRole('button', {
+		name: mode === 'edit' ? 'common.actions.update' : 'common.actions.save',
+	})
 
 describe('TournamentForm Component', () => {
 	describe('Basic Rendering', () => {
@@ -417,9 +430,7 @@ describe('TournamentForm Component', () => {
 			expect(screen.getByText('tournaments.form.dates')).toBeInTheDocument()
 			expect(screen.getByText('tournaments.form.divisions')).toBeInTheDocument()
 			expect(screen.getByText('tournaments.form.categories')).toBeInTheDocument()
-			expect(
-				screen.getByRole('button', { name: 'common.actions.save' }),
-			).toBeInTheDocument()
+			expect(getSubmitButton()).toBeInTheDocument()
 		})
 
 		it('should render all form fields correctly', () => {
@@ -650,9 +661,7 @@ describe('TournamentForm Component', () => {
 		it('should render submit button with default text', () => {
 			renderTournamentForm()
 
-			expect(
-				screen.getByRole('button', { name: 'common.actions.save' }),
-			).toBeInTheDocument()
+			expect(getSubmitButton()).toBeInTheDocument()
 		})
 
 		it('should render submit button with custom text', () => {
@@ -662,6 +671,24 @@ describe('TournamentForm Component', () => {
 
 			expect(
 				screen.getByRole('button', { name: 'common.actions.save' }),
+			).toBeInTheDocument()
+		})
+
+		it('should show save label in create mode', () => {
+			renderTournamentForm({ mode: 'create' })
+
+			expect(getSubmitButton('create')).toBeInTheDocument()
+		})
+
+		it('should display unsaved warning when form becomes dirty', async () => {
+			const user = userEvent.setup()
+			renderTournamentForm()
+
+			const nameInput = screen.getByRole('textbox', { name: /tournaments\.form\.name/ })
+			await user.type(nameInput, 'Dirty Tournament')
+
+			expect(
+				screen.getByText('competition.groupAssignment.unsavedChanges'),
 			).toBeInTheDocument()
 		})
 

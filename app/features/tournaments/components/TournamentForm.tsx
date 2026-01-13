@@ -597,8 +597,12 @@ export function TournamentForm({
 								formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
 							}
 						>
-							<RestorePageIcon className='mr-2 h-6 w-6' size={24} />
-							{t('common.actions.cancel')}
+							<span className='flex items-center gap-2 rtl:flex-row-reverse'>
+								<RestorePageIcon className='h-6 w-6 order-1 rtl:order-2' size={24} />
+								<span className='order-2 rtl:order-1'>
+									{t('common.actions.cancel')}
+								</span>
+							</span>
 						</ActionButton>
 
 						<ActionButton
@@ -607,7 +611,12 @@ export function TournamentForm({
 							color='brand'
 							icon='check_circle'
 							className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
-							aria-label={t('common.actions.save')}
+							aria-label={
+								submitButtonText ??
+								(formMode === 'edit'
+									? t('common.actions.update')
+									: t('common.actions.save'))
+							}
 							permission={
 								formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
 							}
@@ -617,7 +626,10 @@ export function TournamentForm({
 								(mode === 'edit' && !isFormDirty)
 							}
 						>
-							{submitButtonText || t('common.actions.save')}
+							{submitButtonText ??
+								(formMode === 'edit'
+									? t('common.actions.update')
+									: t('common.actions.save'))}
 						</ActionButton>
 					</div>
 				</div>

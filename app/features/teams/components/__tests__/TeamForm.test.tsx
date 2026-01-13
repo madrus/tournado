@@ -197,6 +197,11 @@ beforeEach(() => {
 	state().resetForm()
 })
 
+const getSubmitButton = (mode: FormMode = 'create') =>
+	screen.getByRole('button', {
+		name: mode === 'edit' ? 'common.actions.update' : 'common.actions.save',
+	})
+
 describe('TeamForm Component - filling the form', () => {
 	describe('Panel 1 Validation Logic', () => {
 		it('should not show panel-level error messages since they are removed', () => {
@@ -474,9 +479,7 @@ describe('TeamForm Component - filling the form', () => {
 			renderTeamForm('create', 'public')
 
 			// Save button should be disabled when form is empty
-			const submitButton = screen.getByRole('button', {
-				name: 'common.actions.save',
-			})
+			const submitButton = getSubmitButton()
 			expect(submitButton).toBeDisabled()
 
 			// Fill all required fields step by step and verify button state
@@ -683,9 +686,7 @@ describe('TeamForm Component - filling the form', () => {
 			})
 
 			// At this point, the SAVE button should still be disabled (privacy agreement not checked)
-			const submitButton = screen.getByRole('button', {
-				name: 'common.actions.save',
-			})
+			const submitButton = getSubmitButton()
 			expect(submitButton).toBeDisabled()
 		})
 
@@ -693,9 +694,7 @@ describe('TeamForm Component - filling the form', () => {
 			renderTeamForm('create', 'admin', PANEL1_FORMDATA)
 
 			// Get the submit button
-			const submitButton = screen.getByRole('button', {
-				name: 'common.actions.save',
-			})
+			const submitButton = getSubmitButton()
 
 			// Submit button should be disabled when form is empty/invalid
 			expect(submitButton).toBeDisabled()
@@ -713,9 +712,7 @@ describe('TeamForm Component - filling the form', () => {
 			renderTeamForm('edit', 'public', PANEL1_FORMDATA)
 
 			// Get the submit button
-			const submitButton = screen.getByRole('button', {
-				name: 'common.actions.save',
-			})
+			const submitButton = getSubmitButton('edit')
 
 			// Submit button should be disabled when form is empty/invalid
 			expect(submitButton).toBeDisabled()
@@ -770,9 +767,7 @@ describe('TeamForm Component - filling the form', () => {
 			await userEvent.type(emailInput, 'john@example.com')
 
 			// Submit button should still be disabled (privacy agreement not checked)
-			const submitButton = screen.getByRole('button', {
-				name: 'common.actions.save',
-			})
+			const submitButton = getSubmitButton()
 			expect(submitButton).toBeDisabled()
 
 			// Check privacy agreement
@@ -788,7 +783,23 @@ describe('TeamForm Component - filling the form', () => {
 
 			// Uncheck privacy agreement - button should be disabled again
 			await userEvent.click(privacyCheckbox)
-			expect(submitButton).toBeDisabled()
+			await waitFor(() => {
+				expect(submitButton).toBeDisabled()
+			})
+		})
+	})
+
+	describe('Unsaved warning', () => {
+		it('shows unsaved warning when the form becomes dirty', async () => {
+			const user = userEvent.setup()
+			renderTeamForm('edit', 'public', ALL_PANELS_FORMDATA)
+
+			const nameInput = screen.getByLabelText(/teams\.form\.name/)
+			await user.type(nameInput, 'Dirty Team')
+
+			expect(
+				screen.getByText('competition.groupAssignment.unsavedChanges'),
+			).toBeInTheDocument()
 		})
 	})
 

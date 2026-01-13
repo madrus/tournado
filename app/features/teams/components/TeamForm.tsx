@@ -699,24 +699,41 @@ export function TeamForm({
 				) : null}
 
 				{/* Submit and Action Buttons */}
-				<div className='flex justify-between gap-2 md:justify-end rtl:justify-start rtl:md:justify-start'>
-					<ActionButton
-						type='button'
-						onClick={() => handleReset()}
-						variant='secondary'
-						color='brand'
-					>
-						<RestorePageIcon className='mr-2 h-6 w-6' size={4} />
-						{t('common.actions.cancel')}
-					</ActionButton>
+				<div className='flex flex-col gap-2 md:flex-row items-center'>
+					{isFormDirty ? (
+						<span
+							className='text-sm text-warning-600 dark:text-warning-400'
+							data-testid='team-unsaved-warning'
+						>
+							{t('competition.groupAssignment.unsavedChanges')}
+						</span>
+					) : null}
 
-					<div className='flex gap-24'>
+					<div className='ms-auto flex items-center gap-3'>
+						<ActionButton
+							type='button'
+							onClick={() => handleReset()}
+							variant='secondary'
+							color='brand'
+						>
+							<span className='flex items-center gap-2 rtl:flex-row-reverse'>
+								<RestorePageIcon className='h-6 w-6 order-1 rtl:order-2' size={24} />
+								<span className='order-2 rtl:order-1'>
+									{t('common.actions.cancel')}
+								</span>
+							</span>
+						</ActionButton>
+
 						<ActionButton
 							type='submit'
 							variant='primary'
 							color='brand'
 							icon='check_circle'
-							aria-label={t('common.actions.save')}
+							aria-label={
+								formMode === 'edit'
+									? t('common.actions.update')
+									: t('common.actions.save')
+							}
 							permission={formMode === 'edit' ? 'teams:update' : 'teams:create'}
 							disabled={
 								isSubmitting ||
@@ -727,7 +744,9 @@ export function TeamForm({
 						>
 							{isSubmitting
 								? t('common.actions.saving')
-								: submitButtonText || t('common.actions.save')}
+								: formMode === 'edit'
+									? t('common.actions.update')
+									: submitButtonText || t('common.actions.save')}
 						</ActionButton>
 					</div>
 				</div>

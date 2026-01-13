@@ -181,7 +181,7 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 
 - [ ] Add priority column to tasks table: 'high' | 'medium' | 'low' (default 'medium')
 - [ ] Generate and run migration successfully
-- [ ] Typecheck passes
+- [ ] Typecheck/lint passes
 
 ### US-002: Display priority indicator on task cards
 
@@ -191,7 +191,7 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 
 - [ ] Each task card shows colored priority badge (red=high, yellow=medium, gray=low)
 - [ ] Priority visible without hovering or clicking
-- [ ] Typecheck passes
+- [ ] Typecheck/lint passes
 - [ ] Verify in browser using dev-browser skill
 
 ### US-003: Add priority selector to task edit
@@ -203,7 +203,7 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 - [ ] Priority dropdown in task edit modal
 - [ ] Shows current priority as selected
 - [ ] Saves immediately on selection change
-- [ ] Typecheck passes
+- [ ] Typecheck/lint passes
 - [ ] Verify in browser using dev-browser skill
 
 ### US-004: Filter tasks by priority
@@ -215,7 +215,7 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 - [ ] Filter dropdown with options: All | High | Medium | Low
 - [ ] Filter persists in URL params
 - [ ] Empty state message when no tasks match filter
-- [ ] Typecheck passes
+- [ ] Typecheck/lint passes
 - [ ] Verify in browser using dev-browser skill
 
 ## Functional Requirements

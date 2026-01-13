@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react'
-import React from 'react'
 import { createMemoryRouter, RouterProvider } from 'react-router'
 
 import { describe, expect, it, vi } from 'vitest'
@@ -45,16 +44,16 @@ const renderFooter = (props: Partial<FormActionFooterProps> = {}) => {
 }
 
 describe('FormActionFooter', () => {
-	it('renders warning text when dirty and uses custom test id when provided', () => {
+	it('renders warning text when dirty', () => {
 		renderFooter({
 			isDirty: true,
-			warningText: 'custom.warning',
-			warningTestId: 'custom-warning',
 		})
 
-		const warningElement = screen.getByTestId('custom-warning')
+		const warningElement = screen.getByTestId('form-unsaved-warning')
 		expect(warningElement).toBeInTheDocument()
-		expect(warningElement).toHaveTextContent('custom.warning')
+		expect(warningElement).toHaveTextContent(
+			'competition.groupAssignment.unsavedChanges',
+		)
 	})
 
 	it('renders action buttons passed via props', () => {

@@ -358,15 +358,6 @@ const mockDivisions = [
 ]
 const mockCategories = ['JO8', 'JO9', 'JO10', 'JO11', 'JO12', 'MO8', 'MO9', 'MO10']
 
-const EDIT_FORM_DATA = {
-	name: 'Test Tournament',
-	location: 'Test Location',
-	startDate: '2025-01-01',
-	endDate: '2025-01-02',
-	divisions: ['FIRST_DIVISION'],
-	categories: ['JO8'],
-}
-
 const renderTournamentForm = (props: Parameters<typeof TournamentForm>[0] = {}) => {
 	// Reset store first
 	getState().resetStoreState()

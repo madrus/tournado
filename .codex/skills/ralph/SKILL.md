@@ -27,7 +27,12 @@ Take a PRD (markdown file or text) and convert it to `prd.json` in your ralph di
 			"id": "US-001",
 			"title": "[Story title]",
 			"description": "As a [user], I want [feature] so that [benefit]",
-			"acceptanceCriteria": ["Criterion 1", "Criterion 2", "Typecheck passes"],
+			"acceptanceCriteria": [
+				"Criterion 1",
+				"Criterion 2",
+				"Typecheck passes",
+				"lint passes"
+			],
 			"priority": 1,
 			"passes": false,
 			"notes": ""
@@ -89,6 +94,7 @@ Each criterion must be something Ralph can CHECK, not something vague.
 - "Filter dropdown has options: All, Active, Completed"
 - "Clicking delete shows confirmation dialog"
 - "Typecheck passes"
+- "Lint passes"
 - "Tests pass"
 
 ### Bad criteria (vague):
@@ -102,6 +108,7 @@ Each criterion must be something Ralph can CHECK, not something vague.
 
 ```
 "Typecheck passes"
+"Lint passes"
 ```
 
 For stories with testable logic, also include:
@@ -127,7 +134,7 @@ Frontend stories are NOT complete until visually verified. Ralph will use the de
 3. **Priority**: Based on dependency order, then document order
 4. **All stories**: `passes: false` and empty `notes`
 5. **branchName**: Derive from feature name, kebab-case, prefixed with `ralph/`
-6. **Always add**: "Typecheck passes" to every story's acceptance criteria
+6. **Always add**: "Typecheck/lint passes" to every story's acceptance criteria
 
 ---
 
@@ -184,7 +191,8 @@ Add ability to mark tasks with different statuses.
 			"acceptanceCriteria": [
 				"Add status column: 'pending' | 'in_progress' | 'done' (default 'pending')",
 				"Generate and run migration successfully",
-				"Typecheck passes"
+				"Typecheck passes",
+				"Lint passes"
 			],
 			"priority": 1,
 			"passes": false,
@@ -198,6 +206,7 @@ Add ability to mark tasks with different statuses.
 				"Each task card shows colored status badge",
 				"Badge colors: gray=pending, blue=in_progress, green=done",
 				"Typecheck passes",
+				"Lint passes",
 				"Verify in browser using dev-browser skill"
 			],
 			"priority": 2,
@@ -213,6 +222,7 @@ Add ability to mark tasks with different statuses.
 				"Changing status saves immediately",
 				"UI updates without page refresh",
 				"Typecheck passes",
+				"Lint passes",
 				"Verify in browser using dev-browser skill"
 			],
 			"priority": 3,
@@ -227,6 +237,7 @@ Add ability to mark tasks with different statuses.
 				"Filter dropdown: All | Pending | In Progress | Done",
 				"Filter persists in URL params",
 				"Typecheck passes",
+				"Lint passes",
 				"Verify in browser using dev-browser skill"
 			],
 			"priority": 4,
@@ -261,7 +272,7 @@ Before writing prd.json, verify:
 - [ ] **Previous run archived** (if prd.json exists with different branchName, archive it first)
 - [ ] Each story is completable in one iteration (small enough)
 - [ ] Stories are ordered by dependency (schema to backend to UI)
-- [ ] Every story has "Typecheck passes" as criterion
+- [ ] Every story has "Typecheck/lint passes" as criterion
 - [ ] UI stories have "Verify in browser using dev-browser skill" as criterion
 - [ ] Acceptance criteria are verifiable (not vague)
 - [ ] No story depends on a later story

@@ -387,7 +387,6 @@ export function GroupAssignmentBoard({
 
 					<FormActionFooter
 						isDirty={isDirty}
-						warningTestId='group-assignment-unsaved-warning'
 						primaryLabel={
 							isSaving ? t('common.actions.updating') : t('common.actions.update')
 						}

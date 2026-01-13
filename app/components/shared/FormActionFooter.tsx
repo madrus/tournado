@@ -27,8 +27,6 @@ type FormActionFooterProps = {
 	confirmDescription?: string
 	confirmProceedLabel?: string
 	confirmCancelLabel?: string
-	warningText?: string
-	warningTestId?: string
 }
 
 export function FormActionFooter({
@@ -51,8 +49,6 @@ export function FormActionFooter({
 	confirmDescription,
 	confirmProceedLabel,
 	confirmCancelLabel,
-	warningText,
-	warningTestId,
 }: FormActionFooterProps): JSX.Element {
 	const { t } = useTranslation()
 	const blocker = useBlocker(
@@ -79,13 +75,13 @@ export function FormActionFooter({
 
 	return (
 		<>
-			<div className='flex flex-col gap-2'>
+			<div className='flex flex-col gap-2 md:flex-row md:items-center md:justify-between'>
 				{isDirty ? (
 					<span
 						className='text-sm text-warning-600 dark:text-warning-400'
-						data-testid={warningTestId ?? 'form-unsaved-warning'}
+						data-testid='form-unsaved-warning'
 					>
-						{warningText ?? t('competition.groupAssignment.unsavedChanges')}
+						{t('competition.groupAssignment.unsavedChanges')}
 					</span>
 				) : null}
 				<div className='ms-auto flex items-center gap-3 rtl:flex-row-reverse rtl:ms-0 rtl:me-auto'>

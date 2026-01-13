@@ -35,6 +35,7 @@ pnpm test:docker    # Validate Docker builds and native dependencies (better-sql
 ```bash
 pnpm lint           # Run Biome check with auto-fix (format + lint)
 pnpm typecheck      # Run React Router typegen + TypeScript checking
+# or
 pnpm validate       # Run lint, typecheck, and test:run in parallel
 ```
 

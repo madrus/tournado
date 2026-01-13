@@ -126,7 +126,7 @@ task_list create
     - What to implement
     - Files to create/modify
     - Acceptance criteria
-    - How to verify (typecheck, tests, browser)]"
+    - How to verify (lint, typecheck, tests, browser)]"
   parentID: "<parent-task-id>"
   dependsOn: ["<previous-task-id>"]  // omit for first task
   repoURL: "https://github.com/snarktank/untangle"
@@ -150,7 +150,7 @@ Implement category name to ID mapping for expenses.
 **Acceptance criteria:**
 - Function returns category ID for valid names
 - Returns null for unknown categories
-- npm run typecheck passes
+- `pnpm typecheck && pnpm lint`  passes
 
 **Notes:**
 - Follow pattern from upsert-income.ts
@@ -365,7 +365,7 @@ Each task description MUST include verifiable acceptance criteria:
 
 - "Add `investorType` column to investor table with default 'cold'"
 - "Filter dropdown has options: All, Cold, Friend"
-- "npm run typecheck passes"
+- "pnpm typecheck && pnpm lint passes"
 - "npm test -- path/to/test.ts passes"
 
 ### Bad criteria (vague):
@@ -473,7 +473,7 @@ When all subtasks are completed:
 - [ ] Chatted through feature to understand scope
 - [ ] Each task completable in one iteration (small enough)
 - [ ] Tasks ordered by dependency (schema → backend → UI → tests)
-- [ ] Every task has "npm run typecheck passes" in description
+- [ ] Every task has "pnpm typecheck && pnpm lint passes" in description
 - [ ] UI tasks have browser verification in description
 - [ ] Descriptions have enough detail for Ralph to implement without context
 - [ ] Parent task ID saved to scripts/ralph/parent-task-id.txt
@@ -701,8 +701,9 @@ Use take_screenshot to capture and verify visual appearance
 
 Before marking any task complete:
 
-- `npm run typecheck` must pass
-- `npm test` must pass
+- `pnpm typecheck` must pass
+- `pnpm lint` must pass
+- `pnpm test` must pass
 - Changes must be committed
 - Progress must be logged
 

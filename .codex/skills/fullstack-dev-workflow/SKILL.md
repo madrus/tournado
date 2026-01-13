@@ -294,8 +294,8 @@ Before creating a pull request or moving to next major task:
 
 ### Running Checks
 
-**Auto-run TypeScript typecheck** on any code change.
-Do not run lint, tests, or build unless explicitly requested by the developer.
+**Auto-run `pnpm typecheck && pnpm lint** on any code change.
+Do not run tests or build unless explicitly requested by the developer.
 If it is useful, list the relevant commands as next-step suggestions without offering to run them.
 
 ### Explanation Depth

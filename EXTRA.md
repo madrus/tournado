@@ -116,5 +116,5 @@ I've broken this into prioritized tasks (tracked via internal TODO system for pr
 
 - **Immediate**: Review/approve this plan. Start with step 1 (reasoning definition) for quick validation.
 - **Timeline**: 1-2 days for core implementation; 1 day for testing.
-- **Dependencies**: Ensure Firebase env vars are set; run `pnpm typecheck` post-changes.
+- **Dependencies**: Ensure Firebase env vars are set; run `pnpm typecheck && pnpm lint` post-changes.
 - **Metrics for Success**: 100% re-auth-free navigation during active sessions; <5% false expirations in tests.

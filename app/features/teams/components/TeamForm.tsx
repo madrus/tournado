@@ -2,13 +2,12 @@ import { type FormEvent, type JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, useNavigation, useSubmit } from 'react-router'
 
-import { ActionButton } from '~/components/buttons/ActionButton'
-import { RestorePageIcon } from '~/components/icons'
 import { CheckboxAgreementField } from '~/components/inputs/CheckboxAgreementField'
 import { ComboField } from '~/components/inputs/ComboField'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { Panel } from '~/components/Panel'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
+import { FormActionFooter } from '~/components/shared/FormActionFooter'
 import type { Division } from '~/db.server'
 import {
 	useTeamFormActions,
@@ -698,58 +697,29 @@ export function TeamForm({
 					</Panel>
 				) : null}
 
-				{/* Submit and Action Buttons */}
-				<div className='flex flex-col gap-2 md:flex-row items-center'>
-					{isFormDirty ? (
-						<span
-							className='text-sm text-warning-600 dark:text-warning-400'
-							data-testid='team-unsaved-warning'
-						>
-							{t('competition.groupAssignment.unsavedChanges')}
-						</span>
-					) : null}
-
-					<div className='ms-auto flex items-center gap-3'>
-						<ActionButton
-							type='button'
-							onClick={() => handleReset()}
-							variant='secondary'
-							color='brand'
-						>
-							<span className='flex items-center gap-2 rtl:flex-row-reverse'>
-								<RestorePageIcon className='h-6 w-6 order-1 rtl:order-2' size={24} />
-								<span className='order-2 rtl:order-1'>
-									{t('common.actions.cancel')}
-								</span>
-							</span>
-						</ActionButton>
-
-						<ActionButton
-							type='submit'
-							variant='primary'
-							color='brand'
-							icon='check_circle'
-							aria-label={
-								formMode === 'edit'
-									? t('common.actions.update')
-									: t('common.actions.save')
-							}
-							permission={formMode === 'edit' ? 'teams:update' : 'teams:create'}
-							disabled={
-								isSubmitting ||
-								isPublicSuccess ||
-								!isFormReadyForSubmission ||
-								(formMode === 'edit' && !isFormDirty)
-							}
-						>
-							{isSubmitting
-								? t('common.actions.saving')
-								: formMode === 'edit'
-									? t('common.actions.update')
-									: submitButtonText || t('common.actions.save')}
-						</ActionButton>
-					</div>
-				</div>
+				<FormActionFooter
+					isDirty={isFormDirty}
+					primaryLabel={
+						isSubmitting
+							? t('common.actions.saving')
+							: formMode === 'edit'
+								? t('common.actions.update')
+								: submitButtonText || t('common.actions.save')
+					}
+					primaryDisabled={
+						isSubmitting ||
+						isPublicSuccess ||
+						!isFormReadyForSubmission ||
+						(formMode === 'edit' && !isFormDirty)
+					}
+					primaryType='submit'
+					primaryPermission={formMode === 'edit' ? 'teams:update' : 'teams:create'}
+					primaryClassName='w-full hover:scale-100 md:w-fit md:hover:scale-105'
+					secondaryLabel={t('common.actions.cancel')}
+					onSecondary={handleReset}
+					secondaryClassName='w-full hover:scale-100 md:w-fit md:hover:scale-105'
+					secondaryPermission={formMode === 'edit' ? 'teams:update' : 'teams:create'}
+				/>
 			</Form>
 		</div>
 	)

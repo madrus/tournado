@@ -15,7 +15,7 @@ import { useActionButton } from './useActionButton'
 
 type NativeButtonProps = ButtonHTMLAttributes<HTMLButtonElement>
 
-type ActionButtonProps = {
+export type ActionButtonProps = {
 	children: ReactNode
 	icon?: IconName
 	variant?: ButtonVariants['variant']

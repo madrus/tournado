@@ -2,12 +2,12 @@ import { type FormEvent, type JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, useNavigation, useSubmit } from 'react-router'
 
-import { ActionButton } from '~/components/buttons'
-import { CheckMarkIcon, RestorePageIcon } from '~/components/icons'
+import { CheckMarkIcon } from '~/components/icons'
 import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { Panel } from '~/components/Panel'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
+import { FormActionFooter } from '~/components/shared/FormActionFooter'
 import { ToggleChipsField } from '~/components/ToggleChip'
 import {
 	useFormFields,
@@ -575,64 +575,31 @@ export function TournamentForm({
 					/>
 				</Panel>
 
-				{/* Submit Button */}
-				<div className='flex flex-col gap-2 md:flex-row items-center'>
-					{isFormDirty ? (
-						<span
-							className='text-sm text-warning-600 dark:text-warning-400'
-							data-testid='tournament-unsaved-warning'
-						>
-							{t('competition.groupAssignment.unsavedChanges')}
-						</span>
-					) : null}
-
-					<div className='ms-auto flex items-center gap-3'>
-						<ActionButton
-							type='button'
-							onClick={() => handleReset()}
-							variant='secondary'
-							color='brand'
-							className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
-							permission={
-								formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
-							}
-						>
-							<span className='flex items-center gap-2 rtl:flex-row-reverse'>
-								<RestorePageIcon className='h-6 w-6 order-1 rtl:order-2' size={24} />
-								<span className='order-2 rtl:order-1'>
-									{t('common.actions.cancel')}
-								</span>
-							</span>
-						</ActionButton>
-
-						<ActionButton
-							type='submit'
-							variant='primary'
-							color='brand'
-							icon='check_circle'
-							className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
-							aria-label={
-								submitButtonText ??
-								(formMode === 'edit'
-									? t('common.actions.update')
-									: t('common.actions.save'))
-							}
-							permission={
-								formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
-							}
-							disabled={
-								isPublicSuccess ||
-								!isFormReadyForSubmission ||
-								(mode === 'edit' && !isFormDirty)
-							}
-						>
-							{submitButtonText ??
-								(formMode === 'edit'
-									? t('common.actions.update')
-									: t('common.actions.save'))}
-						</ActionButton>
-					</div>
-				</div>
+				<FormActionFooter
+					isDirty={isFormDirty}
+					primaryLabel={
+						submitButtonText ??
+						(formMode === 'edit'
+							? t('common.actions.update')
+							: t('common.actions.save'))
+					}
+					primaryDisabled={
+						isPublicSuccess ||
+						!isFormReadyForSubmission ||
+						(mode === 'edit' && !isFormDirty)
+					}
+					primaryType='submit'
+					primaryPermission={
+						formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
+					}
+					primaryClassName='w-full hover:scale-100 md:w-fit md:hover:scale-105'
+					secondaryLabel={t('common.actions.cancel')}
+					onSecondary={handleReset}
+					secondaryClassName='w-full hover:scale-100 md:w-fit md:hover:scale-105'
+					secondaryPermission={
+						formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
+					}
+				/>
 			</Form>
 		</div>
 	)

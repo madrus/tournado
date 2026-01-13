@@ -15,12 +15,11 @@ import type { JSX } from 'react'
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
-import { useBlocker, useFetcher, useRevalidator } from 'react-router'
+import { useFetcher, useRevalidator } from 'react-router'
 import { z } from 'zod'
 
-import { ActionButton } from '~/components/buttons/ActionButton'
 import { ConfirmDialog } from '~/components/ConfirmDialog'
-import { RestorePageIcon } from '~/components/icons'
+import { FormActionFooter } from '~/components/shared/FormActionFooter'
 import { useMediaQuery } from '~/hooks/useMediaQuery'
 import { useReducedMotion } from '~/hooks/useReducedMotion'
 import { cn } from '~/utils/misc'
@@ -45,10 +44,7 @@ import { DragOverlayChip } from './DraggableTeamChip'
 import { GroupAssignmentErrorBanner } from './GroupAssignmentErrorBanner'
 import { GroupAssignmentMobileTabs } from './GroupAssignmentMobileTabs'
 import { GroupCard } from './GroupCard'
-import {
-	actionButtonGroupVariants,
-	heroStripVariants,
-} from './groupAssignment.variants'
+import { heroStripVariants } from './groupAssignment.variants'
 import { WaitlistPool } from './WaitlistPool'
 
 type GroupAssignmentBoardProps = {
@@ -82,7 +78,6 @@ export function GroupAssignmentBoard({
 	const fetcher = useFetcher()
 	const revalidator = useRevalidator()
 	const [showConflictDialog, setShowConflictDialog] = useState(false)
-	const [isProceedingNavigation, setIsProceedingNavigation] = useState(false)
 	const [isClient, setIsClient] = useState(false)
 	const [displacedAnimation, setDisplacedAnimation] = useState<{
 		teamId: string
@@ -168,19 +163,6 @@ export function GroupAssignmentBoard({
 		}),
 		useSensor(KeyboardSensor),
 	)
-
-	// Block navigation if dirty
-	const blocker = useBlocker(
-		({ currentLocation, nextLocation }) =>
-			isDirty && currentLocation.pathname !== nextLocation.pathname,
-	)
-
-	// Reset navigation proceeding flag when blocker state changes
-	useEffect(() => {
-		if (blocker.state !== 'blocked') {
-			setIsProceedingNavigation(false)
-		}
-	}, [blocker.state])
 
 	// Handle fetcher response
 	useEffect(() => {
@@ -403,44 +385,21 @@ export function GroupAssignmentBoard({
 						</div>
 					</div>
 
-					{/* Action buttons */}
-					<div className={actionButtonGroupVariants()}>
-						{isDirty ? (
-							<span
-								className='text-sm text-warning-600 dark:text-warning-400'
-								data-testid='group-assignment-unsaved-warning'
-							>
-								{t('competition.groupAssignment.unsavedChanges')}
-							</span>
-						) : null}
-
-						<div className='ms-auto flex items-center gap-3'>
-							<ActionButton
-								type='button'
-								variant='secondary'
-								onClick={handleCancel}
-								disabled={!isDirty || isSaving}
-								data-testid='group-assignment-cancel'
-							>
-								<RestorePageIcon
-									className='mr-2 h-6 w-6 rtl:order-last rtl:mr-0 rtl:ml-2'
-									size={24}
-								/>
-								{t('common.actions.cancel')}
-							</ActionButton>
-
-							<ActionButton
-								type='button'
-								variant='primary'
-								onClick={handleSave}
-								disabled={!isDirty || isSaving}
-								data-testid='group-assignment-save'
-								icon='check_circle'
-							>
-								{isSaving ? t('common.actions.updating') : t('common.actions.update')}
-							</ActionButton>
-						</div>
-					</div>
+					<FormActionFooter
+						isDirty={isDirty}
+						warningTestId='group-assignment-unsaved-warning'
+						primaryLabel={
+							isSaving ? t('common.actions.updating') : t('common.actions.update')
+						}
+						onPrimary={handleSave}
+						primaryDisabled={!isDirty || isSaving}
+						primaryType='button'
+						primaryDataTestId='group-assignment-save'
+						secondaryLabel={t('common.actions.cancel')}
+						onSecondary={handleCancel}
+						secondaryDisabled={!isDirty || isSaving}
+						secondaryDataTestId='group-assignment-cancel'
+					/>
 				</div>
 
 				{/* Drag overlay */}
@@ -470,28 +429,6 @@ export function GroupAssignmentBoard({
 				cancelLabel={t('common.actions.cancel')}
 				intent='warning'
 			/>
-
-			{/* Navigation blocker dialog */}
-			{blocker.state === 'blocked' ? (
-				<ConfirmDialog
-					open
-					onOpenChange={(open) => {
-						// Only reset if user is canceling (not proceeding with navigation)
-						if (!open && !isProceedingNavigation) {
-							blocker.reset()
-						}
-					}}
-					onConfirm={() => {
-						setIsProceedingNavigation(true)
-						blocker.proceed()
-					}}
-					title={t('competition.groupAssignment.unsavedTitle')}
-					description={t('competition.groupAssignment.unsavedDescription')}
-					confirmLabel={t('competition.groupAssignment.leaveAnyway')}
-					cancelLabel={t('competition.groupAssignment.stayOnPage')}
-					intent='warning'
-				/>
-			) : null}
 		</>
 	)
 }

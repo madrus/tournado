@@ -289,7 +289,7 @@ export default config
 
 <a id="roles-future"></a>
 
-## Roles — Additional (Future)
+## Roles - Additional (Future)
 
 - No additional roles planned beyond `PUBLIC`, `REFEREE`, `MANAGER`, `ADMIN`, `EDITOR` (future), `BILLING` (future).
 

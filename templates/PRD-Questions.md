@@ -90,10 +90,10 @@ What’s currently in progress that should appear in “In Progress Features”?
 
 ### 8. Success metrics (targets)
 
-- User engagement (e.g., signup→first-team-created conversion %, admin weekly active, returning users %) — which and target values? -->
+- User engagement (e.g., signup→first-team-created conversion %, admin weekly active, returning users %) - which and target values? -->
   - signup is only necessary for managers, so an overview per manager of tournaments and registered teams -- targets at this moment are unclear
-- Performance (mobile Lighthouse ≥ 90, TTI < 2s, CLS < 0.1) — confirm targets? --> yes, but not the first priority
-- Business (teams created/week, tournaments created/month, admin retention %) — which and targets? --> targets at this moment are unclear
+- Performance (mobile Lighthouse ≥ 90, TTI < 2s, CLS < 0.1) - confirm targets? --> yes, but not the first priority
+- Business (teams created/week, tournaments created/month, admin retention %) - which and targets? --> targets at this moment are unclear
   - teams created/week
   - tournaments created/month
   - overview of tournaments and teams per tournament, also % played matches per tournament

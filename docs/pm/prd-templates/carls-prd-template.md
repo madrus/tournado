@@ -59,7 +59,7 @@ Show what the end-to-end experience will be for customers. This could be written
 
 It is natural for this section to become more specific over time. It might start as a few annotated screenshots or stories. It might become highly detailed requirements with acceptance criteria. Adjust to the way your team operates. If you have a strong designer who enjoys going into every edge case, lean on them. If you have detailed engineers who prefer to have each scenario documented, go deep on acceptance criteria.
 
-This will naturally change over time — that’s okay. When changes occur, document them in the [Changelog](https://docs.google.com/document/d/1mEMDcHmtQ6twzNlpvF-9maNlAcezpWDtCnyIqWkODZs/edit#heading=h.n2tmu89lqb7n) and notify all contributors.
+This will naturally change over time -  that’s okay. When changes occur, document them in the [Changelog](https://docs.google.com/document/d/1mEMDcHmtQ6twzNlpvF-9maNlAcezpWDtCnyIqWkODZs/edit#heading=h.n2tmu89lqb7n) and notify all contributors.
 
 ### **Key Logic**
 

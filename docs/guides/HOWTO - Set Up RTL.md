@@ -1,6 +1,6 @@
 # Implementing Right-to-Left (RTL) Support in a Tailwind CSS React Application
 
-Building a truly international web application requires more than just translating text—it requires adapting the entire user interface to different text directions. This article documents the key changes needed to transform a Left-to-Right (LTR) only application into one that seamlessly supports both LTR and Right-to-Left (RTL) languages like Arabic.
+Building a truly international web application requires more than just translating text - it requires adapting the entire user interface to different text directions. This article documents the key changes needed to transform a Left-to-Right (LTR) only application into one that seamlessly supports both LTR and Right-to-Left (RTL) languages like Arabic.
 
 ## Table of Contents
 

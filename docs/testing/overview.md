@@ -79,7 +79,7 @@ When running E2E tests via `pnpm test:e2e:*`, the system automatically:
 2. Starts the server with `DATABASE_URL` pointing to the test database
 3. Executes Playwright global setup which wipes test data and seeds required auth users
 
-This ensures each run uses the dedicated test database and a predictable schema and data state — without affecting your development database.
+This ensures each run uses the dedicated test database and a predictable schema and data state - without affecting your development database.
 
 ## Environment Requirements
 

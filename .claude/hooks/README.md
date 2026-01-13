@@ -47,7 +47,7 @@ Display real-time message count in your Claude Code CLI footer.
 - Verify script is executable: `chmod +x .claude/hooks/message-counter.sh`
 - Test manually: `echo '{"transcript_path":"path/to/transcript.jsonl"}' | .claude/hooks/message-counter.sh`
 
-**Shows "—"?**
+**Shows " - "?**
 
 - Transcript file not found (normal for new sessions)
 - Wait for first message exchange

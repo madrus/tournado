@@ -33,7 +33,7 @@ builtin:///skills/scripts/work-on-linear-issue https://linear.app/abc/issue/MC-1
 
 ## Workflow
 
-"AI models are geniuses who start from scratch on every task." — Noam Brown
+"AI models are geniuses who start from scratch on every task." - Noam Brown
 
 Onboard yourself to the current task:
 • Use ultrathink.

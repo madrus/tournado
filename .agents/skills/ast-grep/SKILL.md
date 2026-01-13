@@ -177,7 +177,7 @@ Meta-variables are the key to powerful rewrites. They act like capture groups in
 | `$NAME`       | Any single AST node (expression, identifier, etc.) |
 | `$$$ITEMS`    | Multiple nodes (like function arguments)           |
 
-**Example** — Swapping assignment sides:
+**Example** - Swapping assignment sides:
 
 ```yaml
 rule:

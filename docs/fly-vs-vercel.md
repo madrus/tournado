@@ -60,7 +60,7 @@ Zero configuration for many use cases
 #### Fly.io:
 
 As of August 2025:
-• New accounts (Pay As You Go): no guaranteed free resources—charges are typically waived if monthly spend stays under ~$5.
+• New accounts (Pay As You Go): no guaranteed free resources - charges are typically waived if monthly spend stays under ~$5.
 • Legacy Hobby accounts (pre-Fall 2024) receive:
 – 3 × shared-cpu-1x VMs (256 MB RAM each)
 – 3 GB total persistent volume (encrypted, per-volume max 1 GB, up to 500 GB)

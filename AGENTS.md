@@ -4,7 +4,7 @@
 
 Project Context documentation can be found in the following locations:
 
-- **@.cursor/rules/** — Project-wide rules and documentation, such as:
+- **@.cursor/rules/** - Project-wide rules and documentation, such as:
   - `PRD.mdc` (Product Requirements Document)
   - `ADR.mdc` (Architecture Decision Records)
   - `workflow.mdc` (Project development workflow)
@@ -15,10 +15,10 @@ Project Context documentation can be found in the following locations:
   - generated tasks
 
 - **Additional Documentation**
-  - `docs/commands.md` — Complete list of available commands
-  - `docs/architecture.md` — Detailed architecture overview
-  - `docs/environment-variables.md` — Environment setup and configuration
-  - `docs/guides/` — Feature guides (authentication, styling, PWA, etc.)
+  - `docs/commands.md` - Complete list of available commands
+  - `docs/architecture.md` - Detailed architecture overview
+  - `docs/environment-variables.md` - Environment setup and configuration
+  - `docs/guides/` - Feature guides (authentication, styling, PWA, etc.)
 
 ---
 

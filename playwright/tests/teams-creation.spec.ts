@@ -15,7 +15,6 @@
  * Note: Uses seeded tournament data to prevent database conflicts
  */
 import { expect, test } from '@playwright/test'
-
 import { clearCapturedEmails, waitForEmailsCount } from '../helpers/test-emails'
 
 // Public Team Creation Test - NO AUTHENTICATION REQUIRED

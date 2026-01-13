@@ -1,6 +1,5 @@
 import { type JSX, useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router'
-
 import type { BaseTransitionProps } from './utils'
 
 // Alternative: View Transition API approach (modern browsers)

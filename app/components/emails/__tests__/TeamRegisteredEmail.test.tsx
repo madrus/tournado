@@ -1,7 +1,5 @@
 import { render } from '@react-email/render'
-
 import { describe, expect, it } from 'vitest'
-
 import TeamRegisteredEmail from '../TeamRegisteredEmail'
 
 describe('TeamRegisteredEmail', () => {

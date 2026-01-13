@@ -4,7 +4,6 @@
  * Basic tests to verify i18n configuration works correctly.
  */
 import { describe, expect, it } from 'vitest'
-
 import { initI18n, resources } from '../config'
 
 describe('i18n Basic Functionality', () => {

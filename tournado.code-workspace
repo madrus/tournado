@@ -19,7 +19,7 @@
 			"titleBar.activeBackground": "#7a2591",
 			"titleBar.activeForeground": "#e7e7e7",
 			"titleBar.inactiveBackground": "#7a259199",
-			"titleBar.inactiveForeground": "#e7e7e799"
+			"titleBar.inactiveForeground": "#e7e7e799",
 		},
 		"peacock.color": "#7a2591",
 		"i18n-ally.keystyle": "nested",

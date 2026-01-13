@@ -1,6 +1,5 @@
 import type { JSX } from 'react'
 import { Outlet } from 'react-router'
-
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 
 /**

@@ -1,7 +1,6 @@
 import type { Category } from '@prisma/client'
 import type { JSX } from 'react'
 import { redirect, useActionData, useLoaderData } from 'react-router'
-
 import { CompetitionGroupStageForm } from '~/features/competition/components'
 import { getServerT } from '~/i18n/i18n.server'
 import { createGroupStage, getUnassignedTeamsByCategories } from '~/models/group.server'

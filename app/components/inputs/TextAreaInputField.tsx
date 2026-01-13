@@ -1,10 +1,8 @@
-import { type FocusEvent, forwardRef, type JSX, type ReactNode } from 'react'
-
+import { type FocusEvent, type JSX, type ReactNode, forwardRef } from 'react'
 import { ErrorMessage } from '~/components/ErrorMessage'
 import type { ColorAccent } from '~/lib/lib.types'
 import { INPUT_LABEL_SPACING, STATUS_ICON_CONTAINER_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
-
 import {
 	textInputFieldVariants,
 	textInputLabelTextVariants,

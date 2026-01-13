@@ -1,12 +1,9 @@
 import { useEffect } from 'react'
-
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
 import { useShallow } from 'zustand/react/shallow'
-
 import type { Language } from '~/i18n/config'
 import { isBrowser } from '~/lib/lib.helpers'
-
 import { setCookie } from './utils'
 
 type Theme = 'light' | 'dark'

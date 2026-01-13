@@ -1,10 +1,8 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import type { JSX, ReactNode } from 'react'
-
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
-
 import {
 	getCancelButtonColor,
 	getDefaultColorsForIntent,

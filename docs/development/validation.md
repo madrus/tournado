@@ -192,9 +192,8 @@ app/features/
 **Example Structure (`app/features/teams/validation.ts`):**
 
 ```typescript
-import { z } from 'zod'
-
 import type { TFunction } from 'i18next'
+import { z } from 'zod'
 
 // Base schema (server-side, no translations)
 const baseTeamSchema = z.object({
@@ -502,7 +501,6 @@ Test validation schemas comprehensively:
 
 ```typescript
 import { describe, expect, it } from 'vitest'
-
 import { emailSchema, validateEmail } from '../validation'
 
 describe('emailSchema', () => {

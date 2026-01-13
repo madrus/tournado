@@ -1,10 +1,16 @@
 import type { Role } from '@prisma/client'
 import type { ActionFunctionArgs } from 'react-router'
-
+import { redirect } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
+import { validateRole } from '~/features/users/utils/roleUtils'
+import {
+	deactivateUser,
+	reactivateUser,
+	updateUserDisplayName,
+	updateUserRole,
+} from '~/models/user.server'
 import { adminPath } from '~/utils/adminRoutes'
-
+import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 import { action } from '../users.$userId'
 
 // Mock dependencies
@@ -38,16 +44,6 @@ vi.mock('react-router', async () => {
 		),
 	}
 })
-
-import { redirect } from 'react-router'
-import { validateRole } from '~/features/users/utils/roleUtils'
-import {
-	deactivateUser,
-	reactivateUser,
-	updateUserDisplayName,
-	updateUserRole,
-} from '~/models/user.server'
-import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
 describe('users.$userId route action', () => {
 	const mockCurrentUser = {

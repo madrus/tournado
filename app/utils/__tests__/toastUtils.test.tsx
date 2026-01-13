@@ -1,12 +1,10 @@
 /// <reference types="vitest/globals" />
-
 import { toast as sonnerToast } from 'sonner'
 import { describe, expect, it, vi } from 'vitest'
-
 import {
+	DEFAULT_TOAST_DURATION,
 	createErrorToast,
 	createToast,
-	DEFAULT_TOAST_DURATION,
 	showNetworkError,
 	showPermissionError,
 	showServerError,

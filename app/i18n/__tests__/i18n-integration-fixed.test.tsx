@@ -3,14 +3,11 @@
  *
  * Tests that verify i18n works with React components correctly.
  */
-
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { I18nextProvider, useTranslation } from 'react-i18next'
-
 import { describe, expect, it } from 'vitest'
-
-import { initI18n, SUPPORTED_LANGUAGES } from '../config'
+import { SUPPORTED_LANGUAGES, initI18n } from '../config'
 
 // Simple test component that uses translations
 function SimpleTranslationTest({ translationKey }: { translationKey: string }) {

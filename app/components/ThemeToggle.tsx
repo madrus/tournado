@@ -1,6 +1,5 @@
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { useSettingsActions, useSettingsTheme } from '~/stores/useSettingsStore'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'

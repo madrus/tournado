@@ -1,7 +1,6 @@
 import type { User } from '@prisma/client'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
-
 import { describe, expect, test } from 'vitest'
 import IndexPage from '~/routes/_index'
 import { adminPath } from '~/utils/adminRoutes'

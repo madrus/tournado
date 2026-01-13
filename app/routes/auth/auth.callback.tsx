@@ -1,9 +1,7 @@
 import { redirect } from 'react-router'
-
 import { createSessionFromFirebaseToken } from '~/features/firebase/index.server'
 import { getPostSignInRedirect } from '~/utils/roleBasedRedirects'
 import { sessionStorage } from '~/utils/session.server'
-
 import type { Route } from './+types/auth.callback'
 
 export const loader = async ({ request }: Route.LoaderArgs): Promise<Response> => {

@@ -5,8 +5,8 @@ import {
 	type MeasuringConfiguration,
 	MeasuringStrategy,
 	PointerSensor,
-	pointerWithin,
 	TouchSensor,
+	pointerWithin,
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core'
@@ -17,15 +17,13 @@ import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { useFetcher, useRevalidator } from 'react-router'
 import { z } from 'zod'
-
 import { ConfirmDialog } from '~/components/ConfirmDialog'
 import { FormActionFooter } from '~/components/shared/FormActionFooter'
+import { useGuardedStoreInitialization } from '~/hooks/useGuardedStoreInitialization'
 import { useMediaQuery } from '~/hooks/useMediaQuery'
 import { useReducedMotion } from '~/hooks/useReducedMotion'
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
-import { useGuardedStoreInitialization } from '~/hooks/useGuardedStoreInitialization'
-
 import { useGroupStageDnd } from '../hooks/useGroupStageDnd'
 import {
 	getConfirmedCapacity,
@@ -44,8 +42,8 @@ import { DragOverlayChip } from './DraggableTeamChip'
 import { GroupAssignmentErrorBanner } from './GroupAssignmentErrorBanner'
 import { GroupAssignmentMobileTabs } from './GroupAssignmentMobileTabs'
 import { GroupCard } from './GroupCard'
-import { heroStripVariants } from './groupAssignment.variants'
 import { WaitlistPool } from './WaitlistPool'
+import { heroStripVariants } from './groupAssignment.variants'
 
 type GroupAssignmentBoardProps = {
 	initialSnapshot: GroupAssignmentSnapshot

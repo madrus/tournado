@@ -1,7 +1,7 @@
 // Remove the OS import since we're no longer using it
 // import os from 'node:os'
-
 import type { User } from '@prisma/client'
+import '@radix-ui/themes/styles.css'
 import type React from 'react'
 import { type JSX, useCallback, useEffect, useRef, useState } from 'react'
 import {
@@ -14,9 +14,6 @@ import {
 	useLocation,
 	useRouteLoaderData,
 } from 'react-router'
-import '@radix-ui/themes/styles.css'
-import '~/styles/radix-overrides.css'
-
 import { AppLayout } from '~/components/AppLayout'
 import { GeneralErrorBoundary } from '~/components/GeneralErrorBoundary'
 import { PWAElements } from '~/components/PWAElements'
@@ -31,7 +28,7 @@ import { useTournamentFormActions } from '~/features/tournaments/stores/useTourn
 import type { TournamentData } from '~/features/tournaments/types'
 import { transformTournamentData } from '~/features/tournaments/utils'
 import { useRouteCleanup } from '~/hooks/useRouteCleanup'
-import { initI18n, type Language, SUPPORTED_LANGUAGES } from '~/i18n/config'
+import { type Language, SUPPORTED_LANGUAGES, initI18n } from '~/i18n/config'
 import {
 	useAuthActions,
 	useAuthStoreHydration,
@@ -45,13 +42,13 @@ import {
 } from '~/stores/useSettingsStore'
 import { CONTENT_CONTAINER_CLASSES } from '~/styles/constants'
 import layoutStylesheetUrl from '~/styles/layout.css?url'
+import '~/styles/radix-overrides.css'
 import safeAreasStylesheetUrl from '~/styles/safe-areas.css?url'
 import tailwindStylesheetUrl from '~/styles/tailwind.css?url'
 import { getEnv } from '~/utils/env.server'
 import { cn } from '~/utils/misc'
 import { getDirection, getTypographyClass } from '~/utils/rtlUtils'
 import { getUser } from '~/utils/session.server'
-
 import type { Route } from './+types/root'
 
 export const meta: MetaFunction = () => [

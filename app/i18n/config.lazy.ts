@@ -4,10 +4,8 @@
  * Performance-optimized i18n setup that only loads the chosen language.
  * This reduces initial bundle size significantly.
  */
-
-import { createInstance, type i18n as I18nType, type Resource } from 'i18next'
+import { type i18n as I18nType, type Resource, createInstance } from 'i18next'
 import { initReactI18next } from 'react-i18next'
-
 import { loadTranslationCached, translationCache, warmCache } from './cache'
 
 export const defaultNS = 'root'

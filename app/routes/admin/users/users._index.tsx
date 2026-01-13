@@ -10,11 +10,10 @@ import {
 	useNavigate,
 	useSearchParams,
 } from 'react-router'
-
 import { DataTable, DataTablePagination } from '~/components/DataTable'
-import { GroupIcon } from '~/components/icons'
 import { Panel } from '~/components/Panel'
-import { createUserColumns, UserMobileRow } from '~/features/users/components'
+import { GroupIcon } from '~/components/icons'
+import { UserMobileRow, createUserColumns } from '~/features/users/components'
 import { validateRole } from '~/features/users/utils/roleUtils'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { getServerT } from '~/i18n/i18n.server'
@@ -25,7 +24,6 @@ import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 import { toast } from '~/utils/toastUtils'
-
 import type { Route } from './+types/users._index'
 
 // Local constants

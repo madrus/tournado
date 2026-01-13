@@ -1,8 +1,6 @@
 import type { JSX } from 'react'
 import { useMemo } from 'react'
-
 import { CloseIcon } from '~/components/icons'
-
 import { type ToastType, toastCloseButtonVariants } from './toastMessage.variants'
 
 // Icon size constants for consistency

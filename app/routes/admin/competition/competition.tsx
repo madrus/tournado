@@ -1,13 +1,11 @@
 import type { JSX } from 'react'
 import { useLoaderData } from 'react-router'
-
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import { CompetitionLayout } from '~/features/competition/components'
 import type { TournamentListItem } from '~/features/tournaments/types'
 import { getAllTournaments, getTournamentById } from '~/models/tournament.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
-
 import type { Route } from './+types/competition'
 
 type LoaderData = {

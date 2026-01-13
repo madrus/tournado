@@ -1,8 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-
 import type { Mock } from 'vitest'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-
 import { FirebaseSignIn } from '../FirebaseSignIn'
 
 vi.mock('firebase/auth', () => ({

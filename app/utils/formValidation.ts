@@ -1,5 +1,4 @@
 import type { ZodIssue } from 'zod'
-
 import type { TournamentFormData } from '~/features/tournaments/validation'
 import { validateTournamentData } from '~/features/tournaments/validation'
 

@@ -1,8 +1,9 @@
 import { render, waitFor } from '@testing-library/react'
 import type { JSX } from 'react'
-import { createMemoryRouter, RouterProvider } from 'react-router'
+import { RouterProvider, createMemoryRouter } from 'react-router'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-
+// Import the mocked toast after defining the mock
+import { toast } from '~/utils/toastUtils'
 import { useUserActionFeedback } from '../useUserActionFeedback'
 
 // Mock dependencies
@@ -34,9 +35,6 @@ vi.mock('~/features/users/utils/userErrorUtils', () => ({
 		return knownKeys.includes(error) ? `translated:messages.user.${error}` : error
 	},
 }))
-
-// Import the mocked toast after defining the mock
-import { toast } from '~/utils/toastUtils'
 
 // Test component that uses the hook
 function TestComponent(): JSX.Element {

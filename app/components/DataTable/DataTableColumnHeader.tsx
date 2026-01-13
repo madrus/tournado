@@ -1,6 +1,5 @@
 import type { Column } from '@tanstack/react-table'
 import type { JSX } from 'react'
-
 import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon } from '~/components/icons'
 import { cn } from '~/utils/misc'
 

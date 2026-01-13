@@ -20,9 +20,7 @@
  * Note: Comprehensive user management workflow testing
  */
 import { type AccessibilityNode, expect, test } from '@playwright/test'
-
 import { adminPath } from '../../app/utils/adminRoutes'
-
 import { AdminUsersPage } from '../pages/AdminUsersPage'
 
 // User Management E2E Tests - USES GLOBAL AUTHENTICATION from auth.json

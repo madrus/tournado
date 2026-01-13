@@ -1,10 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-
 import {
 	type BreakpointKey,
-	breakpoints,
 	DESKTOP_BREAKPOINT,
 	MOBILE_BREAKPOINT,
+	breakpoints,
 } from '../breakpoints'
 
 // Mock window object for testing

@@ -1,5 +1,4 @@
 import { type ActionFunctionArgs, redirect } from 'react-router'
-
 import { signout } from '~/utils/session.server'
 
 export const action = async ({ request }: ActionFunctionArgs): Promise<Response> =>

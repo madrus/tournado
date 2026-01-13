@@ -1,5 +1,4 @@
 import { describe, expect, it, vi } from 'vitest'
-
 import { translateUserError } from '../userErrorUtils'
 
 // Mock i18next

@@ -12,7 +12,6 @@
  * Viewport: Mobile (375x812)
  */
 import { test } from '@playwright/test'
-
 import { AdminPanelPage } from '../pages/AdminPanelPage'
 import { AdminTeamsPage } from '../pages/AdminTeamsPage'
 

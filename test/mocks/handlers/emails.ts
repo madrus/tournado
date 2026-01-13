@@ -1,5 +1,4 @@
-import { HttpResponse, http, type JsonBodyType } from 'msw'
-
+import { HttpResponse, type JsonBodyType, http } from 'msw'
 import {
 	clearTestEmailOutbox,
 	getTestEmailOutbox,

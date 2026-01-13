@@ -1,6 +1,5 @@
-import * as path from 'node:path'
 import { test as base } from '@playwright/test'
-
+import * as path from 'node:path'
 import { getFirebaseMockScript } from '../helpers/firebase-mock'
 
 const AUTH_FILE = path.join(process.cwd(), 'playwright', '.auth', 'auth.json')

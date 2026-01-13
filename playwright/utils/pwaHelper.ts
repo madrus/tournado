@@ -1,4 +1,4 @@
-import { expect, type Page } from '@playwright/test'
+import { type Page, expect } from '@playwright/test'
 
 export async function dismissPwaPromptIfVisible(page: Page): Promise<void> {
 	const pwaUpdatePrompt = page.locator('[data-testid="pwa-update-prompt"]')

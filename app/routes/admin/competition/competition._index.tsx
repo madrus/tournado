@@ -1,9 +1,7 @@
 import type { JSX } from 'react'
 import { redirect } from 'react-router'
-
 import { adminPath } from '~/utils/adminRoutes'
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'
-
 import type { Route } from './+types/competition._index'
 
 export async function loader({

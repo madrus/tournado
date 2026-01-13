@@ -7,7 +7,6 @@ import {
 	useLoaderData,
 	useNavigation,
 } from 'react-router'
-
 import { UserAuditLogList } from '~/features/users/components/UserAuditLogList'
 import { UserDetailCard } from '~/features/users/components/UserDetailCard'
 import { useUserActionFeedback } from '~/features/users/hooks/useUserActionFeedback'

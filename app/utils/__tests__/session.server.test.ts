@@ -1,10 +1,13 @@
 import type { Session, SessionData } from 'react-router'
 import { redirect } from 'react-router'
-
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
+import {
+	clearFirebaseSession,
+	validateFirebaseSession,
+} from '~/features/firebase/session.server'
 import type { User } from '~/models/user.server'
-
+import { getUserById } from '~/models/user.server'
+import { isPublicRoute } from '../publicRoutes.server'
 import {
 	createFirebaseUserSession,
 	createUserSession,
@@ -42,13 +45,6 @@ vi.mock('react-router', () => ({
 		destroySession: vi.fn(),
 	}),
 }))
-
-import {
-	clearFirebaseSession,
-	validateFirebaseSession,
-} from '~/features/firebase/session.server'
-import { getUserById } from '~/models/user.server'
-import { isPublicRoute } from '../publicRoutes.server'
 
 describe('session.server', () => {
 	const mockRequest = new Request('http://localhost:3000/test')

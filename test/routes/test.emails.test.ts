@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { action, loader } from '~/routes/test.emails'
 
 const emailTestingMocks = vi.hoisted(() => ({

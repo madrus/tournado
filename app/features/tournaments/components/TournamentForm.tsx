@@ -1,14 +1,13 @@
 import { type FormEvent, type JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, useNavigation, useSubmit } from 'react-router'
-
+import { Panel } from '~/components/Panel'
+import { ToggleChipsField } from '~/components/ToggleChip'
 import { CheckMarkIcon } from '~/components/icons'
 import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
-import { Panel } from '~/components/Panel'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
 import { FormActionFooter } from '~/components/shared/FormActionFooter'
-import { ToggleChipsField } from '~/components/ToggleChip'
 import {
 	useFormFields,
 	useFormMode,

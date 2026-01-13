@@ -1,8 +1,6 @@
 import type { JSX } from 'react'
-
 import type { Category, Division } from '~/db.server'
 import { getCurrentCategoryLabel, getCurrentDivisionLabel } from '~/lib/lib.helpers'
-
 import { ToggleChip } from './ToggleChip'
 import type { ToggleChipColorVariant } from './toggleChip.variants'
 

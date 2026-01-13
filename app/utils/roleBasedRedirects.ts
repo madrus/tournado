@@ -5,9 +5,7 @@
  * Used primarily for post-authentication redirects and access control.
  */
 import type { User } from '@prisma/client'
-
 import { adminPath, isAdminPath } from '~/utils/adminRoutes'
-
 import { getUserRole, isAdmin } from './rbac'
 
 /**

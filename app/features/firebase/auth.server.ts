@@ -1,5 +1,4 @@
 import { redirect } from 'react-router'
-
 import type { User } from '~/models/user.server'
 import { getUser } from '~/utils/session.server'
 

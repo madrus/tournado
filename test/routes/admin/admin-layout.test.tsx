@@ -1,8 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
-
 import { describe, expect, test, vi } from 'vitest'
-
 import AdminLayout from '~/routes/admin/admin'
 
 // Mock Outlet component

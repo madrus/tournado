@@ -1,10 +1,8 @@
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { TournamentFilter } from '~/features/tournaments/components/TournamentFilter'
 import type { TournamentListItem } from '~/features/tournaments/types'
 import { adminPath } from '~/utils/adminRoutes'
-
 import { LayoutHeader } from './LayoutHeader'
 
 type CompetitionLayoutHeaderProps = {

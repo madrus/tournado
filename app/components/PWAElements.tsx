@@ -1,7 +1,5 @@
 import { type JSX, useEffect, useState } from 'react'
-
 import { registerServiceWorker } from '~/utils/serviceWorkerRegistration'
-
 import { AddToHomeScreenPrompt } from './AddToHomeScreenPrompt'
 import { UpdatePrompt } from './UpdatePrompt'
 

@@ -1,5 +1,4 @@
 import { forwardRef } from 'react'
-
 import { ErrorMessage } from '~/components/ErrorMessage'
 import { CheckMarkIcon } from '~/components/icons'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
@@ -7,7 +6,6 @@ import { LabelWithStatusIcon } from '~/components/shared/LabelWithStatusIcon'
 import type { ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
-
 import {
 	checkboxAgreementCheckmarkVariants,
 	checkboxAgreementFieldVariants,

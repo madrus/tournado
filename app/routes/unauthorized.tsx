@@ -3,15 +3,13 @@ import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { useLoaderData } from 'react-router'
-
-import { BlockIcon } from '~/components/icons'
 import { ErrorRecoveryLink, PrimaryNavLink } from '~/components/PrefetchLink'
+import { BlockIcon } from '~/components/icons'
 import { cn } from '~/utils/misc'
 import { getUserRole } from '~/utils/rbac'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 import { getUser } from '~/utils/session.server'
-
 import type { Route } from './+types/unauthorized'
 
 export const meta: MetaFunction = () => [

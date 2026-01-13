@@ -1,7 +1,5 @@
 import type { User } from '@prisma/client'
-
 import { sessionStorage } from '~/utils/session.server'
-
 import { createUser } from './database'
 
 /**

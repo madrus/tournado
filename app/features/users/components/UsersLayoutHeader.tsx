@@ -1,6 +1,5 @@
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { LayoutHeader } from '~/components/layouts/LayoutHeader'
 
 type UsersLayoutHeaderProps = {

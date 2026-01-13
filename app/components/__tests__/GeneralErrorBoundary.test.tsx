@@ -1,8 +1,6 @@
 import { render, screen } from '@testing-library/react'
-import { isRouteErrorResponse, MemoryRouter, useRouteError } from 'react-router'
-
+import { MemoryRouter, isRouteErrorResponse, useRouteError } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { GeneralErrorBoundary } from '../GeneralErrorBoundary'
 
 // We don't need the TestErrorBoundary as we're no longer mocking the component itself

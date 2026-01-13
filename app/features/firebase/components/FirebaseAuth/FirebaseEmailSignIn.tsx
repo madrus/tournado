@@ -1,11 +1,9 @@
 import { type JSX, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { validateEmail } from '~/lib/validation'
 import { cn } from '~/utils/misc'
-
 import { useFirebaseAuth } from '../../hooks/useFirebaseAuth'
 import {
 	firebaseAuthFormVariants,

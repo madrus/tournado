@@ -1,16 +1,14 @@
 import { beforeEach, describe, expect, test } from 'vitest'
-
 import type { Language } from '~/i18n/config'
 import { useSettingsStore } from '~/stores/useSettingsStore'
-
 import {
+	type SwipeRowConfig,
 	getArabicTextClass,
 	getDirection,
 	getMenuItemLineHeight,
 	getSwipeRowConfig,
 	getTypographyClass,
 	getTypographyClasses,
-	type SwipeRowConfig,
 } from '../rtlUtils'
 
 // Get store state once at top

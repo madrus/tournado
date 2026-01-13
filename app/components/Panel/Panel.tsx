@@ -1,13 +1,11 @@
 import type { JSX, ReactNode } from 'react'
-
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import type { ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
-
 import {
-	dashboardIconVariants,
 	type PanelVariants,
+	dashboardIconVariants,
 	panelChildrenVariants,
 	panelDescriptionVariants,
 	panelGlowVariants,

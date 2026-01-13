@@ -1,8 +1,6 @@
 import type { JSX } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-
 import { getLatinTitleClass } from '~/utils/rtlUtils'
-
 import { LayoutHeader } from './LayoutHeader'
 
 type AdminPanelLayoutHeaderProps = {

@@ -1,7 +1,6 @@
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, type MetaFunction, redirect, useLoaderData } from 'react-router'
-
 import {
 	FirebaseEmailSignIn,
 	FirebaseSignIn,
@@ -9,7 +8,6 @@ import {
 import { shouldRedirectAuthenticatedUser } from '~/utils/roleBasedRedirects'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { getUser } from '~/utils/session.server'
-
 import type { Route } from './+types/auth.signup'
 import {
 	authContainerVariants,

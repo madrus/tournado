@@ -1,7 +1,5 @@
 import type { ActionFunctionArgs } from 'react-router'
-
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-
 import * as teamActions from '~/features/teams/utils/teamActions.server'
 import { action } from '~/routes/teams/teams.new'
 import * as adminMiddleware from '~/utils/adminMiddleware.server'

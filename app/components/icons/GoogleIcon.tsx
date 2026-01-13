@@ -1,5 +1,4 @@
 import type { JSX, SVGProps } from 'react'
-
 import { cn } from '~/utils/misc'
 
 type GoogleIconProps = Omit<

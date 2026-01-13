@@ -1,6 +1,5 @@
 import type { JSX } from 'react'
 import { useEffect, useRef } from 'react'
-
 import { groupTabVariants, paginationDotVariants } from './groupAssignment.variants'
 
 type GroupTab = {

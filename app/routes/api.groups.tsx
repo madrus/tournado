@@ -17,7 +17,6 @@
  *   Example: /api/groups?tournament=xyz123
  */
 import type { LoaderFunctionArgs } from 'react-router'
-
 import { getTournamentGroupStages } from '~/models/group.server'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 

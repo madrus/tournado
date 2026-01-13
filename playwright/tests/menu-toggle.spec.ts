@@ -12,7 +12,6 @@
  * Viewport: Mobile (375x812)
  */
 import { expect, test } from '@playwright/test'
-
 import { MobileMenuPage } from '../pages/MobileMenuPage'
 
 // Menu Toggle Tests - USES USER AUTHENTICATION from user-auth.json

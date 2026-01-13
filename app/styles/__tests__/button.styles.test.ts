@@ -1,11 +1,9 @@
 import { describe, expect, it } from 'vitest'
-
 import type { ColorAccent } from '~/lib/lib.types'
-
 import {
 	type ButtonVariant,
-	commonButtonClasses,
 	DEFAULT_BUTTON_COLOR,
+	commonButtonClasses,
 	getButtonClasses,
 } from '../button.styles'
 

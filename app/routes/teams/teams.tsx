@@ -1,6 +1,5 @@
 import type { JSX } from 'react'
 import { Outlet } from 'react-router'
-
 import { TeamsLayoutHeader } from '~/features/teams/components'
 import type { RouteMetadata } from '~/utils/routeTypes'
 

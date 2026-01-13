@@ -1,9 +1,7 @@
 import type { TFunction } from 'i18next'
 import type { ZodIssue } from 'zod'
 import { z } from 'zod'
-
 import { createEmailSchema, createPhoneSchema } from '~/lib/validation'
-
 import type { TeamFormData, TeamValidationInput } from './types'
 
 // ============================================================================

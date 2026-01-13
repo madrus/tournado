@@ -1,9 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import type { TournamentListItem } from '~/features/tournaments/types'
-
+// Get the mocked function
+import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { TournamentMobileRow } from '../TournamentMobileRow'
 
 // Mock useLanguageDirection hook
@@ -19,9 +18,6 @@ vi.mock('react-i18next', () => ({
 }))
 
 const mockUseLanguageDirection = vi.hoisted(() => vi.fn())
-
-// Get the mocked function
-import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 
 vi.mocked(useLanguageDirection).mockImplementation(mockUseLanguageDirection)
 

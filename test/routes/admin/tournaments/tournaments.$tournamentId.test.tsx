@@ -2,10 +2,8 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import * as ReactRouter from 'react-router'
-import { createMemoryRouter, RouterProvider } from 'react-router'
-
+import { RouterProvider, createMemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 // Mock the route component
 import EditTournamentPage from '~/routes/admin/tournaments/tournaments.$tournamentId'
 

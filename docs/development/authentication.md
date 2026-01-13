@@ -20,7 +20,6 @@ Tournado implements Firebase Authentication with multiple sign-in methods to acc
 ```typescript
 // Firebase Google OAuth
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-
 import { auth, googleProvider } from '~/features/firebase/client'
 
 const signInWithGoogle = async () => {
@@ -53,7 +52,6 @@ import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 } from 'firebase/auth'
-
 import { auth } from '~/features/firebase/client'
 
 // Sign up with email/password
@@ -110,7 +108,6 @@ const signInWithEmail = async (email: string, password: string) => {
 ```typescript
 // Firebase Phone Authentication
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
-
 import { auth } from '~/features/firebase/client'
 
 // Initialize reCAPTCHA verifier
@@ -515,7 +512,7 @@ export default function SignIn() {
 ```typescript
 // app/features/firebase/client.ts
 import { initializeApp } from 'firebase/app'
-import { getAuth, GoogleAuthProvider } from 'firebase/auth'
+import { GoogleAuthProvider, getAuth } from 'firebase/auth'
 
 const firebaseConfig = {
 	apiKey: process.env.VITE_FIREBASE_API_KEY,

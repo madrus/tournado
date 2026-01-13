@@ -1,5 +1,4 @@
 import type { JSX, SVGProps } from 'react'
-
 import type { IconWeight } from '~/lib/lib.types'
 
 type InfoIconProps = {

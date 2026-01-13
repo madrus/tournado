@@ -1,11 +1,10 @@
 import { type FormEvent, type JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, useNavigation, useSubmit } from 'react-router'
-
+import { Panel } from '~/components/Panel'
 import { CheckboxAgreementField } from '~/components/inputs/CheckboxAgreementField'
 import { ComboField } from '~/components/inputs/ComboField'
 import { TextInputField } from '~/components/inputs/TextInputField'
-import { Panel } from '~/components/Panel'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
 import { FormActionFooter } from '~/components/shared/FormActionFooter'
 import type { Division } from '~/db.server'
@@ -20,11 +19,11 @@ import {
 	useTeamOldFormFields,
 } from '~/features/teams/stores/useTeamFormStore'
 import type { TeamFormProps } from '~/features/teams/types'
+import { useGuardedStoreInitialization } from '~/hooks/useGuardedStoreInitialization'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
 import { toast } from '~/utils/toastUtils'
-import { useGuardedStoreInitialization } from '~/hooks/useGuardedStoreInitialization'
 
 const buildTeamFormPayload = (
 	formData?: TeamFormProps['formData'],

@@ -1,6 +1,23 @@
 import type { Role, User } from '@prisma/client'
-
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import {
+	createUserFromFirebase,
+	deactivateUser,
+	deleteUserByEmail,
+	getActiveUsersCount,
+	getAllUsers,
+	getAllUsersWithPagination,
+	getPendingApprovalUsers,
+	getUserByEmail,
+	getUserByFirebaseUid,
+	getUserById,
+	getUsersByRole,
+	reactivateUser,
+	searchUsers,
+	updateUserDisplayName,
+	updateUserFirebaseData,
+	updateUserRole,
+} from '../user.server'
 
 // Mock Prisma - use vi.hoisted() for objects referenced in mock factory
 const { mockUser, mockTransaction, mockPrisma } = vi.hoisted(() => {
@@ -31,25 +48,6 @@ const { mockUser, mockTransaction, mockPrisma } = vi.hoisted(() => {
 vi.mock('~/db.server', () => ({
 	prisma: mockPrisma,
 }))
-
-import {
-	createUserFromFirebase,
-	deactivateUser,
-	deleteUserByEmail,
-	getActiveUsersCount,
-	getAllUsers,
-	getAllUsersWithPagination,
-	getPendingApprovalUsers,
-	getUserByEmail,
-	getUserByFirebaseUid,
-	getUserById,
-	getUsersByRole,
-	reactivateUser,
-	searchUsers,
-	updateUserDisplayName,
-	updateUserFirebaseData,
-	updateUserRole,
-} from '../user.server'
 
 describe('user.server', () => {
 	const mockUserData: User = {

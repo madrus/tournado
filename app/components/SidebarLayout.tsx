@@ -1,6 +1,5 @@
 import { type JSX, type ReactNode, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router'
-
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 

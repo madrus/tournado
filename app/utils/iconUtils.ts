@@ -1,13 +1,12 @@
 import {
-	type ComponentType,
 	type CSSProperties,
+	type ComponentType,
+	type ReactElement,
+	type SVGProps,
 	cloneElement,
 	createElement,
 	isValidElement,
-	type ReactElement,
-	type SVGProps,
 } from 'react'
-
 import {
 	AddIcon,
 	AdminPanelSettingsIcon,

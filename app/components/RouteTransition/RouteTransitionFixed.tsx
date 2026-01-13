@@ -1,10 +1,9 @@
 import { type JSX, useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router'
-
 import {
-	getOpacityForStage,
 	type TransitionStage,
 	type TransitionWithDurationProps,
+	getOpacityForStage,
 } from './utils'
 
 // Fixed JavaScript-controlled transition

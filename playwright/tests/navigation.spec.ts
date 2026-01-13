@@ -12,7 +12,6 @@
  * Viewport: Mobile (375x812) and Desktop (1280x720) for responsive tests
  */
 import { test } from '@playwright/test'
-
 import { HomePage } from '../pages/HomePage'
 import { NavigationPage } from '../pages/NavigationPage'
 import { dismissPwaPromptIfVisible } from '../utils/pwaHelper'

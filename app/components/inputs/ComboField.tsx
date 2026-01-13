@@ -1,6 +1,5 @@
 import * as Select from '@radix-ui/react-select'
-import { forwardRef, type JSX, type ReactNode, useRef, useState } from 'react'
-
+import { type JSX, type ReactNode, forwardRef, useRef, useState } from 'react'
 import { ErrorMessage } from '~/components/ErrorMessage'
 import { AnimatedArrowIcon } from '~/components/icons'
 import type { ColorAccent } from '~/lib/lib.types'
@@ -8,7 +7,6 @@ import { useSettingsStore } from '~/stores/useSettingsStore'
 import { INPUT_LABEL_SPACING, STATUS_ICON_CONTAINER_WIDTH } from '~/styles/constants'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
-
 import {
 	comboFieldContentVariants,
 	comboFieldItemVariants,

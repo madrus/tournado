@@ -1,7 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-
 import { describe, expect, it, vi } from 'vitest'
-
 import { ToggleChip } from '../ToggleChip'
 
 // Mock i18n

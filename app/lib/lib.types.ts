@@ -12,7 +12,6 @@
  *
  * For detailed documentation, see: docs/development/type-system.md
  */
-
 import type { CATEGORIES, DIVISIONS } from './lib.constants'
 
 // ============================================================================

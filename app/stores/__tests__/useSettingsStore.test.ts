@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { useSettingsStore } from '../useSettingsStore'
 import { setCookie } from '../utils'
 

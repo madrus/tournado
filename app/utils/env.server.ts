@@ -1,5 +1,4 @@
 import { z } from 'zod'
-
 import type { ENV } from '~/@types/declarations'
 
 const schema = z.object({

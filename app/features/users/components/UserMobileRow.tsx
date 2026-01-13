@@ -3,7 +3,6 @@ import { Text } from '@radix-ui/themes'
 import { type JSX, type KeyboardEvent, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { FetcherWithComponents } from 'react-router'
-
 import { datatableCellTextVariants } from '~/components/DataTable/dataTable.variants'
 import { ComboField, type Option } from '~/components/inputs/ComboField'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'

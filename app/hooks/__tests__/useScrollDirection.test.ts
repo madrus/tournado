@@ -1,18 +1,15 @@
 import { act, fireEvent, renderHook, waitFor } from '@testing-library/react'
-
 import {
+	type MockedFunction,
 	afterEach,
 	beforeEach,
 	describe,
 	expect,
 	it,
-	type MockedFunction,
 	vi,
 } from 'vitest'
-
 import * as breakpointsUtils from '~/utils/breakpoints'
 import * as domUtils from '~/utils/domUtils'
-
 import { useScrollDirection } from '../useScrollDirection'
 
 // Mock DOM utilities

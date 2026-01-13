@@ -1,12 +1,9 @@
 import { Role, type User } from '@prisma/client'
-
 import admin from 'firebase-admin'
 import { type App, getApps, initializeApp } from 'firebase-admin/app'
 import { type Auth, type DecodedIdToken, getAuth } from 'firebase-admin/auth'
-
 import { prisma } from '~/db.server'
 import { logger } from '~/utils/logger.server'
-
 import type { FirebaseUser } from './types'
 
 let adminApp: App | null = null

@@ -1,6 +1,5 @@
 import { cleanup, render, screen } from '@testing-library/react'
-import { createMemoryRouter, RouterProvider } from 'react-router'
-
+import { RouterProvider, createMemoryRouter } from 'react-router'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 // Import the actual route component
 import SignupRoute from '~/routes/auth/auth.signup'

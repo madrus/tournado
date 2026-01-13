@@ -1,9 +1,7 @@
-import { type FocusEvent, forwardRef, type JSX } from 'react'
-
+import { type FocusEvent, type JSX, forwardRef } from 'react'
 import { ErrorMessage } from '~/components/ErrorMessage'
 import type { ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
-
 import {
 	dateInputFieldVariants,
 	textInputLabelTextVariants,

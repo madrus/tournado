@@ -1,7 +1,5 @@
 import type { Role, User } from '@prisma/client'
-
 import { describe, expect, it, vi } from 'vitest'
-
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { getUser } from '~/utils/session.server'
 

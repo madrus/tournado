@@ -6,10 +6,8 @@ import {
 	useParams,
 	useRouteError,
 } from 'react-router'
-
 import { cn, getErrorMessage } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
-
 import { ErrorRecoveryLink } from './PrefetchLink'
 
 type StatusHandler = (info: {

@@ -1,4 +1,4 @@
-import { HttpResponse, http, type JsonBodyType } from 'msw'
+import { HttpResponse, type JsonBodyType, http } from 'msw'
 
 type MockUserRecord = {
 	uid: string

@@ -1,5 +1,4 @@
 import type { Division, Team, TeamLeader } from '@prisma/client'
-
 import { prisma } from '~/db.server'
 import {
 	extractTeamDataFromFormData,

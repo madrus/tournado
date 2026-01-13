@@ -1,7 +1,5 @@
-import { expect, type Locator, type Page } from '@playwright/test'
-
+import { type Locator, type Page, expect } from '@playwright/test'
 import { adminPath } from '../../app/utils/adminRoutes'
-
 import { BasePage } from './BasePage'
 
 export class AdminUsersPage extends BasePage {

@@ -1,8 +1,6 @@
 import type { JSX } from 'react'
-
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
-
 import {
 	type ToggleChipVariants,
 	toggleChipTextVariants,

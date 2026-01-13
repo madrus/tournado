@@ -6,10 +6,8 @@ import {
 	useRef,
 	useState,
 } from 'react'
-
 import { breakpoints } from '~/utils/breakpoints'
 import { debounce, getDocumentHeight, getScrollY } from '~/utils/domUtils'
-
 import { useBounceDetection } from './useBounceDetection'
 import { useIsClient } from './useIsomorphicWindow'
 

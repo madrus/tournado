@@ -1,12 +1,10 @@
 import type { JSX } from 'react'
 import type { MetaFunction } from 'react-router'
 import { useLoaderData, useNavigate } from 'react-router'
-
 import { TeamsPageContent } from '~/features/teams/components/TeamsPageContent'
 import type { TeamsLoaderData } from '~/features/teams/types'
 import { loadTeamsAndTournamentsData } from '~/utils/dataLoaders'
 import type { RouteMetadata } from '~/utils/routeTypes'
-
 import type { Route } from './+types/teams._index'
 
 // Route metadata - this will inherit from the parent route

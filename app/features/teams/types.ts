@@ -1,5 +1,4 @@
 import type { Team as PrismaTeam } from '@prisma/client'
-
 import type { TournamentListItem } from '~/features/tournaments/types'
 
 // ============================================================================

@@ -1,8 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
-
 import { describe, expect, it, vi } from 'vitest'
-
 import DesktopFooter from '../DesktopFooter'
 
 // Mock react-i18next

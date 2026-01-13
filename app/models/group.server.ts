@@ -1,5 +1,4 @@
 import type { Category, Prisma } from '@prisma/client'
-
 import { prisma } from '~/db.server'
 import { safeParseJSON } from '~/utils/json'
 

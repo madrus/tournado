@@ -1,5 +1,4 @@
 import type { JSX } from 'react'
-
 import { renderIcon } from '~/utils/iconUtils'
 import { errorBannerVariants } from './groupAssignment.variants'
 

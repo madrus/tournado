@@ -3,7 +3,6 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import type { FetcherWithComponents } from 'react-router'
 import type { Mock } from 'vitest'
 import { describe, expect, it, vi } from 'vitest'
-
 import { UserMobileRow } from '../UserMobileRow'
 
 const mockT = vi.fn<(key: string, options?: Record<string, unknown>) => string>()

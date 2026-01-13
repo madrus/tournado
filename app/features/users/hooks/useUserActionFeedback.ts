@@ -1,7 +1,6 @@
 import i18next from 'i18next'
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router'
-
 import { translateUserError } from '~/features/users/utils/userErrorUtils'
 import { toast } from '~/utils/toastUtils'
 

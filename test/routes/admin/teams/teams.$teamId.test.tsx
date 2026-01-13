@@ -2,9 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import * as ReactRouter from 'react-router'
-
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 // Mock the route component
 import AdminTeamPage from '~/routes/admin/teams/teams.$teamId'
 

@@ -6,7 +6,6 @@
  * This script validates that all translation keys used in the codebase
  * exist in all translation files.
  */
-
 import { execSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'

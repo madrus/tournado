@@ -2,7 +2,6 @@ import { type JSX, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { redirect, useActionData, useLoaderData } from 'react-router'
-
 import { TournamentForm } from '~/features/tournaments/components/TournamentForm'
 import { useTournamentFormActions } from '~/features/tournaments/stores/useTournamentFormStore'
 import {
@@ -13,7 +12,6 @@ import {
 import { adminPath } from '~/utils/adminRoutes'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
-
 import type { Route } from './+types/tournaments.new'
 
 // Route metadata - admin only

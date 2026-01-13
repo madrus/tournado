@@ -1,11 +1,9 @@
 import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
-
+import { useLocation } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import type { IconName } from '~/utils/iconUtils'
 import { normalizePathname } from '~/utils/routeUtils'
-
 import NavigationItem from '../NavigationItem'
 
 // Mock react-router hooks
@@ -16,8 +14,6 @@ vi.mock('react-router', async () => {
 		useLocation: vi.fn(),
 	}
 })
-
-import { useLocation } from 'react-router'
 
 const mockUseLocation = vi.mocked(useLocation)
 

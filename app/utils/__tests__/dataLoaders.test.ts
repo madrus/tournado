@@ -1,9 +1,7 @@
-import { beforeEach, describe, expect, it, type MockedFunction, vi } from 'vitest'
-
+import { type MockedFunction, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { TeamListItem } from '~/features/teams/types'
 import { getFilteredTeams } from '~/models/team.server'
-import { getAllTournaments, type TournamentListItem } from '~/models/tournament.server'
-
+import { type TournamentListItem, getAllTournaments } from '~/models/tournament.server'
 import { loadTeamsAndTournamentsData } from '../dataLoaders'
 
 // Mock the dependencies

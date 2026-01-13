@@ -1,12 +1,9 @@
 import { render, screen } from '@testing-library/react'
-
 import { describe, expect, it, vi } from 'vitest'
-
 // Import the mocked hook to access it in tests
 import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import type { Language } from '~/i18n/config'
 import type { ColorAccent } from '~/lib/lib.types'
-
 import { PanelLayer } from '../PanelLayer'
 
 // Mock RTL utilities

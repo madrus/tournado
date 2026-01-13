@@ -1,11 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router'
-
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { adminPath } from '~/utils/adminRoutes'
-
 import type { MenuItemType } from '../UserMenu'
 import { UserMenu } from '../UserMenu'
 

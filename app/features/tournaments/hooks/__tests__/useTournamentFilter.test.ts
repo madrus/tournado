@@ -1,8 +1,6 @@
 import { act, renderHook } from '@testing-library/react'
 import { useNavigate, useSearchParams } from 'react-router'
-
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { useTournamentFilter } from '../useTournamentFilter'
 
 // Mock react-router hooks

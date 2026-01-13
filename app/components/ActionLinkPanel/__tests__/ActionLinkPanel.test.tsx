@@ -1,10 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Link, MemoryRouter } from 'react-router'
-
 import { describe, expect, it, vi } from 'vitest'
-
 import type { ColorAccent } from '~/lib/lib.types'
-
 import { ActionLinkPanel } from '../ActionLinkPanel'
 
 // Mock React Router

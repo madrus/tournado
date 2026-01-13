@@ -1,11 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 // Import the mocked hook
 import { useTournamentFilter } from '~/features/tournaments/hooks/useTournamentFilter'
-
 import { TournamentFilter } from '../TournamentFilter'
 
 // Mock the useTournamentFilter hook

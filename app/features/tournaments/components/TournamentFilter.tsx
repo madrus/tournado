@@ -1,6 +1,5 @@
 import type { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { ComboField } from '~/components/inputs/ComboField'
 import { useTournamentFilter } from '~/features/tournaments/hooks/useTournamentFilter'
 import type { TournamentListItem } from '~/features/tournaments/types'

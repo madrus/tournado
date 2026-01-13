@@ -2,10 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import type { Language } from '~/i18n/config'
 import { useSettingsLanguage } from '~/stores/useSettingsStore'
 import {
+	type SwipeRowConfig,
 	getDirection,
 	getLatinFontFamily,
 	getSwipeRowConfig,
-	type SwipeRowConfig,
 } from '~/utils/rtlUtils'
 
 export type LanguageDirection = {

@@ -15,7 +15,6 @@
  * changes and timer-based state transitions.
  */
 import { expect, test } from '@playwright/test'
-
 import { NavigationPage } from '../pages/NavigationPage'
 import { dismissPwaPromptIfVisible } from '../utils/pwaHelper'
 

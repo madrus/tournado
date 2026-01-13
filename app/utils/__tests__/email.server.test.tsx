@@ -1,7 +1,14 @@
+import { render } from '@react-email/render'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import type { Team } from '~/features/teams/types'
+import { getTeamLeader } from '~/models/team.server'
 import type { Tournament } from '~/models/tournament.server'
+// Import the actual implementation and dependencies
+import {
+	resetResendClient,
+	sendConfirmationEmail,
+	setResendClient,
+} from '../email.server'
 
 // Hoisted mocks - must be defined before vi.mock calls
 const { mockEmailsSend } = vi.hoisted(() => ({
@@ -25,15 +32,6 @@ vi.mock('@react-email/render', () => ({
 vi.mock('~/models/team.server', () => ({
 	getTeamLeader: vi.fn(),
 }))
-
-import { render } from '@react-email/render'
-import { getTeamLeader } from '~/models/team.server'
-// Import the actual implementation and dependencies
-import {
-	resetResendClient,
-	sendConfirmationEmail,
-	setResendClient,
-} from '../email.server'
 
 describe('email.server', () => {
 	const mockTeam: Team = {

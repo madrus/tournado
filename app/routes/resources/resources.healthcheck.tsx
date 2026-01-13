@@ -1,6 +1,5 @@
 // learn more: https://fly.io/docs/reference/configuration/#services-http_checks
-
-import { onAuthStateChanged, type User } from 'firebase/auth'
+import { type User, onAuthStateChanged } from 'firebase/auth'
 import { type JSX, useRef, useState } from 'react'
 import {
 	type ActionFunctionArgs,
@@ -9,7 +8,6 @@ import {
 	useFetcher,
 	useLoaderData,
 } from 'react-router'
-
 import { prisma } from '~/db.server'
 import { getCurrentAuth } from '~/features/firebase/client'
 import { adminAuth, verifyIdToken } from '~/features/firebase/index.server'

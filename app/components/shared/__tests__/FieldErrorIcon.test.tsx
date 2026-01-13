@@ -1,7 +1,5 @@
 import { render, screen } from '@testing-library/react'
-
 import { describe, expect, it } from 'vitest'
-
 import { FieldErrorIcon } from '../FieldErrorIcon'
 
 describe('FieldErrorIcon', () => {

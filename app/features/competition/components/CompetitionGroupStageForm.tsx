@@ -2,7 +2,6 @@ import type { Category } from '@prisma/client'
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, useNavigate, useNavigation } from 'react-router'
-
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { Checkbox } from '~/components/inputs/Checkbox'
 import { TextInputField } from '~/components/inputs/TextInputField'

@@ -14,7 +14,6 @@
  * - BILLING: View team data for billing purposes
  */
 import type { LoaderFunctionArgs } from 'react-router'
-
 import { getAllTeams } from '~/models/team.server'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 

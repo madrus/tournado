@@ -1,15 +1,13 @@
 import { cva } from 'class-variance-authority'
 import type { ButtonHTMLAttributes, JSX, ReactNode } from 'react'
-
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import type { Permission } from '~/utils/rbac'
-
 import {
 	type ButtonVariants,
-	buttonVariants,
 	DARK_MODE_DARKER_CLASSES,
 	ICON_CIRCLE_COLOR_VARIANTS,
+	buttonVariants,
 } from './button.variants'
 import { useActionButton } from './useActionButton'
 

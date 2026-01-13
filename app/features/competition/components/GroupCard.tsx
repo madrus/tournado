@@ -1,9 +1,7 @@
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
-
 import type { DndGroup } from '../utils/groupStageDnd'
 import { GroupSlotDropZone } from './GroupSlotDropZone'
 import { groupCardVariants } from './groupAssignment.variants'

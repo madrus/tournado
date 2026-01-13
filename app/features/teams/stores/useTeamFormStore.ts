@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-
 import { create } from 'zustand'
 import {
 	createJSONStorage,
@@ -7,9 +6,7 @@ import {
 	persist,
 	subscribeWithSelector,
 } from 'zustand/middleware'
-
 import { useShallow } from 'zustand/react/shallow'
-
 import type { TeamFormData } from '~/features/teams/types'
 import {
 	validateEntireTeamForm,
@@ -17,8 +14,7 @@ import {
 } from '~/features/teams/validation'
 import type { TournamentData } from '~/features/tournaments/types'
 import { isBrowser } from '~/lib/lib.helpers'
-
-import { initialStoreState, TEAM_PANELS_FIELD_MAP } from './helpers/teamFormConstants'
+import { TEAM_PANELS_FIELD_MAP, initialStoreState } from './helpers/teamFormConstants'
 import {
 	computeAvailableOptions,
 	getDependentFieldResets,

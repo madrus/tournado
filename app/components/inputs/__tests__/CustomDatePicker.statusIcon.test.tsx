@@ -1,7 +1,5 @@
 import { render, screen } from '@testing-library/react'
-
 import { describe, expect, it, vi } from 'vitest'
-
 import { CustomDatePicker } from '../CustomDatePicker'
 
 // Mock the translation hook

@@ -18,9 +18,7 @@
  * Note: Uses structural/functional tests instead of pixel-perfect screenshots
  */
 import { expect, test } from '@playwright/test'
-
 import { adminPath } from '../../app/utils/adminRoutes'
-
 import { HomePage } from '../pages/HomePage'
 import { TeamFormPage } from '../pages/TeamFormPage'
 import { TeamsListPage } from '../pages/TeamsListPage'

@@ -1,6 +1,5 @@
 import type { ButtonColor } from '~/components/buttons/button.variants'
 import type { IconName } from '~/utils/iconUtils'
-
 import type { DialogIntent } from './dialog.variants'
 
 /**

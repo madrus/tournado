@@ -1,5 +1,4 @@
 import { useCallback, useRef, useState } from 'react'
-
 import { getScrollY } from '~/utils/domUtils'
 
 // Constants for bounce detection

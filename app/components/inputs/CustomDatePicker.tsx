@@ -1,7 +1,6 @@
 import * as Popover from '@radix-ui/react-popover'
-import { forwardRef, type JSX, useRef, useState } from 'react'
+import { type JSX, forwardRef, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { ErrorMessage } from '~/components/ErrorMessage'
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '~/components/icons'
 import {

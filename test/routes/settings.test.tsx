@@ -1,9 +1,7 @@
 import type { User } from '@prisma/client'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
-
 import { describe, expect, test, vi } from 'vitest'
-
 import SettingsPage from '~/routes/settings'
 
 // Mock user data

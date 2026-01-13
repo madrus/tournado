@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { useNavigate, useRevalidator } from 'react-router'
-
 import { adminPath } from '~/utils/adminRoutes'
 
 type UseTeamsNavigationProps = {

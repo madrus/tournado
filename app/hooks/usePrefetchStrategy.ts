@@ -1,11 +1,10 @@
 import { useMemo } from 'react'
 import type { LinkProps, NavLinkProps } from 'react-router'
-
 import {
-	getAdaptivePrefetchStrategy,
-	getPrefetchStrategy,
 	type PrefetchConfig,
 	type PrefetchStrategy,
+	getAdaptivePrefetchStrategy,
+	getPrefetchStrategy,
 } from '~/utils/prefetchTypes'
 
 // Type definition for Network Information API

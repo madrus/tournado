@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { createLogger } from '../logger.server'
 
 const transportMock = vi.hoisted(() => vi.fn())
 const pinoMock = vi.hoisted(() =>
@@ -10,8 +11,6 @@ const pinoMock = vi.hoisted(() =>
 vi.mock('pino', () => ({
 	default: pinoMock,
 }))
-
-import { createLogger } from '../logger.server'
 
 describe('logger.server', () => {
 	afterEach(() => {

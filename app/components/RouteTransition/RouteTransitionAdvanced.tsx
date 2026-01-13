@@ -1,10 +1,9 @@
 import { type JSX, useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router'
-
 import {
-	getTransitionClassesForStage,
 	type TransitionStage,
 	type TransitionWithDurationProps,
+	getTransitionClassesForStage,
 } from './utils'
 
 // Advanced transition with slide effects

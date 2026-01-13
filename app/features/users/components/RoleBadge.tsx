@@ -1,9 +1,7 @@
 import type { User } from '@prisma/client'
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { Badge } from '~/components/Badge'
-
 import { roleColors } from '../utils/roleUtils'
 
 type RoleBadgeProps = {

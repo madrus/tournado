@@ -1,6 +1,5 @@
 import { type JSX, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { updateServiceWorker } from '~/utils/serviceWorkerRegistration'
 import { toast } from '~/utils/toastUtils'
 

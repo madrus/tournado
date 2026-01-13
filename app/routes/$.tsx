@@ -7,7 +7,6 @@
 import type { JSX } from 'react'
 import type { MetaFunction } from 'react-router'
 import { useLocation } from 'react-router'
-
 import { GeneralErrorBoundary } from '~/components/GeneralErrorBoundary'
 import { ErrorRecoveryLink } from '~/components/PrefetchLink'
 import { logger } from '~/utils/logger.server'

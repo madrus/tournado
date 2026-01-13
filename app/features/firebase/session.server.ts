@@ -1,9 +1,7 @@
 import type { Session } from 'react-router'
-
 import type { User } from '~/models/user.server'
 import { getUserByFirebaseUid } from '~/models/user.server'
 import { getSession } from '~/utils/session.server'
-
 import type { DecodedIdToken } from './server'
 import { createOrUpdateUser } from './server'
 import { verifyIdTokenWithEnv } from './server/tokenVerifier'

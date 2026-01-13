@@ -14,7 +14,6 @@
  * Note: Tests both allowed and restricted access for regular users
  */
 import { test } from '@playwright/test'
-
 import { AdminPanelPage } from '../pages/AdminPanelPage'
 
 // User Authorization Tests - USES CACHED USER AUTHENTICATION

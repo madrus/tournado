@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { ZodIssue } from 'zod'
-
 import type { Email } from '~/lib/lib.types'
-
 import type { TeamFormData, TeamName } from '../types'
 import {
 	getFieldErrorTranslationKey,

@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { useAuthStore } from '../useAuthStore'
 
 // Helper to access store state

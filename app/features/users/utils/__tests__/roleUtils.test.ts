@@ -1,8 +1,6 @@
 import type { Role } from '@prisma/client'
-
 import { describe, expect, it } from 'vitest'
-
-import { isValidRole, VALID_ROLES, validateRole } from '../roleUtils'
+import { VALID_ROLES, isValidRole, validateRole } from '../roleUtils'
 
 describe('roleUtils', () => {
 	describe('isValidRole', () => {

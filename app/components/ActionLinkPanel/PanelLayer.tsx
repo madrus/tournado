@@ -1,10 +1,8 @@
 import type { JSX, ReactNode } from 'react'
-
 import { Panel } from '~/components/Panel'
 import type { ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
-
 import {
 	panelLayerOpacityVariants,
 	panelLayerPositioningVariants,

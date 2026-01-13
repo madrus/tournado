@@ -2,11 +2,8 @@ import type { Role, User } from '@prisma/client'
 import { render, screen, within } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { MemoryRouter } from 'react-router'
-
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { adminPath } from '~/utils/adminRoutes'
-
 import { AppBar } from '../AppBar'
 import type { MenuItemType } from '../UserMenu'
 

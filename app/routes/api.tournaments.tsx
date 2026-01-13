@@ -13,7 +13,6 @@
  * - BILLING: Access tournament data for billing purposes
  */
 import type { LoaderFunctionArgs } from 'react-router'
-
 import { getAllTournaments } from '~/models/tournament.server'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 

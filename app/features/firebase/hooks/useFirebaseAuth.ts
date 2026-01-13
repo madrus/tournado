@@ -1,6 +1,5 @@
 import type { User as FirebaseAuthUser, UserCredential } from 'firebase/auth'
 import { useEffect, useState } from 'react'
-
 import {
 	getAuthAndProvider,
 	getEmailAuthFns,
@@ -11,7 +10,6 @@ import {
 import type { FirebaseUser } from '~/features/firebase/types'
 import { debug } from '~/features/firebase/utils/env'
 import { buildFriendlyMessage } from '~/features/firebase/utils/errors'
-
 import { postSignOut, submitAuthCallback } from '../adapters/redirect'
 
 export type UseFirebaseAuthReturn = {

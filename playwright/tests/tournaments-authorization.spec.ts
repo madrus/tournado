@@ -14,9 +14,8 @@
  * Viewport: Mobile (375x812)
  * Note: Only ADMIN and MANAGER roles have tournaments management access
  */
-import { expect, type Page, test } from '@playwright/test'
+import { type Page, expect, test } from '@playwright/test'
 import type { Role } from '@prisma/client'
-
 import { loginAsRole } from '../helpers/session'
 import { AdminTournamentsPage } from '../pages/AdminTournamentsPage'
 

@@ -1,6 +1,5 @@
 import type { TournamentData } from '~/features/tournaments/types'
-
-import { initialStoreState, TEAM_PANELS_FIELD_MAP } from './teamFormConstants'
+import { TEAM_PANELS_FIELD_MAP, initialStoreState } from './teamFormConstants'
 import type {
 	FormFieldName,
 	FormFields,

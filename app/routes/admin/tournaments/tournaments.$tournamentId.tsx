@@ -8,11 +8,10 @@ import {
 	useSearchParams,
 	useSubmit,
 } from 'react-router'
-
-import { ActionButton } from '~/components/buttons/ActionButton'
-import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
 import { SimpleConfirmDialog } from '~/components/ConfirmDialog'
 import { Panel } from '~/components/Panel'
+import { ActionButton } from '~/components/buttons/ActionButton'
+import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
 import { TournamentForm } from '~/features/tournaments/components/TournamentForm'
 import { useTournamentFormActions } from '~/features/tournaments/stores/useTournamentFormStore'
 import type { Tournament } from '~/models/tournament.server'
@@ -28,7 +27,6 @@ import { safeParseJSON } from '~/utils/json'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 import { toast } from '~/utils/toastUtils'
-
 import type { Route } from './+types/tournaments.$tournamentId'
 
 export const handle: RouteMetadata = {

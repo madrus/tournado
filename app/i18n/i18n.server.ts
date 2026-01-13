@@ -1,8 +1,8 @@
 import {
 	FALLBACK_LANGUAGE,
-	initI18n,
 	type Language,
 	SUPPORTED_LANGUAGE_CODES,
+	initI18n,
 } from '~/i18n/config'
 
 /**

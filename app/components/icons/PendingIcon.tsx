@@ -1,5 +1,4 @@
 import type { JSX, SVGProps } from 'react'
-
 import type { IconVariant } from '~/lib/lib.types'
 
 type PendingIconProps = {

@@ -1,20 +1,19 @@
 import {
 	type ColumnDef,
+	type OnChangeFn,
+	type PaginationState,
+	type SortingState,
+	type VisibilityState,
 	flexRender,
 	getCoreRowModel,
 	getFilteredRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
-	type OnChangeFn,
-	type PaginationState,
-	type SortingState,
 	useReactTable,
-	type VisibilityState,
 } from '@tanstack/react-table'
 import type { JSX, ReactNode } from 'react'
-
 import { cn } from '~/utils/misc'
-
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './Table'
 import {
 	type DatatableColorVariant,
 	datatableContainerVariants,
@@ -22,7 +21,6 @@ import {
 	getDatatableHeaderClasses,
 	getDatatableStripeClasses,
 } from './dataTable.variants'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './Table'
 
 type DataTableProps<TData, TValue> = {
 	columns: ColumnDef<TData, TValue>[]

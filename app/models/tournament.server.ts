@@ -1,5 +1,4 @@
 import type { Category, Division, Tournament } from '@prisma/client'
-
 import { prisma } from '~/db.server'
 
 export type { Tournament } from '@prisma/client'

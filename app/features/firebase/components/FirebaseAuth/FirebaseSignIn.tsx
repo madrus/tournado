@@ -1,7 +1,6 @@
 import { signInWithPopup } from 'firebase/auth'
 import { type JSX, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { GoogleIcon } from '~/components/icons/GoogleIcon'
 import { submitAuthCallback } from '~/features/firebase/adapters/redirect'

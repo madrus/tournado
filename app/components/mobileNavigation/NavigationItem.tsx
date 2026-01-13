@@ -1,12 +1,10 @@
 import type { JSX } from 'react'
 import { Link, useLocation } from 'react-router'
-
 import { useMediaQuery } from '~/hooks/useMediaQuery'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { normalizePathname } from '~/utils/routeUtils'
 import { getLatinTextClass } from '~/utils/rtlUtils'
-
 import {
 	type NavigationItemVariants,
 	navigationIconVariants,

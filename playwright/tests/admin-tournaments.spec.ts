@@ -14,7 +14,6 @@
  * Viewport: Mobile (375x812)
  */
 import { expect, test } from '@playwright/test'
-
 import { adminPath } from '../../app/utils/adminRoutes'
 import {
 	checkTournamentExists,

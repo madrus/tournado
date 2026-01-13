@@ -1,11 +1,8 @@
 import type { Role } from '@prisma/client'
-
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { loader } from '~/routes/api.groups'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 import { getUser } from '~/utils/session.server'
-
 import { createMockUser } from '../utils/loader-authorization.helpers'
 
 // Mock session utilities

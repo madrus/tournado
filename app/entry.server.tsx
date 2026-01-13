@@ -1,13 +1,10 @@
-import { PassThrough } from 'node:stream'
-
 import { createReadableStreamFromReadable } from '@react-router/node'
+import 'dotenv/config'
 import { isbot } from 'isbot'
+import { PassThrough } from 'node:stream'
 import { renderToPipeableStream } from 'react-dom/server'
-
 import type { EntryContext } from 'react-router'
 import { ServerRouter } from 'react-router'
-
-import 'dotenv/config'
 
 // Ensure DATABASE_URL is set for local dev if not already present
 if (!process.env.DATABASE_URL) {

@@ -5,9 +5,8 @@
  * and that no keys are missing or orphaned.
  */
 import { describe, expect, it } from 'vitest'
-
 import { getAllKeys, getExtraKeys, getMissingKeys } from '../../lib/lib.helpers'
-import { resources, SUPPORTED_LANGUAGES } from '../config'
+import { SUPPORTED_LANGUAGES, resources } from '../config'
 
 const referenceLocale = 'nl'
 

@@ -1,13 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { createMemoryRouter, RouterProvider } from 'react-router'
-
+import { RouterProvider, createMemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
+import { TEST_TRANSLATIONS } from '~test/helpers/constants'
 import { useTeamFormStore } from '~/features/teams/stores/useTeamFormStore'
 import type { FormMode, FormVariant, TeamFormData } from '~/features/teams/types'
 import type { TournamentData } from '~/features/tournaments/types'
-import { TEST_TRANSLATIONS } from '~test/helpers/constants'
 import { TeamForm } from '../TeamForm'
 
 const state = useTeamFormStore.getState

@@ -1,6 +1,5 @@
 import { type JSX, useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router'
-
 import type { OpacityTransitionProps } from './utils'
 
 // Simple and effective transition for React Router 7

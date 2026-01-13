@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react'
-
+import { useTranslation } from 'react-i18next'
+import { useMatches } from 'react-router'
 import {
 	capitalize,
 	normalizePathname,
@@ -16,9 +17,6 @@ vi.mock('react-router', () => ({
 vi.mock('react-i18next', () => ({
 	useTranslation: vi.fn(),
 }))
-
-import { useTranslation } from 'react-i18next'
-import { useMatches } from 'react-router'
 
 const mockUseMatches = vi.mocked(useMatches)
 const mockUseTranslation = vi.mocked(useTranslation)

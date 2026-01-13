@@ -1,7 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import type { TournamentData } from '~/features/tournaments/types'
-
 import { useTeamFormStore } from '../useTeamFormStore'
 
 // Helper to access store state

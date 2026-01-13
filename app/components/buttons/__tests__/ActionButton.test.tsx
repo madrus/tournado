@@ -2,9 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { createInstance } from 'i18next'
 import { I18nextProvider, initReactI18next } from 'react-i18next'
 import { vi } from 'vitest'
-
 import type { Language } from '~/i18n/config'
-
 import { ActionButton } from '../ActionButton'
 
 // Helper to create an i18n instance with a given language

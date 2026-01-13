@@ -2,9 +2,7 @@ import { render, screen } from '@testing-library/react'
 import type { i18n as I18n } from 'i18next'
 import type React from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-
 import type { Language } from '~/i18n/config'
-
 import { AppLayout } from '../AppLayout'
 
 // Mock the i18n instance

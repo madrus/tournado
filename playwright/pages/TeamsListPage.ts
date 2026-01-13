@@ -1,5 +1,4 @@
 import type { Locator, Page } from '@playwright/test'
-
 import { adminPath } from '../../app/utils/adminRoutes'
 
 export class TeamsListPage {

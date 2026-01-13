@@ -1,13 +1,12 @@
 import { describe, expect, it } from 'vitest'
-
 import {
+	PHONE_REGEX,
 	createEmailSchema,
 	createIsoDateSchema,
 	createPhoneSchema,
 	createRequiredStringArraySchema,
 	createRequiredStringSchema,
 	emailSchema,
-	PHONE_REGEX,
 	validateEmail,
 	validatePhone,
 } from '../validation'

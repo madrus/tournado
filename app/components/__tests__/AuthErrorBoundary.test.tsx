@@ -1,8 +1,6 @@
 import { render, screen } from '@testing-library/react'
-import { isRouteErrorResponse, MemoryRouter, useRouteError } from 'react-router'
-
+import { MemoryRouter, isRouteErrorResponse, useRouteError } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { AuthErrorBoundary } from '../AuthErrorBoundary'
 
 // Mock react-router hooks

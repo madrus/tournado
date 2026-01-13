@@ -3,7 +3,6 @@ import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
-
 import type { DndTeam } from '../utils/groupStageDnd'
 import { createTeamDragId } from '../utils/groupStageDnd'
 import {

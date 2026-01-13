@@ -1,8 +1,6 @@
 import type { User } from '@prisma/client'
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
-
 import { describe, expect, it, vi } from 'vitest'
-
 import { UserDetailCard } from '../UserDetailCard'
 
 // Mock react-i18next

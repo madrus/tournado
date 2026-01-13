@@ -18,7 +18,6 @@
  * Run with: pnpm test:e2e:ui --grep "Group Assignment Dirty State"
  */
 import { expect, test } from '@playwright/test'
-
 import {
 	createTestGroupStage,
 	createTestTeam,

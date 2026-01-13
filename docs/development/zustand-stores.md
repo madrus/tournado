@@ -251,7 +251,6 @@ Example:
 
 ```typescript
 import { beforeEach, describe, expect, it } from 'vitest'
-
 import { useGroupAssignmentStore } from '~/features/competition/stores/useGroupAssignmentStore'
 
 const state = useGroupAssignmentStore.getState

@@ -1,9 +1,7 @@
 import { render, screen } from '@testing-library/react'
-
 import { describe, expect, it, vi } from 'vitest'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
-
 import { Panel } from '../Panel'
 
 // Mock react-i18next

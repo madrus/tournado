@@ -1,10 +1,9 @@
-import path from 'node:path'
 import { reactRouter } from '@react-router/dev/vite'
 import tailwindcss from '@tailwindcss/vite'
+import path from 'node:path'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import tsconfigPaths from 'vite-tsconfig-paths'
-
 import { optimizeDepsInclude } from './vite.optimizeDeps'
 
 const enablePwa = process.env.DISABLE_PWA !== 'true' && process.env.NODE_ENV !== 'test'

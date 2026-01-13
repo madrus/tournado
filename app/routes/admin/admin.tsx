@@ -1,10 +1,8 @@
 import { Role } from '@prisma/client'
 import type { JSX } from 'react'
 import { Outlet } from 'react-router'
-
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import { requireUserWithRole } from '~/utils/session.server'
-
 import type { Route } from './+types/admin'
 
 /**

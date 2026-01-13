@@ -2,7 +2,6 @@ import type { JSX } from 'react'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
-
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { cn } from '~/utils/misc'
 

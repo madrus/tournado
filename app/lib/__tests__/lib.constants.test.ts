@@ -1,5 +1,4 @@
 import { Category, Division } from '@prisma/client'
-
 import { CATEGORIES, DIVISIONS } from '../lib.constants'
 
 function getSortedValues(values: string[]): string[] {

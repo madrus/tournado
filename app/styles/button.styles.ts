@@ -1,6 +1,5 @@
 import type { ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
-
 import { getButtonRingClasses } from './ring.styles'
 
 // Common classes for all buttons

@@ -1,8 +1,6 @@
 import type { JSX } from 'react'
 import { Outlet, useLocation } from 'react-router'
-
 import { useReducedMotion } from '~/hooks/useReducedMotion'
-
 import type { TransitionWithDurationProps } from './utils'
 
 // Ultra-simple: Just a subtle slide-in effect on route changes

@@ -12,7 +12,6 @@ import {
 	test,
 	vi,
 } from 'vitest'
-
 import { useFirebaseAuth } from '../useFirebaseAuth'
 
 vi.mock('firebase/auth', () => ({

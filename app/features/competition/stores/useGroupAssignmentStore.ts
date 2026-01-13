@@ -1,9 +1,7 @@
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
 import { useShallow } from 'zustand/react/shallow'
-
 import { isBrowser } from '~/lib/lib.helpers'
-
 import {
 	assignTeamToSlot,
 	isGroupAssignmentDirty,

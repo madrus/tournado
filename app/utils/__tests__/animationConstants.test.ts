@@ -1,10 +1,9 @@
 import { describe, expect, it } from 'vitest'
-
 import {
+	ANIMATIONS,
 	ANIMATION_CLASSES,
 	ANIMATION_DURATION,
 	ANIMATION_TIMING,
-	ANIMATIONS,
 	type AnimationState,
 	type AnimationType,
 	CUBIC_BEZIER_SMOOTH,

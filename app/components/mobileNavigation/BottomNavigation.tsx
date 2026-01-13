@@ -1,5 +1,4 @@
 import { type JSX, useEffect, useState } from 'react'
-
 import { navigationVariants } from '~/components/navigation/navigation.variants'
 import { useScrollDirection } from '~/hooks/useScrollDirection'
 import { adminPath } from '~/utils/adminRoutes'
@@ -7,7 +6,6 @@ import { breakpoints } from '~/utils/breakpoints'
 import type { IconName } from '~/utils/iconUtils'
 import { canAccess } from '~/utils/rbac'
 import { useUser } from '~/utils/routeUtils'
-
 import NavigationItem from './NavigationItem'
 
 function BottomNavigation(): JSX.Element {

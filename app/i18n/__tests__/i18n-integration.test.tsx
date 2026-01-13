@@ -4,14 +4,11 @@
  * Tests that verify actual translation functionality works in practice,
  * including German translations, language switching, and translation key coverage.
  */
-
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { I18nextProvider, useTranslation } from 'react-i18next'
-
 import { describe, expect, it } from 'vitest'
-
-import { initI18n, SUPPORTED_LANGUAGES } from '../config'
+import { SUPPORTED_LANGUAGES, initI18n } from '../config'
 
 // Test component that uses translations
 function TestTranslationComponent({ tKey }: { tKey: string }) {

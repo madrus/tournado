@@ -1,7 +1,6 @@
 import { Text } from '@radix-ui/themes'
 import type { ColumnDef } from '@tanstack/react-table'
 import type { JSX } from 'react'
-
 import { DataTableColumnHeader } from '~/components/DataTable'
 import {
 	datatableActionButtonVariants,

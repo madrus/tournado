@@ -1,7 +1,6 @@
 /**
  * Prefetching configuration types and utilities for React Router v7
  */
-
 import { adminPath } from './adminRoutes'
 
 export type PrefetchStrategy = 'none' | 'intent' | 'render' | 'viewport'

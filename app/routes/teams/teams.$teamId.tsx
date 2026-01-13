@@ -3,9 +3,7 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { useLoaderData, useSearchParams } from 'react-router'
-
 import invariant from 'tiny-invariant'
-
 import {
 	basePanelContentVariants as panelContentVariants,
 	basePanelGlowVariants as panelGlowVariants,
@@ -18,7 +16,6 @@ import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
 import { toast } from '~/utils/toastUtils'
-
 import type { Route } from './+types/teams.$teamId'
 
 type LoaderData = {

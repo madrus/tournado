@@ -20,7 +20,6 @@
  * - Date serialization for scheduledAt, startedAt, completedAt
  */
 import type { LoaderFunctionArgs } from 'react-router'
-
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 
 export async function loader({ request }: LoaderFunctionArgs): Promise<Response> {

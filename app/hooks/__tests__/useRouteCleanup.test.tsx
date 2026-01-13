@@ -1,8 +1,6 @@
 import { renderHook } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-
 import { adminPath } from '~/utils/adminRoutes'
-
 import { useRouteCleanup } from '../useRouteCleanup'
 
 describe('useRouteCleanup', () => {

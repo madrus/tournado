@@ -15,7 +15,6 @@
  */
 import type { TeamClass, TeamName } from '~/features/teams/types'
 import { useSettingsStore } from '~/stores/useSettingsStore'
-
 import { CATEGORIES, DIVISIONS } from './lib.constants'
 import type {
 	Category,

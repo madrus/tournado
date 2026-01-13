@@ -1,6 +1,5 @@
 import type { JSX } from 'react'
 import { Link } from 'react-router'
-
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
 

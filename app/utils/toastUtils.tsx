@@ -1,7 +1,5 @@
 import { memo } from 'react'
-
 import { toast as sonnerToast } from 'sonner'
-
 import { ToastMessage as ToastMessageBase } from '~/components/ToastMessage'
 import type { ToastConfig, ToastErrorType, ToastType } from '~/lib/lib.types'
 

@@ -1,6 +1,5 @@
 import i18next, { type i18n as I18nType } from 'i18next'
 import { initReactI18next } from 'react-i18next'
-
 // Import your translation files
 import ar from './locales/ar.json'
 import de from './locales/de.json'

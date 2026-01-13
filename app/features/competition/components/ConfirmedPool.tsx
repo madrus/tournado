@@ -1,10 +1,8 @@
 import { useDroppable } from '@dnd-kit/core'
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { CheckMarkIcon } from '~/components/icons'
 import { cn } from '~/utils/misc'
-
 import type { DndUnassignedTeam } from '../utils/groupStageDnd'
 import { CONFIRMED_POOL_ID } from '../utils/groupStageDnd'
 import { DraggableTeamChip } from './DraggableTeamChip'

@@ -1,14 +1,12 @@
 import { Component, type JSX, type ReactNode, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
-
 import { Panel } from '~/components/Panel'
 import type { GroupStageWithDetails, UnassignedTeam } from '~/models/group.server'
 import { adminPath } from '~/utils/adminRoutes'
-
 import {
-	createSnapshotFromLoader,
 	type GroupAssignmentSnapshot,
+	createSnapshotFromLoader,
 } from '../utils/groupStageDnd'
 import { GroupAssignmentBoard } from './GroupAssignmentBoard'
 

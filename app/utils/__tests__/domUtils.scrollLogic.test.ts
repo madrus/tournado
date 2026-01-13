@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest'
-
 import { scrollLogic } from '../domUtils'
 
 describe('scrollLogic', () => {

@@ -1,14 +1,12 @@
 import type { User } from '@prisma/client'
 import type { JSX } from 'react'
 import type { MetaFunction } from 'react-router'
-
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import { SettingsLayoutHeader } from '~/components/layouts'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 import { requireUser } from '~/utils/session.server'
-
 import type { Route } from './+types/settings'
 
 // Route metadata - this is a protected route

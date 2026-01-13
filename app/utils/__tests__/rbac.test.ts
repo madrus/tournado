@@ -1,10 +1,8 @@
 import type { User } from '@prisma/client'
-
 import { describe, expect, it } from 'vitest'
-
 import {
-	canAccess,
 	ForbiddenError,
+	canAccess,
 	getRoleLevel,
 	getUIContext,
 	hasAllPermissions,

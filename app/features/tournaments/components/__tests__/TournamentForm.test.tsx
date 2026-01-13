@@ -1,13 +1,10 @@
 import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
-import { createMemoryRouter, RouterProvider } from 'react-router'
-
+import { RouterProvider, createMemoryRouter } from 'react-router'
 import { describe, expect, it, vi } from 'vitest'
-
 import { useTournamentFormStore } from '~/features/tournaments/stores/useTournamentFormStore'
 import type { Language } from '~/i18n/config'
-
 import { TournamentForm } from '../TournamentForm'
 
 const getState = useTournamentFormStore.getState

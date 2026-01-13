@@ -1,17 +1,15 @@
 import type { JSX, ReactNode } from 'react'
 import { Link } from 'react-router'
-
 import type { ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 import { getTypographyClasses } from '~/utils/rtlUtils'
-
+import ErrorBoundary from './ErrorBoundary'
+import { PanelBackground } from './PanelBackground'
+import { PanelLayer } from './PanelLayer'
 import {
 	actionLinkPanelVariants,
 	panelBackgroundVariants,
 } from './actionLinkPanel.variants'
-import ErrorBoundary from './ErrorBoundary'
-import { PanelBackground } from './PanelBackground'
-import { PanelLayer } from './PanelLayer'
 
 type ActionLinkPanelProps = {
 	title: string

@@ -11,7 +11,6 @@
  * Viewport: Mobile (375x812)
  */
 import { expect, test } from '@playwright/test'
-
 import { TeamsPage } from '../pages/TeamsPage'
 
 // Public Teams Basic UI Tests - NO AUTHENTICATION REQUIRED

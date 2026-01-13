@@ -1,5 +1,4 @@
 import type { HTMLAttributes, JSX, SVGProps } from 'react'
-
 import type { IconWeight } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 

@@ -1,5 +1,4 @@
 import type { JSX, SVGProps } from 'react'
-
 import type { IconVariant, IconWeight } from '~/lib/lib.types'
 
 type CloseIconProps = {

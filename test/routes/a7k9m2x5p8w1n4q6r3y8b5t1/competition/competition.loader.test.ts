@@ -1,8 +1,7 @@
 import { beforeEach, vi } from 'vitest'
+import { createLoaderAuthTests } from '~test/utils/loader-authorization.helpers'
 import { handle, loader } from '~/routes/admin/competition/competition'
 import { adminPath } from '~/utils/adminRoutes'
-
-import { createLoaderAuthTests } from '~test/utils/loader-authorization.helpers'
 
 // Mock session utilities
 vi.mock('~/utils/session.server', () => ({

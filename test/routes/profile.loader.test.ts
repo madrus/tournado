@@ -1,8 +1,6 @@
 import { beforeEach, vi } from 'vitest'
-
-import { handle, loader } from '~/routes/profile'
-
 import { createLoaderAuthTests } from '~test/utils/loader-authorization.helpers'
+import { handle, loader } from '~/routes/profile'
 
 // Mock session utilities
 vi.mock('~/utils/session.server', () => ({

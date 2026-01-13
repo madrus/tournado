@@ -1,11 +1,9 @@
 import type { Category } from '@prisma/client'
 import { describe, expect, it } from 'vitest'
-
 import type {
 	DndTeam,
 	GroupAssignmentSnapshot,
 } from '~/features/competition/utils/groupStageDnd'
-
 import {
 	assignTeamToSlot,
 	getConfirmedCapacity,

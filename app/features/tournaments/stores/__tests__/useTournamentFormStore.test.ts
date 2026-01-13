@@ -1,7 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import * as formValidation from '~/utils/formValidation'
-
 import { useTournamentFormStore } from '../useTournamentFormStore'
 
 // Mock the form validation utilities

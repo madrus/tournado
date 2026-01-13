@@ -1,12 +1,11 @@
 import { Text } from '@radix-ui/themes'
 import { type JSX, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
-import { IconLabelButton } from '~/components/buttons/IconLabelButton'
 import {
 	datatableCellTextVariants,
 	datatableDeleteAreaVariants,
 } from '~/components/DataTable/dataTable.variants'
+import { IconLabelButton } from '~/components/buttons/IconLabelButton'
 import { DeleteIcon } from '~/components/icons'
 import type { TournamentListItem } from '~/features/tournaments/types'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'

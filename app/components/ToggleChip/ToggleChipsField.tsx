@@ -1,5 +1,4 @@
 import type { JSX } from 'react'
-
 import { ErrorMessage } from '~/components/ErrorMessage'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
 import { LabelWithStatusIcon } from '~/components/shared/LabelWithStatusIcon'
@@ -9,7 +8,6 @@ import {
 	getCurrentDivisionLabel,
 	getFieldStatus,
 } from '~/lib/lib.helpers'
-
 import { ToggleChip } from './ToggleChip'
 import type { ToggleChipColorVariant } from './toggleChip.variants'
 

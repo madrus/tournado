@@ -1,5 +1,4 @@
 import type { JSX, ReactNode } from 'react'
-
 import { cn } from '~/utils/misc'
 import { getArabicTextClass } from '~/utils/rtlUtils'
 

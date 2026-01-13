@@ -1,5 +1,4 @@
 import { redirect } from 'react-router'
-
 import { createTeamFromFormData } from './teamCreation.server'
 
 /**

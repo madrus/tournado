@@ -1,5 +1,4 @@
 import type { Role, User } from '@prisma/client'
-
 import { prisma } from '~/db.server'
 import {
 	disableFirebaseUser,

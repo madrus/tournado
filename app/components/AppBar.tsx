@@ -10,7 +10,6 @@ import {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useFetcher, useLocation } from 'react-router'
-
 import logo from '~/assets/logo-192x192.png'
 import { navigationVariants } from '~/components/navigation/navigation.variants'
 import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
@@ -30,7 +29,6 @@ import {
 	getLatinTitleClass,
 	getTypographyClass,
 } from '~/utils/rtlUtils'
-
 import { PrimaryNavLink } from './PrefetchLink'
 import { ThemeToggle } from './ThemeToggle'
 import { type MenuItemType, UserMenu } from './UserMenu'

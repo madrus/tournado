@@ -1,13 +1,11 @@
 import type { JSX } from 'react'
 import type { MetaFunction } from 'react-router'
 import { useLoaderData } from 'react-router'
-
 import { GeneralErrorBoundary } from '~/components/GeneralErrorBoundary'
 import { AboutLayoutHeader } from '~/components/layouts'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
-
 import type { Route } from './+types/about'
 
 // Type definition for loader data

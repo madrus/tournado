@@ -2,7 +2,6 @@ import type { User } from '@prisma/client'
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { type MetaFunction, useLoaderData } from 'react-router'
-
 import { ActionLinkPanel } from '~/components/ActionLinkPanel'
 import {
 	ApparelIcon,
@@ -22,7 +21,6 @@ import { cn } from '~/utils/misc'
 import { canAccess, hasPermission } from '~/utils/rbac'
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
-
 import type { Route } from './+types/admin._index'
 
 type LoaderData = {

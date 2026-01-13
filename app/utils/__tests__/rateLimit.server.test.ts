@@ -1,11 +1,10 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-
 import {
+	RATE_LIMITS,
+	type RateLimitConfig,
 	checkRateLimit,
 	createRateLimitResponse,
 	getClientIP,
-	RATE_LIMITS,
-	type RateLimitConfig,
 } from '../rateLimit.server'
 
 // Clear attempts by using unique identifiers for each test

@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-
 import type { ColorAccent } from '~/lib/lib.types'
-
 import {
+	RING_CONFIGS,
+	type RingConfig,
 	getButtonRingClasses,
 	getChipRingClasses,
 	getDisabledRingClasses,
@@ -12,8 +12,6 @@ import {
 	getInputRingClasses,
 	getRingClasses,
 	getTeamChipRingClasses,
-	RING_CONFIGS,
-	type RingConfig,
 } from '../ring.styles'
 
 describe('Ring Styles', () => {

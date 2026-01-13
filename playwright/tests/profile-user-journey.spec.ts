@@ -12,7 +12,6 @@
  * Note: Tests complete user journey for profile access
  */
 import { test } from '@playwright/test'
-
 import { loginAsRole } from '../helpers/session'
 import { HomePage } from '../pages/HomePage'
 import { ProfilePage } from '../pages/ProfilePage'

@@ -1,9 +1,6 @@
 import { render, screen } from '@testing-library/react'
-
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { useSettingsStore } from '~/stores/useSettingsStore'
-
 import { LabelWithStatusIcon } from '../LabelWithStatusIcon'
 
 // Get store state once at top

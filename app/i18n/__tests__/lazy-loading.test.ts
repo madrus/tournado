@@ -5,9 +5,8 @@
  * and works correctly with language switching.
  */
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { initI18n } from '../config'
-import { getBundleSavings, initI18nLazy, SUPPORTED_LANGUAGES } from '../config.lazy'
+import { SUPPORTED_LANGUAGES, getBundleSavings, initI18nLazy } from '../config.lazy'
 
 describe('i18n Lazy Loading Performance', () => {
 	beforeEach(() => {

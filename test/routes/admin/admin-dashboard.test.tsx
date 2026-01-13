@@ -2,7 +2,6 @@ import type { User } from '@prisma/client'
 import { render, screen } from '@testing-library/react'
 import type { ReactElement } from 'react'
 import { MemoryRouter, useLoaderData } from 'react-router'
-
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 import AdminDashboard from '~/routes/admin/admin._index'
 import { adminPath } from '~/utils/adminRoutes'

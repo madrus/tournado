@@ -1,5 +1,4 @@
 import type { HTMLAttributes, JSX } from 'react'
-
 import { ExpandMoreIcon } from './index'
 
 type AnimatedArrowIconProps = {

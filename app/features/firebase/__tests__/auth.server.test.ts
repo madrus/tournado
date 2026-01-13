@@ -1,9 +1,7 @@
 import { redirect } from 'react-router'
-
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import type { User } from '~/models/user.server'
-
+import { getUser } from '~/utils/session.server'
 import { requireFirebaseAuth } from '../auth.server'
 
 // Mock session utilities
@@ -15,8 +13,6 @@ vi.mock('~/utils/session.server', () => ({
 vi.mock('react-router', () => ({
 	redirect: vi.fn(),
 }))
-
-import { getUser } from '~/utils/session.server'
 
 describe('auth.server', () => {
 	const mockRequest = new Request('http://localhost:3000/test')

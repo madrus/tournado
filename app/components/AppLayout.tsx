@@ -5,10 +5,7 @@ import type { ElementType, JSX, ReactElement, ReactNode } from 'react'
 import { cloneElement, isValidElement, useMemo } from 'react'
 import { I18nextProvider } from 'react-i18next'
 import { Toaster } from 'sonner'
-
 import { AppBar } from '~/components/AppBar'
-import DesktopFooter from '~/components/desktopFooter/DesktopFooter'
-import BottomNavigation from '~/components/mobileNavigation/BottomNavigation'
 import {
 	CSSRouteTransition,
 	RouteTransition,
@@ -17,6 +14,8 @@ import {
 	SubtleRouteTransition,
 	ViewTransition,
 } from '~/components/RouteTransition'
+import DesktopFooter from '~/components/desktopFooter/DesktopFooter'
+import BottomNavigation from '~/components/mobileNavigation/BottomNavigation'
 import type { Language } from '~/i18n/config'
 import { CONTENT_PX } from '~/styles/constants'
 

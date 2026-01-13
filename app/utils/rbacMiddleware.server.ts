@@ -4,15 +4,14 @@
  * Provides middleware functions for role-based access control in route loaders and actions.
  * Integrates with the existing RBAC system and rate limiting.
  */
-
 import type { User } from '@prisma/client'
 import { redirect } from 'react-router'
 import { adminPath } from './adminRoutes'
 import {
+	RATE_LIMITS,
 	checkRateLimit,
 	createRateLimitResponse,
 	getClientIP,
-	RATE_LIMITS,
 } from './rateLimit.server'
 import type { Permission } from './rbac'
 import { getUserRole, hasPermission } from './rbac'

@@ -1,7 +1,6 @@
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
-
 import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
 import { SportsIcon } from '~/components/icons'
 import {

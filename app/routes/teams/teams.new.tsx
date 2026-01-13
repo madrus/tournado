@@ -5,7 +5,6 @@ import {
 	type MetaFunction,
 	useActionData,
 } from 'react-router'
-
 import { TeamForm } from '~/features/teams/components/TeamForm'
 import { useTeamFormActions } from '~/features/teams/stores/useTeamFormStore'
 import type { TeamCreateActionData } from '~/features/teams/types'

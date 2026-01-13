@@ -1,7 +1,5 @@
 import { type JSX, useMemo } from 'react'
-
 import { cn } from '~/utils/misc'
-
 import { ToastCloseButton } from './ToastCloseButton'
 import { ToastIcon } from './ToastIcon'
 import { type ToastType, toastMessageVariants } from './toastMessage.variants'

@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-
 import { create } from 'zustand'
 import {
 	createJSONStorage,
@@ -7,19 +6,16 @@ import {
 	persist,
 	subscribeWithSelector,
 } from 'zustand/middleware'
-
 import { useShallow } from 'zustand/react/shallow'
-
 import type { TournamentFormData } from '~/features/tournaments/validation'
 import { isBrowser } from '~/lib/lib.helpers'
 import {
 	validateEntireTournamentForm,
 	validateSingleTournamentField,
 } from '~/utils/formValidation'
-
 import {
-	initialStoreState,
 	TOURNAMENT_PANELS_FIELD_MAP,
+	initialStoreState,
 } from './helpers/tournamentFormConstants'
 import {
 	getIsFormReadyForSubmission,

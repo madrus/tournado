@@ -10,7 +10,6 @@ import {
 	findTeam,
 	isTeamOnWaitlist,
 } from '../../utils/groupStageDnd'
-
 import type { GroupAssignmentTeamLocation } from './groupAssignmentStoreTypes'
 
 type SlotTarget = {

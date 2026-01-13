@@ -1,11 +1,9 @@
 import type { Category } from '@prisma/client'
 import { beforeEach, describe, expect, it } from 'vitest'
-
 import type {
 	DndTeam,
 	GroupAssignmentSnapshot,
 } from '~/features/competition/utils/groupStageDnd'
-
 import { useGroupAssignmentStore } from '../useGroupAssignmentStore'
 
 const state = useGroupAssignmentStore.getState

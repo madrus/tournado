@@ -1,8 +1,6 @@
 import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
-
 import { describe, expect, it, vi } from 'vitest'
-
 import BottomNavigation from '../BottomNavigation'
 
 // Mock react-router hooks

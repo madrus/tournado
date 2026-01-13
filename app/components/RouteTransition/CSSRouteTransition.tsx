@@ -1,6 +1,5 @@
 import type { JSX } from 'react'
 import { Outlet, useLocation } from 'react-router'
-
 import type { BaseTransitionProps } from './utils'
 
 // CSS-based transition (lightest approach)

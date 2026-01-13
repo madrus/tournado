@@ -1,6 +1,5 @@
 import type { JSX } from 'react'
 import { type MetaFunction, useLoaderData } from 'react-router'
-
 import { CompetitionGroupsTab } from '~/features/competition/components'
 import type { TournamentListItem } from '~/features/tournaments/types'
 import type { GroupStageListItem } from '~/models/group.server'
@@ -8,7 +7,6 @@ import { getTournamentGroupStages } from '~/models/group.server'
 import { getAllTournaments } from '~/models/tournament.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
-
 import type { Route } from './+types/competition.groups'
 
 type LoaderData = {

@@ -1,9 +1,7 @@
 import { useEffect } from 'react'
-
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
 import { useShallow } from 'zustand/react/shallow'
-
 import type { FirebaseUser } from '~/features/firebase/types'
 import { isBrowser } from '~/lib/lib.helpers'
 import type { User } from '~/models/user.server'

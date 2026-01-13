@@ -1,7 +1,6 @@
 import type { Category } from '@prisma/client'
 import type { JSX } from 'react'
 import { redirect, useActionData, useLoaderData } from 'react-router'
-
 import { CompetitionGroupStageDetails } from '~/features/competition/components'
 import type { GroupStageWithDetails, UnassignedTeam } from '~/models/group.server'
 import {
@@ -17,7 +16,6 @@ import { adminPath } from '~/utils/adminRoutes'
 import { invariant } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
-
 import type { Route } from './+types/competition.groups.$groupStageId'
 
 type LoaderData = {

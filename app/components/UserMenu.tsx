@@ -2,7 +2,6 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { type JSX, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate, useNavigation } from 'react-router'
-
 import { AnimatedHamburgerIcon } from '~/components/icons/AnimatedHamburgerIcon'
 import { useRTLDropdown } from '~/hooks/useRTLDropdown'
 import { type IconName, renderIcon } from '~/utils/iconUtils'

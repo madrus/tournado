@@ -1,5 +1,4 @@
 import type { Session } from 'react-router'
-
 import type { User } from '~/models/user.server'
 
 /**

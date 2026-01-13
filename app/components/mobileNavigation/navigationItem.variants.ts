@@ -1,4 +1,4 @@
-import { cva, type VariantProps } from 'class-variance-authority'
+import { type VariantProps, cva } from 'class-variance-authority'
 
 // Tree-shaking optimization: Only include colors actually used in navigation
 const NAVIGATION_COLORS = {

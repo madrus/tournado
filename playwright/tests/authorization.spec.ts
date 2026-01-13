@@ -14,7 +14,6 @@
  */
 import { expect, test } from '@playwright/test'
 import { Role } from '@prisma/client'
-
 import { loginAsRole } from '../helpers/session'
 import { PublicPage } from '../pages/PublicPage'
 

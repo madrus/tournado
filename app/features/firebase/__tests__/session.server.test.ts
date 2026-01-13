@@ -1,10 +1,10 @@
 import type { Session, SessionData } from 'react-router'
-
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import type { User } from '~/models/user.server'
-
+import { getUserByFirebaseUid, updateUserFirebaseData } from '~/models/user.server'
+import { getSession } from '~/utils/session.server'
 import type { DecodedIdToken } from '../server'
+import { createOrUpdateUser, verifyIdToken } from '../server'
 import {
 	clearFirebaseSession,
 	createSessionFromFirebaseToken,
@@ -34,10 +34,6 @@ vi.mock('~/utils/session.server', () => ({
 		commitSession: vi.fn(),
 	},
 }))
-
-import { getUserByFirebaseUid, updateUserFirebaseData } from '~/models/user.server'
-import { getSession } from '~/utils/session.server'
-import { createOrUpdateUser, verifyIdToken } from '../server'
 
 describe('firebaseSession.server', () => {
 	const mockRequest = new Request('http://localhost:3000')

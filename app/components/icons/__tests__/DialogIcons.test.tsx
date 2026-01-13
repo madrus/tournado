@@ -1,7 +1,5 @@
 import { render, screen } from '@testing-library/react'
-
 import { describe, expect, it } from 'vitest'
-
 import { ErrorIcon } from '../ErrorIcon'
 import { InfoIcon } from '../InfoIcon'
 import { WarningIcon } from '../WarningIcon'

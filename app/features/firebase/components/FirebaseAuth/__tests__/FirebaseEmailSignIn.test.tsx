@@ -1,9 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type { Mock } from 'vitest'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-
 import { useFirebaseAuth } from '~/features/firebase/hooks/useFirebaseAuth'
-
 import { FirebaseEmailSignIn } from '../FirebaseEmailSignIn'
 
 // Mock the useFirebaseAuth hook

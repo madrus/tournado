@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-
 import { breakpoints } from '~/utils/breakpoints'
 
 describe('SSR/Hydration Scenarios', () => {

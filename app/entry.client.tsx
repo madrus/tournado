@@ -1,7 +1,6 @@
 import { StrictMode } from 'react'
 import { hydrateRoot } from 'react-dom/client'
 import { HydratedRouter } from 'react-router/dom'
-
 import { initI18n } from '~/i18n/config'
 import { setupMSWBrowser } from '~/utils/msw-browser'
 

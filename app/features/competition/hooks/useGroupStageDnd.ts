@@ -2,7 +2,6 @@ import type { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from '~/utils/toastUtils'
-
 import {
 	getConfirmedCapacity,
 	getTeamById,

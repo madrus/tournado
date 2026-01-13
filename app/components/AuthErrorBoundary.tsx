@@ -1,10 +1,8 @@
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { type ErrorResponse, isRouteErrorResponse, useRouteError } from 'react-router'
-
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
-
 import { ErrorRecoveryLink } from './PrefetchLink'
 
 // Get the appropriate error message translation key based on the error status

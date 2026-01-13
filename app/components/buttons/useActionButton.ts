@@ -1,4 +1,4 @@
-import { canAccess, type Permission } from '~/utils/rbac'
+import { type Permission, canAccess } from '~/utils/rbac'
 import { useUser } from '~/utils/routeUtils'
 
 type UseActionButtonOptions = {

@@ -3,7 +3,6 @@ import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { LoaderFunctionArgs, MetaFunction } from 'react-router'
 import { useLoaderData } from 'react-router'
-
 import { ActionLinkButton } from '~/components/buttons'
 import { useTheme } from '~/hooks/useTheme'
 import type { Language } from '~/i18n/config'

@@ -1,7 +1,5 @@
 import type { JSX } from 'react'
-
 import { CheckMarkIcon, CloseIcon } from '~/components/icons'
-
 import { fieldCheckmarkVariants, fieldErrorIconVariants } from './field.variants'
 
 type FieldStatusIconProps = {

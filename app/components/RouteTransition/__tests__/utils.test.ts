@@ -1,9 +1,8 @@
 import { describe, expect, it } from 'vitest'
-
 import {
+	type TransitionStage,
 	getOpacityForStage,
 	getTransitionClassesForStage,
-	type TransitionStage,
 } from '../utils'
 
 describe('RouteTransition Utils', () => {

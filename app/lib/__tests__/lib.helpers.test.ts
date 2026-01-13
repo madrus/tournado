@@ -1,5 +1,4 @@
 import type { Division } from '@prisma/client'
-
 import {
 	getAllDivisions,
 	getDivisionByValue,

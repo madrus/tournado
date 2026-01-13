@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest'
-
 import { TEAM_PANELS_FIELD_MAP } from '../teamFormConstants'
 import {
 	computeAvailableOptions,

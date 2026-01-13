@@ -1,6 +1,5 @@
 import type { JSX } from 'react'
 import { Link, type LinkProps, NavLink, type NavLinkProps } from 'react-router'
-
 import { usePrefetchStrategy } from '~/hooks/usePrefetchStrategy'
 import type { PrefetchConfig, PrefetchStrategy } from '~/utils/prefetchTypes'
 

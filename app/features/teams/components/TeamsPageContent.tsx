@@ -1,9 +1,8 @@
 import { type JSX, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRevalidator } from 'react-router'
-
-import { ApparelIcon } from '~/components/icons'
 import { Panel } from '~/components/Panel'
+import { ApparelIcon } from '~/components/icons'
 import { TeamList } from '~/features/teams/components/TeamList'
 import type { TeamListItem } from '~/features/teams/types'
 import { TournamentFilter } from '~/features/tournaments/components/TournamentFilter'

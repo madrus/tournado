@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom/vitest'
 import userEvent, { PointerEventsCheckLevel } from '@testing-library/user-event'
-
 import { afterEach, beforeEach, vi } from 'vitest'
 
 // Set up required environment variables for tests

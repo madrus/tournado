@@ -1,3 +1,4 @@
+import { glob } from 'glob'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { adminPath } from '~/utils/adminRoutes'
 import { scanFlatRoutes } from '../flatRoutes'
@@ -17,8 +18,6 @@ vi.mock('path', async () => {
 		join: vi.fn((...args) => args.join('/')),
 	}
 })
-
-import { glob } from 'glob'
 
 describe('scanFlatRoutes', () => {
 	beforeEach(() => {

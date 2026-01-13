@@ -1,5 +1,4 @@
 import type { FullConfig } from '@playwright/test'
-
 import { disposeApiClient } from '../utils/api-client'
 import { cleanDatabaseCompletely } from './database'
 

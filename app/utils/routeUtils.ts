@@ -1,9 +1,7 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMatches } from 'react-router'
-
 import type { User } from '~/models/user.server'
-
 import type { RouteMetadata } from './routeTypes'
 
 const DEFAULT_REDIRECT = '/'

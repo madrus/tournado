@@ -1,15 +1,13 @@
 import { type FirebaseApp, getApp, getApps, initializeApp } from 'firebase/app'
 import {
 	type Auth,
-	createUserWithEmailAndPassword,
 	GoogleAuthProvider,
+	type UserCredential,
+	createUserWithEmailAndPassword,
 	getAuth,
 	signInWithEmailAndPassword,
-	type UserCredential,
 } from 'firebase/auth'
-
 import type { getEnv as getServerEnv } from '~/utils/env.server'
-
 import type { FirebaseConfig } from './types'
 
 // Prefer window.ENV (injected from server). Fallback to Vite's import.meta.env

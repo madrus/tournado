@@ -1,9 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-
 import { describe, expect, it, vi } from 'vitest'
-
 import { useSettingsStore } from '~/stores/useSettingsStore'
-
 import { ToggleChipGroup } from '../ToggleChipGroup'
 
 // Mock the helper functions

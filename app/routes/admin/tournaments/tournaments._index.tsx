@@ -3,10 +3,9 @@ import { type JSX, useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { redirect, useLoaderData, useNavigate, useSubmit } from 'react-router'
-
 import { DataTable } from '~/components/DataTable'
-import { TrophyIcon } from '~/components/icons'
 import { Panel } from '~/components/Panel'
+import { TrophyIcon } from '~/components/icons'
 import { TournamentMobileRow } from '~/features/tournaments/components/TournamentMobileRow'
 import { createTournamentColumns } from '~/features/tournaments/components/TournamentTableColumns'
 import type { TournamentListItem } from '~/features/tournaments/types'
@@ -17,7 +16,6 @@ import { adminPath } from '~/utils/adminRoutes'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
-
 import type { Route } from './+types/tournaments._index'
 
 // Local constants

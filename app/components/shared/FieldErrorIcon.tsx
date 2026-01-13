@@ -1,8 +1,6 @@
 import type { JSX } from 'react'
-
 import { CloseIcon } from '~/components/icons'
 import type { ColorAccent } from '~/lib/lib.types'
-
 import { fieldErrorIconVariants } from './field.variants'
 
 type FieldErrorIconProps = {

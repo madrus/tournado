@@ -14,9 +14,8 @@
  * Viewport: Mobile (375x812)
  * Note: Only ADMIN role has users management access
  */
-import { expect, type Page, test } from '@playwright/test'
+import { type Page, expect, test } from '@playwright/test'
 import type { Role } from '@prisma/client'
-
 import { adminPath } from '../../app/utils/adminRoutes'
 import { loginAsRole } from '../helpers/session'
 

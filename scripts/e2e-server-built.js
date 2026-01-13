@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 import { spawn, spawnSync } from 'node:child_process'
-
 import { checkDevServer } from './utils/port-utils.js'
 
 // Force test DB for built e2e server (override any .env setting)

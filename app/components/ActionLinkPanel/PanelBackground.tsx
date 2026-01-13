@@ -1,5 +1,4 @@
 import type { JSX } from 'react'
-
 import { cn } from '~/utils/misc'
 
 type PanelBackgroundProps = {

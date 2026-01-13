@@ -11,7 +11,6 @@ import {
 	signInWithPopup as signInWithPopupSdk,
 	signOut as signOutSdk,
 } from 'firebase/auth'
-
 import { auth as clientAuth, googleProvider as clientProvider } from '../client'
 import { isE2EClient } from '../utils/env'
 

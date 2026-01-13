@@ -1,8 +1,8 @@
 import {
+	RATE_LIMITS,
 	checkRateLimit,
 	createRateLimitResponse,
 	getClientIP,
-	RATE_LIMITS,
 } from './rateLimit.server'
 
 /**

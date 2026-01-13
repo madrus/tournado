@@ -1,8 +1,6 @@
 import type { JSX } from 'react'
-
 import { CheckMarkIcon, ExclamationMarkIcon, InfoLetterIcon } from '~/components/icons'
 import type { IconProps as AppIconProps } from '~/lib/lib.types'
-
 import { type ToastType, toastIconVariants } from './toastMessage.variants'
 
 // Base types used for icon mapping

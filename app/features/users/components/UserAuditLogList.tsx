@@ -1,6 +1,5 @@
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { Panel } from '~/components/Panel'
 import type { AuditLogWithAdmin } from '~/features/users/types'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'

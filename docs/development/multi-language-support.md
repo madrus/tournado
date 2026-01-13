@@ -85,10 +85,8 @@ Each file contains a nested structure of translation keys. Example (`en.json`):
 The i18n instance is configured in `app/i18n/config.ts`:
 
 ```ts
-import { initReactI18next } from 'react-i18next'
-
 import i18n from 'i18next'
-
+import { initReactI18next } from 'react-i18next'
 import ar from './locales/ar.json'
 import de from './locales/de.json'
 import en from './locales/en.json'
@@ -1051,6 +1049,7 @@ Apply the line-height class to the **button container**, not individual text spa
 ```tsx
 // app/components/UserMenu.tsx
 import { getMenuItemLineHeight } from '~/utils/rtlUtils'
+
 ;<button
 	className={cn(
 		'h-10 w-full items-center px-3 py-2 focus:outline-none',

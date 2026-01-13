@@ -3,7 +3,6 @@ import { Text } from '@radix-ui/themes'
 import type { ColumnDef } from '@tanstack/react-table'
 import type { JSX } from 'react'
 import type { FetcherWithComponents } from 'react-router'
-
 import { Badge } from '~/components/Badge'
 import { DataTableColumnHeader } from '~/components/DataTable'
 import {

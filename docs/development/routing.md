@@ -167,7 +167,6 @@ Simple configuration that uses the flat routes scanner:
 
 ```typescript
 import { type RouteConfig } from '@react-router/dev/routes'
-
 import { createFlatRoutes } from '../config/flat-routes'
 
 const flatRoutes = createFlatRoutes()

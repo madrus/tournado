@@ -1,8 +1,6 @@
 import type { Role } from '@prisma/client'
-import { createCookieSessionStorage, redirect, type Session } from 'react-router'
-
+import { type Session, createCookieSessionStorage, redirect } from 'react-router'
 import invariant from 'tiny-invariant'
-
 import {
 	clearFirebaseSession,
 	validateFirebaseSession,
@@ -10,7 +8,6 @@ import {
 import type { CreateUserSessionProps } from '~/features/firebase/types'
 import type { User } from '~/models/user.server'
 import { getUserById } from '~/models/user.server'
-
 import { isPublicRoute } from './publicRoutes.server'
 
 invariant(process.env.SESSION_SECRET, 'SESSION_SECRET must be set')

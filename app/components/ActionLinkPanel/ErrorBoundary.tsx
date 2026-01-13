@@ -1,6 +1,5 @@
 import { Component, type ErrorInfo, type JSX, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import type { Language } from '~/i18n/config'
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'

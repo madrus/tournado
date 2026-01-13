@@ -1,8 +1,8 @@
+import { redirect } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { adminPath } from '~/utils/adminRoutes'
-
 import { handleTeamCreation } from '../teamActions.server'
+import { createTeamFromFormData } from '../teamCreation.server'
 
 // Mock the teamCreation module
 vi.mock('../teamCreation.server', () => ({
@@ -15,9 +15,6 @@ vi.mock('react-router', () => ({
 		(url: string) => new Response(null, { status: 302, headers: { Location: url } }),
 	),
 }))
-
-import { redirect } from 'react-router'
-import { createTeamFromFormData } from '../teamCreation.server'
 
 describe('teamActions.server - handleTeamCreation', () => {
 	const mockFormData = new FormData()

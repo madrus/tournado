@@ -104,6 +104,13 @@
     "viewTeamsFor": "Voir les équipes pour"
   },
   "common": {
+    "confirm": {
+      "unsavedChanges": "Vous avez des modifications non enregistrées",
+      "unsavedTitle": "Modifications non enregistrées",
+      "unsavedDescription": "Vos modifications non enregistrées seront perdues si vous quittez cette page. Êtes-vous sûr de vouloir quitter ?",
+      "leaveAnyway": "Oui, quitter",
+      "stayOnPage": "Annuler"
+    },
     "actions": {
       "actions": "Actions",
       "add": "Ajouter",

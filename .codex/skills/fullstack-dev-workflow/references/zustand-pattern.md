@@ -221,14 +221,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 ### Computed Values
 
-Use selectors for derived state:
+Use selectors for derived state (recommended for Zustand's plain object stores):
 
 ```typescript
 // In component
 const isDarkMode = useMyFeatureStore(state => state.theme === 'dark')
 ```
 
-Or add to store:
+Avoid store getters unless you add middleware like `subscribeWithSelector`. If you still want a getter, wire it explicitly:
 
 ```typescript
 type StoreState = {

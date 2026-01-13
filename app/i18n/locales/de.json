@@ -104,6 +104,13 @@
     "viewTeamsFor": "Teams anzeigen für"
   },
   "common": {
+    "confirm": {
+      "unsavedChanges": "Sie haben ungespeicherte Änderungen",
+      "unsavedTitle": "Ungespeicherte Änderungen",
+      "unsavedDescription": "Ihre ungespeicherten Änderungen gehen verloren, wenn Sie diese Seite verlassen. Sind Sie sicher, dass Sie gehen möchten?",
+      "leaveAnyway": "Ja, verlassen",
+      "stayOnPage": "Abbrechen"
+    },
     "actions": {
       "actions": "Aktionen",
       "add": "Hinzufügen",

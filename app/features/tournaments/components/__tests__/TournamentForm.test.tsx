@@ -670,14 +670,29 @@ describe('TournamentForm Component', () => {
 
     it('should display unsaved warning when form becomes dirty', async () => {
       const user = userEvent.setup()
-      renderTournamentForm()
+      renderTournamentForm({
+        formData: {
+          name: 'Original Name',
+          location: 'Test Location',
+          startDate: '2024-01-01',
+          endDate: '2024-01-02',
+          divisions: ['FIRST_DIVISION'],
+          categories: ['JO8'],
+        },
+      })
 
       const nameInput = screen.getByRole('textbox', { name: /tournaments\.form\.name/ })
+      await user.clear(nameInput)
       await user.type(nameInput, 'Dirty Tournament')
 
+      // Check for dirty state indicators
+      expect(screen.getByText('common.confirm.unsavedChanges')).toBeInTheDocument()
       expect(
-        screen.getByText('competition.groupAssignment.unsavedChanges'),
-      ).toBeInTheDocument()
+        screen.getByRole('button', { name: 'common.actions.update' }),
+      ).toBeEnabled()
+      expect(
+        screen.getByRole('button', { name: /common\.actions\.cancel/i }),
+      ).toBeEnabled()
     })
 
     it('should always render reset button', () => {

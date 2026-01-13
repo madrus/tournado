@@ -58,6 +58,23 @@ describe('useGuardedStoreInitialization', () => {
     expect(initializer).toHaveBeenCalledTimes(2)
   })
 
+  it('reinitializes after payload becomes null and then returns', () => {
+    const initializer = vi.fn()
+    const { rerender } = render(
+      <TestComponent value='first' initializer={initializer} />,
+    )
+
+    expect(initializer).toHaveBeenCalledTimes(1)
+
+    act(() => rerender(<TestComponent value={null} initializer={initializer} />))
+
+    expect(initializer).toHaveBeenCalledTimes(1)
+
+    act(() => rerender(<TestComponent value='first' initializer={initializer} />))
+
+    expect(initializer).toHaveBeenCalledTimes(2)
+  })
+
   it('skips initialization when skip guard is true', () => {
     const initializer = vi.fn()
     const { rerender } = render(

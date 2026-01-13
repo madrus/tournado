@@ -104,6 +104,13 @@
     "viewTeamsFor": "Takımları görüntüle:"
   },
   "common": {
+    "confirm": {
+      "unsavedChanges": "Kaydedilmemiş değişiklikleriniz var",
+      "unsavedTitle": "Kaydedilmemiş değişiklikler",
+      "unsavedDescription": "Bu sayfadan ayrılırsanız kaydedilmemiş değişiklikleriniz kaybolacak. Ayrılmak istediğinizden emin misiniz?",
+      "leaveAnyway": "Evet, ayrıl",
+      "stayOnPage": "İptal"
+    },
     "actions": {
       "actions": "Eylemler",
       "add": "Ekle",

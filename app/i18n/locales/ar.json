@@ -104,6 +104,13 @@
     "viewTeamsFor": "عرض الفرق لـ"
   },
   "common": {
+    "confirm": {
+      "unsavedChanges": "لديك تغييرات غير محفوظة",
+      "unsavedTitle": "تغييرات غير محفوظة",
+      "unsavedDescription": "ستُفقد التغييرات غير المحفوظة إذا غادرت هذه الصفحة. هل أنت متأكد أنك تريد المغادرة؟",
+      "leaveAnyway": "نعم، غادر",
+      "stayOnPage": "إلغاء"
+    },
     "actions": {
       "actions": "الإجراءات",
       "add": "إضافة",

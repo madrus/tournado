@@ -795,9 +795,7 @@ describe('TeamForm Component - filling the form', () => {
       const nameInput = screen.getByLabelText(/teams\.form\.name/)
       await user.type(nameInput, 'Dirty Team')
 
-      expect(
-        screen.getByText('competition.groupAssignment.unsavedChanges'),
-      ).toBeInTheDocument()
+      expect(screen.getByText('common.confirm.unsavedChanges')).toBeInTheDocument()
     })
   })
 

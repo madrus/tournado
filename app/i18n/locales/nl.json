@@ -104,6 +104,13 @@
     "viewTeamsFor": "Teams bekijken voor"
   },
   "common": {
+    "confirm": {
+      "unsavedChanges": "Je hebt niet-opgeslagen wijzigingen",
+      "unsavedTitle": "Niet-opgeslagen wijzigingen",
+      "unsavedDescription": "Je hebt niet-opgeslagen wijzigingen die verloren gaan als je deze pagina verlaat. Weet je zeker dat je wilt vertrekken?",
+      "leaveAnyway": "Ja, verlaat",
+      "stayOnPage": "Annuleren"
+    },
     "actions": {
       "actions": "Acties",
       "add": "Toevoegen",

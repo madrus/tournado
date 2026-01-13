@@ -61,10 +61,10 @@ export function TournamentForm({
   const nameRef = useRef<HTMLInputElement>(null)
   const navigation = useNavigation()
   const submit = useSubmit()
+  const isSubmitting = navigation.state === 'submitting'
   // Refs to track scroll listener and timeout for cleanup on unmount
   const scrollListenerRef = useRef<((this: Window, ev: Event) => void) | null>(null)
-  const scrollTimeoutRef = useRef<number | undefined>(undefined)
-  // Re-entrancy guard for submit during scroll-to-top
+  const scrollTimeoutRef = useRef<number | undefined>(undefined) // Re-entrancy guard for submit during scroll-to-top
   const isSubmittingRef = useRef(false)
   const isPublicSuccess = isSuccess && variant === 'public'
   // Panel color constants - single source of truth
@@ -354,7 +354,6 @@ export function TournamentForm({
       >
         {/* Hidden fields */}
         {intent ? <input type='hidden' name='intent' value={intent} /> : null}
-
         {/* Hidden fields for arrays */}
         {selectedDivisions.map(division => (
           <input
@@ -372,7 +371,6 @@ export function TournamentForm({
             value={category}
           />
         ))}
-
         {/* Step 1: Basic Information - Always enabled */}
         <Panel
           variant='form-panel'
@@ -432,7 +430,6 @@ export function TournamentForm({
             />
           </div>
         </Panel>
-
         {/* Step 2: Dates */}
         <Panel
           variant='form-panel'
@@ -521,7 +518,6 @@ export function TournamentForm({
             />
           </div>
         </Panel>
-
         {/* Step 3: Divisions */}
         <Panel
           variant='form-panel'
@@ -547,7 +543,6 @@ export function TournamentForm({
             color={PANEL_COLORS.step3}
           />
         </Panel>
-
         {/* Step 4: Categories */}
         <Panel
           variant='form-panel'
@@ -573,7 +568,6 @@ export function TournamentForm({
             color={PANEL_COLORS.step4}
           />
         </Panel>
-
         <FormActionFooter
           isDirty={isFormDirty}
           primaryLabel={
@@ -592,10 +586,11 @@ export function TournamentForm({
           }
           secondaryLabel={t('common.actions.cancel')}
           onSecondary={handleReset}
+          secondaryDisabled={!isFormDirty || isSubmitting}
           secondaryPermission={
             formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
           }
-        />
+        />{' '}
       </Form>
     </div>
   )

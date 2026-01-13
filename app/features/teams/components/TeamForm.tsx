@@ -364,7 +364,6 @@ export function TeamForm({
       >
         {/* Hidden fields */}
         {intent ? <input type='hidden' name='intent' value={intent} /> : null}
-
         {/* Step 1: Tournament Filters */}
         <Panel
           variant='form-panel'
@@ -474,7 +473,6 @@ export function TeamForm({
             />
           </div>
         </Panel>
-
         {/* Step 2: Team Information */}
         <Panel
           variant='form-panel'
@@ -547,7 +545,6 @@ export function TeamForm({
             />
           </div>
         </Panel>
-
         {/* Step 3: Team Leader Information */}
         <Panel
           variant='form-panel'
@@ -651,7 +648,6 @@ export function TeamForm({
             />
           </div>
         </Panel>
-
         {/* Step 4: Privacy Agreement (Create Mode Only) */}
         {mode === 'create' ? (
           <Panel
@@ -695,7 +691,6 @@ export function TeamForm({
             />
           </Panel>
         ) : null}
-
         <FormActionFooter
           isDirty={isFormDirty}
           primaryLabel={
@@ -714,8 +709,9 @@ export function TeamForm({
           primaryPermission={formMode === 'edit' ? 'teams:update' : 'teams:create'}
           secondaryLabel={t('common.actions.cancel')}
           onSecondary={handleReset}
+          secondaryDisabled={!isFormDirty || isSubmitting}
           secondaryPermission={formMode === 'edit' ? 'teams:update' : 'teams:create'}
-        />
+        />{' '}
       </Form>
     </div>
   )

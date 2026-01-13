@@ -17,6 +17,10 @@ type FormActionFooterProps = {
   onSecondary?: ButtonHTMLAttributes<HTMLButtonElement>['onClick']
   secondaryDisabled?: boolean
   secondaryPermission?: Permission
+  confirmTitle?: string
+  confirmDescription?: string
+  confirmProceedLabel?: string
+  confirmCancelLabel?: string
 }
 
 export function FormActionFooter({
@@ -29,7 +33,11 @@ export function FormActionFooter({
   onSecondary,
   secondaryDisabled,
   secondaryPermission,
-}: FormActionFooterProps): JSX.Element {
+  confirmTitle,
+  confirmDescription,
+  confirmProceedLabel,
+  confirmCancelLabel,
+}: Readonly<FormActionFooterProps>): JSX.Element {
   const { t } = useTranslation()
   const blocker = useBlocker(
     ({ currentLocation, nextLocation }) =>
@@ -43,12 +51,12 @@ export function FormActionFooter({
     }
   }, [blocker.state])
 
-  const handleConfirmLeave = () => {
+  function handleConfirmLeave(): void {
     setIsConfirmOpen(false)
     blocker.proceed?.()
   }
 
-  const handleCancelLeave = () => {
+  function handleCancelLeave(): void {
     setIsConfirmOpen(false)
     blocker.reset?.()
   }
@@ -66,7 +74,7 @@ export function FormActionFooter({
             className='text-sm text-warning-600 dark:text-warning-400'
             data-testid='form-unsaved-warning'
           >
-            {t('competition.groupAssignment.unsavedChanges')}
+            {t('common.confirm.unsavedChanges')}
           </span>
         ) : null}
         <div className='flex items-center gap-3'>
@@ -109,10 +117,10 @@ export function FormActionFooter({
           }
         }}
         onConfirm={handleConfirmLeave}
-        title={t('competition.groupAssignment.unsavedTitle')}
-        description={t('competition.groupAssignment.unsavedDescription')}
-        confirmLabel={t('competition.groupAssignment.leaveAnyway')}
-        cancelLabel={t('competition.groupAssignment.stayOnPage')}
+        title={confirmTitle ?? t('common.confirm.unsavedTitle')}
+        description={confirmDescription ?? t('common.confirm.unsavedDescription')}
+        confirmLabel={confirmProceedLabel ?? t('common.confirm.leaveAnyway')}
+        cancelLabel={confirmCancelLabel ?? t('common.confirm.stayOnPage')}
         intent='warning'
       />
     </>

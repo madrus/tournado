@@ -1,7 +1,7 @@
+import { PassThrough } from 'node:stream'
 import { createReadableStreamFromReadable } from '@react-router/node'
 import 'dotenv/config'
 import { isbot } from 'isbot'
-import { PassThrough } from 'node:stream'
 import { renderToPipeableStream } from 'react-dom/server'
 import type { EntryContext } from 'react-router'
 import { ServerRouter } from 'react-router'

@@ -1,6 +1,6 @@
-import type { FullConfig } from '@playwright/test'
 import fs from 'node:fs'
 import path from 'node:path'
+import type { FullConfig } from '@playwright/test'
 import { checkDevServer } from '../../scripts/utils/port-utils.js'
 import { cleanDatabaseCompletely, createUsersForAllRoles } from './database'
 

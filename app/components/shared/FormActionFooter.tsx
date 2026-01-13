@@ -11,32 +11,20 @@ type FormActionFooterProps = {
   isDirty: boolean
   primaryLabel: string
   onPrimary?: ButtonHTMLAttributes<HTMLButtonElement>['onClick']
-  primaryDisabled?: boolean
-  primaryPermission?: Permission
-  secondaryLabel?: string
+  buttonsDisabled?: boolean
+  isValid?: boolean
+  permission?: Permission
   onSecondary?: ButtonHTMLAttributes<HTMLButtonElement>['onClick']
-  secondaryDisabled?: boolean
-  secondaryPermission?: Permission
-  confirmTitle?: string
-  confirmDescription?: string
-  confirmProceedLabel?: string
-  confirmCancelLabel?: string
 }
 
 export function FormActionFooter({
   isDirty,
   primaryLabel,
   onPrimary,
-  primaryDisabled,
-  primaryPermission,
-  secondaryLabel,
+  buttonsDisabled,
+  isValid = true,
+  permission,
   onSecondary,
-  secondaryDisabled,
-  secondaryPermission,
-  confirmTitle,
-  confirmDescription,
-  confirmProceedLabel,
-  confirmCancelLabel,
 }: Readonly<FormActionFooterProps>): JSX.Element {
   const { t } = useTranslation()
   const blocker = useBlocker(
@@ -83,14 +71,14 @@ export function FormActionFooter({
             variant='secondary'
             color='brand'
             onClick={onSecondary}
-            disabled={secondaryDisabled}
-            permission={secondaryPermission}
+            disabled={!isValid ? false : buttonsDisabled}
+            permission={permission}
             className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
             data-testid='form-action-secondary'
           >
             <span className='flex items-center gap-2'>
               <RestorePageIcon className='h-6 w-6' size={24} />
-              <span>{secondaryLabel ?? t('common.actions.cancel')}</span>
+              <span>{t('common.actions.cancel')}</span>
             </span>
           </ActionButton>
           <ActionButton
@@ -99,8 +87,8 @@ export function FormActionFooter({
             color='brand'
             icon='check_circle'
             onClick={onPrimary}
-            disabled={primaryDisabled}
-            permission={primaryPermission}
+            disabled={buttonsDisabled}
+            permission={permission}
             className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
             data-testid='form-action-primary'
           >
@@ -117,10 +105,10 @@ export function FormActionFooter({
           }
         }}
         onConfirm={handleConfirmLeave}
-        title={confirmTitle ?? t('common.confirm.unsavedTitle')}
-        description={confirmDescription ?? t('common.confirm.unsavedDescription')}
-        confirmLabel={confirmProceedLabel ?? t('common.confirm.leaveAnyway')}
-        cancelLabel={confirmCancelLabel ?? t('common.confirm.stayOnPage')}
+        title={t('common.confirm.unsavedTitle')}
+        description={t('common.confirm.unsavedDescription')}
+        confirmLabel={t('common.confirm.leaveAnyway')}
+        cancelLabel={t('common.confirm.stayOnPage')}
         intent='warning'
       />
     </>

@@ -20,7 +20,6 @@ type FormActionFooterProps = Parameters<typeof FormActionFooter>[0]
 const baseProps: FormActionFooterProps = {
   isDirty: false,
   primaryLabel: 'save',
-  secondaryLabel: 'cancel',
   onPrimary: vi.fn(),
   onSecondary: vi.fn(),
 }
@@ -68,8 +67,8 @@ describe('FormActionFooter', () => {
     expect(warningElement).toHaveTextContent('common.confirm.unsavedChanges')
   })
 
-  it('renders action buttons passed via props', () => {
-    renderFooter({ isDirty: false })
+  it('renders action buttons with permission checks', () => {
+    renderFooter({ isDirty: false, permission: 'teams:create' })
 
     expect(screen.getByTestId('form-action-secondary')).toBeInTheDocument()
     expect(screen.getByTestId('form-action-primary')).toBeInTheDocument()
@@ -91,16 +90,18 @@ describe('FormActionFooter', () => {
     expect(onSecondary).toHaveBeenCalledTimes(1)
   })
 
-  it('disables primary button when primaryDisabled is true', () => {
-    renderFooter({ primaryDisabled: true })
+  it('disables both buttons when buttonsDisabled is true and isValid is not false', () => {
+    renderFooter({ buttonsDisabled: true, isValid: true })
 
     expect(screen.getByTestId('form-action-primary')).toBeDisabled()
+    expect(screen.getByTestId('form-action-secondary')).toBeDisabled()
   })
 
-  it('disables secondary button when secondaryDisabled is true', () => {
-    renderFooter({ secondaryDisabled: true })
+  it('enables secondary button when buttonsDisabled is true but isValid is false', () => {
+    renderFooter({ buttonsDisabled: true, isValid: false })
 
-    expect(screen.getByTestId('form-action-secondary')).toBeDisabled()
+    expect(screen.getByTestId('form-action-primary')).toBeDisabled()
+    expect(screen.getByTestId('form-action-secondary')).toBeEnabled()
   })
 
   it('shows confirmation dialog when navigating away while dirty', async () => {

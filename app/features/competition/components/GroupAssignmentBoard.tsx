@@ -389,10 +389,8 @@ export function GroupAssignmentBoard({
               isSaving ? t('common.actions.updating') : t('common.actions.update')
             }
             onPrimary={handleSave}
-            primaryDisabled={!isDirty || isSaving}
-            secondaryLabel={t('common.actions.cancel')}
+            buttonsDisabled={!isDirty || isSaving}
             onSecondary={handleCancel}
-            secondaryDisabled={!isDirty || isSaving}
           />
         </div>
 

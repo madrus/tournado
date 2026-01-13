@@ -22,6 +22,10 @@ Project Context documentation can be found in the following locations:
 
 ---
 
+## Output Verification
+
+- Whenever a script or skill emits an artifact (JSON, config, PRD, etc.), trace its target path in the writer before assuming a location. Inspect the generator script or the skill definition that writes the file so that you know for sure where outputs land.
+
 ## AI Rules
 
 ### Project Overview

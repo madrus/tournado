@@ -2,12 +2,12 @@ import { type VariantProps, cva } from 'class-variance-authority'
 
 // Tree-shaking optimization: Only include colors actually used in navigation
 const NAVIGATION_COLORS = {
-	brand: '',
-	primary: '',
-	emerald: '',
-	blue: '',
-	teal: '',
-	red: '',
+  brand: '',
+  primary: '',
+  emerald: '',
+  blue: '',
+  teal: '',
+  red: '',
 } as const
 
 type NavigationColorKey = keyof typeof NAVIGATION_COLORS
@@ -27,32 +27,32 @@ type NavigationColorKey = keyof typeof NAVIGATION_COLORS
  * ```
  */
 export const navigationItemVariants = cva(
-	// Base classes - common navigation item styling
-	['flex flex-col items-center transition-colors duration-200'],
-	{
-		variants: {
-			/**
-			 * Color theme variants following the design system color mapping.
-			 * Limited to commonly used navigation colors for bundle size optimization.
-			 * - brand: Primary brand color (red) for key navigation items
-			 * - primary: Secondary brand color (emerald) for default items
-			 * - Other colors: Essential colors for different navigation contexts
-			 */
-			color: NAVIGATION_COLORS,
-			/**
-			 * Active state indicating current page/route.
-			 * Combined with color variants to show proper visual hierarchy.
-			 */
-			active: {
-				true: '',
-				false: '',
-			},
-		},
-		defaultVariants: {
-			color: 'brand',
-			active: false,
-		},
-	},
+  // Base classes - common navigation item styling
+  ['flex flex-col items-center transition-colors duration-200'],
+  {
+    variants: {
+      /**
+       * Color theme variants following the design system color mapping.
+       * Limited to commonly used navigation colors for bundle size optimization.
+       * - brand: Primary brand color (red) for key navigation items
+       * - primary: Secondary brand color (emerald) for default items
+       * - Other colors: Essential colors for different navigation contexts
+       */
+      color: NAVIGATION_COLORS,
+      /**
+       * Active state indicating current page/route.
+       * Combined with color variants to show proper visual hierarchy.
+       */
+      active: {
+        true: '',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      color: 'brand',
+      active: false,
+    },
+  },
 )
 
 /**
@@ -72,50 +72,50 @@ export const navigationItemVariants = cva(
  * ```
  */
 export const navigationIconVariants = cva(
-	// Base classes for navigation icons
-	['transition-colors duration-200'],
-	{
-		variants: {
-			/**
-			 * Color theme for the navigation icon.
-			 * Limited to essential navigation colors for bundle optimization.
-			 */
-			color: NAVIGATION_COLORS,
-			/**
-			 * Active/inactive state for current page indication.
-			 */
-			active: {
-				true: '',
-				false: '',
-			},
-		},
-		compoundVariants: [
-			// Generate compound variants for navigation colors only
-			...Object.keys(NAVIGATION_COLORS).flatMap((color) => [
-				// Active state: use adaptive color for visual prominence
-				{
-					color: color as NavigationColorKey,
-					active: true,
-					class:
-						color === 'brand'
-							? 'text-adaptive-brand' // Brand uses special adaptive class
-							: color === 'primary'
-								? 'text-adaptive-emerald' // Primary maps to emerald
-								: `text-adaptive-${color}`, // Standard adaptive pattern
-				},
-				// Inactive state: use neutral foreground for all colors
-				{
-					color: color as NavigationColorKey,
-					active: false,
-					class: 'text-primary-foreground',
-				},
-			]),
-		],
-		defaultVariants: {
-			color: 'brand',
-			active: false,
-		},
-	},
+  // Base classes for navigation icons
+  ['transition-colors duration-200'],
+  {
+    variants: {
+      /**
+       * Color theme for the navigation icon.
+       * Limited to essential navigation colors for bundle optimization.
+       */
+      color: NAVIGATION_COLORS,
+      /**
+       * Active/inactive state for current page indication.
+       */
+      active: {
+        true: '',
+        false: '',
+      },
+    },
+    compoundVariants: [
+      // Generate compound variants for navigation colors only
+      ...Object.keys(NAVIGATION_COLORS).flatMap(color => [
+        // Active state: use adaptive color for visual prominence
+        {
+          color: color as NavigationColorKey,
+          active: true,
+          class:
+            color === 'brand'
+              ? 'text-adaptive-brand' // Brand uses special adaptive class
+              : color === 'primary'
+                ? 'text-adaptive-emerald' // Primary maps to emerald
+                : `text-adaptive-${color}`, // Standard adaptive pattern
+        },
+        // Inactive state: use neutral foreground for all colors
+        {
+          color: color as NavigationColorKey,
+          active: false,
+          class: 'text-primary-foreground',
+        },
+      ]),
+    ],
+    defaultVariants: {
+      color: 'brand',
+      active: false,
+    },
+  },
 )
 
 /**
@@ -137,50 +137,50 @@ export const navigationIconVariants = cva(
  * ```
  */
 export const navigationLabelVariants = cva(
-	// Base classes for navigation labels
-	['mt-1 text-xs transition-colors duration-200'],
-	{
-		variants: {
-			/**
-			 * Color theme for the navigation label text.
-			 * Limited to essential navigation colors for bundle optimization.
-			 */
-			color: NAVIGATION_COLORS,
-			/**
-			 * Active/inactive state affecting both color and typography weight.
-			 */
-			active: {
-				true: '',
-				false: '',
-			},
-		},
-		compoundVariants: [
-			// Generate compound variants for navigation colors with typography emphasis
-			...Object.keys(NAVIGATION_COLORS).flatMap((color) => [
-				// Active state: use adaptive color + bold font for emphasis
-				{
-					color: color as NavigationColorKey,
-					active: true,
-					class:
-						color === 'brand'
-							? 'font-bold text-adaptive-brand' // Brand uses special adaptive class
-							: color === 'primary'
-								? 'font-bold text-adaptive-emerald' // Primary maps to emerald
-								: `text-adaptive-${color} font-bold`, // Standard adaptive pattern
-				},
-				// Inactive state: use neutral foreground for all colors
-				{
-					color: color as NavigationColorKey,
-					active: false,
-					class: 'text-primary-foreground',
-				},
-			]),
-		],
-		defaultVariants: {
-			color: 'brand',
-			active: false,
-		},
-	},
+  // Base classes for navigation labels
+  ['mt-1 text-xs transition-colors duration-200'],
+  {
+    variants: {
+      /**
+       * Color theme for the navigation label text.
+       * Limited to essential navigation colors for bundle optimization.
+       */
+      color: NAVIGATION_COLORS,
+      /**
+       * Active/inactive state affecting both color and typography weight.
+       */
+      active: {
+        true: '',
+        false: '',
+      },
+    },
+    compoundVariants: [
+      // Generate compound variants for navigation colors with typography emphasis
+      ...Object.keys(NAVIGATION_COLORS).flatMap(color => [
+        // Active state: use adaptive color + bold font for emphasis
+        {
+          color: color as NavigationColorKey,
+          active: true,
+          class:
+            color === 'brand'
+              ? 'font-bold text-adaptive-brand' // Brand uses special adaptive class
+              : color === 'primary'
+                ? 'font-bold text-adaptive-emerald' // Primary maps to emerald
+                : `text-adaptive-${color} font-bold`, // Standard adaptive pattern
+        },
+        // Inactive state: use neutral foreground for all colors
+        {
+          color: color as NavigationColorKey,
+          active: false,
+          class: 'text-primary-foreground',
+        },
+      ]),
+    ],
+    defaultVariants: {
+      color: 'brand',
+      active: false,
+    },
+  },
 )
 
 // TypeScript type exports for component prop typing

@@ -199,15 +199,15 @@ This addendum complements `.cursor/rules/PRD.mdc` with deeper implementation not
 import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
-	appId: 'com.example.tournado',
-	appName: 'Tournado',
-	webDir: 'dist',
-	server: {
-		// Point to your SSR origin to preserve SSR in WebView
-		url: 'https://tournado.fly.io',
-		cleartext: false,
-		allowNavigation: ['tournado.fly.io', 'tournado-staging.fly.io'],
-	},
+  appId: 'com.example.tournado',
+  appName: 'Tournado',
+  webDir: 'dist',
+  server: {
+    // Point to your SSR origin to preserve SSR in WebView
+    url: 'https://tournado.fly.io',
+    cleartext: false,
+    allowNavigation: ['tournado.fly.io', 'tournado-staging.fly.io'],
+  },
 }
 
 export default config

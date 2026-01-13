@@ -4,16 +4,16 @@ import { handle, loader } from '~/routes/profile'
 
 // Mock session utilities
 vi.mock('~/utils/session.server', () => ({
-	getUser: vi.fn(),
+  getUser: vi.fn(),
 }))
 
 beforeEach(() => {
-	vi.clearAllMocks()
+  vi.clearAllMocks()
 })
 
 // Generate all authorization tests automatically from route metadata
 createLoaderAuthTests({
-	routePath: '/profile',
-	metadata: handle,
-	loaderFunction: loader,
+  routePath: '/profile',
+  metadata: handle,
+  loaderFunction: loader,
 })

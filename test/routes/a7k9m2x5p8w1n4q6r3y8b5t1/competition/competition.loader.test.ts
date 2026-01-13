@@ -5,22 +5,22 @@ import { adminPath } from '~/utils/adminRoutes'
 
 // Mock session utilities
 vi.mock('~/utils/session.server', () => ({
-	getUser: vi.fn(),
+  getUser: vi.fn(),
 }))
 
 // Mock tournament model
 vi.mock('~/models/tournament.server', () => ({
-	getAllTournaments: vi.fn().mockResolvedValue([]),
-	getTournamentById: vi.fn().mockResolvedValue(null),
+  getAllTournaments: vi.fn().mockResolvedValue([]),
+  getTournamentById: vi.fn().mockResolvedValue(null),
 }))
 
 beforeEach(() => {
-	vi.clearAllMocks()
+  vi.clearAllMocks()
 })
 
 // Generate all authorization tests automatically from route metadata
 createLoaderAuthTests({
-	routePath: adminPath('/competition'),
-	metadata: handle,
-	loaderFunction: loader,
+  routePath: adminPath('/competition'),
+  metadata: handle,
+  loaderFunction: loader,
 })

@@ -19,61 +19,61 @@ const _DEV_SERVER_URL = `http://localhost:${PORT}`
 const serverStatus = await checkDevServer(PORT)
 
 if (serverStatus.isResponding && serverStatus.isTestServer) {
-	process.exit(0)
+  process.exit(0)
 } else if (serverStatus.isResponding && !serverStatus.isTestServer) {
-	// Try to kill the process using the port
-	try {
-		const { spawnSync } = await import('node:child_process')
-		const killResult = spawnSync('lsof', ['-ti', `:${PORT}`], {
-			encoding: 'utf8',
-		})
+  // Try to kill the process using the port
+  try {
+    const { spawnSync } = await import('node:child_process')
+    const killResult = spawnSync('lsof', ['-ti', `:${PORT}`], {
+      encoding: 'utf8',
+    })
 
-		if (killResult.stdout.trim()) {
-			const pids = killResult.stdout
-				.trim()
-				.split('\n')
-				.filter((pid) => pid.trim())
+    if (killResult.stdout.trim()) {
+      const pids = killResult.stdout
+        .trim()
+        .split('\n')
+        .filter(pid => pid.trim())
 
-			for (const pid of pids) {
-				const killProcess = spawnSync('kill', ['-TERM', pid.trim()])
-				if (killProcess.status === 0) {
-				} else {
-					const forceKill = spawnSync('kill', ['-KILL', pid.trim()])
-					if (forceKill.status === 0) {
-					} else {
-					}
-				}
-			}
-			await new Promise((resolve) => setTimeout(resolve, 3000))
+      for (const pid of pids) {
+        const killProcess = spawnSync('kill', ['-TERM', pid.trim()])
+        if (killProcess.status === 0) {
+        } else {
+          const forceKill = spawnSync('kill', ['-KILL', pid.trim()])
+          if (forceKill.status === 0) {
+          } else {
+          }
+        }
+      }
+      await new Promise(resolve => setTimeout(resolve, 3000))
 
-			// Verify the port is now free
-			const verifyStatus = await checkDevServer(PORT)
-			if (verifyStatus.isRunning) {
-				process.exit(1)
-			} else {
-			}
-		}
-	} catch (_error) {}
+      // Verify the port is now free
+      const verifyStatus = await checkDevServer(PORT)
+      if (verifyStatus.isRunning) {
+        process.exit(1)
+      } else {
+      }
+    }
+  } catch (_error) {}
 } else if (serverStatus.isRunning && !serverStatus.isResponding) {
-	process.exit(1)
+  process.exit(1)
 }
 
 // Apply migrations to the test database before starting the dev server
 const migrate = spawnSync('pnpm', ['prisma', 'migrate', 'deploy'], {
-	stdio: 'inherit',
-	env: process.env,
+  stdio: 'inherit',
+  env: process.env,
 })
 
 if (migrate.status !== 0) {
-	process.exit(migrate.status || 1)
+  process.exit(migrate.status || 1)
 }
 
 // Start the dev server (react-router dev) with explicit port
 const server = spawn('pnpm', ['dev', '--port', PORT.toString()], {
-	stdio: 'inherit',
-	env: process.env,
+  stdio: 'inherit',
+  env: process.env,
 })
 
-server.on('exit', (code) => {
-	process.exit(code || 0)
+server.on('exit', code => {
+  process.exit(code || 0)
 })

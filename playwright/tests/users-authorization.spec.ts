@@ -20,75 +20,75 @@ import { adminPath } from '../../app/utils/adminRoutes'
 import { loginAsRole } from '../helpers/session'
 
 test.describe('Users Management Authorization Tests', () => {
-	test.beforeEach(async ({ page }) => {
-		await page.setViewportSize({ width: 375, height: 812 })
-	})
+  test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 })
+  })
 
-	// Test unauthenticated access
-	test('should redirect unauthenticated users to signin', async ({ page }) => {
-		// Use empty storage state (no authentication)
-		await page.context().clearCookies()
+  // Test unauthenticated access
+  test('should redirect unauthenticated users to signin', async ({ page }) => {
+    // Use empty storage state (no authentication)
+    await page.context().clearCookies()
 
-		await page.goto(adminPath('/users'))
+    await page.goto(adminPath('/users'))
 
-		// Should redirect to signin with redirectTo parameter
-		await expect(page).toHaveURL(/\/auth\/signin/)
-		await expect(page).toHaveURL(/redirectTo=/)
-	})
+    // Should redirect to signin with redirectTo parameter
+    await expect(page).toHaveURL(/\/auth\/signin/)
+    await expect(page).toHaveURL(/redirectTo=/)
+  })
 
-	// Helper to test role access
-	async function testRoleAccess(
-		page: Page,
-		role: Role,
-		shouldAccess: boolean,
-	): Promise<void> {
-		await loginAsRole(page, role)
-		await page.goto(adminPath('/users'))
+  // Helper to test role access
+  async function testRoleAccess(
+    page: Page,
+    role: Role,
+    shouldAccess: boolean,
+  ): Promise<void> {
+    await loginAsRole(page, role)
+    await page.goto(adminPath('/users'))
 
-		if (shouldAccess) {
-			// Should stay on users page
-			await expect(page).toHaveURL(adminPath('/users'))
-			// Verify users management content renders
-			await expect(page.getByTestId('admin-users-page-content')).toBeVisible()
-		} else {
-			// Should redirect to unauthorized
-			await expect(page).toHaveURL('/unauthorized')
-		}
-	}
+    if (shouldAccess) {
+      // Should stay on users page
+      await expect(page).toHaveURL(adminPath('/users'))
+      // Verify users management content renders
+      await expect(page.getByTestId('admin-users-page-content')).toBeVisible()
+    } else {
+      // Should redirect to unauthorized
+      await expect(page).toHaveURL('/unauthorized')
+    }
+  }
 
-	// Test ADMIN role - should have access
-	test('ADMIN role users should access users management', async ({ page }) => {
-		await testRoleAccess(page, 'ADMIN', true)
-	})
+  // Test ADMIN role - should have access
+  test('ADMIN role users should access users management', async ({ page }) => {
+    await testRoleAccess(page, 'ADMIN', true)
+  })
 
-	// Test all other roles - should be blocked
-	test('PUBLIC role users should be blocked from users management', async ({
-		page,
-	}) => {
-		await testRoleAccess(page, 'PUBLIC', false)
-	})
+  // Test all other roles - should be blocked
+  test('PUBLIC role users should be blocked from users management', async ({
+    page,
+  }) => {
+    await testRoleAccess(page, 'PUBLIC', false)
+  })
 
-	test('REFEREE role users should be blocked from users management', async ({
-		page,
-	}) => {
-		await testRoleAccess(page, 'REFEREE', false)
-	})
+  test('REFEREE role users should be blocked from users management', async ({
+    page,
+  }) => {
+    await testRoleAccess(page, 'REFEREE', false)
+  })
 
-	test('EDITOR role users should be blocked from users management', async ({
-		page,
-	}) => {
-		await testRoleAccess(page, 'EDITOR', false)
-	})
+  test('EDITOR role users should be blocked from users management', async ({
+    page,
+  }) => {
+    await testRoleAccess(page, 'EDITOR', false)
+  })
 
-	test('BILLING role users should be blocked from users management', async ({
-		page,
-	}) => {
-		await testRoleAccess(page, 'BILLING', false)
-	})
+  test('BILLING role users should be blocked from users management', async ({
+    page,
+  }) => {
+    await testRoleAccess(page, 'BILLING', false)
+  })
 
-	test('MANAGER role users should be blocked from users management', async ({
-		page,
-	}) => {
-		await testRoleAccess(page, 'MANAGER', false)
-	})
+  test('MANAGER role users should be blocked from users management', async ({
+    page,
+  }) => {
+    await testRoleAccess(page, 'MANAGER', false)
+  })
 })

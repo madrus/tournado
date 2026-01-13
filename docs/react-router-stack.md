@@ -176,12 +176,12 @@ We have global authentication setup for admin features and different test projec
 ```ts
 // Admin tests use pre-authenticated state
 test.describe('Admin Features', () => {
-	// These tests run with admin authentication already set up
+  // These tests run with admin authentication already set up
 })
 
 // Public tests run without authentication
 test.describe('Public Features', () => {
-	test.use({ storageState: { cookies: [], origins: [] } })
+  test.use({ storageState: { cookies: [], origins: [] } })
 })
 ```
 
@@ -191,9 +191,9 @@ Test cleanup is handled automatically through our database helpers:
 import { cleanupUser, createAdminUser } from '../helpers/database'
 
 test('admin feature test', async ({ page }) => {
-	const user = await createAdminUser()
-	// ... test logic ...
-	await cleanupUser(user.email)
+  const user = await createAdminUser()
+  // ... test logic ...
+  await cleanupUser(user.email)
 })
 ```
 

@@ -1,8 +1,8 @@
 import {
-	FALLBACK_LANGUAGE,
-	type Language,
-	SUPPORTED_LANGUAGE_CODES,
-	initI18n,
+  FALLBACK_LANGUAGE,
+  type Language,
+  SUPPORTED_LANGUAGE_CODES,
+  initI18n,
 } from '~/i18n/config'
 
 /**
@@ -11,14 +11,14 @@ import {
  * @returns The user's preferred language or fallback to the default language
  */
 export function getLanguageFromRequest(request: Request): Language {
-	const cookieHeader = request.headers.get('Cookie') || ''
-	const langMatch = cookieHeader.match(/lang=([^;]+)/)
-	const rawLanguage = langMatch?.[1]?.trim()
+  const cookieHeader = request.headers.get('Cookie') || ''
+  const langMatch = cookieHeader.match(/lang=([^;]+)/)
+  const rawLanguage = langMatch?.[1]?.trim()
 
-	// Return the language if supported, otherwise fallback to default
-	return SUPPORTED_LANGUAGE_CODES.includes(rawLanguage as Language)
-		? (rawLanguage as Language)
-		: FALLBACK_LANGUAGE
+  // Return the language if supported, otherwise fallback to default
+  return SUPPORTED_LANGUAGE_CODES.includes(rawLanguage as Language)
+    ? (rawLanguage as Language)
+    : FALLBACK_LANGUAGE
 }
 
 /**
@@ -27,7 +27,7 @@ export function getLanguageFromRequest(request: Request): Language {
  * @returns Translation function bound to the user's language
  */
 export function getServerT(request: Request): ReturnType<typeof initI18n>['t'] {
-	const language = getLanguageFromRequest(request)
-	const i18n = initI18n(language)
-	return i18n.t.bind(i18n)
+  const language = getLanguageFromRequest(request)
+  const i18n = initI18n(language)
+  return i18n.t.bind(i18n)
 }

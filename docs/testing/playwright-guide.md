@@ -21,31 +21,31 @@ Our Playwright configuration uses three projects with different authentication s
 ```typescript
 // playwright.config.ts
 projects: [
-	// Admin tests - use admin authentication context
-	{
-		name: 'admin-authenticated',
-		use: { storageState: './playwright/.auth/admin-auth.json' },
-		testMatch: ['**/admin-*.spec.ts'],
-	},
+  // Admin tests - use admin authentication context
+  {
+    name: 'admin-authenticated',
+    use: { storageState: './playwright/.auth/admin-auth.json' },
+    testMatch: ['**/admin-*.spec.ts'],
+  },
 
-	// Regular user tests - use user authentication context
-	{
-		name: 'user-authenticated',
-		use: { storageState: './playwright/.auth/user-auth.json' },
-		testMatch: ['**/menu-toggle.spec.ts', '**/user-authorization.spec.ts'],
-	},
+  // Regular user tests - use user authentication context
+  {
+    name: 'user-authenticated',
+    use: { storageState: './playwright/.auth/user-auth.json' },
+    testMatch: ['**/menu-toggle.spec.ts', '**/user-authorization.spec.ts'],
+  },
 
-	// Public/auth flow tests - no authentication
-	{
-		name: 'no-auth',
-		use: { storageState: { cookies: [], origins: [] } },
-		testMatch: [
-			'**/auth*.spec.ts',
-			'**/teams.spec.ts',
-			'**/navigation.spec.ts',
-			'**/authorization.spec.ts',
-		],
-	},
+  // Public/auth flow tests - no authentication
+  {
+    name: 'no-auth',
+    use: { storageState: { cookies: [], origins: [] } },
+    testMatch: [
+      '**/auth*.spec.ts',
+      '**/teams.spec.ts',
+      '**/navigation.spec.ts',
+      '**/authorization.spec.ts',
+    ],
+  },
 ]
 ```
 
@@ -58,20 +58,20 @@ projects: [
 ```typescript
 // Test actual authentication flows
 test('should register new user and sign in', async ({ page }) => {
-	const newUser = {
-		firstName: faker.person.firstName(),
-		lastName: faker.person.lastName(),
-		email: createValidTestEmail(),
-		password: 'MyReallyStr0ngPassw0rd!!!',
-	}
+  const newUser = {
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    email: createValidTestEmail(),
+    password: 'MyReallyStr0ngPassw0rd!!!',
+  }
 
-	const signupPage = new SignupPage(page)
-	await signupPage.register(newUser)
+  const signupPage = new SignupPage(page)
+  await signupPage.register(newUser)
 
-	const loginPage = new LoginPage(page)
-	await loginPage.login(newUser.email, newUser.password)
+  const loginPage = new LoginPage(page)
+  await loginPage.login(newUser.email, newUser.password)
 
-	await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
+  await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
 })
 ```
 
@@ -82,10 +82,10 @@ test('should register new user and sign in', async ({ page }) => {
 ```typescript
 // No manual login - uses admin-auth.json
 test('should display admin teams management page', async ({ page }) => {
-	await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+  await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
 
-	await expect(page.locator('h1').filter({ hasText: /Teams/i })).toBeVisible()
-	await expect(page.locator('.container').first()).toBeVisible()
+  await expect(page.locator('h1').filter({ hasText: /Teams/i })).toBeVisible()
+  await expect(page.locator('.container').first()).toBeVisible()
 })
 ```
 
@@ -96,10 +96,10 @@ test('should display admin teams management page', async ({ page }) => {
 ```typescript
 // Tests what regular users can/cannot access
 test('should be redirected from tournament creation (admin only)', async ({ page }) => {
-	await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new')
+  await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new')
 
-	// Regular user should be redirected to unauthorized page
-	await expect(page).toHaveURL('/unauthorized')
+  // Regular user should be redirected to unauthorized page
+  await expect(page).toHaveURL('/unauthorized')
 })
 ```
 
@@ -110,10 +110,10 @@ test('should be redirected from tournament creation (admin only)', async ({ page
 ```typescript
 // No authentication required
 test('should allow access to public teams page', async ({ page }) => {
-	await page.goto('/teams')
+  await page.goto('/teams')
 
-	await expect(page).toHaveURL('/teams')
-	await expect(page.getByRole('link', { name: 'Toevoegen' })).toBeVisible()
+  await expect(page).toHaveURL('/teams')
+  await expect(page.getByRole('link', { name: 'Toevoegen' })).toBeVisible()
 })
 ```
 
@@ -144,24 +144,24 @@ playwright/
 
 ```typescript
 export class BasePage {
-	constructor(protected page: Page) {}
+  constructor(protected page: Page) {}
 
-	// Common navigation elements available on all pages
-	get bottomNavigation(): Locator {
-		return this.page.getByTestId('bottom-navigation')
-	}
+  // Common navigation elements available on all pages
+  get bottomNavigation(): Locator {
+    return this.page.getByTestId('bottom-navigation')
+  }
 
-	get homeNavButton(): Locator {
-		return this.bottomNavigation.getByRole('link', { name: /home/i })
-	}
+  get homeNavButton(): Locator {
+    return this.bottomNavigation.getByRole('link', { name: /home/i })
+  }
 
-	get teamsNavButton(): Locator {
-		return this.bottomNavigation.getByRole('link', { name: /teams/i })
-	}
+  get teamsNavButton(): Locator {
+    return this.bottomNavigation.getByRole('link', { name: /teams/i })
+  }
 
-	get moreNavButton(): Locator {
-		return this.bottomNavigation.getByRole('link', { name: /more/i })
-	}
+  get moreNavButton(): Locator {
+    return this.bottomNavigation.getByRole('link', { name: /more/i })
+  }
 }
 ```
 
@@ -169,35 +169,35 @@ export class BasePage {
 
 ```typescript
 export class LoginPage extends BasePage {
-	readonly emailInput: Locator
-	readonly passwordInput: Locator
-	readonly signInButton: Locator
+  readonly emailInput: Locator
+  readonly passwordInput: Locator
+  readonly signInButton: Locator
 
-	constructor(protected override page: Page) {
-		super(page)
-		this.emailInput = page.locator('#email')
-		this.passwordInput = page.locator('#password')
-		this.signInButton = page.getByRole('button', { name: 'Inloggen' }) // Dutch text
-	}
+  constructor(protected override page: Page) {
+    super(page)
+    this.emailInput = page.locator('#email')
+    this.passwordInput = page.locator('#password')
+    this.signInButton = page.getByRole('button', { name: 'Inloggen' }) // Dutch text
+  }
 
-	async login(email: string, password: string): Promise<void> {
-		await this.page.goto('/auth/signin')
+  async login(email: string, password: string): Promise<void> {
+    await this.page.goto('/auth/signin')
 
-		// Use pressSequentially for React controlled inputs
-		await this.emailInput.pressSequentially(email, { delay: 20 })
-		await this.passwordInput.pressSequentially(password, { delay: 20 })
+    // Use pressSequentially for React controlled inputs
+    await this.emailInput.pressSequentially(email, { delay: 20 })
+    await this.passwordInput.pressSequentially(password, { delay: 20 })
 
-		await this.signInButton.click()
-		await this.page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
-	}
+    await this.signInButton.click()
+    await this.page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
+  }
 
-	async verifyAuthentication(): Promise<void> {
-		const userMenuButton = this.page.getByRole('button', { name: 'Toggle menu' })
-		await userMenuButton.click()
+  async verifyAuthentication(): Promise<void> {
+    const userMenuButton = this.page.getByRole('button', { name: 'Toggle menu' })
+    await userMenuButton.click()
 
-		const userDropdown = this.page.getByTestId('user-menu-dropdown')
-		await userDropdown.waitFor({ state: 'visible' })
-	}
+    const userDropdown = this.page.getByTestId('user-menu-dropdown')
+    await userDropdown.waitFor({ state: 'visible' })
+  }
 }
 ```
 
@@ -205,24 +205,24 @@ export class LoginPage extends BasePage {
 
 ```typescript
 export class SignupPage extends BasePage {
-	async register(user: {
-		firstName: string
-		lastName: string
-		email: string
-		password: string
-	}): Promise<void> {
-		await this.page.goto('/auth/signup')
+  async register(user: {
+    firstName: string
+    lastName: string
+    email: string
+    password: string
+  }): Promise<void> {
+    await this.page.goto('/auth/signup')
 
-		await this.page
-			.locator('#firstName')
-			.pressSequentially(user.firstName, { delay: 20 })
-		await this.page.locator('#lastName').pressSequentially(user.lastName, { delay: 20 })
-		await this.page.locator('#email').pressSequentially(user.email, { delay: 20 })
-		await this.page.locator('#password').pressSequentially(user.password, { delay: 20 })
+    await this.page
+      .locator('#firstName')
+      .pressSequentially(user.firstName, { delay: 20 })
+    await this.page.locator('#lastName').pressSequentially(user.lastName, { delay: 20 })
+    await this.page.locator('#email').pressSequentially(user.email, { delay: 20 })
+    await this.page.locator('#password').pressSequentially(user.password, { delay: 20 })
 
-		await this.page.getByRole('button', { name: 'Account aanmaken' }).click()
-		await this.page.waitForURL(/\/auth\/signin/)
-	}
+    await this.page.getByRole('button', { name: 'Account aanmaken' }).click()
+    await this.page.waitForURL(/\/auth\/signin/)
+  }
 }
 ```
 
@@ -234,29 +234,29 @@ Creates both admin and user authentication contexts before tests run:
 
 ```typescript
 async function globalSetup() {
-	console.log('- cleaning database for tests...')
-	await cleanDatabase()
+  console.log('- cleaning database for tests...')
+  await cleanDatabase()
 
-	// Create admin user and auth context
-	const adminUser = await createAdminUser()
-	const adminContext = await browser.newContext()
-	const adminPage = await adminContext.newPage()
+  // Create admin user and auth context
+  const adminUser = await createAdminUser()
+  const adminContext = await browser.newContext()
+  const adminPage = await adminContext.newPage()
 
-	const loginPage = new LoginPage(adminPage)
-	await loginPage.login(adminUser.email, 'MyReallyStr0ngPassw0rd!!!')
+  const loginPage = new LoginPage(adminPage)
+  await loginPage.login(adminUser.email, 'MyReallyStr0ngPassw0rd!!!')
 
-	await adminContext.storageState({ path: './playwright/.auth/admin-auth.json' })
+  await adminContext.storageState({ path: './playwright/.auth/admin-auth.json' })
 
-	// Create regular user and auth context
-	const regularUser = await createRegularUser()
-	const userContext = await browser.newContext()
-	const userPage = await userContext.newPage()
+  // Create regular user and auth context
+  const regularUser = await createRegularUser()
+  const userContext = await browser.newContext()
+  const userPage = await userContext.newPage()
 
-	await loginPage.login(regularUser.email, 'MyReallyStr0ngPassw0rd!!!')
+  await loginPage.login(regularUser.email, 'MyReallyStr0ngPassw0rd!!!')
 
-	await userContext.storageState({ path: './playwright/.auth/user-auth.json' })
+  await userContext.storageState({ path: './playwright/.auth/user-auth.json' })
 
-	console.log('- both authentication contexts created successfully')
+  console.log('- both authentication contexts created successfully')
 }
 ```
 
@@ -264,31 +264,31 @@ async function globalSetup() {
 
 ```typescript
 export async function createAdminUser() {
-	const email = `admin-${randomString()}@test.com`
+  const email = `admin-${randomString()}@test.com`
 
-	return await prisma.user.create({
-		data: {
-			email,
-			firebaseUid: `test-admin-${randomString()}`,
-			firstName: 'Admin',
-			lastName: 'User',
-			role: 'ADMIN',
-		},
-	})
+  return await prisma.user.create({
+    data: {
+      email,
+      firebaseUid: `test-admin-${randomString()}`,
+      firstName: 'Admin',
+      lastName: 'User',
+      role: 'ADMIN',
+    },
+  })
 }
 
 export async function createRegularUser() {
-	const email = `user-${randomString()}@example.com`
+  const email = `user-${randomString()}@example.com`
 
-	return await prisma.user.create({
-		data: {
-			email,
-			firebaseUid: `test-user-${randomString()}`,
-			firstName: 'Regular',
-			lastName: 'User',
-			role: 'PUBLIC',
-		},
-	})
+  return await prisma.user.create({
+    data: {
+      email,
+      firebaseUid: `test-user-${randomString()}`,
+      firstName: 'Regular',
+      lastName: 'User',
+      role: 'PUBLIC',
+    },
+  })
 }
 ```
 
@@ -338,8 +338,8 @@ All tests use mobile viewport for consistency:
 
 ```typescript
 test.beforeEach(async ({ page }) => {
-	// Set mobile viewport for all tests
-	await page.setViewportSize({ width: 375, height: 812 })
+  // Set mobile viewport for all tests
+  await page.setViewportSize({ width: 375, height: 812 })
 })
 ```
 
@@ -361,15 +361,15 @@ Handle mobile menu interactions properly:
 
 ```typescript
 async function openMobileMenu(page: Page): Promise<void> {
-	// Wait for page to be fully loaded
-	await page.waitForLoadState('networkidle')
+  // Wait for page to be fully loaded
+  await page.waitForLoadState('networkidle')
 
-	const toggleButton = page.getByRole('button', { name: 'Toggle menu' })
-	await toggleButton.waitFor({ state: 'visible' })
-	await toggleButton.click()
+  const toggleButton = page.getByRole('button', { name: 'Toggle menu' })
+  await toggleButton.waitFor({ state: 'visible' })
+  await toggleButton.click()
 
-	// Wait for menu animation
-	await page.waitForTimeout(500)
+  // Wait for menu animation
+  await page.waitForTimeout(500)
 }
 ```
 
@@ -382,24 +382,24 @@ async function openMobileMenu(page: Page): Promise<void> {
 test.use({ storageState: { cookies: [], origins: [] } })
 
 test('should handle complete signin flow from homepage', async ({ page }) => {
-	const testUser = await createAdminUser()
-	const homePage = new HomePage(page)
-	const loginPage = new LoginPage(page)
+  const testUser = await createAdminUser()
+  const homePage = new HomePage(page)
+  const loginPage = new LoginPage(page)
 
-	// 1. Start from homepage
-	await homePage.goto()
-	await homePage.expectToBeOnHomePage()
+  // 1. Start from homepage
+  await homePage.goto()
+  await homePage.expectToBeOnHomePage()
 
-	// 2. Navigate to signin
-	await page.getByRole('button', { name: 'Toggle menu' }).click()
-	await page.getByRole('link', { name: 'Inloggen' }).click()
+  // 2. Navigate to signin
+  await page.getByRole('button', { name: 'Toggle menu' }).click()
+  await page.getByRole('link', { name: 'Inloggen' }).click()
 
-	// 3. Login
-	await loginPage.login(testUser.email, 'MyReallyStr0ngPassw0rd!!!')
+  // 3. Login
+  await loginPage.login(testUser.email, 'MyReallyStr0ngPassw0rd!!!')
 
-	// 4. Verify authentication
-	await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
-	await loginPage.verifyAuthentication()
+  // 4. Verify authentication
+  await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
+  await loginPage.verifyAuthentication()
 })
 ```
 
@@ -408,11 +408,11 @@ test('should handle complete signin flow from homepage', async ({ page }) => {
 ```typescript
 // admin-teams.spec.ts - Uses cached admin authentication
 test('should allow admin team creation', async ({ page }) => {
-	// No manual login needed - uses admin-auth.json
-	await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
+  // No manual login needed - uses admin-auth.json
+  await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
 
-	await expect(page.locator('form')).toBeVisible()
-	await expect(page.locator('.container').first()).toBeVisible()
+  await expect(page.locator('form')).toBeVisible()
+  await expect(page.locator('.container').first()).toBeVisible()
 })
 ```
 
@@ -421,11 +421,11 @@ test('should allow admin team creation', async ({ page }) => {
 ```typescript
 // user-authorization.spec.ts - Uses cached user authentication
 test('should have access to admin panel', async ({ page }) => {
-	// Regular users can access admin panel
-	await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1')
+  // Regular users can access admin panel
+  await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1')
 
-	// Should stay on admin panel (not be redirected)
-	await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
+  // Should stay on admin panel (not be redirected)
+  await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
 })
 ```
 

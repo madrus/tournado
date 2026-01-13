@@ -17,11 +17,11 @@ import type { TeamClass, TeamName } from '~/features/teams/types'
 import { useSettingsStore } from '~/stores/useSettingsStore'
 import { CATEGORIES, DIVISIONS } from './lib.constants'
 import type {
-	Category,
-	CategoryObject,
-	Division,
-	DivisionObject,
-	Email,
+  Category,
+  CategoryObject,
+  Division,
+  DivisionObject,
+  Email,
 } from './lib.types'
 
 // Check if we're in a browser environment
@@ -35,30 +35,30 @@ export const isBrowser = typeof window !== 'undefined'
  * @returns The localized division label
  */
 export const getDivisionLabel = (
-	division: Division,
-	language = 'nl',
-	fallbackLanguage = 'nl',
+  division: Division,
+  language = 'nl',
+  fallbackLanguage = 'nl',
 ): string => {
-	const divisionObject = DIVISIONS[division as keyof typeof DIVISIONS]
+  const divisionObject = DIVISIONS[division as keyof typeof DIVISIONS]
 
-	if (!divisionObject) {
-		return division // Return the division key if not found
-	}
+  if (!divisionObject) {
+    return division // Return the division key if not found
+  }
 
-	const labels = divisionObject.labels
+  const labels = divisionObject.labels
 
-	// Return the requested language if available
-	if (labels[language as keyof typeof labels]) {
-		return labels[language as keyof typeof labels]
-	}
+  // Return the requested language if available
+  if (labels[language as keyof typeof labels]) {
+    return labels[language as keyof typeof labels]
+  }
 
-	// Fallback to the fallback language
-	if (labels[fallbackLanguage as keyof typeof labels]) {
-		return labels[fallbackLanguage as keyof typeof labels]
-	}
+  // Fallback to the fallback language
+  if (labels[fallbackLanguage as keyof typeof labels]) {
+    return labels[fallbackLanguage as keyof typeof labels]
+  }
 
-	// Last resort: return the division key itself
-	return division
+  // Last resort: return the division key itself
+  return division
 }
 
 /**
@@ -67,15 +67,15 @@ export const getDivisionLabel = (
  * @returns Division enum value or undefined if invalid
  */
 export const stringToDivision = (value: string | null): Division | undefined => {
-	if (!value) return undefined
+  if (!value) return undefined
 
-	const upperValue = value.toUpperCase() as Division
-	const validDivisions = getDivisionValues()
-	if (validDivisions.includes(upperValue)) {
-		return upperValue
-	}
+  const upperValue = value.toUpperCase() as Division
+  const validDivisions = getDivisionValues()
+  if (validDivisions.includes(upperValue)) {
+    return upperValue
+  }
 
-	return undefined
+  return undefined
 }
 
 /**
@@ -84,18 +84,18 @@ export const stringToDivision = (value: string | null): Division | undefined => 
  * @returns true if valid Division enum value
  */
 export const isValidDivision = (value: string | null): value is Division =>
-	stringToDivision(value) !== undefined
+  stringToDivision(value) !== undefined
 
 // Helper functions for the alternative DIVISIONS object implementation
 export const getDivisionByValue = (value: string): DivisionObject | undefined =>
-	Object.values(DIVISIONS).find((division) => division.value === value)
+  Object.values(DIVISIONS).find(division => division.value === value)
 
 export const getDivisionLabelByValue = (
-	value: Division,
-	locale: 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr',
+  value: Division,
+  locale: 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr',
 ): string => {
-	const division = getDivisionByValue(value)
-	return division ? division.labels[locale] : value
+  const division = getDivisionByValue(value)
+  return division ? division.labels[locale] : value
 }
 
 /**
@@ -105,21 +105,21 @@ export const getDivisionLabelByValue = (
  * @returns The localized division label
  */
 export const getCurrentDivisionLabel = (value: Division): string => {
-	const language = useSettingsStore.getState().language
-	return getDivisionLabelByValue(value, language)
+  const language = useSettingsStore.getState().language
+  return getDivisionLabelByValue(value, language)
 }
 
 export const getAllDivisions = (): DivisionObject[] => Object.values(DIVISIONS)
 
 export const getDivisionValues = (): Division[] =>
-	Object.values(DIVISIONS).map((division) => division.value)
+  Object.values(DIVISIONS).map(division => division.value)
 
 // For form usage
 export const stringToDivisionValue = (value: string | null): Division | undefined => {
-	if (!value) return undefined
+  if (!value) return undefined
 
-	const upperValue = value.toUpperCase() as Division
-	return getDivisionValues().includes(upperValue) ? upperValue : undefined
+  const upperValue = value.toUpperCase() as Division
+  return getDivisionValues().includes(upperValue) ? upperValue : undefined
 }
 
 // ============================================================================
@@ -132,7 +132,7 @@ export const stringToDivisionValue = (value: string | null): Division | undefine
  * @returns CategoryObject or undefined if not found
  */
 export const getCategoryByValue = (value: string): CategoryObject | undefined =>
-	Object.values(CATEGORIES).find((category) => category.value === value)
+  Object.values(CATEGORIES).find(category => category.value === value)
 
 /**
  * Gets the localized label for a category by its value
@@ -141,11 +141,11 @@ export const getCategoryByValue = (value: string): CategoryObject | undefined =>
  * @returns The localized category label
  */
 export const getCategoryLabelByValue = (
-	value: Category,
-	locale: 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr',
+  value: Category,
+  locale: 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr',
 ): string => {
-	const category = getCategoryByValue(value)
-	return category ? category.labels[locale] : value
+  const category = getCategoryByValue(value)
+  return category ? category.labels[locale] : value
 }
 
 /**
@@ -155,8 +155,8 @@ export const getCategoryLabelByValue = (
  * @returns The localized category label
  */
 export const getCurrentCategoryLabel = (value: Category): string => {
-	const language = useSettingsStore.getState().language
-	return getCategoryLabelByValue(value, language)
+  const language = useSettingsStore.getState().language
+  return getCategoryLabelByValue(value, language)
 }
 
 /**
@@ -170,7 +170,7 @@ export const getAllCategories = (): CategoryObject[] => Object.values(CATEGORIES
  * @returns Array of all Category enum values
  */
 export const getCategoryValues = (): Category[] =>
-	Object.values(CATEGORIES).map((category) => category.value)
+  Object.values(CATEGORIES).map(category => category.value)
 
 /**
  * Converts a string to Category enum value with validation
@@ -178,10 +178,10 @@ export const getCategoryValues = (): Category[] =>
  * @returns Category enum value or undefined if invalid
  */
 export const stringToCategoryValue = (value: string | null): Category | undefined => {
-	if (!value) return undefined
+  if (!value) return undefined
 
-	const upperValue = value.toUpperCase() as Category
-	return getCategoryValues().includes(upperValue) ? upperValue : undefined
+  const upperValue = value.toUpperCase() as Category
+  return getCategoryValues().includes(upperValue) ? upperValue : undefined
 }
 
 // ============================================================================
@@ -192,17 +192,17 @@ export const stringToCategoryValue = (value: string | null): Category | undefine
  * Converts a string to TeamName type with validation
  */
 export const stringToTeamName = (value: string): TeamName =>
-	// For now, we'll use type assertion since the database should contain valid team names
-	// In the future, this could include validation logic
-	value as TeamName
+  // For now, we'll use type assertion since the database should contain valid team names
+  // In the future, this could include validation logic
+  value as TeamName
 
 /**
  * Converts a string to Email type with validation
  */
 export const stringToEmail = (value: string): Email =>
-	// For now, we'll use type assertion since the database should contain valid emails
-	// In the future, this could include validation logic
-	value as Email
+  // For now, we'll use type assertion since the database should contain valid emails
+  // In the future, this could include validation logic
+  value as Email
 
 /**
  * Converts a string to TeamClass type (TeamClass is just string, so no conversion needed)
@@ -215,15 +215,15 @@ export const stringToTeamClass = (value: string): TeamClass => value as TeamClas
  * @returns Category enum value or undefined if invalid
  */
 export const stringToCategory = (value: string | null): Category | undefined => {
-	if (!value) return undefined
+  if (!value) return undefined
 
-	const upperValue = value.toUpperCase() as Category
-	const validCategories = getCategoryValues()
-	if (validCategories.includes(upperValue)) {
-		return upperValue
-	}
+  const upperValue = value.toUpperCase() as Category
+  const validCategories = getCategoryValues()
+  if (validCategories.includes(upperValue)) {
+    return upperValue
+  }
 
-	return undefined
+  return undefined
 }
 
 /**
@@ -232,7 +232,7 @@ export const stringToCategory = (value: string | null): Category | undefined => 
  * @returns true if valid Category enum value
  */
 export const isValidCategory = (value: string | null): value is Category =>
-	stringToCategory(value) !== undefined
+  stringToCategory(value) !== undefined
 
 /**
  * Custom team sorting function that handles category names with numbers properly
@@ -244,62 +244,62 @@ export const isValidCategory = (value: string | null): value is Category =>
  * 3. Team name (alphabetical)
  */
 export const sortTeams = <
-	T extends { name: string; clubName: string; category?: string },
+  T extends { name: string; clubName: string; category?: string },
 >(
-	teams: T[],
+  teams: T[],
 ): T[] =>
-	teams.sort((a, b) => {
-		// First sort by club name
-		const clubComparison = a.clubName.localeCompare(b.clubName)
-		if (clubComparison !== 0) return clubComparison
+  teams.sort((a, b) => {
+    // First sort by club name
+    const clubComparison = a.clubName.localeCompare(b.clubName)
+    if (clubComparison !== 0) return clubComparison
 
-		// Then sort by category with numeric awareness
-		if (a.category && b.category) {
-			const categoryComparison = smartCategorySort(a.category, b.category)
-			if (categoryComparison !== 0) return categoryComparison
-		} else if (a.category && !b.category) {
-			return -1 // Teams with categories come first
-		} else if (!a.category && b.category) {
-			return 1 // Teams without categories come last
-		}
+    // Then sort by category with numeric awareness
+    if (a.category && b.category) {
+      const categoryComparison = smartCategorySort(a.category, b.category)
+      if (categoryComparison !== 0) return categoryComparison
+    } else if (a.category && !b.category) {
+      return -1 // Teams with categories come first
+    } else if (!a.category && b.category) {
+      return 1 // Teams without categories come last
+    }
 
-		// Finally sort by team name
-		return a.name.localeCompare(b.name)
-	})
+    // Finally sort by team name
+    return a.name.localeCompare(b.name)
+  })
 
 /**
  * Smart category sorting that handles numeric values within category names
  * e.g., JO8, JO10, JO12 will be sorted numerically rather than alphabetically
  */
 function smartCategorySort(a: string, b: string): number {
-	// Regular expression to match category structure: prefix + number + optional suffix
-	const categoryRegex = /^([A-Z]+)(\d+)(.*)$/i
+  // Regular expression to match category structure: prefix + number + optional suffix
+  const categoryRegex = /^([A-Z]+)(\d+)(.*)$/i
 
-	const matchA = a.match(categoryRegex)
-	const matchB = b.match(categoryRegex)
+  const matchA = a.match(categoryRegex)
+  const matchB = b.match(categoryRegex)
 
-	// If neither matches the pattern, fall back to alphabetical sort
-	if (!matchA && !matchB) return a.localeCompare(b)
+  // If neither matches the pattern, fall back to alphabetical sort
+  if (!matchA && !matchB) return a.localeCompare(b)
 
-	// If only one matches the pattern, prioritize the structured one
-	if (!matchA) return 1
-	if (!matchB) return -1
+  // If only one matches the pattern, prioritize the structured one
+  if (!matchA) return 1
+  if (!matchB) return -1
 
-	// Both match: compare prefix first
-	const [, prefixA, numStrA, suffixA] = matchA
-	const [, prefixB, numStrB, suffixB] = matchB
+  // Both match: compare prefix first
+  const [, prefixA, numStrA, suffixA] = matchA
+  const [, prefixB, numStrB, suffixB] = matchB
 
-	const prefixComparison = prefixA.localeCompare(prefixB)
-	if (prefixComparison !== 0) return prefixComparison
+  const prefixComparison = prefixA.localeCompare(prefixB)
+  if (prefixComparison !== 0) return prefixComparison
 
-	// Same prefix: compare numbers numerically
-	const numericA = parseInt(numStrA, 10)
-	const numericB = parseInt(numStrB, 10)
-	const numericComparison = numericA - numericB
-	if (numericComparison !== 0) return numericComparison
+  // Same prefix: compare numbers numerically
+  const numericA = parseInt(numStrA, 10)
+  const numericB = parseInt(numStrB, 10)
+  const numericComparison = numericA - numericB
+  if (numericComparison !== 0) return numericComparison
 
-	// Same prefix and number: compare suffix
-	return suffixA.localeCompare(suffixB)
+  // Same prefix and number: compare suffix
+  return suffixA.localeCompare(suffixB)
 }
 
 /**
@@ -333,29 +333,29 @@ function smartCategorySort(a: string, b: string): number {
  * ```
  */
 export function getFieldStatus(
-	fieldValue: string | string[] | boolean,
-	hasError: boolean,
-	isRequired: boolean,
-	isDisabled = false,
+  fieldValue: string | string[] | boolean,
+  hasError: boolean,
+  isRequired: boolean,
+  isDisabled = false,
 ): 'success' | 'error' | 'neutral' {
-	if (isDisabled) return 'neutral'
+  if (isDisabled) return 'neutral'
 
-	// Determine if field has a value based on type
-	const hasValue = Array.isArray(fieldValue)
-		? fieldValue.length > 0
-		: Boolean(fieldValue)
+  // Determine if field has a value based on type
+  const hasValue = Array.isArray(fieldValue)
+    ? fieldValue.length > 0
+    : Boolean(fieldValue)
 
-	// For required fields: show error if empty, success if filled
-	if (isRequired) {
-		if (hasValue && !hasError) return 'success'
-		if (hasError) return 'error'
-		return 'neutral'
-	}
+  // For required fields: show error if empty, success if filled
+  if (isRequired) {
+    if (hasValue && !hasError) return 'success'
+    if (hasError) return 'error'
+    return 'neutral'
+  }
 
-	// For optional fields: only show success if filled, never show error for being empty
-	if (hasValue && !hasError) return 'success'
-	if (hasError) return 'error'
-	return 'neutral'
+  // For optional fields: only show success if filled, never show error for being empty
+  if (hasValue && !hasError) return 'success'
+  if (hasError) return 'error'
+  return 'neutral'
 }
 
 // ============================================================================
@@ -369,19 +369,19 @@ export function getFieldStatus(
  * @returns An array of all keys.
  */
 export function getAllKeys(obj: Record<string, unknown>, prefix = ''): string[] {
-	const keys: string[] = []
+  const keys: string[] = []
 
-	for (const [key, value] of Object.entries(obj)) {
-		const fullKey = prefix ? `${prefix}.${key}` : key
+  for (const [key, value] of Object.entries(obj)) {
+    const fullKey = prefix ? `${prefix}.${key}` : key
 
-		if (typeof value === 'object' && value !== null) {
-			keys.push(...getAllKeys(value as Record<string, unknown>, fullKey))
-		} else {
-			keys.push(fullKey)
-		}
-	}
+    if (typeof value === 'object' && value !== null) {
+      keys.push(...getAllKeys(value as Record<string, unknown>, fullKey))
+    } else {
+      keys.push(fullKey)
+    }
+  }
 
-	return keys.sort()
+  return keys.sort()
 }
 
 /**
@@ -391,9 +391,9 @@ export function getAllKeys(obj: Record<string, unknown>, prefix = ''): string[] 
  * @returns An array of missing keys.
  */
 export const getMissingKeys = (
-	referenceKeys: string[],
-	compareKeys: string[],
-): string[] => referenceKeys.filter((key) => !compareKeys.includes(key))
+  referenceKeys: string[],
+  compareKeys: string[],
+): string[] => referenceKeys.filter(key => !compareKeys.includes(key))
 
 /**
  * Gets the keys that are in the compare array but not in the reference array.
@@ -402,6 +402,6 @@ export const getMissingKeys = (
  * @returns An array of extra keys.
  */
 export const getExtraKeys = (
-	referenceKeys: string[],
-	compareKeys: string[],
-): string[] => compareKeys.filter((key) => !referenceKeys.includes(key))
+  referenceKeys: string[],
+  compareKeys: string[],
+): string[] => compareKeys.filter(key => !referenceKeys.includes(key))

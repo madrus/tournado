@@ -8,10 +8,10 @@ Display real-time message count in your Claude Code CLI footer.
 
 ```json
 {
-	"statusLine": {
-		"type": "command",
-		"command": ".claude/hooks/message-counter.sh"
-	}
+  "statusLine": {
+    "type": "command",
+    "command": ".claude/hooks/message-counter.sh"
+  }
 }
 ```
 

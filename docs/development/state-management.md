@@ -31,23 +31,23 @@ The auth store manages user authentication state using Zustand with persistence:
 ```typescript
 // app/stores/useAuthStore.ts
 export const useAuthStore = create<StoreState & Actions>()(
-	devtools(
-		persist(
-			(set) => ({
-				authenticated: false,
-				username: '',
-				setAuth: (authenticated, username) => set({ authenticated, username }),
-			}),
-			{
-				name: 'auth-store-storage',
-				storage: isBrowser
-					? createJSONStorage(() => sessionStorage)
-					: createJSONStorage(createServerSideStorage),
-				skipHydration: !isBrowser,
-				partialize: (state) => (isBrowser ? state : {}),
-			},
-		),
-	),
+  devtools(
+    persist(
+      set => ({
+        authenticated: false,
+        username: '',
+        setAuth: (authenticated, username) => set({ authenticated, username }),
+      }),
+      {
+        name: 'auth-store-storage',
+        storage: isBrowser
+          ? createJSONStorage(() => sessionStorage)
+          : createJSONStorage(createServerSideStorage),
+        skipHydration: !isBrowser,
+        partialize: state => (isBrowser ? state : {}),
+      },
+    ),
+  ),
 )
 ```
 
@@ -59,11 +59,11 @@ export const useAuthStore = create<StoreState & Actions>()(
 
 ```typescript
 export const useAuthStoreHydration = (): void => {
-	useEffect(() => {
-		if (isBrowser) {
-			useAuthStore.persist.rehydrate()
-		}
-	}, [])
+  useEffect(() => {
+    if (isBrowser) {
+      useAuthStore.persist.rehydrate()
+    }
+  }, [])
 }
 ```
 
@@ -71,15 +71,15 @@ export const useAuthStoreHydration = (): void => {
 
 ```typescript
 export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
-	const { setAuth } = useAuthStore()
+  const { setAuth } = useAuthStore()
 
-	// Handle auth store rehydration
-	useAuthStoreHydration()
+  // Handle auth store rehydration
+  useAuthStoreHydration()
 
-	// Update auth store after hydration
-	useEffect(() => {
-		setAuth(authenticated, username)
-	}, [authenticated, username, setAuth])
+  // Update auth store after hydration
+  useEffect(() => {
+    setAuth(authenticated, username)
+  }, [authenticated, username, setAuth])
 }
 ```
 
@@ -101,11 +101,11 @@ Language changes are persisted reactively using both cookies and localStorage:
 ```typescript
 // app/root.tsx
 useEffect(() => {
-	if (typeof window !== 'undefined' && i18nInstance.language) {
-		// Write both cookie and localStorage for persistence
-		document.cookie = `lang=${i18nInstance.language}; path=/; max-age=31536000`
-		localStorage.setItem('lang', i18nInstance.language)
-	}
+  if (typeof window !== 'undefined' && i18nInstance.language) {
+    // Write both cookie and localStorage for persistence
+    document.cookie = `lang=${i18nInstance.language}; path=/; max-age=31536000`
+    localStorage.setItem('lang', i18nInstance.language)
+  }
 }, [currentLanguage, i18nInstance.language])
 ```
 
@@ -116,11 +116,11 @@ The server reads language preferences during the initial request:
 ```typescript
 // app/root.tsx loader
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
-	const cookieHeader = request.headers.get('Cookie') || ''
-	const langMatch = cookieHeader.match(/lang=([^;]+)/)
-	const language = langMatch ? langMatch[1] : 'nl'
+  const cookieHeader = request.headers.get('Cookie') || ''
+  const langMatch = cookieHeader.match(/lang=([^;]+)/)
+  const language = langMatch ? langMatch[1] : 'nl'
 
-	return { language /* ... */ }
+  return { language /* ... */ }
 }
 ```
 
@@ -129,11 +129,11 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 ```typescript
 // app/hooks/useLanguageSwitcher.ts
 export function useLanguageSwitcher(): (language: string) => void {
-	const { i18n } = useTranslation()
+  const { i18n } = useTranslation()
 
-	return (language: string): void => {
-		i18n.changeLanguage(language)
-	}
+  return (language: string): void => {
+    i18n.changeLanguage(language)
+  }
 }
 ```
 
@@ -162,9 +162,9 @@ For SSR compatibility, we provide storage mocks:
 
 ```typescript
 const createServerSideStorage = () => ({
-	getItem: () => null,
-	setItem: () => {}, // Server-side no-op
-	removeItem: () => {}, // Server-side no-op
+  getItem: () => null,
+  setItem: () => {}, // Server-side no-op
+  removeItem: () => {}, // Server-side no-op
 })
 ```
 
@@ -177,7 +177,7 @@ const createServerSideStorage = () => ({
 ```typescript
 // BAD: Side effects during module load
 if (isBrowser) {
-	useAuthStore.persist.rehydrate() // Runs during import!
+  useAuthStore.persist.rehydrate() // Runs during import!
 }
 ```
 
@@ -186,11 +186,11 @@ if (isBrowser) {
 ```typescript
 // GOOD: Controlled hydration in components
 export const useAuthStoreHydration = (): void => {
-	useEffect(() => {
-		if (isBrowser) {
-			useAuthStore.persist.rehydrate()
-		}
-	}, [])
+  useEffect(() => {
+    if (isBrowser) {
+      useAuthStore.persist.rehydrate()
+    }
+  }, [])
 }
 ```
 
@@ -213,17 +213,17 @@ export const useAuthStoreHydration = (): void => {
 ```typescript
 // app/stores/__tests__/useAuthStore.test.ts
 describe('useAuthStore', () => {
-	beforeEach(() => {
-		// Reset store state before each test
-		useAuthStore.getState().setAuth(false, '')
-	})
+  beforeEach(() => {
+    // Reset store state before each test
+    useAuthStore.getState().setAuth(false, '')
+  })
 
-	it('should update auth state', () => {
-		const { setAuth } = useAuthStore.getState()
-		setAuth(true, 'test@example.com')
+  it('should update auth state', () => {
+    const { setAuth } = useAuthStore.getState()
+    setAuth(true, 'test@example.com')
 
-		expect(useAuthStore.getState().authenticated).toBe(true)
-	})
+    expect(useAuthStore.getState().authenticated).toBe(true)
+  })
 })
 ```
 
@@ -242,7 +242,7 @@ Since we use component-level hydration, tests can import stores without triggeri
    ```typescript
    // Remove this from store files
    if (isBrowser) {
-   	useStore.persist.rehydrate()
+     useStore.persist.rehydrate()
    }
    ```
 
@@ -250,11 +250,11 @@ Since we use component-level hydration, tests can import stores without triggeri
 
    ```typescript
    export const useStoreHydration = (): void => {
-   	useEffect(() => {
-   		if (isBrowser) {
-   			useStore.persist.rehydrate()
-   		}
-   	}, [])
+     useEffect(() => {
+       if (isBrowser) {
+         useStore.persist.rehydrate()
+       }
+     }, [])
    }
    ```
 
@@ -262,8 +262,8 @@ Since we use component-level hydration, tests can import stores without triggeri
 
    ```typescript
    function App() {
-   	useStoreHydration()
-   	// ... rest of component
+     useStoreHydration()
+     // ... rest of component
    }
    ```
 

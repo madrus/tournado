@@ -19,25 +19,25 @@ Take a PRD (markdown file or text) and convert it to `prd.json` in your ralph di
 
 ```json
 {
-	"project": "[Project Name]",
-	"branchName": "ralph/[feature-name-kebab-case]",
-	"description": "[Feature description from PRD title/intro]",
-	"userStories": [
-		{
-			"id": "US-001",
-			"title": "[Story title]",
-			"description": "As a [user], I want [feature] so that [benefit]",
-			"acceptanceCriteria": [
-				"Criterion 1",
-				"Criterion 2",
-				"Typecheck passes",
-				"lint passes"
-			],
-			"priority": 1,
-			"passes": false,
-			"notes": ""
-		}
-	]
+  "project": "[Project Name]",
+  "branchName": "ralph/[feature-name-kebab-case]",
+  "description": "[Feature description from PRD title/intro]",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "[Story title]",
+      "description": "As a [user], I want [feature] so that [benefit]",
+      "acceptanceCriteria": [
+        "Criterion 1",
+        "Criterion 2",
+        "Typecheck passes",
+        "lint passes"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": ""
+    }
+  ]
 }
 ```
 
@@ -180,71 +180,71 @@ Add ability to mark tasks with different statuses.
 
 ```json
 {
-	"project": "TaskApp",
-	"branchName": "ralph/task-status",
-	"description": "Task Status Feature - Track task progress with status indicators",
-	"userStories": [
-		{
-			"id": "US-001",
-			"title": "Add status field to tasks table",
-			"description": "As a developer, I need to store task status in the database.",
-			"acceptanceCriteria": [
-				"Add status column: 'pending' | 'in_progress' | 'done' (default 'pending')",
-				"Generate and run migration successfully",
-				"Typecheck passes",
-				"Lint passes"
-			],
-			"priority": 1,
-			"passes": false,
-			"notes": ""
-		},
-		{
-			"id": "US-002",
-			"title": "Display status badge on task cards",
-			"description": "As a user, I want to see task status at a glance.",
-			"acceptanceCriteria": [
-				"Each task card shows colored status badge",
-				"Badge colors: gray=pending, blue=in_progress, green=done",
-				"Typecheck passes",
-				"Lint passes",
-				"Verify in browser using dev-browser skill"
-			],
-			"priority": 2,
-			"passes": false,
-			"notes": ""
-		},
-		{
-			"id": "US-003",
-			"title": "Add status toggle to task list rows",
-			"description": "As a user, I want to change task status directly from the list.",
-			"acceptanceCriteria": [
-				"Each row has status dropdown or toggle",
-				"Changing status saves immediately",
-				"UI updates without page refresh",
-				"Typecheck passes",
-				"Lint passes",
-				"Verify in browser using dev-browser skill"
-			],
-			"priority": 3,
-			"passes": false,
-			"notes": ""
-		},
-		{
-			"id": "US-004",
-			"title": "Filter tasks by status",
-			"description": "As a user, I want to filter the list to see only certain statuses.",
-			"acceptanceCriteria": [
-				"Filter dropdown: All | Pending | In Progress | Done",
-				"Filter persists in URL params",
-				"Typecheck passes",
-				"Lint passes",
-				"Verify in browser using dev-browser skill"
-			],
-			"priority": 4,
-			"passes": false,
-			"notes": ""
-		}
-	]
+  "project": "TaskApp",
+  "branchName": "ralph/task-status",
+  "description": "Task Status Feature - Track task progress with status indicators",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Add status field to tasks table",
+      "description": "As a developer, I need to store task status in the database.",
+      "acceptanceCriteria": [
+        "Add status column: 'pending' | 'in_progress' | 'done' (default 'pending')",
+        "Generate and run migration successfully",
+        "Typecheck passes",
+        "Lint passes"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-002",
+      "title": "Display status badge on task cards",
+      "description": "As a user, I want to see task status at a glance.",
+      "acceptanceCriteria": [
+        "Each task card shows colored status badge",
+        "Badge colors: gray=pending, blue=in_progress, green=done",
+        "Typecheck passes",
+        "Lint passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-003",
+      "title": "Add status toggle to task list rows",
+      "description": "As a user, I want to change task status directly from the list.",
+      "acceptanceCriteria": [
+        "Each row has status dropdown or toggle",
+        "Changing status saves immediately",
+        "UI updates without page refresh",
+        "Typecheck passes",
+        "Lint passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-004",
+      "title": "Filter tasks by status",
+      "description": "As a user, I want to filter the list to see only certain statuses.",
+      "acceptanceCriteria": [
+        "Filter dropdown: All | Pending | In Progress | Done",
+        "Filter persists in URL params",
+        "Typecheck passes",
+        "Lint passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": ""
+    }
+  ]
 }
 ```
 

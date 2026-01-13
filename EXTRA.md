@@ -50,22 +50,22 @@ I've broken this into prioritized tasks (tracked via internal TODO system for pr
    ```typescript
    // In a new authReasoning.ts (step 1 of plan)
    export function reasonTokenPersistence(
-   	tokenExpiration: number, // From getIdTokenResult()
-   	userRole: string, // e.g., 'ADMIN'
-   	idleTime: number, // From Visibility API
-   	deviceTrusted: boolean, // e.g., from localStorage flag
+     tokenExpiration: number, // From getIdTokenResult()
+     userRole: string, // e.g., 'ADMIN'
+     idleTime: number, // From Visibility API
+     deviceTrusted: boolean, // e.g., from localStorage flag
    ): { action: 'renew' | 'warn' | 'expire'; ttl: number } {
-   	const now = Date.now()
-   	const timeLeft = (tokenExpiration - now) / (1000 * 60) // Minutes left
+     const now = Date.now()
+     const timeLeft = (tokenExpiration - now) / (1000 * 60) // Minutes left
 
-   	if (userRole === 'ADMIN' && timeLeft > 30 && !deviceTrusted) {
-   		return { action: 'warn', ttl: 15 * 60 * 1000 } // Shorten for untrusted device
-   	}
-   	if (idleTime > 30 && timeLeft < 5) {
-   		return { action: 'expire', ttl: 0 } // Force re-login after idle
-   	}
-   	// Default: renew if viable
-   	return { action: 'renew', ttl: 60 * 60 * 1000 } // 1 hour
+     if (userRole === 'ADMIN' && timeLeft > 30 && !deviceTrusted) {
+       return { action: 'warn', ttl: 15 * 60 * 1000 } // Shorten for untrusted device
+     }
+     if (idleTime > 30 && timeLeft < 5) {
+       return { action: 'expire', ttl: 0 } // Force re-login after idle
+     }
+     // Default: renew if viable
+     return { action: 'renew', ttl: 60 * 60 * 1000 } // 1 hour
    }
    ```
 

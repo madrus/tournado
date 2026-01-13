@@ -42,8 +42,8 @@ If searching for "async functions that use await", create a test file:
 ```javascript
 // test_example.js
 async function example() {
-	const result = await fetchData()
-	return result
+  const result = await fetchData()
+  return result
 }
 ```
 

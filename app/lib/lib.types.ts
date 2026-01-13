@@ -37,23 +37,23 @@ export type IconSize = 12 | 16 | 18 | 20 | 24 | 28 | 32 | 36 | 40 | 48 | 56 | 64
  * Enhanced icon props with strict typing
  */
 export type IconProps = {
-	className?: string
-	size?: IconSize
-	weight?: IconWeight
-	'aria-label'?: string
-	'aria-hidden'?: boolean
+  className?: string
+  size?: IconSize
+  weight?: IconWeight
+  'aria-label'?: string
+  'aria-hidden'?: boolean
 }
 
 /**
  * Toast error types for better error handling
  */
 export type ToastErrorType =
-	| 'validation' // Form validation errors
-	| 'network' // Network-related errors
-	| 'permission' // Permission/authorization errors
-	| 'server' // Server-side errors
-	| 'client' // Client-side errors
-	| 'unknown' // Unknown/unclassified errors
+  | 'validation' // Form validation errors
+  | 'network' // Network-related errors
+  | 'permission' // Permission/authorization errors
+  | 'server' // Server-side errors
+  | 'client' // Client-side errors
+  | 'unknown' // Unknown/unclassified errors
 
 /**
  * Enhanced toast types with error categorization
@@ -64,20 +64,20 @@ export type ToastType = 'success' | 'error' | 'info' | 'warning' | ToastErrorTyp
  * Toast position options
  */
 export type ToastPosition =
-	| 'top-left'
-	| 'top-center'
-	| 'top-right'
-	| 'bottom-left'
-	| 'bottom-center'
-	| 'bottom-right'
+  | 'top-left'
+  | 'top-center'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'bottom-right'
 
 /**
  * Toast configuration per type
  */
 export type ToastConfig = {
-	position?: ToastPosition
-	duration?: number
-	priority?: 'low' | 'normal' | 'high'
+  position?: ToastPosition
+  duration?: number
+  priority?: 'low' | 'normal' | 'high'
 }
 
 /**
@@ -85,25 +85,25 @@ export type ToastConfig = {
  * These colors communicate state or intent to the user
  */
 export type FunctionalSemantic =
-	| 'brand'
-	| 'primary'
-	| 'success'
-	| 'error'
-	| 'warning'
-	| 'info'
-	| 'disabled'
+  | 'brand'
+  | 'primary'
+  | 'success'
+  | 'error'
+  | 'warning'
+  | 'info'
+  | 'disabled'
 
 /**
  * Visual accent colors for design variety without functional meaning
  * Used for progressive disclosure (multi-step forms), role badges, feature areas
  */
 export type VisualAccent =
-	| 'accent-amber'
-	| 'accent-indigo'
-	| 'accent-fuchsia'
-	| 'accent-teal'
-	| 'accent-sky'
-	| 'accent-purple'
+  | 'accent-amber'
+  | 'accent-indigo'
+  | 'accent-fuchsia'
+  | 'accent-teal'
+  | 'accent-sky'
+  | 'accent-purple'
 
 /**
  * Semantic color accents for UI components
@@ -124,21 +124,21 @@ export type SemanticAccent = FunctionalSemantic | VisualAccent
  * mapped to semantic tokens in CVA/theme layer for consistency.
  */
 export type ColorAccent =
-	| SemanticAccent
-	| 'slate'
-	| 'red'
-	| 'amber'
-	| 'yellow'
-	| 'green'
-	| 'emerald'
-	| 'teal'
-	| 'sky'
-	| 'blue'
-	| 'indigo'
-	| 'purple'
-	| 'fuchsia'
-	| 'lime'
-	| 'disabled'
+  | SemanticAccent
+  | 'slate'
+  | 'red'
+  | 'amber'
+  | 'yellow'
+  | 'green'
+  | 'emerald'
+  | 'teal'
+  | 'sky'
+  | 'blue'
+  | 'indigo'
+  | 'purple'
+  | 'fuchsia'
+  | 'lime'
+  | 'disabled'
 
 // ============================================================================
 // Division & Category System (Shared)
@@ -158,9 +158,9 @@ export type LocalizedLabels = Readonly<Record<Locale, string>>
  * Division configuration object for localization and metadata
  */
 export type DivisionObject = {
-	readonly value: string
-	readonly labels: LocalizedLabels
-	readonly order: number
+  readonly value: string
+  readonly labels: LocalizedLabels
+  readonly order: number
 }
 
 // ============================================================================
@@ -181,12 +181,12 @@ export type Category = (typeof CATEGORIES)[keyof typeof CATEGORIES]['value']
  * Category configuration object for localization and metadata
  */
 export type CategoryObject = {
-	readonly value: string
-	readonly labels: LocalizedLabels
-	readonly order: number
-	readonly ageGroup?: {
-		readonly min: number
-		readonly max: number
-	}
-	readonly gender?: 'MIXED' | 'BOYS' | 'GIRLS' | 'MEN' | 'WOMEN'
+  readonly value: string
+  readonly labels: LocalizedLabels
+  readonly order: number
+  readonly ageGroup?: {
+    readonly min: number
+    readonly max: number
+  }
+  readonly gender?: 'MIXED' | 'BOYS' | 'GIRLS' | 'MEN' | 'WOMEN'
 }

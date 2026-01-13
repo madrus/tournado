@@ -701,16 +701,16 @@ sequenceDiagram
 ```typescript
 // Route metadata for access control
 export const handle: RouteMetadata = {
-	isPublic: false,
-	auth: {
-		required: true,
-		redirectTo: '/auth/signin',
-	},
-	authorization: {
-		requiredRoles: ['ADMIN'],
-		roleMatchMode: 'any',
-		redirectTo: '/unauthorized',
-	},
+  isPublic: false,
+  auth: {
+    required: true,
+    redirectTo: '/auth/signin',
+  },
+  authorization: {
+    requiredRoles: ['ADMIN'],
+    roleMatchMode: 'any',
+    redirectTo: '/unauthorized',
+  },
 }
 ```
 

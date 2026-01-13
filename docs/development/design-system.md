@@ -22,26 +22,26 @@ The color system is defined in `app/styles/colors.css` with the following struct
 
 ```css
 :root {
-	/* Background & Surface */
-	--color-background: var(--color-white);
-	--color-border: var(--color-slate-200);
+  /* Background & Surface */
+  --color-background: var(--color-white);
+  --color-border: var(--color-slate-200);
 
-	/* Typography */
-	--color-foreground: var(--color-slate-900);
-	--color-foreground-light: var(--color-slate-600);
-	--color-foreground-lighter: var(--color-slate-400);
-	--color-foreground-lightest: var(--color-slate-400);
-	--color-placeholder: var(--color-foreground-lightest);
+  /* Typography */
+  --color-foreground: var(--color-slate-900);
+  --color-foreground-light: var(--color-slate-600);
+  --color-foreground-lighter: var(--color-slate-400);
+  --color-foreground-lightest: var(--color-slate-400);
+  --color-placeholder: var(--color-foreground-lightest);
 
-	/* Brand Colors (Red-based) */
-	--color-brand: var(--color-brand-600);
-	--color-brand-50: var(--color-red-50);
-	/* ... complete 50-950 scale */
+  /* Brand Colors (Red-based) */
+  --color-brand: var(--color-brand-600);
+  --color-brand-50: var(--color-red-50);
+  /* ... complete 50-950 scale */
 
-	/* Primary Colors (Emerald-based) */
-	--color-primary: var(--color-primary-600);
-	--color-primary-50: var(--color-emerald-50);
-	/* ... complete 50-950 scale */
+  /* Primary Colors (Emerald-based) */
+  --color-primary: var(--color-primary-600);
+  --color-primary-50: var(--color-emerald-50);
+  /* ... complete 50-950 scale */
 }
 ```
 
@@ -49,10 +49,10 @@ The color system is defined in `app/styles/colors.css` with the following struct
 
 ```css
 .dark {
-	--color-background: var(--color-slate-900);
-	--color-border: var(--color-slate-500);
-	--color-foreground: var(--color-slate-100);
-	/* ... all semantic tokens redefined for dark mode */
+  --color-background: var(--color-slate-900);
+  --color-border: var(--color-slate-500);
+  --color-foreground: var(--color-slate-100);
+  /* ... all semantic tokens redefined for dark mode */
 }
 ```
 
@@ -121,8 +121,8 @@ Dark mode is controlled by the `dark` class on the root element:
 ```html
 <!-- Light mode -->
 <html class="">
-	<!-- Dark mode -->
-	<html class="dark"></html>
+  <!-- Dark mode -->
+  <html class="dark"></html>
 </html>
 ```
 
@@ -142,9 +142,9 @@ When creating components that support both themes:
 
 ```css
 .component {
-	background-color: var(--color-background);
-	color: var(--color-foreground);
-	border-color: var(--color-border);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  border-color: var(--color-border);
 }
 ```
 
@@ -152,9 +152,9 @@ When creating components that support both themes:
 
 ```css
 .component {
-	background-color: white;
-	color: black;
-	border-color: #e2e8f0;
+  background-color: white;
+  color: black;
+  border-color: #e2e8f0;
 }
 ```
 
@@ -199,7 +199,7 @@ All button colors use semantic tokens:
 
 /* Dark mode overrides */
 .dark {
-	--color-button-primary-background: var(--color-primary-900);
+  --color-button-primary-background: var(--color-primary-900);
 }
 ```
 
@@ -224,21 +224,21 @@ ComponentName/
 import { type VariantProps, cva } from 'class-variance-authority'
 
 export const componentVariants = cva(
-	// Base classes
-	['common', 'styling', 'classes'],
-	{
-		variants: {
-			color: {
-				brand: 'color-specific-classes',
-				primary: 'color-specific-classes',
-				// ... all 20+ color accents
-			},
-			// Other variant axes
-		},
-		compoundVariants: [
-			// Complex variant combinations
-		],
-	},
+  // Base classes
+  ['common', 'styling', 'classes'],
+  {
+    variants: {
+      color: {
+        brand: 'color-specific-classes',
+        primary: 'color-specific-classes',
+        // ... all 20+ color accents
+      },
+      // Other variant axes
+    },
+    compoundVariants: [
+      // Complex variant combinations
+    ],
+  },
 )
 
 export type ComponentVariants = VariantProps<typeof componentVariants>
@@ -302,9 +302,9 @@ The design system includes sophisticated gradient support:
 --panel-gradient-to: var(--color-slate-50);
 
 .dark {
-	--panel-gradient-from: var(--color-slate-900); /* Dark mode */
-	--panel-gradient-via: var(--color-slate-800);
-	--panel-gradient-to: var(--color-slate-800);
+  --panel-gradient-from: var(--color-slate-900); /* Dark mode */
+  --panel-gradient-via: var(--color-slate-800);
+  --panel-gradient-to: var(--color-slate-800);
 }
 ```
 

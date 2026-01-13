@@ -2,25 +2,25 @@ import { type Permission, canAccess } from '~/utils/rbac'
 import { useUser } from '~/utils/routeUtils'
 
 type UseActionButtonOptions = {
-	permission?: Permission
-	hideWhenDisabled?: boolean
-	disabled?: boolean
+  permission?: Permission
+  hideWhenDisabled?: boolean
+  disabled?: boolean
 }
 
 type UseActionButtonReturn = {
-	/**
-	 * Whether the button should be completely hidden from the UI
-	 */
-	isHidden: boolean
-	/**
-	 * Whether the button should be in a disabled state
-	 * Combines explicit disabled prop with permission-based disabled state
-	 */
-	isDisabled: boolean
-	/**
-	 * Whether the user has the required permission
-	 */
-	hasRequiredPermission: boolean
+  /**
+   * Whether the button should be completely hidden from the UI
+   */
+  isHidden: boolean
+  /**
+   * Whether the button should be in a disabled state
+   * Combines explicit disabled prop with permission-based disabled state
+   */
+  isDisabled: boolean
+  /**
+   * Whether the user has the required permission
+   */
+  hasRequiredPermission: boolean
 }
 
 /**
@@ -44,24 +44,24 @@ type UseActionButtonReturn = {
  * ```
  */
 export function useActionButton({
-	permission,
-	hideWhenDisabled = false,
-	disabled = false,
+  permission,
+  hideWhenDisabled = false,
+  disabled = false,
 }: UseActionButtonOptions = {}): UseActionButtonReturn {
-	const user = useUser()
+  const user = useUser()
 
-	// Check if user has required permission
-	const hasRequiredPermission = permission ? canAccess(user, permission) : true
+  // Check if user has required permission
+  const hasRequiredPermission = permission ? canAccess(user, permission) : true
 
-	// Determine if button should be hidden entirely
-	const isHidden = Boolean(permission && !hasRequiredPermission && hideWhenDisabled)
+  // Determine if button should be hidden entirely
+  const isHidden = Boolean(permission && !hasRequiredPermission && hideWhenDisabled)
 
-	// Combine permission-based disabled state with explicit disabled prop
-	const isDisabled = disabled || Boolean(permission && !hasRequiredPermission)
+  // Combine permission-based disabled state with explicit disabled prop
+  const isDisabled = disabled || Boolean(permission && !hasRequiredPermission)
 
-	return {
-		isHidden,
-		isDisabled,
-		hasRequiredPermission,
-	}
+  return {
+    isHidden,
+    isDisabled,
+    hasRequiredPermission,
+  }
 }

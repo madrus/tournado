@@ -15,7 +15,7 @@
 /* Override Radix's --color-background in dark mode */
 :is(.dark, .dark-theme),
 :is(.dark, .dark-theme) :where(.radix-themes:not(.light, .light-theme)) {
-	--color-background: var(--color-slate-600);
+  --color-background: var(--color-slate-600);
 }
 
 /* Light mode override (matches Radix's light mode selector pattern) */
@@ -23,5 +23,5 @@
 .light,
 .light-theme,
 :is(.light, .light-theme) :where(.radix-themes:not(.dark, .dark-theme)) {
-	--color-background: var(--color-white);
+  --color-background: var(--color-white);
 }

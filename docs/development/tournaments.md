@@ -26,18 +26,18 @@ For **admin users**, tournaments appear as the first item in the navigation menu
 ```typescript
 // In AppBar.tsx - Menu structure for admin users:
 const menuItems = [
-	// Tournaments - only show for admin users, first item
-	...(isAdmin
-		? [
-				{
-					label: t('common.titles.tournaments'),
-					icon: 'trophy' as IconName,
-					href: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments',
-					authenticated: true,
-				},
-			]
-		: []),
-	// ... other menu items follow
+  // Tournaments - only show for admin users, first item
+  ...(isAdmin
+    ? [
+        {
+          label: t('common.titles.tournaments'),
+          icon: 'trophy' as IconName,
+          href: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments',
+          authenticated: true,
+        },
+      ]
+    : []),
+  // ... other menu items follow
 ]
 ```
 
@@ -137,8 +137,8 @@ A comprehensive form component for creating and editing tournaments.
 
 ```typescript
 type TournamentFormProps = {
-	tournament?: Tournament
-	mode: 'create' | 'edit'
+  tournament?: Tournament
+  mode: 'create' | 'edit'
 }
 ```
 
@@ -181,14 +181,14 @@ We use a **sidebar/slider approach** instead of expanding elements:
 
 ```jsx
 <div
-	className='flex transition-transform duration-200'
-	style={{ transform: `translateX(${x}px)` }}
+  className='flex transition-transform duration-200'
+  style={{ transform: `translateX(${x}px)` }}
 >
-	{/* Content Block - 100% width */}
-	<div className='w-full shrink-0 bg-white'>{/* Tournament content */}</div>
+  {/* Content Block - 100% width */}
+  <div className='w-full shrink-0 bg-white'>{/* Tournament content */}</div>
 
-	{/* Delete Block - Screen width to prevent white space */}
-	<div className='w-screen shrink-0 bg-red-500'>{/* Delete button */}</div>
+  {/* Delete Block - Screen width to prevent white space */}
+  <div className='w-screen shrink-0 bg-red-500'>{/* Delete button */}</div>
 </div>
 ```
 
@@ -203,9 +203,9 @@ We use a **sidebar/slider approach** instead of expanding elements:
 
 ```typescript
 type SwipeState = {
-	x: number // Current position (-400 to 0)
-	swiping: boolean // Currently being swiped
-	showDelete: boolean // In persistent delete state
+  x: number // Current position (-400 to 0)
+  swiping: boolean // Currently being swiped
+  showDelete: boolean // In persistent delete state
 }
 ```
 
@@ -270,9 +270,9 @@ showDelete = finalX < -200 // 50% threshold
 
 ```typescript
 export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
-	await requireUserWithMetadata(request, handle)
-	const tournamentListItems = await getAllTournaments()
-	return { tournamentListItems }
+  await requireUserWithMetadata(request, handle)
+  const tournamentListItems = await getAllTournaments()
+  return { tournamentListItems }
 }
 ```
 
@@ -280,18 +280,18 @@ export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
 
 ```typescript
 export async function action({ request }: ActionArgs): Promise<Response> {
-	await requireUserWithMetadata(request, handle)
+  await requireUserWithMetadata(request, handle)
 
-	const formData = await request.formData()
-	const intent = formData.get('intent')
+  const formData = await request.formData()
+  const intent = formData.get('intent')
 
-	if (intent === 'delete') {
-		const tournamentId = formData.get('tournamentId')
-		await deleteTournamentById({ id: tournamentId })
-		return redirect('.')
-	}
+  if (intent === 'delete') {
+    const tournamentId = formData.get('tournamentId')
+    await deleteTournamentById({ id: tournamentId })
+    return redirect('.')
+  }
 
-	// Handle other intents...
+  // Handle other intents...
 }
 ```
 
@@ -311,19 +311,19 @@ export async function action({ request }: ActionArgs): Promise<Response> {
 
 ```typescript
 type Tournament = {
-	id: string
-	name: string
-	location: string
-	startDate: Date
-	endDate?: Date
-	categories?: unknown
-	createdAt: Date
-	updatedAt: Date
+  id: string
+  name: string
+  location: string
+  startDate: Date
+  endDate?: Date
+  categories?: unknown
+  createdAt: Date
+  updatedAt: Date
 }
 
 type TournamentListItem = Pick<
-	Tournament,
-	'id' | 'name' | 'location' | 'startDate' | 'endDate'
+  Tournament,
+  'id' | 'name' | 'location' | 'startDate' | 'endDate'
 >
 ```
 
@@ -334,46 +334,46 @@ type TournamentListItem = Pick<
 ```typescript
 // Base tournament schema without translations (for server-side validation)
 const baseTournamentSchema = z
-	.object({
-		name: z.string().min(1).max(100),
-		location: z.string().min(1).max(100),
-		startDate: z.iso.date(),
-		endDate: z.iso.date(),
-		divisions: z.array(z.string()).min(1),
-		categories: z.array(z.string()).min(1),
-	})
-	.refine((formData) => formData.endDate >= formData.startDate, {
-		error: 'End date must be on or after start date',
-		path: ['endDate'],
-	})
+  .object({
+    name: z.string().min(1).max(100),
+    location: z.string().min(1).max(100),
+    startDate: z.iso.date(),
+    endDate: z.iso.date(),
+    divisions: z.array(z.string()).min(1),
+    categories: z.array(z.string()).min(1),
+  })
+  .refine(formData => formData.endDate >= formData.startDate, {
+    error: 'End date must be on or after start date',
+    path: ['endDate'],
+  })
 
 // Factory function for creating schemas with translated error messages
 const createTournamentFormSchema = (t: TFunction) =>
-	z
-		.object({
-			name: z
-				.string()
-				.min(1, t('messages.tournament.nameRequired'))
-				.max(100, t('messages.tournament.nameTooLong')),
-			location: z
-				.string()
-				.min(1, t('messages.tournament.locationRequired'))
-				.max(100, t('messages.tournament.locationTooLong')),
-			startDate: z.iso.date({
-				error: t('messages.tournament.invalidDateFormat'),
-			}),
-			endDate: z.iso.date({
-				error: t('messages.tournament.invalidDateFormat'),
-			}),
-			divisions: z.array(z.string()).min(1, t('messages.tournament.divisionsRequired')),
-			categories: z
-				.array(z.string())
-				.min(1, t('messages.tournament.categoriesRequired')),
-		})
-		.refine((formData) => formData.endDate >= formData.startDate, {
-			error: t('messages.tournament.endDateBeforeStartDate'),
-			path: ['endDate'],
-		})
+  z
+    .object({
+      name: z
+        .string()
+        .min(1, t('messages.tournament.nameRequired'))
+        .max(100, t('messages.tournament.nameTooLong')),
+      location: z
+        .string()
+        .min(1, t('messages.tournament.locationRequired'))
+        .max(100, t('messages.tournament.locationTooLong')),
+      startDate: z.iso.date({
+        error: t('messages.tournament.invalidDateFormat'),
+      }),
+      endDate: z.iso.date({
+        error: t('messages.tournament.invalidDateFormat'),
+      }),
+      divisions: z.array(z.string()).min(1, t('messages.tournament.divisionsRequired')),
+      categories: z
+        .array(z.string())
+        .min(1, t('messages.tournament.categoriesRequired')),
+    })
+    .refine(formData => formData.endDate >= formData.startDate, {
+      error: t('messages.tournament.endDateBeforeStartDate'),
+      path: ['endDate'],
+    })
 ```
 
 ## Internationalization
@@ -382,26 +382,26 @@ const createTournamentFormSchema = (t: TFunction) =>
 
 ```json
 {
-	"tournaments": {
-		"name": "Tournament name",
-		"location": "Location",
-		"startDate": "Start date",
-		"endDate": "End date",
-		"categories": "Categories",
-		"noTournaments": "No tournaments found",
-		"noTournamentsDescription": "Create your first tournament to get started",
-		"deleteTournament": "Delete tournament",
-		"createTournament": "Create tournament",
-		"editTournament": "Edit tournament"
-	},
-	"admin": {
-		"tournaments": {
-			"allTournaments": "All tournaments",
-			"allTournamentsDescription": "Manage and organize tournaments",
-			"totalTournaments": "Total tournaments",
-			"confirmDelete": "Are you sure you want to delete this tournament?"
-		}
-	}
+  "tournaments": {
+    "name": "Tournament name",
+    "location": "Location",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "categories": "Categories",
+    "noTournaments": "No tournaments found",
+    "noTournamentsDescription": "Create your first tournament to get started",
+    "deleteTournament": "Delete tournament",
+    "createTournament": "Create tournament",
+    "editTournament": "Edit tournament"
+  },
+  "admin": {
+    "tournaments": {
+      "allTournaments": "All tournaments",
+      "allTournamentsDescription": "Manage and organize tournaments",
+      "totalTournaments": "Total tournaments",
+      "confirmDelete": "Are you sure you want to delete this tournament?"
+    }
+  }
 }
 ```
 
@@ -411,11 +411,11 @@ Following Dutch capitalization rules (sentence case):
 
 ```json
 {
-	"tournaments": {
-		"name": "Toernoooi naam",
-		"location": "Locatie",
-		"deleteTournament": "Toernooi verwijderen"
-	}
+  "tournaments": {
+    "name": "Toernoooi naam",
+    "location": "Locatie",
+    "deleteTournament": "Toernooi verwijderen"
+  }
 }
 ```
 

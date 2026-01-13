@@ -9,24 +9,24 @@ export { isPublicRoute } from './publicRoutes.server'
  * Maps route metadata roles to Prisma Role enum values
  */
 function mapRouteRoleToPrismaRole(role: string): string {
-	const roleMapping: Record<string, string> = {
-		admin: 'ADMIN',
-		manager: 'MANAGER',
-		referee: 'REFEREE',
-		visitor: 'PUBLIC',
-	}
+  const roleMapping: Record<string, string> = {
+    admin: 'ADMIN',
+    manager: 'MANAGER',
+    referee: 'REFEREE',
+    visitor: 'PUBLIC',
+  }
 
-	return roleMapping[role] || role.toUpperCase()
+  return roleMapping[role] || role.toUpperCase()
 }
 
 /**
  * Checks if user has any of the required roles
  */
 function userHasRequiredRole(user: User, requiredRoles: string[]): boolean {
-	const userRole = user.role
-	const mappedRequiredRoles = requiredRoles.map(mapRouteRoleToPrismaRole)
+  const userRole = user.role
+  const mappedRequiredRoles = requiredRoles.map(mapRouteRoleToPrismaRole)
 
-	return mappedRequiredRoles.includes(userRole)
+  return mappedRequiredRoles.includes(userRole)
 }
 
 /**
@@ -34,27 +34,27 @@ function userHasRequiredRole(user: User, requiredRoles: string[]): boolean {
  * Enhanced version of the original requireUser with route metadata support
  */
 export async function requireUserWithMetadata(
-	request: Request,
-	routeMetadata?: RouteMetadata,
+  request: Request,
+  routeMetadata?: RouteMetadata,
 ): Promise<User> {
-	const user = await getUser(request)
+  const user = await getUser(request)
 
-	// Check authentication
-	if (!user) {
-		const url = new URL(request.url)
-		const redirectTo = `${url.pathname}${url.search}`
-		const redirectUrl = routeMetadata?.auth?.redirectTo || '/auth/signin'
-		throw redirect(`${redirectUrl}?redirectTo=${encodeURIComponent(redirectTo)}`)
-	}
+  // Check authentication
+  if (!user) {
+    const url = new URL(request.url)
+    const redirectTo = `${url.pathname}${url.search}`
+    const redirectUrl = routeMetadata?.auth?.redirectTo || '/auth/signin'
+    throw redirect(`${redirectUrl}?redirectTo=${encodeURIComponent(redirectTo)}`)
+  }
 
-	// Check authorization if required roles are specified
-	if (routeMetadata?.authorization?.requiredRoles) {
-		const { requiredRoles, redirectTo = '/unauthorized' } = routeMetadata.authorization
+  // Check authorization if required roles are specified
+  if (routeMetadata?.authorization?.requiredRoles) {
+    const { requiredRoles, redirectTo = '/unauthorized' } = routeMetadata.authorization
 
-		if (!userHasRequiredRole(user, requiredRoles)) {
-			throw redirect(redirectTo)
-		}
-	}
+    if (!userHasRequiredRole(user, requiredRoles)) {
+      throw redirect(redirectTo)
+    }
+  }
 
-	return user
+  return user
 }

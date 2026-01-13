@@ -12,32 +12,32 @@ Created a comprehensive manifest file with the following key properties:
 
 ```json
 {
-	"name": "Tournado",
-	"short_name": "Tournado",
-	"display": "standalone",
-	"background_color": "#134e4a",
-	"theme_color": "#03c989",
-	"scope": "/",
-	"categories": ["sports", "utilities"],
-	"icons": [
-		{
-			"src": "/favicon.ico",
-			"sizes": "48x48",
-			"type": "image/x-icon"
-		},
-		{
-			"src": "/icon-192.png",
-			"sizes": "192x192",
-			"type": "image/png",
-			"purpose": "any maskable"
-		},
-		{
-			"src": "/icon-512.png",
-			"sizes": "512x512",
-			"type": "image/png",
-			"purpose": "any maskable"
-		}
-	]
+  "name": "Tournado",
+  "short_name": "Tournado",
+  "display": "standalone",
+  "background_color": "#134e4a",
+  "theme_color": "#03c989",
+  "scope": "/",
+  "categories": ["sports", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
 ```
 
@@ -156,7 +156,7 @@ Located in `app/styles/safe-areas.css`:
 /* Enable smooth scrolling on mobile */
 html,
 body {
-	-webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;
 }
 ```
 

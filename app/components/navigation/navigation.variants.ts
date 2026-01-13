@@ -26,102 +26,102 @@ import { type VariantProps, cva } from 'class-variance-authority'
  * ```
  */
 export const navigationVariants = cva(
-	// Base classes - common navigation styling
-	[],
-	{
-		variants: {
-			/**
-			 * Component type variants for different navigation components.
-			 * - APP_BAR: Top navigation bar
-			 * - BOTTOM_NAV: Bottom navigation for mobile
-			 */
-			component: {
-				APP_BAR: [],
-				BOTTOM_NAV: [],
-			},
-			/**
-			 * Viewport variants for responsive behavior.
-			 * - mobile: Mobile viewport with animations (AppBar: <1024px, BottomNav: ≤767px)
-			 * - desktop: Desktop viewport with simple show/hide
-			 *
-			 * Note: Tablets (768px-1023px) use different breakpoints for different components:
-			 * - AppBar: 'mobile' viewport for scroll-based animations
-			 * - BottomNavigation: 'desktop' viewport (hidden) since it only shows ≤767px
-			 */
-			viewport: {
-				mobile: [],
-				desktop: [],
-			},
-			/**
-			 * Visibility state variants.
-			 * - true: Component should be visible
-			 * - false: Component should be hidden
-			 */
-			visible: {
-				true: [],
-				false: [],
-			},
-		},
-		compoundVariants: [
-			// APP_BAR mobile animations
-			{
-				component: 'APP_BAR',
-				viewport: 'mobile',
-				visible: true,
-				class: 'app-bar-bounce',
-			},
-			{
-				component: 'APP_BAR',
-				viewport: 'mobile',
-				visible: false,
-				class: 'app-bar-slide-out',
-			},
-			// APP_BAR desktop simple show/hide
-			{
-				component: 'APP_BAR',
-				viewport: 'desktop',
-				visible: true,
-				class: 'app-bar-visible',
-			},
-			{
-				component: 'APP_BAR',
-				viewport: 'desktop',
-				visible: false,
-				class: 'app-bar-hidden',
-			},
-			// BOTTOM_NAV mobile animations
-			{
-				component: 'BOTTOM_NAV',
-				viewport: 'mobile',
-				visible: true,
-				class: 'bottom-nav-bounce',
-			},
-			{
-				component: 'BOTTOM_NAV',
-				viewport: 'mobile',
-				visible: false,
-				class: 'bottom-nav-slide-out',
-			},
-			// BOTTOM_NAV desktop simple show/hide
-			{
-				component: 'BOTTOM_NAV',
-				viewport: 'desktop',
-				visible: true,
-				class: 'bottom-nav-visible',
-			},
-			{
-				component: 'BOTTOM_NAV',
-				viewport: 'desktop',
-				visible: false,
-				class: 'bottom-nav-hidden',
-			},
-		],
-		defaultVariants: {
-			component: 'APP_BAR',
-			viewport: 'desktop',
-			visible: true,
-		},
-	},
+  // Base classes - common navigation styling
+  [],
+  {
+    variants: {
+      /**
+       * Component type variants for different navigation components.
+       * - APP_BAR: Top navigation bar
+       * - BOTTOM_NAV: Bottom navigation for mobile
+       */
+      component: {
+        APP_BAR: [],
+        BOTTOM_NAV: [],
+      },
+      /**
+       * Viewport variants for responsive behavior.
+       * - mobile: Mobile viewport with animations (AppBar: <1024px, BottomNav: ≤767px)
+       * - desktop: Desktop viewport with simple show/hide
+       *
+       * Note: Tablets (768px-1023px) use different breakpoints for different components:
+       * - AppBar: 'mobile' viewport for scroll-based animations
+       * - BottomNavigation: 'desktop' viewport (hidden) since it only shows ≤767px
+       */
+      viewport: {
+        mobile: [],
+        desktop: [],
+      },
+      /**
+       * Visibility state variants.
+       * - true: Component should be visible
+       * - false: Component should be hidden
+       */
+      visible: {
+        true: [],
+        false: [],
+      },
+    },
+    compoundVariants: [
+      // APP_BAR mobile animations
+      {
+        component: 'APP_BAR',
+        viewport: 'mobile',
+        visible: true,
+        class: 'app-bar-bounce',
+      },
+      {
+        component: 'APP_BAR',
+        viewport: 'mobile',
+        visible: false,
+        class: 'app-bar-slide-out',
+      },
+      // APP_BAR desktop simple show/hide
+      {
+        component: 'APP_BAR',
+        viewport: 'desktop',
+        visible: true,
+        class: 'app-bar-visible',
+      },
+      {
+        component: 'APP_BAR',
+        viewport: 'desktop',
+        visible: false,
+        class: 'app-bar-hidden',
+      },
+      // BOTTOM_NAV mobile animations
+      {
+        component: 'BOTTOM_NAV',
+        viewport: 'mobile',
+        visible: true,
+        class: 'bottom-nav-bounce',
+      },
+      {
+        component: 'BOTTOM_NAV',
+        viewport: 'mobile',
+        visible: false,
+        class: 'bottom-nav-slide-out',
+      },
+      // BOTTOM_NAV desktop simple show/hide
+      {
+        component: 'BOTTOM_NAV',
+        viewport: 'desktop',
+        visible: true,
+        class: 'bottom-nav-visible',
+      },
+      {
+        component: 'BOTTOM_NAV',
+        viewport: 'desktop',
+        visible: false,
+        class: 'bottom-nav-hidden',
+      },
+    ],
+    defaultVariants: {
+      component: 'APP_BAR',
+      viewport: 'desktop',
+      visible: true,
+    },
+  },
 )
 
 // TypeScript type exports for component prop typing

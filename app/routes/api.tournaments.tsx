@@ -17,21 +17,21 @@ import { getAllTournaments } from '~/models/tournament.server'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 
 export async function loader({ request }: LoaderFunctionArgs): Promise<Response> {
-	// Permission-based authorization - allows multiple roles
-	await requireUserWithPermission(request, 'tournaments:read')
+  // Permission-based authorization - allows multiple roles
+  await requireUserWithPermission(request, 'tournaments:read')
 
-	// Get all tournaments (future: add filtering support via query params)
-	const tournaments = await getAllTournaments()
+  // Get all tournaments (future: add filtering support via query params)
+  const tournaments = await getAllTournaments()
 
-	// Serialize dates to ISO strings for JSON transport
-	const tournamentsList = tournaments.map((tournament) => ({
-		...tournament,
-		startDate: tournament.startDate.toISOString(),
-		endDate: tournament.endDate?.toISOString() || null,
-	}))
+  // Serialize dates to ISO strings for JSON transport
+  const tournamentsList = tournaments.map(tournament => ({
+    ...tournament,
+    startDate: tournament.startDate.toISOString(),
+    endDate: tournament.endDate?.toISOString() || null,
+  }))
 
-	// Return JSON using native Response.json()
-	return Response.json({ tournaments: tournamentsList })
+  // Return JSON using native Response.json()
+  return Response.json({ tournaments: tournamentsList })
 }
 
 // No default export = Resource route (data-only, no UI)

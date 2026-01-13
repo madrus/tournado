@@ -114,17 +114,17 @@ For **small actions** (bug fixes, minor refactors):
 ```typescript
 // app/services/api-client.ts
 export const apiClient = {
-	/* configured fetch/axios */
+  /* configured fetch/axios */
 }
 
 // features/todos/hooks/useTodos.ts
 export function useTodos() {
-	// Tanstack Query or custom hook logic
+  // Tanstack Query or custom hook logic
 }
 
 // features/todos/components/TodoList.tsx
 export function TodoList() {
-	const { data } = useTodos() // No direct API calls
+  const { data } = useTodos() // No direct API calls
 }
 ```
 

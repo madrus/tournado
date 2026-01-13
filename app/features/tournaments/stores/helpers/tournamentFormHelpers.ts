@@ -1,9 +1,9 @@
 import { TOURNAMENT_PANELS_FIELD_MAP } from './tournamentFormConstants'
 import type {
-	FormFieldName,
-	FormFields,
-	StoreState,
-	ValidationState,
+  FormFieldName,
+  FormFields,
+  StoreState,
+  ValidationState,
 } from './tournamentFormTypes'
 
 /**
@@ -15,36 +15,36 @@ import type {
  * - No display errors exist
  */
 export function isPanelValid(
-	panelNumber: 1 | 2 | 3 | 4,
-	formFields: FormFields,
-	displayErrors: Record<string, string>,
-	mode: 'create' | 'edit',
+  panelNumber: 1 | 2 | 3 | 4,
+  formFields: FormFields,
+  displayErrors: Record<string, string>,
+  mode: 'create' | 'edit',
 ): boolean {
-	const panelFields = TOURNAMENT_PANELS_FIELD_MAP[panelNumber]
-	if (!panelFields) return false
+  const panelFields = TOURNAMENT_PANELS_FIELD_MAP[panelNumber]
+  if (!panelFields) return false
 
-	if (mode === 'edit') {
-		return panelFields.every((field) => {
-			const value = formFields[field as keyof FormFields]
-			if (Array.isArray(value)) {
-				return value.length > 0
-			}
-			return !!value
-		})
-	}
+  if (mode === 'edit') {
+    return panelFields.every(field => {
+      const value = formFields[field as keyof FormFields]
+      if (Array.isArray(value)) {
+        return value.length > 0
+      }
+      return !!value
+    })
+  }
 
-	return panelFields.every((field) => {
-		const value = formFields[field as keyof FormFields]
-		let hasValue = false
+  return panelFields.every(field => {
+    const value = formFields[field as keyof FormFields]
+    let hasValue = false
 
-		if (Array.isArray(value)) {
-			hasValue = value.length > 0
-		} else {
-			hasValue = !!value
-		}
+    if (Array.isArray(value)) {
+      hasValue = value.length > 0
+    } else {
+      hasValue = !!value
+    }
 
-		return hasValue && !displayErrors[field]
-	})
+    return hasValue && !displayErrors[field]
+  })
 }
 
 /**
@@ -58,60 +58,60 @@ export function isPanelValid(
  *   - Panel 4 enables when panel 3 is complete
  */
 export function isPanelEnabled(
-	panelNumber: 1 | 2 | 3 | 4,
-	mode: 'create' | 'edit',
-	isPanelValidFn: (panel: 1 | 2 | 3 | 4) => boolean,
+  panelNumber: 1 | 2 | 3 | 4,
+  mode: 'create' | 'edit',
+  isPanelValidFn: (panel: 1 | 2 | 3 | 4) => boolean,
 ): boolean {
-	if (mode === 'edit') return true
-	switch (panelNumber) {
-		case 1:
-			return true
-		case 2:
-			return isPanelValidFn(1)
-		case 3:
-			return isPanelValidFn(2)
-		case 4:
-			return isPanelValidFn(3)
-		default:
-			return false
-	}
+  if (mode === 'edit') return true
+  switch (panelNumber) {
+    case 1:
+      return true
+    case 2:
+      return isPanelValidFn(1)
+    case 3:
+      return isPanelValidFn(2)
+    case 4:
+      return isPanelValidFn(3)
+    default:
+      return false
+  }
 }
 
 /**
  * Checks if the form is dirty (has been modified) by comparing current and old form fields.
  */
 export const isFormDirty = (
-	formFields: FormFields,
-	oldFormFields: FormFields,
+  formFields: FormFields,
+  oldFormFields: FormFields,
 ): boolean => JSON.stringify(formFields) !== JSON.stringify(oldFormFields)
 
 /**
  * Merges display and server errors, with server errors taking priority.
  */
 export const mergeErrors = (
-	displayErrors: Record<string, string>,
-	serverErrors: Record<string, string>,
+  displayErrors: Record<string, string>,
+  serverErrors: Record<string, string>,
 ): Record<string, string> => ({
-	...displayErrors,
-	...serverErrors,
+  ...displayErrors,
+  ...serverErrors,
 })
 
 /**
  * Checks if the form is ready to submit by validating all panels and ensuring no errors.
  */
 export function getIsFormReadyForSubmission(
-	formFields: FormFields,
-	validation: ValidationState,
-	mode: 'create' | 'edit',
+  formFields: FormFields,
+  validation: ValidationState,
+  mode: 'create' | 'edit',
 ): boolean {
-	const allPanelsValid = [1, 2, 3, 4].every((panel) =>
-		isPanelValid(panel as 1 | 2 | 3 | 4, formFields, validation.displayErrors, mode),
-	)
-	const noErrors =
-		Object.keys(mergeErrors(validation.displayErrors, validation.serverErrors))
-			.length === 0
+  const allPanelsValid = [1, 2, 3, 4].every(panel =>
+    isPanelValid(panel as 1 | 2 | 3 | 4, formFields, validation.displayErrors, mode),
+  )
+  const noErrors =
+    Object.keys(mergeErrors(validation.displayErrors, validation.serverErrors))
+      .length === 0
 
-	return allPanelsValid && noErrors
+  return allPanelsValid && noErrors
 }
 
 /**
@@ -119,69 +119,69 @@ export function getIsFormReadyForSubmission(
  * Used for bulk form data setting and pre-population.
  */
 export function mapFlexibleToFormData(
-	flexibleData: Partial<{
-		name?: string
-		location?: string
-		startDate?: string
-		endDate?: string
-		divisions?: string[]
-		categories?: string[]
-	}>,
+  flexibleData: Partial<{
+    name?: string
+    location?: string
+    startDate?: string
+    endDate?: string
+    divisions?: string[]
+    categories?: string[]
+  }>,
 ): Partial<FormFields> {
-	const mappedData: Partial<FormFields> = {}
+  const mappedData: Partial<FormFields> = {}
 
-	if (flexibleData.name !== undefined) mappedData.name = flexibleData.name
-	if (flexibleData.location !== undefined) mappedData.location = flexibleData.location
-	if (flexibleData.startDate !== undefined) {
-		mappedData.startDate = flexibleData.startDate
-	}
-	if (flexibleData.endDate !== undefined) mappedData.endDate = flexibleData.endDate
-	if (flexibleData.divisions !== undefined) {
-		mappedData.divisions = flexibleData.divisions
-	}
-	if (flexibleData.categories !== undefined) {
-		mappedData.categories = flexibleData.categories
-	}
+  if (flexibleData.name !== undefined) mappedData.name = flexibleData.name
+  if (flexibleData.location !== undefined) mappedData.location = flexibleData.location
+  if (flexibleData.startDate !== undefined) {
+    mappedData.startDate = flexibleData.startDate
+  }
+  if (flexibleData.endDate !== undefined) mappedData.endDate = flexibleData.endDate
+  if (flexibleData.divisions !== undefined) {
+    mappedData.divisions = flexibleData.divisions
+  }
+  if (flexibleData.categories !== undefined) {
+    mappedData.categories = flexibleData.categories
+  }
 
-	return mappedData
+  return mappedData
 }
 
 /**
  * Returns the panel number (1-4) for a given field name, or 0 if not found.
  */
 export const getPanelNumberForField = (fieldName: keyof FormFields): number =>
-	Number(
-		Object.entries(TOURNAMENT_PANELS_FIELD_MAP).find(([, fields]) =>
-			(fields as readonly (keyof FormFields)[]).includes(fieldName),
-		)?.[0] ?? 0,
-	)
+  Number(
+    Object.entries(TOURNAMENT_PANELS_FIELD_MAP).find(([, fields]) =>
+      (fields as readonly (keyof FormFields)[]).includes(fieldName),
+    )?.[0] ?? 0,
+  )
 
 /**
  * Helper to determine if a field should be validated
  */
 export const shouldValidateField = (
-	fieldName: FormFieldName,
-	validation: ValidationState,
+  fieldName: FormFieldName,
+  validation: ValidationState,
 ): boolean =>
-	validation.blurredFields[fieldName] ||
-	validation.forceShowAllErrors ||
-	validation.submitAttempted
+  validation.blurredFields[fieldName] ||
+  validation.forceShowAllErrors ||
+  validation.submitAttempted
 
 /**
  * Helper to reset state while preserving specified keys
  */
 export function resetStatePreserving<T extends keyof StoreState>(
-	preserveKeys: T[],
-	get: () => StoreState,
+  preserveKeys: T[],
+  get: () => StoreState,
 ): Pick<StoreState, T> {
-	const currentState = get()
-	const preservedState = {} as Pick<StoreState, T>
+  const currentState = get()
+  const preservedState = {} as Pick<StoreState, T>
 
-	preserveKeys.forEach((key) => {
-		preservedState[key] = currentState[key]
-	})
+  preserveKeys.forEach(key => {
+    preservedState[key] = currentState[key]
+  })
 
-	return preservedState
+  return preservedState
 }
 
 /**
@@ -189,27 +189,27 @@ export function resetStatePreserving<T extends keyof StoreState>(
  * Used to determine if a panel is complete for progressive form navigation.
  */
 export function isPanelComplete(
-	panelNumber: 1 | 2 | 3 | 4,
-	formFields: FormFields,
-	blurredFields: Record<string, boolean>,
-	displayErrors: Record<string, string>,
+  panelNumber: 1 | 2 | 3 | 4,
+  formFields: FormFields,
+  blurredFields: Record<string, boolean>,
+  displayErrors: Record<string, string>,
 ): boolean {
-	const panelFields = TOURNAMENT_PANELS_FIELD_MAP[panelNumber]
-	if (!panelFields) return false
+  const panelFields = TOURNAMENT_PANELS_FIELD_MAP[panelNumber]
+  if (!panelFields) return false
 
-	const allFieldsBlurred = panelFields.every((field) => blurredFields[field])
-	const allFieldsValid = panelFields.every((field) => {
-		const value = formFields[field as keyof FormFields]
-		let hasValue = false
+  const allFieldsBlurred = panelFields.every(field => blurredFields[field])
+  const allFieldsValid = panelFields.every(field => {
+    const value = formFields[field as keyof FormFields]
+    let hasValue = false
 
-		if (Array.isArray(value)) {
-			hasValue = value.length > 0
-		} else {
-			hasValue = !!value
-		}
+    if (Array.isArray(value)) {
+      hasValue = value.length > 0
+    } else {
+      hasValue = !!value
+    }
 
-		return hasValue && !displayErrors[field]
-	})
+    return hasValue && !displayErrors[field]
+  })
 
-	return allFieldsBlurred && allFieldsValid
+  return allFieldsBlurred && allFieldsValid
 }

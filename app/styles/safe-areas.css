@@ -1,44 +1,44 @@
 :root {
-	--sat: env(safe-area-inset-top);
-	--sar: env(safe-area-inset-right);
-	--sab: env(safe-area-inset-bottom);
-	--sal: env(safe-area-inset-left);
+  --sat: env(safe-area-inset-top);
+  --sar: env(safe-area-inset-right);
+  --sab: env(safe-area-inset-bottom);
+  --sal: env(safe-area-inset-left);
 }
 
 /* Fullscreen PWA - no body padding to allow content to use full screen */
 body {
-	padding: 0;
+  padding: 0;
 }
 
 /* Enable smooth scrolling on mobile */
 html,
 body {
-	-webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Fullscreen PWA support - hide Android system bars */
 @media (display-mode: fullscreen) {
-	body {
-		padding-top: env(safe-area-inset-top);
-		padding-bottom: env(safe-area-inset-bottom);
-	}
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
 
 /* Ensure content doesn't go under status bar */
 .safe-top {
-	padding-top: max(env(safe-area-inset-top), 16px);
+  padding-top: max(env(safe-area-inset-top), 16px);
 }
 
 /* Ensure content doesn't go under home indicator */
 .safe-bottom {
-	padding-bottom: max(env(safe-area-inset-bottom), 16px);
+  padding-bottom: max(env(safe-area-inset-bottom), 16px);
 }
 
 /* For fixed position elements */
 .fixed-safe-top {
-	top: env(safe-area-inset-top);
+  top: env(safe-area-inset-top);
 }
 
 .fixed-safe-bottom {
-	bottom: env(safe-area-inset-bottom);
+  bottom: env(safe-area-inset-bottom);
 }

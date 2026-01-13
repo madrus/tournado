@@ -1,61 +1,61 @@
 @layer base {
-	/* Theme transitions removed to prevent flickering during mode switches */
-	/* Individual element animations are preserved via specific classes */
+  /* Theme transitions removed to prevent flickering during mode switches */
+  /* Individual element animations are preserved via specific classes */
 
-	/* Comprehensive webkit appearance reset to prevent mobile diamond artifacts */
-	input,
-	select,
-	textarea,
-	button {
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		appearance: none;
-	}
+  /* Comprehensive webkit appearance reset to prevent mobile diamond artifacts */
+  input,
+  select,
+  textarea,
+  button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
 
-	/* Override browser autofill styling */
-	input:-webkit-autofill,
-	input:-webkit-autofill:hover,
-	input:-webkit-autofill:focus,
-	input:-webkit-autofill:active {
-		-webkit-box-shadow: 0 0 0 30px var(--color-input) inset;
-		-webkit-text-fill-color: var(--color-input-foreground);
-		background-color: var(--color-input);
-	}
+  /* Override browser autofill styling */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--color-input) inset;
+    -webkit-text-fill-color: var(--color-input-foreground);
+    background-color: var(--color-input);
+  }
 
-	/* Ensure headings use the title color */
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-		color: var(--color-title);
-	}
+  /* Ensure headings use the title color */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--color-title);
+  }
 
-	/* Dark mode heading colors - exclude AppBar */
-	.dark h1,
-	.dark h2,
-	.dark h3,
-	.dark h4,
-	.dark h5,
-	.dark h6 {
-		color: var(--color-title-accent);
-	}
+  /* Dark mode heading colors - exclude AppBar */
+  .dark h1,
+  .dark h2,
+  .dark h3,
+  .dark h4,
+  .dark h5,
+  .dark h6 {
+    color: var(--color-title-accent);
+  }
 
-	.dark .text-foreground-heading {
-		color: var(--color-title);
-	}
+  .dark .text-foreground-heading {
+    color: var(--color-title);
+  }
 
-	.dark .text-foreground {
-		color: var(--color-foreground);
-	}
+  .dark .text-foreground {
+    color: var(--color-foreground);
+  }
 
-	/* Make all paragraph text use foreground color in dark mode for accessibility */
-	.dark p:not(.text-foreground-heading) {
-		color: var(--color-foreground);
-	}
+  /* Make all paragraph text use foreground color in dark mode for accessibility */
+  .dark p:not(.text-foreground-heading) {
+    color: var(--color-foreground);
+  }
 
-	/* Footer styles handled by component classes */
+  /* Footer styles handled by component classes */
 
-	/* Mobile navigation uses CSS custom properties */
+  /* Mobile navigation uses CSS custom properties */
 }

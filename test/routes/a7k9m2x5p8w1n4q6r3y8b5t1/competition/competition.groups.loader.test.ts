@@ -5,27 +5,27 @@ import { adminPath } from '~/utils/adminRoutes'
 
 // Mock session utilities
 vi.mock('~/utils/session.server', () => ({
-	getUser: vi.fn(),
+  getUser: vi.fn(),
 }))
 
 // Mock group model
 vi.mock('~/models/group.server', () => ({
-	getTournamentGroupStages: vi.fn().mockResolvedValue([]),
+  getTournamentGroupStages: vi.fn().mockResolvedValue([]),
 }))
 
 // Mock tournament model
 vi.mock('~/models/tournament.server', () => ({
-	getAllTournaments: vi.fn().mockResolvedValue([]),
+  getAllTournaments: vi.fn().mockResolvedValue([]),
 }))
 
 beforeEach(() => {
-	vi.clearAllMocks()
+  vi.clearAllMocks()
 })
 
 // Generate all authorization tests automatically from route metadata
 // Note: This route requires tournament query param
 createLoaderAuthTests({
-	routePath: adminPath('/competition/groups?tournament=test-id'),
-	metadata: handle,
-	loaderFunction: loader,
+  routePath: adminPath('/competition/groups?tournament=test-id'),
+  metadata: handle,
+  loaderFunction: loader,
 })

@@ -194,13 +194,13 @@ Standard icon component props:
 
 ```typescript
 type IconProps = {
-	className?: string // Additional CSS classes
-	size?: number // Icon size in pixels (default: 24)
-	variant?: 'outlined' | 'filled' // Visual style (if supported)
-	weight?: 400 | 500 | 600 // Font weight equivalent
-	'data-testid'?: string // Test identifier
-	'aria-label'?: string // Accessibility label
-	[key: string]: unknown // Allow extra props for flexibility
+  className?: string // Additional CSS classes
+  size?: number // Icon size in pixels (default: 24)
+  variant?: 'outlined' | 'filled' // Visual style (if supported)
+  weight?: 400 | 500 | 600 // Font weight equivalent
+  'data-testid'?: string // Test identifier
+  'aria-label'?: string // Accessibility label
+  [key: string]: unknown // Allow extra props for flexibility
 }
 ```
 

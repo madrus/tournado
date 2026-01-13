@@ -409,23 +409,23 @@ Add these to your VS Code `settings.json` for optimal Continue experience:
 
 ```json
 {
-	// Disable conflicting AI features
-	"github.copilot.enable": false,
-	"vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-	"editor.inlineSuggest.enabled": true,
+  // Disable conflicting AI features
+  "github.copilot.enable": false,
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "editor.inlineSuggest.enabled": true,
 
-	// Optimize for Continue
-	"editor.quickSuggestions": {
-		"other": true,
-		"comments": true,
-		"strings": true
-	},
-	"editor.suggestOnTriggerCharacters": true,
-	"editor.wordBasedSuggestions": "off",
+  // Optimize for Continue
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  "editor.suggestOnTriggerCharacters": true,
+  "editor.wordBasedSuggestions": "off",
 
-	// Performance optimizations
-	"editor.suggest.snippetsPreventQuickSuggestions": false,
-	"editor.acceptSuggestionOnCommitCharacter": false
+  // Performance optimizations
+  "editor.suggest.snippetsPreventQuickSuggestions": false,
+  "editor.acceptSuggestionOnCommitCharacter": false
 }
 ```
 
@@ -443,8 +443,8 @@ For project-specific Continue settings, create `.vscode/settings.json` in your p
 
 ```json
 {
-	"continue.enableTabAutocomplete": true,
-	"continue.manuallyTriggerCompletion": false
+  "continue.enableTabAutocomplete": true,
+  "continue.manuallyTriggerCompletion": false
 }
 ```
 
@@ -556,20 +556,20 @@ For VS Code projects, create `.vscode/settings.json` in your project root:
 
 ```json
 {
-	"continue.enableTabAutocomplete": true,
-	"continue.manuallyTriggerCompletion": false,
-	"continue.maxAutocompleteCharacters": 10000,
-	"continue.enableContinueForTeams": false,
+  "continue.enableTabAutocomplete": true,
+  "continue.manuallyTriggerCompletion": false,
+  "continue.maxAutocompleteCharacters": 10000,
+  "continue.enableContinueForTeams": false,
 
-	"editor.inlineSuggest.enabled": true,
-	"editor.quickSuggestions": {
-		"other": true,
-		"comments": true,
-		"strings": true
-	},
+  "editor.inlineSuggest.enabled": true,
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
 
-	"github.copilot.enable": false,
-	"vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"
+  "github.copilot.enable": false,
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"
 }
 ```
 
@@ -579,20 +579,20 @@ For Cursor projects, create `.cursor/settings.json` in your project root:
 
 ```json
 {
-	"continue.enableTabAutocomplete": true,
-	"continue.manuallyTriggerCompletion": false,
-	"continue.maxAutocompleteCharacters": 10000,
+  "continue.enableTabAutocomplete": true,
+  "continue.manuallyTriggerCompletion": false,
+  "continue.maxAutocompleteCharacters": 10000,
 
-	"cursor.cpp.disabledLanguages": [],
-	"cursor.general.enableCursorPredictions": false,
-	"cursor.chat.useOpenAIKey": false,
+  "cursor.cpp.disabledLanguages": [],
+  "cursor.general.enableCursorPredictions": false,
+  "cursor.chat.useOpenAIKey": false,
 
-	"editor.inlineSuggest.enabled": true,
-	"editor.quickSuggestions": {
-		"other": true,
-		"comments": true,
-		"strings": true
-	}
+  "editor.inlineSuggest.enabled": true,
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  }
 }
 ```
 
@@ -761,13 +761,13 @@ Add to your `.cursor/settings.json`:
 
 ```json
 {
-	"cursor.general.enableCursorPredictions": false,
-	"cursor.chat.useOpenAIKey": false,
-	"cursor.cpp.enableAutocomplete": false,
-	"cursor.general.enableTab": false,
+  "cursor.general.enableCursorPredictions": false,
+  "cursor.chat.useOpenAIKey": false,
+  "cursor.cpp.enableAutocomplete": false,
+  "cursor.general.enableTab": false,
 
-	"continue.enableTabAutocomplete": true,
-	"editor.inlineSuggest.enabled": true
+  "continue.enableTabAutocomplete": true,
+  "editor.inlineSuggest.enabled": true
 }
 ```
 

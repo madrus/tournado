@@ -25,14 +25,14 @@ This architectural pattern enables:
 ```typescript
 // app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/tournaments._index.tsx
 export const handle: RouteMetadata = {
-	authorization: {
-		requiredRoles: ['ADMIN', 'MANAGER'], // Only ADMIN and MANAGER can access UI
-	},
+  authorization: {
+    requiredRoles: ['ADMIN', 'MANAGER'], // Only ADMIN and MANAGER can access UI
+  },
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-	await requireUserWithMetadata(request, handle) // Role-based check
-	// ... load data for UI
+  await requireUserWithMetadata(request, handle) // Role-based check
+  // ... load data for UI
 }
 ```
 
@@ -47,11 +47,11 @@ export async function loader({ request }: Route.LoaderArgs) {
 ```typescript
 // app/routes/api.tournaments.tsx (Resource Route)
 export async function loader({ request }: LoaderFunctionArgs): Promise<Response> {
-	await requireUserWithPermission(request, 'tournaments:read') // Permission-based check
+  await requireUserWithPermission(request, 'tournaments:read') // Permission-based check
 
-	const tournaments = await getAllTournaments()
+  const tournaments = await getAllTournaments()
 
-	return Response.json({ tournaments })
+  return Response.json({ tournaments })
 }
 
 // No default export = Resource route (data-only, no UI)
@@ -180,15 +180,15 @@ Resource routes can be extended with filtering via query params:
 
 ```typescript
 export async function loader({ request }: LoaderFunctionArgs): Promise<Response> {
-	await requireUserWithPermission(request, 'tournaments:read')
+  await requireUserWithPermission(request, 'tournaments:read')
 
-	const url = new URL(request.url)
-	const status = url.searchParams.get('status')
-	const year = url.searchParams.get('year')
+  const url = new URL(request.url)
+  const status = url.searchParams.get('status')
+  const year = url.searchParams.get('year')
 
-	const tournaments = await getTournamentsFiltered({ status, year })
+  const tournaments = await getTournamentsFiltered({ status, year })
 
-	return Response.json({ tournaments })
+  return Response.json({ tournaments })
 }
 ```
 
@@ -203,28 +203,28 @@ Resource routes require custom test approach since they use permission-based aut
 ```typescript
 // test/routes/api.tournaments.test.ts
 describe('Resource Route: /api/tournaments', () => {
-	const rolesWithAccess: Role[] = [
-		'PUBLIC',
-		'REFEREE',
-		'EDITOR',
-		'BILLING',
-		'MANAGER',
-		'ADMIN',
-	]
+  const rolesWithAccess: Role[] = [
+    'PUBLIC',
+    'REFEREE',
+    'EDITOR',
+    'BILLING',
+    'MANAGER',
+    'ADMIN',
+  ]
 
-	rolesWithAccess.forEach((role) => {
-		it(`${role} users should access (has tournaments:read permission)`, async () => {
-			const mockUser = createMockUser(role)
-			vi.mocked(getUser).mockResolvedValue(mockUser)
+  rolesWithAccess.forEach(role => {
+    it(`${role} users should access (has tournaments:read permission)`, async () => {
+      const mockUser = createMockUser(role)
+      vi.mocked(getUser).mockResolvedValue(mockUser)
 
-			const request = new Request('http://localhost/api/tournaments')
-			const response = await loader({ request, params: {}, context: {} })
-			const json = await response.json()
+      const request = new Request('http://localhost/api/tournaments')
+      const response = await loader({ request, params: {}, context: {} })
+      const json = await response.json()
 
-			expect(json).toHaveProperty('tournaments')
-			expect(Array.isArray(json.tournaments)).toBe(true)
-		})
-	})
+      expect(json).toHaveProperty('tournaments')
+      expect(Array.isArray(json.tournaments)).toBe(true)
+    })
+  })
 })
 ```
 
@@ -234,15 +234,15 @@ Test resource routes like any API endpoint:
 
 ```typescript
 test('REFEREE can fetch tournament data via API', async ({ page, request }) => {
-	// Login as REFEREE
-	await loginAsReferee(page)
+  // Login as REFEREE
+  await loginAsReferee(page)
 
-	// Fetch from resource route
-	const response = await request.get('/api/tournaments')
-	expect(response.ok()).toBeTruthy()
+  // Fetch from resource route
+  const response = await request.get('/api/tournaments')
+  expect(response.ok()).toBeTruthy()
 
-	const json = await response.json()
-	expect(json.tournaments).toBeDefined()
+  const json = await response.json()
+  expect(json.tournaments).toBeDefined()
 })
 ```
 
@@ -261,30 +261,30 @@ When converting a UI route from `requireUserWithPermission` to `requireUserWithM
 ```typescript
 // BEFORE: UI route using permission-based auth
 export async function loader({ request }: Route.LoaderArgs) {
-	await requireUserWithPermission(request, 'tournaments:read') // ❌ Too permissive for UI
-	const tournaments = await getAllTournaments()
-	return { tournaments }
+  await requireUserWithPermission(request, 'tournaments:read') // ❌ Too permissive for UI
+  const tournaments = await getAllTournaments()
+  return { tournaments }
 }
 
 // AFTER: UI route with role-based auth
 export const handle: RouteMetadata = {
-	authorization: {
-		requiredRoles: ['ADMIN', 'MANAGER'], // ✅ Only admin roles for UI
-	},
+  authorization: {
+    requiredRoles: ['ADMIN', 'MANAGER'], // ✅ Only admin roles for UI
+  },
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-	await requireUserWithMetadata(request, handle)
-	const tournaments = await getAllTournaments()
-	return { tournaments }
+  await requireUserWithMetadata(request, handle)
+  const tournaments = await getAllTournaments()
+  return { tournaments }
 }
 
 // NEW: Resource route for broader data access
 // app/routes/api.tournaments.tsx
 export async function loader({ request }: LoaderFunctionArgs): Promise<Response> {
-	await requireUserWithPermission(request, 'tournaments:read') // ✅ REFEREE, EDITOR, etc. can access
-	const tournaments = await getAllTournaments()
-	return Response.json({ tournaments })
+  await requireUserWithPermission(request, 'tournaments:read') // ✅ REFEREE, EDITOR, etc. can access
+  const tournaments = await getAllTournaments()
+  return Response.json({ tournaments })
 }
 ```
 
@@ -309,15 +309,15 @@ Routes without a default export are automatically treated as resource routes:
 ```typescript
 // Resource route (no default export)
 export async function loader() {
-	/* ... */
+  /* ... */
 }
 
 // UI route (has default export)
 export default function Component() {
-	/* ... */
+  /* ... */
 }
 export async function loader() {
-	/* ... */
+  /* ... */
 }
 ```
 

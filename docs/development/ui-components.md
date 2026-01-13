@@ -93,7 +93,7 @@ const isAdmin = user?.role === 'ADMIN'
 Menu items are filtered based on authentication status:
 
 ```typescript
-menuItems.filter((item) => !item.authenticated || isAuthenticated)
+menuItems.filter(item => !item.authenticated || isAuthenticated)
 ```
 
 This ensures that:
@@ -166,20 +166,20 @@ The `UserMenu` component is a reusable dropdown/overlay menu that powers the App
 
 ```typescript
 type MenuItemType = {
-	label: string
-	icon: string
-	href?: string
-	todo?: boolean
-	action?: JSX.Element
-	customIcon?: string
-	authenticated?: boolean
-	divider?: boolean
-	subMenu?: Array<{
-		label: string
-		customIcon: string
-		onClick: () => void
-		active: boolean
-	}>
+  label: string
+  icon: string
+  href?: string
+  todo?: boolean
+  action?: JSX.Element
+  customIcon?: string
+  authenticated?: boolean
+  divider?: boolean
+  subMenu?: Array<{
+    label: string
+    customIcon: string
+    onClick: () => void
+    active: boolean
+  }>
 }
 ```
 

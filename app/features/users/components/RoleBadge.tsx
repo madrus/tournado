@@ -5,16 +5,16 @@ import { Badge } from '~/components/Badge'
 import { roleColors } from '../utils/roleUtils'
 
 type RoleBadgeProps = {
-	role: User['role']
-	className?: string
+  role: User['role']
+  className?: string
 }
 
 export function RoleBadge({ role, className }: Readonly<RoleBadgeProps>): JSX.Element {
-	const { t } = useTranslation()
+  const { t } = useTranslation()
 
-	return (
-		<Badge color={roleColors[role]} className={className}>
-			{t(`roles.${role.toLowerCase()}`)}
-		</Badge>
-	)
+  return (
+    <Badge color={roleColors[role]} className={className}>
+      {t(`roles.${role.toLowerCase()}`)}
+    </Badge>
+  )
 }

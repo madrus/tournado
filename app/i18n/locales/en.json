@@ -1,588 +1,588 @@
 {
-	"about": {
-		"description": "Tournado is a comprehensive tournament management platform designed to streamline the organization and management of sports tournaments for organizations and teams.",
-		"title": "About Tournado"
-	},
-	"admin": {
-		"competition": {
-			"description": "Manage tournament groups, matches, and standings.",
-			"groupStage": "Group Stage",
-			"groupStageDescription": "Create and manage groups in the group stage",
-			"groups": "Groups",
-			"playoffs": "Playoffs",
-			"title": "Competition Management"
-		},
-		"panel": {
-			"description": "Welcome back, <email>{{email}}</email>. Manage your tournament platform from here.",
-			"title": "Admin Panel"
-		},
-		"reports": {
-			"description": "View platform usage and tournament statistics.",
-			"title": "Reports & Analytics"
-		},
-		"settings": {
-			"description": "Configure application settings and preferences.",
-			"title": "System Settings"
-		},
-		"teams": {
-			"confirmDelete": "Are you sure you want to delete this team? This action cannot be undone.",
-			"createNewTeamDescription": "Create a new team with tournament details and contact information.",
-			"createTeam": "Create Team",
-			"createTeamDescription": "Add a new team to the system with all necessary details.",
-			"description": "Manage teams across tournaments. View, edit, or delete team information.",
-			"editTeam": "Edit Team Details",
-			"newTeam": "New Team",
-			"saveChanges": "Save Changes",
-			"teamNotFound": "Team Not Found",
-			"teamNotFoundDescription": "The team you are looking for could not be found or may have been deleted.",
-			"title": "Team Management",
-			"totalTeams": "Total Teams"
-		},
-		"tournaments": {
-			"confirmDelete": "Are you sure you want to delete this tournament? This action cannot be undone.",
-			"description": "Manage tournaments in the system. Create, edit, or delete tournament information.",
-			"title": "Tournament Management",
-			"totalTournaments": "Total Tournaments"
-		},
-		"users": {
-			"description": "Manage user accounts and permissions.",
-			"title": "User Management",
-			"totalUsers": "Total Users"
-		}
-	},
-	"auth": {
-		"alreadyHaveAccount": "Already have an account?",
-		"continueWithEmail": "Or continue with email",
-		"createAccount": "Create Account",
-		"dontHaveAccount": "Don't have an account?",
-		"emailAddress": "Email address",
-		"firebase": {
-			"continueWithGoogle": "Continue with Google",
-			"error": "Authentication failed. Please try again.",
-			"signInWithGoogle": "Sign in with Google"
-		},
-		"firstName": "First name",
-		"labels": {
-			"confirmPassword": "Confirm Password",
-			"email": "Email",
-			"password": "Password"
-		},
-		"lastName": "Last name",
-		"notSignedIn": "Not signed in",
-		"or": "or",
-		"password": "Password",
-		"placeholders": {
-			"confirmPassword": "Confirm your password",
-			"email": "Enter your email",
-			"password": "Enter your password"
-		},
-		"pleaseSignIn": "Please sign in with your new account",
-		"registrationSuccess": "Account created successfully",
-		"rememberMe": "Remember me",
-		"signInPage": {
-			"description": "Sign in to your Tournado account",
-			"noAccount": "Don't have an account?",
-			"signUpLink": "Sign up"
-		},
-		"signInRequiredToCreateTeam": "You need to sign in to create a team.",
-		"signUpPage": {
-			"description": "Create your Tournado account",
-			"hasAccount": "Already have an account?",
-			"signInLink": "Sign in"
-		},
-		"signin": "Sign in",
-		"signout": "Sign out",
-		"signup": "Sign up",
-		"validation": {
-			"emailInvalid": "Please enter a valid email address",
-			"passwordMismatch": "Passwords do not match",
-			"passwordRequirements": "Password must be at least 8 characters with uppercase, lowercase, and number",
-			"passwordTooShort": "Password must be at least 8 characters",
-			"passwordWeak": "Password must contain uppercase, lowercase, and number"
-		},
-		"viewTeams": "View Teams",
-		"viewTeamsFor": "View teams for"
-	},
-	"common": {
-		"actions": {
-			"actions": "Actions",
-			"add": "Add",
-			"cancel": "Cancel",
-			"confirmDelete": "Yes, delete",
-			"create": "Create",
-			"creating": "Creating...",
-			"delete": "Delete",
-			"edit": "Edit",
-			"retry": "Retry",
-			"save": "Save",
-			"saving": "Saving...",
-			"update": "Update",
-			"updating": "Updating...",
-			"view": "View"
-		},
-		"appName": "Tournado",
-		"auth": {
-			"signIn": "Sign In",
-			"signOut": "Sign Out",
-			"signUp": "Sign Up",
-			"signingIn": "Signing in..."
-		},
-		"backToHome": "Back to home",
-		"comingSoon": "Soon",
-		"darkMode": "Dark mode",
-		"error": "Error",
-		"guest": "Guest",
-		"language": "Language",
-		"lightMode": "Light mode",
-		"loading": "Loading...",
-		"optional": "(optional)",
-		"pagination": {
-			"next": "Next",
-			"pageInfo": "Page {{current}} of {{total}}",
-			"previous": "Previous",
-			"showing": "Showing {{from}}-{{to}} of {{total}}"
-		},
-		"signedInAs": "Signed in as",
-		"titles": {
-			"about": "About",
-			"addTeam": "Add Team",
-			"adminPanel": "Admin Panel",
-			"competition": "Competition",
-			"more": "More",
-			"profile": "Profile",
-			"settings": "Settings",
-			"team": "Team",
-			"teams": "Teams",
-			"tournament": "Tournament",
-			"tournaments": "Tournaments",
-			"users": "Users",
-			"welcome": "Welcome"
-		},
-		"toggleMenu": "Toggle menu",
-		"toggleTheme": "Toggle theme",
-		"welcome": "Welcome"
-	},
-	"competition": {
-		"createGroupStage": "Create Group Stage",
-		"createGroupStageDescription": "Set up groups for the {{tournamentName}} tournament",
-		"description": "View tournament groups, matches, and standings.",
-		"selectTournament": "Select a Tournament",
-		"selectTournamentDescription": "Choose a tournament from the dropdown above to manage its group stage.",
-		"noGroupStages": "No group stage yet",
-		"noGroupStagesDescription": "Get started by creating the group stage.",
-		"groupsCount": "{{count}} groups",
-		"labels": {
-			"categories": "Categories:",
-			"setup": "Setup:",
-			"setupSummary": "{{groups}} groups × {{teams}} teams",
-			"created": "Created:"
-		},
-		"status": {
-			"enabled": "Enabled",
-			"disabled": "Disabled"
-		},
-		"groupStage": {
-			"name": "Group Stage Name",
-			"namePlaceholder": "e.g., JO8 Premier, 1st and 2nd Division",
-			"ageCategories": "Age Categories",
-			"ageCategoriesDescription": "Select which age categories will participate in this group stage",
-			"teamsAvailable": "{{count}} teams available",
-			"configGroups": "Number of Groups",
-			"configGroupsPlaceholder": "4",
-			"configSlots": "Teams per Group",
-			"configSlotsPlaceholder": "5",
-			"summary": "Summary",
-			"summaryTeamsAvailable": "{{count}} teams available in selected categories",
-			"summaryWillCreate": "Will create {{groups}} groups with {{slots}} slots each ({{total}} total slots)",
-			"title": "Group Stage"
-		},
-		"groupAssignment": {
-			"instruction": "Drag teams to assign them to specific slots. Drop on a free slot or on a team to replace it.",
-			"backToGroups": "Back to Groups",
-			"unsavedChanges": "You have unsaved changes",
-			"unsavedTitle": "Unsaved Changes",
-			"unsavedDescription": "You have unsaved changes that will be lost if you leave this page. Are you sure you want to leave?",
-			"leaveAnyway": "Yes, leave",
-			"stayOnPage": "Cancel",
-			"conflictTitle": "Changes Conflict",
-			"conflictDescription": "Another user saved changes. Your unsaved edits were discarded and the page was refreshed.",
-			"conflictReload": "Reload Page",
-			"goToGroup": "Go to {{name}}",
-			"errors": {
-				"noCapacity": "No space available in confirmed pool. Remove a team from a group first.",
-				"waitlistToGroup": "Waitlist teams cannot be assigned directly to groups. Move them to confirmed pool first."
-			},
-			"hints": {
-				"groupFull": "This group is full. Drop on a specific slot to swap teams."
-			},
-			"chip": {
-				"ariaLabel": "{{club}} {{team}} - drag to assign"
-			},
-			"slot": {
-				"label": "Slot {{number}}",
-				"position": "Slot {{position}}",
-				"dropHere": "Drop here",
-				"empty": "Empty",
-				"emptyAriaLabel": "Empty slot {{position}} - drop a team here",
-				"occupiedAriaLabel": "Slot {{position}} occupied by {{team}}"
-			},
-			"group": {
-				"ariaLabel": "{{name}} - {{filled}} of {{total}} teams assigned",
-				"slotsCount": "Teams: {{filled}} of {{total}}",
-				"dropToAssign": "Drop to auto-assign"
-			},
-			"reserve": {
-				"title": "Confirmed Teams",
-				"availableSlots": "Available slots: {{capacity}}",
-				"empty": "No teams in confirmed pool",
-				"dropToAdd": "Drop here to move to reserve",
-				"ariaLabel": "Confirmed teams pool - {{capacity}} available slots"
-			},
-			"waitlist": {
-				"title": "Waitlist",
-				"count": "Waiting: {{count}}",
-				"noCapacity": "Confirmed pool is full. Free up slots to promote waitlist teams.",
-				"helpPromote": "Drag waitlist teams to the confirmed pool to add them.",
-				"helpBlocked": "All slots are assigned. Remove teams from groups to make room.",
-				"ariaLabel": "Waitlist - {{count}} teams waiting",
-				"dropToAdd": "Drop here to move to waitlist"
-			}
-		}
-	},
-	"datatable": {
-		"clearSearch": "Clear search",
-		"resetFilters": "Reset",
-		"search": "Search...",
-		"toggleColumns": "Toggle columns",
-		"view": "View"
-	},
-	"divisions": {
-		"FIFTH_DIVISION": "Fifth Division",
-		"FIRST_DIVISION": "First Division",
-		"FOURTH_DIVISION": "Fourth Division",
-		"PREMIER_DIVISION": "Premier Division",
-		"SECOND_DIVISION": "Second Division",
-		"THIRD_DIVISION": "Third Division"
-	},
-	"errors": {
-		"emailOutboxInvalidFormat": "Email outbox data has an invalid format",
-		"emailOutboxReadFailure": "Failed to read email outbox",
-		"somethingWentWrong": "Something went wrong",
-		"teamLoadFailed": "Unable to load team details. Please try again later.",
-		"auth": {
-			"accountDeactivatedTitle": "Account Deactivated",
-			"accountDeactivatedMessage": "Your account has been deactivated. Please contact support for assistance.",
-			"unauthorizedSignInRequiredTitle": "Sign In Required",
-			"unauthorizedSignInRequired": "You must sign in to access this page.",
-			"unauthorizedAdminRequiredTitle": "Admin Access Required",
-			"unauthorizedAdminRequired": "You need administrator privileges to access this page. Contact your admin for access.",
-			"unauthorizedManagerRequiredTitle": "Manager Access Required",
-			"unauthorizedManagerRequired": "You need manager privileges to access this page. Contact your manager for access.",
-			"unauthorizedSuperAdminRequiredTitle": "Super Admin Access Required",
-			"unauthorizedSuperAdminRequired": "You need super administrator privileges to access this page. Contact your super admin for access.",
-			"unauthorizedDefaultTitle": "Access Denied",
-			"unauthorizedDefault": "You do not have permission to access this page."
-		},
-		"competition": {
-			"nameRequired": "Group stage name is required",
-			"categoriesRequired": "At least one category must be selected",
-			"groupsRange": "Number of groups must be between 2 and 8",
-			"slotsRange": "Teams per group must be between 3 and 10",
-			"createFailed": "Failed to create group stage. Please try again."
-		}
-	},
-	"landing": {
-		"features": {
-			"description": "Tournado provides all the tools you need to manage your sports tournaments efficiently. From team registration to match scheduling, we've got you covered.",
-			"subtitle": "Everything you need to manage your tournaments",
-			"title": "Tournament Management Made Easy"
-		},
-		"hero": {
-			"description": "Manage your sports tournaments with ease. Create, organize, and track your teams and matches in one place.",
-			"signup": "Sign up for free",
-			"viewTeams": "View Teams"
-		}
-	},
-	"messages": {
-		"auth": {
-			"emailExists": "A user already exists with this email",
-			"emailInvalid": "Email is invalid",
-			"emailRequired": "Email is required",
-			"forbidden": "You don't have permission to access this page",
-			"forbiddenTitle": "Access Denied",
-			"invalidCredentials": "Invalid email or password",
-			"notFound": "Sorry, the page you're looking for doesn't exist or has been moved. Please check the URL or navigate using the link below.",
-			"passwordRequired": "Password is required",
-			"passwordTooShort": "Password is too short",
-			"serverError": "Server error, please try again later",
-			"title": "Authentication Error",
-			"unauthorized": "You need to sign in to access this page",
-			"unauthorizedAdminRequired": "This area is restricted to tournament managers and administrators.",
-			"unauthorizedAdminRequiredTitle": "Admin Access Required",
-			"unauthorizedDefault": "You do not have permission to access this page. Contact your administrator if you believe this is an error.",
-			"unauthorizedDefaultTitle": "Access Denied",
-			"unauthorizedManagerRequired": "This area is restricted to tournament managers and administrators.",
-			"unauthorizedManagerRequiredTitle": "Manager Access Required",
-			"unauthorizedSignInRequired": "You need to sign in to access this resource.",
-			"unauthorizedSignInRequiredTitle": "Authentication Required",
-			"unauthorizedSuperAdminRequired": "This specific area is restricted to system administrators.",
-			"unauthorizedSuperAdminRequiredTitle": "Admin Access Required",
-			"unauthorizedTitle": "Sign In Required"
-		},
-		"common": {
-			"accessDenied": "You don't have permission to access this resource",
-			"errorTitle": "Application Error",
-			"itemNotFound": "{{item}} not found",
-			"notFoundTitle": "Page Not Found",
-			"unexpectedError": "An unexpected error occurred",
-			"unknownError": "An unknown error occurred"
-		},
-		"groupAssignment": {
-			"teamNotFound": "Team not found. Refresh and try again.",
-			"groupNotFound": "Target group not found. Refresh and try again.",
-			"slotNotFound": "Target slot not found. Refresh and try again."
-		},
-		"panel": {
-			"errorTitle": "Something went wrong",
-			"errorBody": "An error occurred while loading this section. Please try refreshing the page."
-		},
-		"team": {
-			"categoryRequired": "Category is required",
-			"clubNameRequired": "Club name is required",
-			"clubNameTooLong": "Club name must be less than 100 characters",
-			"divisionRequired": "Division is required",
-			"nameRequired": "Team name is required",
-			"nameTooLong": "Team name must be less than 50 characters",
-			"notFound": "Team not found",
-			"phoneNumberInvalid": "Please enter a valid phone number",
-			"phoneNumberRequired": "Phone number is required",
-			"privacyAgreementRequired": "You must agree to the privacy policy",
-			"registrationError": "Failed to register team",
-			"registrationErrorDesc": "There was an error registering your team. Please try again.",
-			"registrationSuccess": "Team registered successfully",
-			"registrationSuccessDesc": "Your team has been registered successfully.",
-			"teamLeaderNameRequired": "Team leader name is required",
-			"teamLeaderNameTooLong": "Name must be less than 100 characters",
-			"tournamentRequired": "Tournament is required",
-			"updateError": "Failed to update team",
-			"updateErrorDesc": "There was an error updating your team. Please try again.",
-			"updateSuccess": "Team updated successfully",
-			"updateSuccessDesc": "Your team has been updated successfully."
-		},
-		"tournament": {
-			"categoriesRequired": "At least one category is required",
-			"divisionsRequired": "At least one division is required",
-			"endDateBeforeStartDate": "End date must be on or after start date",
-			"invalidDateFormat": "Please enter a valid date",
-			"endDateRequired": "End date is required",
-			"locationRequired": "Location is required",
-			"locationTooLong": "Location must be less than 100 characters",
-			"nameRequired": "Tournament name is required",
-			"nameTooLong": "Tournament name must be less than 100 characters",
-			"registrationError": "Failed to register tournament",
-			"registrationErrorDesc": "There was an error registering the tournament. Please try again.",
-			"registrationSuccess": "Tournament registered successfully",
-			"registrationSuccessDesc": "The tournament has been registered successfully.",
-			"startDateRequired": "Start date is required",
-			"updateError": "Failed to update tournament",
-			"updateErrorDesc": "There was an error updating the tournament. Please try again.",
-			"updateSuccess": "Tournament updated successfully",
-			"updateSuccessDesc": "The tournament has been updated successfully."
-		},
-		"user": {
-			"cannotChangeOwnRole": "You Cannot Change Your Own Role",
-			"cannotDeactivateOwnAccount": "You Cannot Deactivate Your Own Account",
-			"cannotReactivateOwnAccount": "You Cannot Reactivate Your Own Account",
-			"displayNameRequired": "Display name cannot be empty.",
-			"failedToUpdateRole": "Failed to Update Role",
-			"missingUserId": "Missing User ID",
-			"requestFailed": "We couldn't process that request. Please try again.",
-			"requestFailedRefresh": "We couldn't process that request. Please refresh and try again.",
-			"unknownError": "Unknown error",
-			"userNotFound": "We couldn't find that user. Please try again."
-		},
-		"validation": {
-			"emailInvalid": "Please enter a valid email address",
-			"emailRequired": "Email is required",
-			"fieldRequired": "This field is required",
-			"phoneNumberInvalid": "Please enter a valid phone number",
-			"phoneNumberRequired": "Phone number is required"
-		}
-	},
-	"profile": {
-		"description": "Manage your profile settings and account information for tournament management.",
-		"title": "Profile Information"
-	},
-	"pwa": {
-		"install": {
-			"android": {
-				"chrome": "Tap the menu (⋮) and select \"Install app\"",
-				"firefox": "Tap the menu (⋮) and select \"Install\"",
-				"samsung": "Tap the menu (⋮) and select \"Add page to\" then \"Home screen\"",
-				"title": "Install this app on your device"
-			},
-			"ios": {
-				"chrome": "Tap the share button and then \"Add to Home Screen\"",
-				"firefox": "Tap the hamburger menu then \"Share\" and \"Add to Home Screen\"",
-				"safari": "Tap the share button and then \"Add to Home Screen\"",
-				"title": "Install this app on your iPhone"
-			},
-			"other": {
-				"instruction": "Open browser menu and select \"Add to Home Screen\"",
-				"title": "Install this app on your device"
-			}
-		},
-		"update": {
-			"button": "Update",
-			"instruction": "Refresh to update the app",
-			"title": "A new version is available"
-		}
-	},
-	"roles": {
-		"admin": "Admin",
-		"billing": "Billing",
-		"editor": "Editor",
-		"manager": "Manager",
-		"public": "Public",
-		"referee": "Referee"
-	},
-	"settings": {
-		"description": "Configure your tournament settings, preferences, and account options for optimal experience.",
-		"title": "Application Settings"
-	},
-	"teams": {
-		"allTournaments": "All tournaments",
-		"count": "{{count}} team registered",
-		"count_other": "{{count}} teams registered",
-		"createNewTeam": "Create a new team",
-		"deleteTeam": "Delete Team",
-		"deleteTeamAreYouSure": "Are you sure you want to delete this team? This action cannot be undone.",
-		"description": "Register your team(s) for one or more tournaments",
-		"filterByTournament": "Filter by tournament",
-		"form": {
-			"agreeToPrivacyPolicy": "I agree to the privacy policy",
-			"category": "Category",
-			"clubName": "Club Name",
-			"completeAllThreeFields": "Please complete all three fields below to proceed",
-			"division": "Division",
-			"enterContactDetails": "Enter contact details for the team leader",
-			"enterTeamDetails": "Enter your team information",
-			"fillOutForm": "Fill out the form below to register your team",
-			"name": "Team Name",
-			"placeholders": {
-				"clubName": "Enter your club name",
-				"name": "Enter your team name",
-				"teamLeaderEmail": "Enter email address",
-				"teamLeaderName": "Enter team leader full name",
-				"teamLeaderPhone": "Enter phone number"
-			},
-			"privacyAgreement": "I agree to the privacy policy and terms of service",
-			"privacyPolicy": "Privacy Policy",
-			"readAndAccept": "Please read and accept the privacy policy to continue",
-			"selectCategory": "Select a category",
-			"selectDivision": "Select a division",
-			"selectTournament": "Select a tournament",
-			"selectTournamentDetails": "Select the tournament details",
-			"teamInfo": "Team",
-			"teamLeaderEmail": "Team Leader Email",
-			"teamLeaderInfo": "Team Leader",
-			"teamLeaderName": "Team Leader Name",
-			"teamLeaderPhone": "Team Leader Phone",
-			"teamRegistration": "Team Registration",
-			"tournament": "Tournament",
-			"tournamentDetails": "Tournament"
-		},
-		"getStarted": {
-			"description": "Ready to join a tournament? Click the 'Add' button above to register your team and start playing!",
-			"title": "Get started with team registration"
-		},
-		"noTeamSelected": "No team selected. Select a team on the left, or",
-		"noTeams": "No teams have been registered yet. Be the first to register your team for upcoming tournaments!",
-		"title": "Teams"
-	},
-	"tournaments": {
-		"actions": {
-			"manageCompetition": "Competition"
-		},
-		"deleteTournament": "Delete Tournament",
-		"deleteTournamentAreYouSure": "Are you sure you want to delete this tournament? This action cannot be undone.",
-		"description": "View tournament information",
-		"endDate": "End Date",
-		"form": {
-			"basicInformation": "Basic Information",
-			"categories": "Categories",
-			"dates": "Tournament Dates",
-			"divisions": "Divisions",
-			"endDate": "End Date",
-			"enterBasicDetails": "Enter tournament name and location",
-			"fillOutForm": "Fill out the form below to create a new tournament",
-			"location": "Location",
-			"name": "Tournament Name",
-			"selectCategories": "Select the age categories that will participate",
-			"selectDates": "Select start and end dates for the tournament",
-			"selectDivisions": "Select the divisions that will participate",
-			"selected": "selected",
-			"startDate": "Start Date",
-			"tournamentRegistration": "Tournament Registration"
-		},
-		"location": "Location",
-		"name": "Name",
-		"noTournaments": "No Tournaments",
-		"noTournamentsDescription": "No tournaments have been created yet. Create your first tournament to get started!",
-		"startDate": "Start Date",
-		"title": "Tournaments"
-	},
-	"users": {
-		"actions": {
-			"deactivateUser": "Deactivate",
-			"reactivateUser": "Reactivate",
-			"viewDetails": "View Details"
-		},
-		"auditActions": {
-			"approval": "User Approved",
-			"deactivate": "User Deactivated",
-			"profile_update": "Profile Updated",
-			"reactivate": "User Reactivated",
-			"rejection": "User Rejected",
-			"role_change": "Role Changed"
-		},
-		"descriptions": {
-			"manageUsersAndRoles": "Manage user accounts and assign roles"
-		},
-		"fields": {
-			"assignedRole": "Assigned Role",
-			"createdAt": "Created At",
-			"currentRole": "Current Role",
-			"displayName": "Display Name",
-			"email": "Email",
-			"performedBy": "Performed by",
-			"role": "Role"
-		},
-		"messages": {
-			"confirmDeactivate": "Are you sure you want to deactivate this user?",
-			"confirmReactivate": "Reactivate this user so they can log in again?",
-			"deactivated": "Deactivated",
-			"displayNameUpdatedSuccessfully": "Display name updated successfully",
-			"noAuditLogs": "No audit log entries found",
-			"noUsers": "No users found",
-			"noUsersDescription": "No users have been created yet.",
-			"roleUpdatedSuccessfully": "User role updated successfully",
-			"userDeactivatedSuccessfully": "User deactivated successfully",
-			"userIsDeactivated": "This user is currently deactivated",
-			"userReactivatedSuccessfully": "User reactivated successfully"
-		},
-		"placeholders": {
-			"displayName": "Enter display name"
-		},
-		"titles": {
-			"allUsers": "All Users",
-			"auditLog": "Audit Log",
-			"deactivateUser": "Deactivate User",
-			"reactivateUser": "Reactivate User",
-			"totalUsers": "Total Users",
-			"userDetail": "User Details",
-			"userInformation": "User Information",
-			"userManagement": "User Management"
-		}
-	}
+  "about": {
+    "description": "Tournado is a comprehensive tournament management platform designed to streamline the organization and management of sports tournaments for organizations and teams.",
+    "title": "About Tournado"
+  },
+  "admin": {
+    "competition": {
+      "description": "Manage tournament groups, matches, and standings.",
+      "groupStage": "Group Stage",
+      "groupStageDescription": "Create and manage groups in the group stage",
+      "groups": "Groups",
+      "playoffs": "Playoffs",
+      "title": "Competition Management"
+    },
+    "panel": {
+      "description": "Welcome back, <email>{{email}}</email>. Manage your tournament platform from here.",
+      "title": "Admin Panel"
+    },
+    "reports": {
+      "description": "View platform usage and tournament statistics.",
+      "title": "Reports & Analytics"
+    },
+    "settings": {
+      "description": "Configure application settings and preferences.",
+      "title": "System Settings"
+    },
+    "teams": {
+      "confirmDelete": "Are you sure you want to delete this team? This action cannot be undone.",
+      "createNewTeamDescription": "Create a new team with tournament details and contact information.",
+      "createTeam": "Create Team",
+      "createTeamDescription": "Add a new team to the system with all necessary details.",
+      "description": "Manage teams across tournaments. View, edit, or delete team information.",
+      "editTeam": "Edit Team Details",
+      "newTeam": "New Team",
+      "saveChanges": "Save Changes",
+      "teamNotFound": "Team Not Found",
+      "teamNotFoundDescription": "The team you are looking for could not be found or may have been deleted.",
+      "title": "Team Management",
+      "totalTeams": "Total Teams"
+    },
+    "tournaments": {
+      "confirmDelete": "Are you sure you want to delete this tournament? This action cannot be undone.",
+      "description": "Manage tournaments in the system. Create, edit, or delete tournament information.",
+      "title": "Tournament Management",
+      "totalTournaments": "Total Tournaments"
+    },
+    "users": {
+      "description": "Manage user accounts and permissions.",
+      "title": "User Management",
+      "totalUsers": "Total Users"
+    }
+  },
+  "auth": {
+    "alreadyHaveAccount": "Already have an account?",
+    "continueWithEmail": "Or continue with email",
+    "createAccount": "Create Account",
+    "dontHaveAccount": "Don't have an account?",
+    "emailAddress": "Email address",
+    "firebase": {
+      "continueWithGoogle": "Continue with Google",
+      "error": "Authentication failed. Please try again.",
+      "signInWithGoogle": "Sign in with Google"
+    },
+    "firstName": "First name",
+    "labels": {
+      "confirmPassword": "Confirm Password",
+      "email": "Email",
+      "password": "Password"
+    },
+    "lastName": "Last name",
+    "notSignedIn": "Not signed in",
+    "or": "or",
+    "password": "Password",
+    "placeholders": {
+      "confirmPassword": "Confirm your password",
+      "email": "Enter your email",
+      "password": "Enter your password"
+    },
+    "pleaseSignIn": "Please sign in with your new account",
+    "registrationSuccess": "Account created successfully",
+    "rememberMe": "Remember me",
+    "signInPage": {
+      "description": "Sign in to your Tournado account",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign up"
+    },
+    "signInRequiredToCreateTeam": "You need to sign in to create a team.",
+    "signUpPage": {
+      "description": "Create your Tournado account",
+      "hasAccount": "Already have an account?",
+      "signInLink": "Sign in"
+    },
+    "signin": "Sign in",
+    "signout": "Sign out",
+    "signup": "Sign up",
+    "validation": {
+      "emailInvalid": "Please enter a valid email address",
+      "passwordMismatch": "Passwords do not match",
+      "passwordRequirements": "Password must be at least 8 characters with uppercase, lowercase, and number",
+      "passwordTooShort": "Password must be at least 8 characters",
+      "passwordWeak": "Password must contain uppercase, lowercase, and number"
+    },
+    "viewTeams": "View Teams",
+    "viewTeamsFor": "View teams for"
+  },
+  "common": {
+    "actions": {
+      "actions": "Actions",
+      "add": "Add",
+      "cancel": "Cancel",
+      "confirmDelete": "Yes, delete",
+      "create": "Create",
+      "creating": "Creating...",
+      "delete": "Delete",
+      "edit": "Edit",
+      "retry": "Retry",
+      "save": "Save",
+      "saving": "Saving...",
+      "update": "Update",
+      "updating": "Updating...",
+      "view": "View"
+    },
+    "appName": "Tournado",
+    "auth": {
+      "signIn": "Sign In",
+      "signOut": "Sign Out",
+      "signUp": "Sign Up",
+      "signingIn": "Signing in..."
+    },
+    "backToHome": "Back to home",
+    "comingSoon": "Soon",
+    "darkMode": "Dark mode",
+    "error": "Error",
+    "guest": "Guest",
+    "language": "Language",
+    "lightMode": "Light mode",
+    "loading": "Loading...",
+    "optional": "(optional)",
+    "pagination": {
+      "next": "Next",
+      "pageInfo": "Page {{current}} of {{total}}",
+      "previous": "Previous",
+      "showing": "Showing {{from}}-{{to}} of {{total}}"
+    },
+    "signedInAs": "Signed in as",
+    "titles": {
+      "about": "About",
+      "addTeam": "Add Team",
+      "adminPanel": "Admin Panel",
+      "competition": "Competition",
+      "more": "More",
+      "profile": "Profile",
+      "settings": "Settings",
+      "team": "Team",
+      "teams": "Teams",
+      "tournament": "Tournament",
+      "tournaments": "Tournaments",
+      "users": "Users",
+      "welcome": "Welcome"
+    },
+    "toggleMenu": "Toggle menu",
+    "toggleTheme": "Toggle theme",
+    "welcome": "Welcome"
+  },
+  "competition": {
+    "createGroupStage": "Create Group Stage",
+    "createGroupStageDescription": "Set up groups for the {{tournamentName}} tournament",
+    "description": "View tournament groups, matches, and standings.",
+    "selectTournament": "Select a Tournament",
+    "selectTournamentDescription": "Choose a tournament from the dropdown above to manage its group stage.",
+    "noGroupStages": "No group stage yet",
+    "noGroupStagesDescription": "Get started by creating the group stage.",
+    "groupsCount": "{{count}} groups",
+    "labels": {
+      "categories": "Categories:",
+      "setup": "Setup:",
+      "setupSummary": "{{groups}} groups × {{teams}} teams",
+      "created": "Created:"
+    },
+    "status": {
+      "enabled": "Enabled",
+      "disabled": "Disabled"
+    },
+    "groupStage": {
+      "name": "Group Stage Name",
+      "namePlaceholder": "e.g., JO8 Premier, 1st and 2nd Division",
+      "ageCategories": "Age Categories",
+      "ageCategoriesDescription": "Select which age categories will participate in this group stage",
+      "teamsAvailable": "{{count}} teams available",
+      "configGroups": "Number of Groups",
+      "configGroupsPlaceholder": "4",
+      "configSlots": "Teams per Group",
+      "configSlotsPlaceholder": "5",
+      "summary": "Summary",
+      "summaryTeamsAvailable": "{{count}} teams available in selected categories",
+      "summaryWillCreate": "Will create {{groups}} groups with {{slots}} slots each ({{total}} total slots)",
+      "title": "Group Stage"
+    },
+    "groupAssignment": {
+      "instruction": "Drag teams to assign them to specific slots. Drop on a free slot or on a team to replace it.",
+      "backToGroups": "Back to Groups",
+      "unsavedChanges": "You have unsaved changes",
+      "unsavedTitle": "Unsaved Changes",
+      "unsavedDescription": "You have unsaved changes that will be lost if you leave this page. Are you sure you want to leave?",
+      "leaveAnyway": "Yes, leave",
+      "stayOnPage": "Cancel",
+      "conflictTitle": "Changes Conflict",
+      "conflictDescription": "Another user saved changes. Your unsaved edits were discarded and the page was refreshed.",
+      "conflictReload": "Reload Page",
+      "goToGroup": "Go to {{name}}",
+      "errors": {
+        "noCapacity": "No space available in confirmed pool. Remove a team from a group first.",
+        "waitlistToGroup": "Waitlist teams cannot be assigned directly to groups. Move them to confirmed pool first."
+      },
+      "hints": {
+        "groupFull": "This group is full. Drop on a specific slot to swap teams."
+      },
+      "chip": {
+        "ariaLabel": "{{club}} {{team}} - drag to assign"
+      },
+      "slot": {
+        "label": "Slot {{number}}",
+        "position": "Slot {{position}}",
+        "dropHere": "Drop here",
+        "empty": "Empty",
+        "emptyAriaLabel": "Empty slot {{position}} - drop a team here",
+        "occupiedAriaLabel": "Slot {{position}} occupied by {{team}}"
+      },
+      "group": {
+        "ariaLabel": "{{name}} - {{filled}} of {{total}} teams assigned",
+        "slotsCount": "Teams: {{filled}} of {{total}}",
+        "dropToAssign": "Drop to auto-assign"
+      },
+      "reserve": {
+        "title": "Confirmed Teams",
+        "availableSlots": "Available slots: {{capacity}}",
+        "empty": "No teams in confirmed pool",
+        "dropToAdd": "Drop here to move to reserve",
+        "ariaLabel": "Confirmed teams pool - {{capacity}} available slots"
+      },
+      "waitlist": {
+        "title": "Waitlist",
+        "count": "Waiting: {{count}}",
+        "noCapacity": "Confirmed pool is full. Free up slots to promote waitlist teams.",
+        "helpPromote": "Drag waitlist teams to the confirmed pool to add them.",
+        "helpBlocked": "All slots are assigned. Remove teams from groups to make room.",
+        "ariaLabel": "Waitlist - {{count}} teams waiting",
+        "dropToAdd": "Drop here to move to waitlist"
+      }
+    }
+  },
+  "datatable": {
+    "clearSearch": "Clear search",
+    "resetFilters": "Reset",
+    "search": "Search...",
+    "toggleColumns": "Toggle columns",
+    "view": "View"
+  },
+  "divisions": {
+    "FIFTH_DIVISION": "Fifth Division",
+    "FIRST_DIVISION": "First Division",
+    "FOURTH_DIVISION": "Fourth Division",
+    "PREMIER_DIVISION": "Premier Division",
+    "SECOND_DIVISION": "Second Division",
+    "THIRD_DIVISION": "Third Division"
+  },
+  "errors": {
+    "emailOutboxInvalidFormat": "Email outbox data has an invalid format",
+    "emailOutboxReadFailure": "Failed to read email outbox",
+    "somethingWentWrong": "Something went wrong",
+    "teamLoadFailed": "Unable to load team details. Please try again later.",
+    "auth": {
+      "accountDeactivatedTitle": "Account Deactivated",
+      "accountDeactivatedMessage": "Your account has been deactivated. Please contact support for assistance.",
+      "unauthorizedSignInRequiredTitle": "Sign In Required",
+      "unauthorizedSignInRequired": "You must sign in to access this page.",
+      "unauthorizedAdminRequiredTitle": "Admin Access Required",
+      "unauthorizedAdminRequired": "You need administrator privileges to access this page. Contact your admin for access.",
+      "unauthorizedManagerRequiredTitle": "Manager Access Required",
+      "unauthorizedManagerRequired": "You need manager privileges to access this page. Contact your manager for access.",
+      "unauthorizedSuperAdminRequiredTitle": "Super Admin Access Required",
+      "unauthorizedSuperAdminRequired": "You need super administrator privileges to access this page. Contact your super admin for access.",
+      "unauthorizedDefaultTitle": "Access Denied",
+      "unauthorizedDefault": "You do not have permission to access this page."
+    },
+    "competition": {
+      "nameRequired": "Group stage name is required",
+      "categoriesRequired": "At least one category must be selected",
+      "groupsRange": "Number of groups must be between 2 and 8",
+      "slotsRange": "Teams per group must be between 3 and 10",
+      "createFailed": "Failed to create group stage. Please try again."
+    }
+  },
+  "landing": {
+    "features": {
+      "description": "Tournado provides all the tools you need to manage your sports tournaments efficiently. From team registration to match scheduling, we've got you covered.",
+      "subtitle": "Everything you need to manage your tournaments",
+      "title": "Tournament Management Made Easy"
+    },
+    "hero": {
+      "description": "Manage your sports tournaments with ease. Create, organize, and track your teams and matches in one place.",
+      "signup": "Sign up for free",
+      "viewTeams": "View Teams"
+    }
+  },
+  "messages": {
+    "auth": {
+      "emailExists": "A user already exists with this email",
+      "emailInvalid": "Email is invalid",
+      "emailRequired": "Email is required",
+      "forbidden": "You don't have permission to access this page",
+      "forbiddenTitle": "Access Denied",
+      "invalidCredentials": "Invalid email or password",
+      "notFound": "Sorry, the page you're looking for doesn't exist or has been moved. Please check the URL or navigate using the link below.",
+      "passwordRequired": "Password is required",
+      "passwordTooShort": "Password is too short",
+      "serverError": "Server error, please try again later",
+      "title": "Authentication Error",
+      "unauthorized": "You need to sign in to access this page",
+      "unauthorizedAdminRequired": "This area is restricted to tournament managers and administrators.",
+      "unauthorizedAdminRequiredTitle": "Admin Access Required",
+      "unauthorizedDefault": "You do not have permission to access this page. Contact your administrator if you believe this is an error.",
+      "unauthorizedDefaultTitle": "Access Denied",
+      "unauthorizedManagerRequired": "This area is restricted to tournament managers and administrators.",
+      "unauthorizedManagerRequiredTitle": "Manager Access Required",
+      "unauthorizedSignInRequired": "You need to sign in to access this resource.",
+      "unauthorizedSignInRequiredTitle": "Authentication Required",
+      "unauthorizedSuperAdminRequired": "This specific area is restricted to system administrators.",
+      "unauthorizedSuperAdminRequiredTitle": "Admin Access Required",
+      "unauthorizedTitle": "Sign In Required"
+    },
+    "common": {
+      "accessDenied": "You don't have permission to access this resource",
+      "errorTitle": "Application Error",
+      "itemNotFound": "{{item}} not found",
+      "notFoundTitle": "Page Not Found",
+      "unexpectedError": "An unexpected error occurred",
+      "unknownError": "An unknown error occurred"
+    },
+    "groupAssignment": {
+      "teamNotFound": "Team not found. Refresh and try again.",
+      "groupNotFound": "Target group not found. Refresh and try again.",
+      "slotNotFound": "Target slot not found. Refresh and try again."
+    },
+    "panel": {
+      "errorTitle": "Something went wrong",
+      "errorBody": "An error occurred while loading this section. Please try refreshing the page."
+    },
+    "team": {
+      "categoryRequired": "Category is required",
+      "clubNameRequired": "Club name is required",
+      "clubNameTooLong": "Club name must be less than 100 characters",
+      "divisionRequired": "Division is required",
+      "nameRequired": "Team name is required",
+      "nameTooLong": "Team name must be less than 50 characters",
+      "notFound": "Team not found",
+      "phoneNumberInvalid": "Please enter a valid phone number",
+      "phoneNumberRequired": "Phone number is required",
+      "privacyAgreementRequired": "You must agree to the privacy policy",
+      "registrationError": "Failed to register team",
+      "registrationErrorDesc": "There was an error registering your team. Please try again.",
+      "registrationSuccess": "Team registered successfully",
+      "registrationSuccessDesc": "Your team has been registered successfully.",
+      "teamLeaderNameRequired": "Team leader name is required",
+      "teamLeaderNameTooLong": "Name must be less than 100 characters",
+      "tournamentRequired": "Tournament is required",
+      "updateError": "Failed to update team",
+      "updateErrorDesc": "There was an error updating your team. Please try again.",
+      "updateSuccess": "Team updated successfully",
+      "updateSuccessDesc": "Your team has been updated successfully."
+    },
+    "tournament": {
+      "categoriesRequired": "At least one category is required",
+      "divisionsRequired": "At least one division is required",
+      "endDateBeforeStartDate": "End date must be on or after start date",
+      "invalidDateFormat": "Please enter a valid date",
+      "endDateRequired": "End date is required",
+      "locationRequired": "Location is required",
+      "locationTooLong": "Location must be less than 100 characters",
+      "nameRequired": "Tournament name is required",
+      "nameTooLong": "Tournament name must be less than 100 characters",
+      "registrationError": "Failed to register tournament",
+      "registrationErrorDesc": "There was an error registering the tournament. Please try again.",
+      "registrationSuccess": "Tournament registered successfully",
+      "registrationSuccessDesc": "The tournament has been registered successfully.",
+      "startDateRequired": "Start date is required",
+      "updateError": "Failed to update tournament",
+      "updateErrorDesc": "There was an error updating the tournament. Please try again.",
+      "updateSuccess": "Tournament updated successfully",
+      "updateSuccessDesc": "The tournament has been updated successfully."
+    },
+    "user": {
+      "cannotChangeOwnRole": "You Cannot Change Your Own Role",
+      "cannotDeactivateOwnAccount": "You Cannot Deactivate Your Own Account",
+      "cannotReactivateOwnAccount": "You Cannot Reactivate Your Own Account",
+      "displayNameRequired": "Display name cannot be empty.",
+      "failedToUpdateRole": "Failed to Update Role",
+      "missingUserId": "Missing User ID",
+      "requestFailed": "We couldn't process that request. Please try again.",
+      "requestFailedRefresh": "We couldn't process that request. Please refresh and try again.",
+      "unknownError": "Unknown error",
+      "userNotFound": "We couldn't find that user. Please try again."
+    },
+    "validation": {
+      "emailInvalid": "Please enter a valid email address",
+      "emailRequired": "Email is required",
+      "fieldRequired": "This field is required",
+      "phoneNumberInvalid": "Please enter a valid phone number",
+      "phoneNumberRequired": "Phone number is required"
+    }
+  },
+  "profile": {
+    "description": "Manage your profile settings and account information for tournament management.",
+    "title": "Profile Information"
+  },
+  "pwa": {
+    "install": {
+      "android": {
+        "chrome": "Tap the menu (⋮) and select \"Install app\"",
+        "firefox": "Tap the menu (⋮) and select \"Install\"",
+        "samsung": "Tap the menu (⋮) and select \"Add page to\" then \"Home screen\"",
+        "title": "Install this app on your device"
+      },
+      "ios": {
+        "chrome": "Tap the share button and then \"Add to Home Screen\"",
+        "firefox": "Tap the hamburger menu then \"Share\" and \"Add to Home Screen\"",
+        "safari": "Tap the share button and then \"Add to Home Screen\"",
+        "title": "Install this app on your iPhone"
+      },
+      "other": {
+        "instruction": "Open browser menu and select \"Add to Home Screen\"",
+        "title": "Install this app on your device"
+      }
+    },
+    "update": {
+      "button": "Update",
+      "instruction": "Refresh to update the app",
+      "title": "A new version is available"
+    }
+  },
+  "roles": {
+    "admin": "Admin",
+    "billing": "Billing",
+    "editor": "Editor",
+    "manager": "Manager",
+    "public": "Public",
+    "referee": "Referee"
+  },
+  "settings": {
+    "description": "Configure your tournament settings, preferences, and account options for optimal experience.",
+    "title": "Application Settings"
+  },
+  "teams": {
+    "allTournaments": "All tournaments",
+    "count": "{{count}} team registered",
+    "count_other": "{{count}} teams registered",
+    "createNewTeam": "Create a new team",
+    "deleteTeam": "Delete Team",
+    "deleteTeamAreYouSure": "Are you sure you want to delete this team? This action cannot be undone.",
+    "description": "Register your team(s) for one or more tournaments",
+    "filterByTournament": "Filter by tournament",
+    "form": {
+      "agreeToPrivacyPolicy": "I agree to the privacy policy",
+      "category": "Category",
+      "clubName": "Club Name",
+      "completeAllThreeFields": "Please complete all three fields below to proceed",
+      "division": "Division",
+      "enterContactDetails": "Enter contact details for the team leader",
+      "enterTeamDetails": "Enter your team information",
+      "fillOutForm": "Fill out the form below to register your team",
+      "name": "Team Name",
+      "placeholders": {
+        "clubName": "Enter your club name",
+        "name": "Enter your team name",
+        "teamLeaderEmail": "Enter email address",
+        "teamLeaderName": "Enter team leader full name",
+        "teamLeaderPhone": "Enter phone number"
+      },
+      "privacyAgreement": "I agree to the privacy policy and terms of service",
+      "privacyPolicy": "Privacy Policy",
+      "readAndAccept": "Please read and accept the privacy policy to continue",
+      "selectCategory": "Select a category",
+      "selectDivision": "Select a division",
+      "selectTournament": "Select a tournament",
+      "selectTournamentDetails": "Select the tournament details",
+      "teamInfo": "Team",
+      "teamLeaderEmail": "Team Leader Email",
+      "teamLeaderInfo": "Team Leader",
+      "teamLeaderName": "Team Leader Name",
+      "teamLeaderPhone": "Team Leader Phone",
+      "teamRegistration": "Team Registration",
+      "tournament": "Tournament",
+      "tournamentDetails": "Tournament"
+    },
+    "getStarted": {
+      "description": "Ready to join a tournament? Click the 'Add' button above to register your team and start playing!",
+      "title": "Get started with team registration"
+    },
+    "noTeamSelected": "No team selected. Select a team on the left, or",
+    "noTeams": "No teams have been registered yet. Be the first to register your team for upcoming tournaments!",
+    "title": "Teams"
+  },
+  "tournaments": {
+    "actions": {
+      "manageCompetition": "Competition"
+    },
+    "deleteTournament": "Delete Tournament",
+    "deleteTournamentAreYouSure": "Are you sure you want to delete this tournament? This action cannot be undone.",
+    "description": "View tournament information",
+    "endDate": "End Date",
+    "form": {
+      "basicInformation": "Basic Information",
+      "categories": "Categories",
+      "dates": "Tournament Dates",
+      "divisions": "Divisions",
+      "endDate": "End Date",
+      "enterBasicDetails": "Enter tournament name and location",
+      "fillOutForm": "Fill out the form below to create a new tournament",
+      "location": "Location",
+      "name": "Tournament Name",
+      "selectCategories": "Select the age categories that will participate",
+      "selectDates": "Select start and end dates for the tournament",
+      "selectDivisions": "Select the divisions that will participate",
+      "selected": "selected",
+      "startDate": "Start Date",
+      "tournamentRegistration": "Tournament Registration"
+    },
+    "location": "Location",
+    "name": "Name",
+    "noTournaments": "No Tournaments",
+    "noTournamentsDescription": "No tournaments have been created yet. Create your first tournament to get started!",
+    "startDate": "Start Date",
+    "title": "Tournaments"
+  },
+  "users": {
+    "actions": {
+      "deactivateUser": "Deactivate",
+      "reactivateUser": "Reactivate",
+      "viewDetails": "View Details"
+    },
+    "auditActions": {
+      "approval": "User Approved",
+      "deactivate": "User Deactivated",
+      "profile_update": "Profile Updated",
+      "reactivate": "User Reactivated",
+      "rejection": "User Rejected",
+      "role_change": "Role Changed"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "Manage user accounts and assign roles"
+    },
+    "fields": {
+      "assignedRole": "Assigned Role",
+      "createdAt": "Created At",
+      "currentRole": "Current Role",
+      "displayName": "Display Name",
+      "email": "Email",
+      "performedBy": "Performed by",
+      "role": "Role"
+    },
+    "messages": {
+      "confirmDeactivate": "Are you sure you want to deactivate this user?",
+      "confirmReactivate": "Reactivate this user so they can log in again?",
+      "deactivated": "Deactivated",
+      "displayNameUpdatedSuccessfully": "Display name updated successfully",
+      "noAuditLogs": "No audit log entries found",
+      "noUsers": "No users found",
+      "noUsersDescription": "No users have been created yet.",
+      "roleUpdatedSuccessfully": "User role updated successfully",
+      "userDeactivatedSuccessfully": "User deactivated successfully",
+      "userIsDeactivated": "This user is currently deactivated",
+      "userReactivatedSuccessfully": "User reactivated successfully"
+    },
+    "placeholders": {
+      "displayName": "Enter display name"
+    },
+    "titles": {
+      "allUsers": "All Users",
+      "auditLog": "Audit Log",
+      "deactivateUser": "Deactivate User",
+      "reactivateUser": "Reactivate User",
+      "totalUsers": "Total Users",
+      "userDetail": "User Details",
+      "userInformation": "User Information",
+      "userManagement": "User Management"
+    }
+  }
 }

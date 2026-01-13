@@ -8,7 +8,7 @@
  * @param value - Cookie value
  */
 export function setCookie(name: string, value: string): void {
-	if (typeof document !== 'undefined') {
-		document.cookie = `${name}=${value}; path=/; max-age=31536000`
-	}
+  if (typeof document !== 'undefined') {
+    document.cookie = `${name}=${value}; path=/; max-age=31536000`
+  }
 }

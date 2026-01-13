@@ -56,108 +56,108 @@ Automatically scans all route files and creates proper nested route configuratio
 
 ```typescript
 type RouteEntry = {
-	path: string
-	file: string
-	isLayout: boolean
-	children?: RouteEntry[]
+  path: string
+  file: string
+  isLayout: boolean
+  children?: RouteEntry[]
 }
 
 export function createFlatRoutes(): RouteEntry[] {
-	const routesDir = path.join(process.cwd(), 'app/routes')
+  const routesDir = path.join(process.cwd(), 'app/routes')
 
-	// Find all .tsx files in routes directory and subdirectories
-	const files = glob.sync('**/*.{ts,tsx}', {
-		cwd: routesDir,
-		ignore: ['**/*.test.*', '**/*.spec.*', '**/.*'],
-	})
+  // Find all .tsx files in routes directory and subdirectories
+  const files = glob.sync('**/*.{ts,tsx}', {
+    cwd: routesDir,
+    ignore: ['**/*.test.*', '**/*.spec.*', '**/.*'],
+  })
 
-	const routeMap: RouteMap = {}
+  const routeMap: RouteMap = {}
 
-	// First pass: Create route entries
-	files.forEach((file) => {
-		const segments = file.replace(/\.(ts|tsx)$/, '').split('/')
-		const fileName = segments[segments.length - 1]
-		const dirName = segments.length > 1 ? segments[segments.length - 2] : null
+  // First pass: Create route entries
+  files.forEach(file => {
+    const segments = file.replace(/\.(ts|tsx)$/, '').split('/')
+    const fileName = segments[segments.length - 1]
+    const dirName = segments.length > 1 ? segments[segments.length - 2] : null
 
-		let routePath: string
-		let isLayout = false
+    let routePath: string
+    let isLayout = false
 
-		// Layout detection: teams/teams.tsx -> layout
-		if (dirName === fileName) {
-			routePath = '/' + fileName
-			isLayout = true
-		} else if (fileName === '_index') {
-			// Index routes: teams/teams._index.tsx -> /teams::_index
-			const parentPath = '/' + segments[0]
-			routePath = parentPath + '::_index'
-		} else if (segments.length === 1) {
-			// Root level routes: about.tsx -> /about
-			routePath = fileName === 'favicon[.]ico' ? '/favicon.ico' : '/' + fileName
-		} else {
-			// Child routes: teams/teams.new.tsx -> /teams::new
-			const baseSegment = segments[0]
-			const parentPath = '/' + baseSegment
-			const childPath = segments
-				.slice(1)
-				.join('/')
-				.replace(/\$([^/]+)/g, ':$1')
-			routePath = parentPath + '::' + childPath
-		}
+    // Layout detection: teams/teams.tsx -> layout
+    if (dirName === fileName) {
+      routePath = '/' + fileName
+      isLayout = true
+    } else if (fileName === '_index') {
+      // Index routes: teams/teams._index.tsx -> /teams::_index
+      const parentPath = '/' + segments[0]
+      routePath = parentPath + '::_index'
+    } else if (segments.length === 1) {
+      // Root level routes: about.tsx -> /about
+      routePath = fileName === 'favicon[.]ico' ? '/favicon.ico' : '/' + fileName
+    } else {
+      // Child routes: teams/teams.new.tsx -> /teams::new
+      const baseSegment = segments[0]
+      const parentPath = '/' + baseSegment
+      const childPath = segments
+        .slice(1)
+        .join('/')
+        .replace(/\$([^/]+)/g, ':$1')
+      routePath = parentPath + '::' + childPath
+    }
 
-		routeMap[routePath] = { path: routePath, file: `routes/${file}`, isLayout }
-	})
+    routeMap[routePath] = { path: routePath, file: `routes/${file}`, isLayout }
+  })
 
-	// Second pass: Build nested structure
-	const routes: RouteEntry[] = []
-	const layoutMap = new Map<string, RouteEntry>()
+  // Second pass: Build nested structure
+  const routes: RouteEntry[] = []
+  const layoutMap = new Map<string, RouteEntry>()
 
-	// Create layout routes first
-	Object.values(routeMap).forEach((route) => {
-		if (route.isLayout) {
-			const layoutRoute: RouteEntry = {
-				path: route.path,
-				file: route.file,
-				isLayout: true,
-				children: [],
-			}
-			routes.push(layoutRoute)
-			layoutMap.set(route.path, layoutRoute)
-		}
-	})
+  // Create layout routes first
+  Object.values(routeMap).forEach(route => {
+    if (route.isLayout) {
+      const layoutRoute: RouteEntry = {
+        path: route.path,
+        file: route.file,
+        isLayout: true,
+        children: [],
+      }
+      routes.push(layoutRoute)
+      layoutMap.set(route.path, layoutRoute)
+    }
+  })
 
-	// Add child routes to their layouts
-	Object.values(routeMap).forEach((route) => {
-		if (!route.isLayout && route.path.includes('::')) {
-			const [parentPath, childPath] = route.path.split('::')
-			const layout = layoutMap.get(parentPath)
+  // Add child routes to their layouts
+  Object.values(routeMap).forEach(route => {
+    if (!route.isLayout && route.path.includes('::')) {
+      const [parentPath, childPath] = route.path.split('::')
+      const layout = layoutMap.get(parentPath)
 
-			if (layout && layout.children) {
-				if (childPath === '_index') {
-					layout.children.push({
-						path: route.path,
-						file: route.file,
-						isLayout: false,
-						index: true,
-					})
-				} else {
-					layout.children.push({
-						path: childPath,
-						file: route.file,
-						isLayout: false,
-					})
-				}
-			}
-		} else if (!route.isLayout && !route.path.includes('::')) {
-			// Root level routes
-			routes.push({
-				path: route.path,
-				file: route.file,
-				isLayout: false,
-			})
-		}
-	})
+      if (layout && layout.children) {
+        if (childPath === '_index') {
+          layout.children.push({
+            path: route.path,
+            file: route.file,
+            isLayout: false,
+            index: true,
+          })
+        } else {
+          layout.children.push({
+            path: childPath,
+            file: route.file,
+            isLayout: false,
+          })
+        }
+      }
+    } else if (!route.isLayout && !route.path.includes('::')) {
+      // Root level routes
+      routes.push({
+        path: route.path,
+        file: route.file,
+        isLayout: false,
+      })
+    }
+  })
 
-	return routes
+  return routes
 }
 ```
 
@@ -172,22 +172,22 @@ import { createFlatRoutes } from '../config/flat-routes'
 const flatRoutes = createFlatRoutes()
 
 // Convert to React Router format
-const routeConfig: RouteConfig = flatRoutes.map((route) => {
-	if (route.isLayout && route.children) {
-		return {
-			path: route.path,
-			file: route.file,
-			children: route.children.map((child) => ({
-				...(child.index ? { index: true } : { path: child.path }),
-				file: child.file,
-			})),
-		}
-	}
+const routeConfig: RouteConfig = flatRoutes.map(route => {
+  if (route.isLayout && route.children) {
+    return {
+      path: route.path,
+      file: route.file,
+      children: route.children.map(child => ({
+        ...(child.index ? { index: true } : { path: child.path }),
+        file: child.file,
+      })),
+    }
+  }
 
-	return {
-		path: route.path,
-		file: route.file,
-	}
+  return {
+    path: route.path,
+    file: route.file,
+  }
 })
 
 export default routeConfig
@@ -201,9 +201,9 @@ Simple configuration that uses the standard React Router approach:
 import { reactRouter } from '@react-router/dev/vite'
 
 export default defineConfig({
-	plugins: [
-		reactRouter(), // Uses app/routes.ts automatically
-	],
+  plugins: [
+    reactRouter(), // Uses app/routes.ts automatically
+  ],
 })
 ```
 
@@ -383,24 +383,24 @@ This approach gives you **automatic route discovery** with organized folder stru
 ```typescript
 // app/routes/auth/auth.signin.tsx
 export const loader = async ({ request }: LoaderArgs): Promise<object> => {
-	const user = await getUser(request)
-	if (user) {
-		// Always redirect all authorized users to Admin Panel
-		return redirect('/a7k9m2x5p8w1n4q6r3y8b5t1')
-	}
-	return {}
+  const user = await getUser(request)
+  if (user) {
+    // Always redirect all authorized users to Admin Panel
+    return redirect('/a7k9m2x5p8w1n4q6r3y8b5t1')
+  }
+  return {}
 }
 
 export const action = async ({ request }: ActionArgs): Promise<Response> => {
-	// ... validation logic ...
+  // ... validation logic ...
 
-	// Always redirect all authorized users to Admin Panel
-	return createUserSession({
-		redirectTo: '/a7k9m2x5p8w1n4q6r3y8b5t1',
-		remember: remember === 'on' ? true : false,
-		request,
-		userId: user.id,
-	})
+  // Always redirect all authorized users to Admin Panel
+  return createUserSession({
+    redirectTo: '/a7k9m2x5p8w1n4q6r3y8b5t1',
+    remember: remember === 'on' ? true : false,
+    request,
+    userId: user.id,
+  })
 }
 ```
 

@@ -463,7 +463,7 @@ All component migrations MUST use 100% static class names. Template literals are
 
 ```typescript
 // This creates dynamic classes that Tailwind cannot detect
-color: createColorVariantMapping((color) => `bg-${color}-600 text-${color}-50`)
+color: createColorVariantMapping(color => `bg-${color}-600 text-${color}-50`)
 ```
 
 **✅ CORRECT - Inline explicit static classes**:
@@ -473,15 +473,15 @@ color: createColorVariantMapping((color) => `bg-${color}-600 text-${color}-50`)
 import type { ColorVariantKey } from '~/components/shared/colorVariants'
 
 export const badgeVariants = cva('...', {
-	variants: {
-		color: {
-			brand: 'bg-red-600 text-red-50 dark:bg-red-800 dark:text-red-50',
-			primary:
-				'bg-emerald-600 text-emerald-50 dark:bg-emerald-800 dark:text-emerald-50',
-			success: 'bg-green-600 text-green-50 dark:bg-green-800 dark:text-green-50',
-			// ... all 26 colors explicitly spelled out
-		} satisfies Record<ColorVariantKey, string>,
-	},
+  variants: {
+    color: {
+      brand: 'bg-red-600 text-red-50 dark:bg-red-800 dark:text-red-50',
+      primary:
+        'bg-emerald-600 text-emerald-50 dark:bg-emerald-800 dark:text-emerald-50',
+      success: 'bg-green-600 text-green-50 dark:bg-green-800 dark:text-green-50',
+      // ... all 26 colors explicitly spelled out
+    } satisfies Record<ColorVariantKey, string>,
+  },
 })
 ```
 
@@ -533,14 +533,14 @@ export const badgeVariants = cva('...', {
 ```typescript
 // badge.variants.ts - All colors defined inline, explicitly
 export const badgeVariants = cva('...', {
-	variants: {
-		color: {
-			brand: 'bg-red-600 text-red-50 dark:bg-red-800 dark:text-red-50',
-			primary:
-				'bg-emerald-600 text-emerald-50 dark:bg-emerald-800 dark:text-emerald-50',
-			// ... all 26 colors explicitly spelled out inline
-		} satisfies Record<ColorVariantKey, string>,
-	},
+  variants: {
+    color: {
+      brand: 'bg-red-600 text-red-50 dark:bg-red-800 dark:text-red-50',
+      primary:
+        'bg-emerald-600 text-emerald-50 dark:bg-emerald-800 dark:text-emerald-50',
+      // ... all 26 colors explicitly spelled out inline
+    } satisfies Record<ColorVariantKey, string>,
+  },
 })
 ```
 
@@ -620,37 +620,37 @@ export const badgeVariants = cva('...', {
 ```typescript
 // app/components/shared/colorVariants.ts
 export const COLOR_VARIANT_KEYS = {
-	// Functional Semantics (7)
-	brand: 'brand',
-	primary: 'primary',
-	success: 'success',
-	error: 'error',
-	warning: 'warning',
-	info: 'info',
-	disabled: 'disabled',
+  // Functional Semantics (7)
+  brand: 'brand',
+  primary: 'primary',
+  success: 'success',
+  error: 'error',
+  warning: 'warning',
+  info: 'info',
+  disabled: 'disabled',
 
-	// Visual Accents (6)
-	'accent-amber': 'accent-amber',
-	'accent-indigo': 'accent-indigo',
-	'accent-fuchsia': 'accent-fuchsia',
-	'accent-teal': 'accent-teal',
-	'accent-sky': 'accent-sky',
-	'accent-purple': 'accent-purple',
+  // Visual Accents (6)
+  'accent-amber': 'accent-amber',
+  'accent-indigo': 'accent-indigo',
+  'accent-fuchsia': 'accent-fuchsia',
+  'accent-teal': 'accent-teal',
+  'accent-sky': 'accent-sky',
+  'accent-purple': 'accent-purple',
 
-	// Real Colors (13) - TO BE REMOVED IN THIS PHASE
-	emerald: 'emerald',
-	blue: 'blue',
-	slate: 'slate',
-	teal: 'teal',
-	red: 'red',
-	yellow: 'yellow',
-	green: 'green',
-	amber: 'amber',
-	sky: 'sky',
-	indigo: 'indigo',
-	purple: 'purple',
-	fuchsia: 'fuchsia',
-	lime: 'lime',
+  // Real Colors (13) - TO BE REMOVED IN THIS PHASE
+  emerald: 'emerald',
+  blue: 'blue',
+  slate: 'slate',
+  teal: 'teal',
+  red: 'red',
+  yellow: 'yellow',
+  green: 'green',
+  amber: 'amber',
+  sky: 'sky',
+  indigo: 'indigo',
+  purple: 'purple',
+  fuchsia: 'fuchsia',
+  lime: 'lime',
 } as const
 ```
 
@@ -659,22 +659,22 @@ export const COLOR_VARIANT_KEYS = {
 ```typescript
 // app/components/shared/colorVariants.ts
 export const COLOR_VARIANT_KEYS = {
-	// Functional Semantics (7)
-	brand: 'brand',
-	primary: 'primary',
-	success: 'success',
-	error: 'error',
-	warning: 'warning',
-	info: 'info',
-	disabled: 'disabled',
+  // Functional Semantics (7)
+  brand: 'brand',
+  primary: 'primary',
+  success: 'success',
+  error: 'error',
+  warning: 'warning',
+  info: 'info',
+  disabled: 'disabled',
 
-	// Visual Accents (6)
-	'accent-amber': 'accent-amber',
-	'accent-indigo': 'accent-indigo',
-	'accent-fuchsia': 'accent-fuchsia',
-	'accent-teal': 'accent-teal',
-	'accent-sky': 'accent-sky',
-	'accent-purple': 'accent-purple',
+  // Visual Accents (6)
+  'accent-amber': 'accent-amber',
+  'accent-indigo': 'accent-indigo',
+  'accent-fuchsia': 'accent-fuchsia',
+  'accent-teal': 'accent-teal',
+  'accent-sky': 'accent-sky',
+  'accent-purple': 'accent-purple',
 } as const
 
 export type ColorVariantKey = keyof typeof COLOR_VARIANT_KEYS

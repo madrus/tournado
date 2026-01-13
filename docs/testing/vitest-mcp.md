@@ -60,14 +60,14 @@ Vitest Command: cd /Users/you/my-project && vitest run  # ✅ Works!
 ```typescript
 // Other MCP servers (file analysis, API calls):
 function analyzeCode(filePath: string) {
-	return fs.readFileSync(filePath, 'utf8') // ✅ Works from anywhere
+  return fs.readFileSync(filePath, 'utf8') // ✅ Works from anywhere
 }
 
 // This MCP server (command execution):
 function runTests(projectDir: string) {
-	spawn('vitest', ['run'], {
-		cwd: projectDir, // ❌ Must be YOUR project directory
-	})
+  spawn('vitest', ['run'], {
+    cwd: projectDir, // ❌ Must be YOUR project directory
+  })
 }
 ```
 
@@ -88,15 +88,15 @@ function runTests(projectDir: string) {
 
 ```json
 {
-	"mcpServers": {
-		"vitest-runner": {
-			"command": "npx",
-			"args": ["-y", "@madrus/vitest-mcp-server@latest"],
-			"env": {
-				"VITEST_PROJECT_DIR": "/Users/<your-username>/path/to/your/project/root"
-			}
-		}
-	}
+  "mcpServers": {
+    "vitest-runner": {
+      "command": "npx",
+      "args": ["-y", "@madrus/vitest-mcp-server@latest"],
+      "env": {
+        "VITEST_PROJECT_DIR": "/Users/<your-username>/path/to/your/project/root"
+      }
+    }
+  }
 }
 ```
 
@@ -131,8 +131,8 @@ function runTests(projectDir: string) {
 ```typescript
 // ❌ Programmatic API - didn't actually run tests
 const vitestResult = await startVitest('test', [], {
-	coverage: { enabled: true },
-	reporter: 'json',
+  coverage: { enabled: true },
+  reporter: 'json',
 })
 // Result: Coverage generated but 0 tests reported as executed
 ```
@@ -142,12 +142,12 @@ const vitestResult = await startVitest('test', [], {
 ```typescript
 // ✅ Spawn-based execution - actually runs tests
 const vitestProcess = spawn(
-	'npx',
-	['vitest', '--run', '--outputFile=vitest-results.json', '--coverage'],
-	{
-		cwd: projectDirectory,
-		stdio: ['ignore', 'pipe', 'pipe'],
-	},
+  'npx',
+  ['vitest', '--run', '--outputFile=vitest-results.json', '--coverage'],
+  {
+    cwd: projectDirectory,
+    stdio: ['ignore', 'pipe', 'pipe'],
+  },
 )
 // Result: Tests executed AND coverage generated
 ```
@@ -188,41 +188,41 @@ vitest run --outputFile=vitest-results.json --coverage
 
 ```json
 {
-	"numTotalTests": 584,
-	"numPassedTests": 584,
-	"numFailedTests": 0,
-	"coverage": {
-		"app/components/AppBar.tsx": {
-			"summary": {
-				"lines": { "pct": 95.78, "total": 166, "covered": 159 },
-				"functions": { "pct": 33.33, "total": 3, "covered": 1 },
-				"statements": { "pct": 95.78, "total": 166, "covered": 159 },
-				"branches": { "pct": 84.21, "total": 19, "covered": 16 }
-			},
-			"status": "⚠️ 7 lines uncovered",
-			"uncoveredLines": "43-44, 49-50, 52, 63-64",
-			"totalUncoveredLines": 7
-		},
-		"app/components/AuthErrorBoundary.tsx": {
-			"summary": {
-				"lines": { "pct": 100, "total": 64, "covered": 64 },
-				"functions": { "pct": 100, "total": 3, "covered": 3 },
-				"statements": { "pct": 100, "total": 64, "covered": 64 },
-				"branches": { "pct": 100, "total": 17, "covered": 17 }
-			},
-			"status": "✅ Perfect coverage",
-			"uncoveredLines": "none",
-			"totalUncoveredLines": 0
-		},
-		"app/components/AddToHomeScreenPrompt.tsx": {
-			"summary": {
-				"lines": { "pct": 0, "total": 177, "covered": 0 }
-			},
-			"status": "❌ No coverage",
-			"uncoveredLines": "all",
-			"totalUncoveredLines": 177
-		}
-	}
+  "numTotalTests": 584,
+  "numPassedTests": 584,
+  "numFailedTests": 0,
+  "coverage": {
+    "app/components/AppBar.tsx": {
+      "summary": {
+        "lines": { "pct": 95.78, "total": 166, "covered": 159 },
+        "functions": { "pct": 33.33, "total": 3, "covered": 1 },
+        "statements": { "pct": 95.78, "total": 166, "covered": 159 },
+        "branches": { "pct": 84.21, "total": 19, "covered": 16 }
+      },
+      "status": "⚠️ 7 lines uncovered",
+      "uncoveredLines": "43-44, 49-50, 52, 63-64",
+      "totalUncoveredLines": 7
+    },
+    "app/components/AuthErrorBoundary.tsx": {
+      "summary": {
+        "lines": { "pct": 100, "total": 64, "covered": 64 },
+        "functions": { "pct": 100, "total": 3, "covered": 3 },
+        "statements": { "pct": 100, "total": 64, "covered": 64 },
+        "branches": { "pct": 100, "total": 17, "covered": 17 }
+      },
+      "status": "✅ Perfect coverage",
+      "uncoveredLines": "none",
+      "totalUncoveredLines": 0
+    },
+    "app/components/AddToHomeScreenPrompt.tsx": {
+      "summary": {
+        "lines": { "pct": 0, "total": 177, "covered": 0 }
+      },
+      "status": "❌ No coverage",
+      "uncoveredLines": "all",
+      "totalUncoveredLines": 177
+    }
+  }
 }
 ```
 
@@ -327,10 +327,10 @@ const results = await mcp.callTool('run-vitest-coverage')
 console.log(`✅ ${results.numPassedTests}/${results.numTotalTests} tests passing`)
 
 // And provide specific guidance
-results.coverage.forEach((file) => {
-	if (file.status.includes('uncovered')) {
-		console.log(`⚠️ ${file.path}: Lines ${file.uncoveredLines} need tests`)
-	}
+results.coverage.forEach(file => {
+  if (file.status.includes('uncovered')) {
+    console.log(`⚠️ ${file.path}: Lines ${file.uncoveredLines} need tests`)
+  }
 })
 ```
 

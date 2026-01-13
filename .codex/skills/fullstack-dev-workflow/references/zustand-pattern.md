@@ -21,26 +21,26 @@ import { isBrowser } from '~/lib/lib.helpers'
 
 // Helper function for cookie management
 const setCookie = (name: string, value: string) => {
-	if (isBrowser) {
-		document.cookie = `${name}=${value}; path=/; max-age=31536000`
-	}
+  if (isBrowser) {
+    document.cookie = `${name}=${value}; path=/; max-age=31536000`
+  }
 }
 
 // 1. Define your state type
 type StoreState = {
-	// Your state properties
-	theme: 'light' | 'dark'
-	language: string
-	// ... other state
+  // Your state properties
+  theme: 'light' | 'dark'
+  language: string
+  // ... other state
 }
 
 // 2. Define your actions separately
 type Actions = {
-	// Your action methods
-	setTheme: (theme: 'light' | 'dark') => void
-	toggleTheme: () => void
-	resetStore: () => void
-	// ... other actions
+  // Your action methods
+  setTheme: (theme: 'light' | 'dark') => void
+  toggleTheme: () => void
+  resetStore: () => void
+  // ... other actions
 }
 
 // 3. Name your store for DevTools
@@ -48,98 +48,98 @@ const storeName = 'MyFeatureStore'
 
 // 4. Define initial state
 const initialStoreState: StoreState = {
-	theme: 'light',
-	language: 'en',
-	// ... other initial values
+  theme: 'light',
+  language: 'en',
+  // ... other initial values
 }
 
 // 5. Server-side storage mock
 const createServerSideStorage = () => ({
-	getItem: () => null,
-	setItem: () => {
-		// Server-side no-op
-	},
-	removeItem: () => {
-		// Server-side no-op
-	},
+  getItem: () => null,
+  setItem: () => {
+    // Server-side no-op
+  },
+  removeItem: () => {
+    // Server-side no-op
+  },
 })
 
 // 6. Create the store
 export const useMyFeatureStore = create<StoreState & Actions>()(
-	devtools(
-		persist(
-			(set, _get) => ({
-				...initialStoreState,
+  devtools(
+    persist(
+      (set, _get) => ({
+        ...initialStoreState,
 
-				// Reset action (always include)
-				resetStore: () => {
-					set(initialStoreState, false, 'resetStore')
-				},
+        // Reset action (always include)
+        resetStore: () => {
+          set(initialStoreState, false, 'resetStore')
+        },
 
-				// Your custom actions
-				setTheme: (theme) => {
-					set({ theme }, false, 'setTheme')
-					// Optional: sync to cookies for SSR
-					if (isBrowser) {
-						setCookie('theme', theme)
-					}
-				},
+        // Your custom actions
+        setTheme: theme => {
+          set({ theme }, false, 'setTheme')
+          // Optional: sync to cookies for SSR
+          if (isBrowser) {
+            setCookie('theme', theme)
+          }
+        },
 
-				toggleTheme: () => {
-					set(
-						(state) => {
-							const newTheme = state.theme === 'light' ? 'dark' : 'light'
-							if (isBrowser) {
-								setCookie('theme', newTheme)
-							}
-							return { theme: newTheme }
-						},
-						false,
-						'toggleTheme',
-					)
-				},
-			}),
-			{
-				name: storeName,
+        toggleTheme: () => {
+          set(
+            state => {
+              const newTheme = state.theme === 'light' ? 'dark' : 'light'
+              if (isBrowser) {
+                setCookie('theme', newTheme)
+              }
+              return { theme: newTheme }
+            },
+            false,
+            'toggleTheme',
+          )
+        },
+      }),
+      {
+        name: storeName,
 
-				// Choose storage: sessionStorage or localStorage
-				storage: isBrowser
-					? createJSONStorage(() => sessionStorage) // or localStorage
-					: createJSONStorage(createServerSideStorage),
+        // Choose storage: sessionStorage or localStorage
+        storage: isBrowser
+          ? createJSONStorage(() => sessionStorage) // or localStorage
+          : createJSONStorage(createServerSideStorage),
 
-				// Skip hydration on server
-				skipHydration: !isBrowser,
+        // Skip hydration on server
+        skipHydration: !isBrowser,
 
-				// Partial persistence: only save specific fields
-				partialize: (state) =>
-					isBrowser
-						? {
-								theme: state.theme,
-								// Add other fields to persist
-							}
-						: {},
+        // Partial persistence: only save specific fields
+        partialize: state =>
+          isBrowser
+            ? {
+                theme: state.theme,
+                // Add other fields to persist
+              }
+            : {},
 
-				// Custom merge strategy
-				merge: (persistedState, currentState) => ({
-					...currentState,
-					// Merge only specific fields
-					theme: (persistedState as Partial<StoreState>)?.theme ?? currentState.theme,
-				}),
-			},
-		),
-		{
-			name: storeName,
-		},
-	),
+        // Custom merge strategy
+        merge: (persistedState, currentState) => ({
+          ...currentState,
+          // Merge only specific fields
+          theme: (persistedState as Partial<StoreState>)?.theme ?? currentState.theme,
+        }),
+      },
+    ),
+    {
+      name: storeName,
+    },
+  ),
 )
 
 // 7. Optional: Hydration hook
 export const useMyFeatureStoreHydration = (): void => {
-	useEffect(() => {
-		if (isBrowser) {
-			useMyFeatureStore.persist.rehydrate()
-		}
-	}, [])
+  useEffect(() => {
+    if (isBrowser) {
+      useMyFeatureStore.persist.rehydrate()
+    }
+  }, [])
 }
 ```
 
@@ -186,12 +186,12 @@ Simply omit the `persist` middleware:
 
 ```typescript
 export const useMyStore = create<StoreState & Actions>()(
-	devtools(
-		(set, _get) => ({
-			// ... store implementation
-		}),
-		{ name: storeName },
-	),
+  devtools(
+    (set, _get) => ({
+      // ... store implementation
+    }),
+    { name: storeName },
+  ),
 )
 ```
 
@@ -201,19 +201,19 @@ For state that needs to be available server-side (theme, language, etc.):
 
 ```typescript
 // In your action
-setTheme: (theme) => {
-	set({ theme }, false, 'setTheme')
-	if (isBrowser) {
-		setCookie('theme', theme) // Helper function
-	}
+setTheme: theme => {
+  set({ theme }, false, 'setTheme')
+  if (isBrowser) {
+    setCookie('theme', theme) // Helper function
+  }
 }
 
 // In your root loader (React Router v7)
 export async function loader({ request }: LoaderFunctionArgs) {
-	const cookieHeader = request.headers.get('Cookie')
-	const theme = getCookie(cookieHeader, 'theme') ?? 'light'
+  const cookieHeader = request.headers.get('Cookie')
+  const theme = getCookie(cookieHeader, 'theme') ?? 'light'
 
-	return { theme }
+  return { theme }
 }
 ```
 
@@ -225,7 +225,7 @@ Use selectors for derived state:
 
 ```typescript
 // In component
-const isDarkMode = useMyFeatureStore((state) => state.theme === 'dark')
+const isDarkMode = useMyFeatureStore(state => state.theme === 'dark')
 ```
 
 Or add to store:
@@ -247,18 +247,18 @@ get isDarkMode() {
 
 ```typescript
 type Actions = {
-	fetchData: () => Promise<void>
+  fetchData: () => Promise<void>
 }
 
 // In store
 fetchData: async () => {
-	set({ isLoading: true }, false, 'fetchData:start')
-	try {
-		const data = await apiClient.getData()
-		set({ data, isLoading: false }, false, 'fetchData:success')
-	} catch (error) {
-		set({ error, isLoading: false }, false, 'fetchData:error')
-	}
+  set({ isLoading: true }, false, 'fetchData:start')
+  try {
+    const data = await apiClient.getData()
+    set({ data, isLoading: false }, false, 'fetchData:success')
+  } catch (error) {
+    set({ error, isLoading: false }, false, 'fetchData:error')
+  }
 }
 ```
 
@@ -266,7 +266,7 @@ fetchData: async () => {
 
 ```typescript
 resetTheme: () => {
-	set({ theme: initialStoreState.theme }, false, 'resetTheme')
+  set({ theme: initialStoreState.theme }, false, 'resetTheme')
 }
 ```
 

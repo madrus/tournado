@@ -4,53 +4,53 @@ import { adminPath } from '~/utils/adminRoutes'
 import { useRouteCleanup } from '../useRouteCleanup'
 
 describe('useRouteCleanup', () => {
-	it('fires onLeave when navigating away from an active route', () => {
-		const onLeave = vi.fn()
-		const isActiveRoute = (path: string) => /\/competition\/groups\/[^/]+/.test(path)
+  it('fires onLeave when navigating away from an active route', () => {
+    const onLeave = vi.fn()
+    const isActiveRoute = (path: string) => /\/competition\/groups\/[^/]+/.test(path)
 
-		const { rerender } = renderHook(
-			({ currentPath }) =>
-				useRouteCleanup({
-					currentPath,
-					isActiveRoute,
-					onLeave,
-				}),
-			{
-				initialProps: {
-					currentPath: adminPath('/competition/groups/123'),
-				},
-			},
-		)
+    const { rerender } = renderHook(
+      ({ currentPath }) =>
+        useRouteCleanup({
+          currentPath,
+          isActiveRoute,
+          onLeave,
+        }),
+      {
+        initialProps: {
+          currentPath: adminPath('/competition/groups/123'),
+        },
+      },
+    )
 
-		rerender({
-			currentPath: adminPath('/competition/groups'),
-		})
+    rerender({
+      currentPath: adminPath('/competition/groups'),
+    })
 
-		expect(onLeave).toHaveBeenCalledTimes(1)
-	})
+    expect(onLeave).toHaveBeenCalledTimes(1)
+  })
 
-	it('does not fire onLeave when staying within the active route', () => {
-		const onLeave = vi.fn()
-		const isActiveRoute = (path: string) => /\/competition\/groups\/[^/]+/.test(path)
+  it('does not fire onLeave when staying within the active route', () => {
+    const onLeave = vi.fn()
+    const isActiveRoute = (path: string) => /\/competition\/groups\/[^/]+/.test(path)
 
-		const { rerender } = renderHook(
-			({ currentPath }) =>
-				useRouteCleanup({
-					currentPath,
-					isActiveRoute,
-					onLeave,
-				}),
-			{
-				initialProps: {
-					currentPath: adminPath('/competition/groups/123'),
-				},
-			},
-		)
+    const { rerender } = renderHook(
+      ({ currentPath }) =>
+        useRouteCleanup({
+          currentPath,
+          isActiveRoute,
+          onLeave,
+        }),
+      {
+        initialProps: {
+          currentPath: adminPath('/competition/groups/123'),
+        },
+      },
+    )
 
-		rerender({
-			currentPath: adminPath('/competition/groups/456'),
-		})
+    rerender({
+      currentPath: adminPath('/competition/groups/456'),
+    })
 
-		expect(onLeave).not.toHaveBeenCalled()
-	})
+    expect(onLeave).not.toHaveBeenCalled()
+  })
 })

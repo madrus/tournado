@@ -18,14 +18,14 @@ import { getAllTeams } from '~/models/team.server'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 
 export async function loader({ request }: LoaderFunctionArgs): Promise<Response> {
-	// Permission-based authorization - allows all roles
-	await requireUserWithPermission(request, 'teams:read')
+  // Permission-based authorization - allows all roles
+  await requireUserWithPermission(request, 'teams:read')
 
-	// Get all teams (future: add filtering support via query params)
-	const teams = await getAllTeams()
+  // Get all teams (future: add filtering support via query params)
+  const teams = await getAllTeams()
 
-	// Return JSON using native Response.json()
-	return Response.json({ teams })
+  // Return JSON using native Response.json()
+  return Response.json({ teams })
 }
 
 // No default export = Resource route (data-only, no UI)

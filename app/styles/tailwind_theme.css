@@ -1,323 +1,323 @@
 @theme {
-	--color-background: var(--color-background);
-	--color-foreground: var(--color-foreground);
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
 
-	/* Text Colors */
-	--color-title: var(--color-title);
-	--color-foreground-heading: var(--color-foreground-heading);
-	--color-foreground-light: var(--color-foreground-light);
-	--color-foreground-lighter: var(--color-foreground-lighter);
-	--color-foreground-darker: var(--color-foreground-darker);
+  /* Text Colors */
+  --color-title: var(--color-title);
+  --color-foreground-heading: var(--color-foreground-heading);
+  --color-foreground-light: var(--color-foreground-light);
+  --color-foreground-lighter: var(--color-foreground-lighter);
+  --color-foreground-darker: var(--color-foreground-darker);
 
-	/* Brand Colors */
-	--color-brand: var(--color-brand);
-	--color-brand-accent: var(--color-brand-accent);
-	--color-brand-dark: var(--color-brand-dark);
-	--color-brand-darker: var(--color-brand-darker);
-	--color-brand-darkest: var(--color-brand-darkest);
-	--color-brand-light: var(--color-brand-light);
+  /* Brand Colors */
+  --color-brand: var(--color-brand);
+  --color-brand-accent: var(--color-brand-accent);
+  --color-brand-dark: var(--color-brand-dark);
+  --color-brand-darker: var(--color-brand-darker);
+  --color-brand-darkest: var(--color-brand-darkest);
+  --color-brand-light: var(--color-brand-light);
 
-	/* Main Neutral */
-	--color-main: var(--color-main);
-	--color-neutral: var(--color-neutral);
+  /* Main Neutral */
+  --color-main: var(--color-main);
+  --color-neutral: var(--color-neutral);
 
-	/* Surface Colors - semantic slate-based colors for elevated panels */
-	--color-surface: var(--color-surface);
-	--color-surface-light: var(--color-surface-light);
+  /* Surface Colors - semantic slate-based colors for elevated panels */
+  --color-surface: var(--color-surface);
+  --color-surface-light: var(--color-surface-light);
 
-	/* Primary Colors - removed circular references, use @theme inline instead */
+  /* Primary Colors - removed circular references, use @theme inline instead */
 
-	/* Brand Colors - removed circular references, use @theme inline instead */
+  /* Brand Colors - removed circular references, use @theme inline instead */
 
-	/* Button Colors */
-	--color-button-primary-background: var(--color-button-primary-background);
-	--color-button-primary-text: var(--color-button-primary-text);
-	--color-button-primary-hover-background: var(--color-button-primary-hover-background);
+  /* Button Colors */
+  --color-button-primary-background: var(--color-button-primary-background);
+  --color-button-primary-text: var(--color-button-primary-text);
+  --color-button-primary-hover-background: var(--color-button-primary-hover-background);
 
-	--color-button-secondary-background: var(--color-button-secondary-background);
-	--color-button-secondary-text: var(--color-button-secondary-text);
-	--color-button-secondary-border: var(--color-button-secondary-border);
-	--color-button-secondary-hover-background: var(
-		--color-button-secondary-hover-background
-	);
+  --color-button-secondary-background: var(--color-button-secondary-background);
+  --color-button-secondary-text: var(--color-button-secondary-text);
+  --color-button-secondary-border: var(--color-button-secondary-border);
+  --color-button-secondary-hover-background: var(
+    --color-button-secondary-hover-background
+  );
 
-	--color-button-tertiary-background: var(--color-button-tertiary-background);
-	--color-button-tertiary-text: var(--color-button-tertiary-text);
-	--color-button-tertiary-border: var(--color-button-tertiary-border);
-	--color-button-tertiary-hover-background: var(
-		--color-button-tertiary-hover-background
-	);
-	--color-button-tertiary-hover-border: var(--color-button-tertiary-hover-border);
+  --color-button-tertiary-background: var(--color-button-tertiary-background);
+  --color-button-tertiary-text: var(--color-button-tertiary-text);
+  --color-button-tertiary-border: var(--color-button-tertiary-border);
+  --color-button-tertiary-hover-background: var(
+    --color-button-tertiary-hover-background
+  );
+  --color-button-tertiary-hover-border: var(--color-button-tertiary-hover-border);
 
-	/* Danger Button Colors */
-	--color-button-danger-background: var(--color-button-danger-background);
-	--color-button-danger-text: var(--color-button-danger-text);
-	--color-button-danger-hover-background: var(--color-button-danger-hover-background);
+  /* Danger Button Colors */
+  --color-button-danger-background: var(--color-button-danger-background);
+  --color-button-danger-text: var(--color-button-danger-text);
+  --color-button-danger-hover-background: var(--color-button-danger-hover-background);
 
-	--color-button-danger-secondary-background: var(
-		--color-button-danger-secondary-background
-	);
-	--color-button-danger-secondary-text: var(--color-button-danger-secondary-text);
-	--color-button-danger-secondary-border: var(--color-button-danger-secondary-border);
-	--color-button-danger-secondary-hover-background: var(
-		--color-button-danger-secondary-hover-background
-	);
+  --color-button-danger-secondary-background: var(
+    --color-button-danger-secondary-background
+  );
+  --color-button-danger-secondary-text: var(--color-button-danger-secondary-text);
+  --color-button-danger-secondary-border: var(--color-button-danger-secondary-border);
+  --color-button-danger-secondary-hover-background: var(
+    --color-button-danger-secondary-hover-background
+  );
 
-	--color-button-danger-tertiary-background: var(
-		--color-button-danger-tertiary-background
-	);
-	--color-button-danger-tertiary-text: var(--color-button-danger-tertiary-text);
-	--color-button-danger-tertiary-border: var(--color-button-danger-tertiary-border);
-	--color-button-danger-tertiary-hover-background: var(
-		--color-button-danger-tertiary-hover-background
-	);
-	--color-button-danger-tertiary-hover-border: var(
-		--color-button-danger-tertiary-hover-border
-	);
+  --color-button-danger-tertiary-background: var(
+    --color-button-danger-tertiary-background
+  );
+  --color-button-danger-tertiary-text: var(--color-button-danger-tertiary-text);
+  --color-button-danger-tertiary-border: var(--color-button-danger-tertiary-border);
+  --color-button-danger-tertiary-hover-background: var(
+    --color-button-danger-tertiary-hover-background
+  );
+  --color-button-danger-tertiary-hover-border: var(
+    --color-button-danger-tertiary-hover-border
+  );
 
-	/* Brand Button Colors */
-	--color-button-brand-background: var(--color-button-brand-background);
-	--color-button-brand-text: var(--color-button-brand-text);
-	--color-button-brand-hover-background: var(--color-button-brand-hover-background);
+  /* Brand Button Colors */
+  --color-button-brand-background: var(--color-button-brand-background);
+  --color-button-brand-text: var(--color-button-brand-text);
+  --color-button-brand-hover-background: var(--color-button-brand-hover-background);
 
-	--color-button-brand-secondary-background: var(
-		--color-button-brand-secondary-background
-	);
-	--color-button-brand-secondary-text: var(--color-button-brand-secondary-text);
-	--color-button-brand-secondary-border: var(--color-button-brand-secondary-border);
-	--color-button-brand-secondary-hover-background: var(
-		--color-button-brand-secondary-hover-background
-	);
+  --color-button-brand-secondary-background: var(
+    --color-button-brand-secondary-background
+  );
+  --color-button-brand-secondary-text: var(--color-button-brand-secondary-text);
+  --color-button-brand-secondary-border: var(--color-button-brand-secondary-border);
+  --color-button-brand-secondary-hover-background: var(
+    --color-button-brand-secondary-hover-background
+  );
 
-	--color-button-brand-tertiary-background: var(
-		--color-button-brand-tertiary-background
-	);
-	--color-button-brand-tertiary-text: var(--color-button-brand-tertiary-text);
-	--color-button-brand-tertiary-border: var(--color-button-brand-tertiary-border);
-	--color-button-brand-tertiary-hover-background: var(
-		--color-button-brand-tertiary-hover-background
-	);
-	--color-button-brand-tertiary-hover-border: var(
-		--color-button-brand-tertiary-hover-border
-	);
+  --color-button-brand-tertiary-background: var(
+    --color-button-brand-tertiary-background
+  );
+  --color-button-brand-tertiary-text: var(--color-button-brand-tertiary-text);
+  --color-button-brand-tertiary-border: var(--color-button-brand-tertiary-border);
+  --color-button-brand-tertiary-hover-background: var(
+    --color-button-brand-tertiary-hover-background
+  );
+  --color-button-brand-tertiary-hover-border: var(
+    --color-button-brand-tertiary-hover-border
+  );
 
-	/* Neutral Button Colors */
-	--color-button-neutral-background: var(--color-button-neutral-background);
-	--color-button-neutral-text: var(--color-button-neutral-text);
-	--color-button-neutral-hover-background: var(--color-button-neutral-hover-background);
+  /* Neutral Button Colors */
+  --color-button-neutral-background: var(--color-button-neutral-background);
+  --color-button-neutral-text: var(--color-button-neutral-text);
+  --color-button-neutral-hover-background: var(--color-button-neutral-hover-background);
 
-	--color-button-neutral-secondary-background: var(
-		--color-button-neutral-secondary-background
-	);
-	--color-button-neutral-secondary-text: var(--color-button-neutral-secondary-text);
-	--color-button-neutral-secondary-border: var(--color-button-neutral-secondary-border);
-	--color-button-neutral-secondary-hover-background: var(
-		--color-button-neutral-secondary-hover-background
-	);
+  --color-button-neutral-secondary-background: var(
+    --color-button-neutral-secondary-background
+  );
+  --color-button-neutral-secondary-text: var(--color-button-neutral-secondary-text);
+  --color-button-neutral-secondary-border: var(--color-button-neutral-secondary-border);
+  --color-button-neutral-secondary-hover-background: var(
+    --color-button-neutral-secondary-hover-background
+  );
 
-	--color-button-neutral-tertiary-background: var(
-		--color-button-neutral-tertiary-background
-	);
-	--color-button-neutral-tertiary-text: var(--color-button-neutral-tertiary-text);
-	--color-button-neutral-tertiary-border: var(--color-button-neutral-tertiary-border);
-	--color-button-neutral-tertiary-hover-background: var(
-		--color-button-neutral-tertiary-hover-background
-	);
-	--color-button-neutral-tertiary-hover-border: var(
-		--color-button-neutral-tertiary-hover-border
-	);
+  --color-button-neutral-tertiary-background: var(
+    --color-button-neutral-tertiary-background
+  );
+  --color-button-neutral-tertiary-text: var(--color-button-neutral-tertiary-text);
+  --color-button-neutral-tertiary-border: var(--color-button-neutral-tertiary-border);
+  --color-button-neutral-tertiary-hover-background: var(
+    --color-button-neutral-tertiary-hover-background
+  );
+  --color-button-neutral-tertiary-hover-border: var(
+    --color-button-neutral-tertiary-hover-border
+  );
 
-	/* Focus Ring Colors */
-	--color-button-danger-outline-focus-ring-inner: var(
-		--color-button-danger-outline-focus-ring-inner
-	);
-	--color-button-danger-outline-focus-ring-outer: var(
-		--color-button-danger-outline-focus-ring-outer
-	);
-	--color-button-outline-border-red: var(--color-button-outline-border-red);
+  /* Focus Ring Colors */
+  --color-button-danger-outline-focus-ring-inner: var(
+    --color-button-danger-outline-focus-ring-inner
+  );
+  --color-button-danger-outline-focus-ring-outer: var(
+    --color-button-danger-outline-focus-ring-outer
+  );
+  --color-button-outline-border-red: var(--color-button-outline-border-red);
 
-	/* Gradients */
-	--gradient-from: var(--gradient-from);
-	--gradient-to: var(--gradient-to);
+  /* Gradients */
+  --gradient-from: var(--gradient-from);
+  --gradient-to: var(--gradient-to);
 
-	/* Footer Colors */
-	--color-footer: var(--footer-bg);
-	--color-footer-foreground: var(--footer-text);
+  /* Footer Colors */
+  --color-footer: var(--footer-bg);
+  --color-footer-foreground: var(--footer-text);
 
-	/* Input Colors - using emerald system from existing variables */
-	--color-input: var(--color-background);
-	--color-input-foreground: var(--color-foreground);
-	--color-input-border: var(--color-button-primary-background); /* emerald-700 */
-	--color-input-hover: var(--color-emerald-medium); /* emerald-500 */
-	--color-input-focus: var(--color-button-primary-background); /* emerald-700 */
-	--color-input-ring: var(--color-button-primary-background); /* emerald-700 */
+  /* Input Colors - using emerald system from existing variables */
+  --color-input: var(--color-background);
+  --color-input-foreground: var(--color-foreground);
+  --color-input-border: var(--color-button-primary-background); /* emerald-700 */
+  --color-input-hover: var(--color-emerald-medium); /* emerald-500 */
+  --color-input-focus: var(--color-button-primary-background); /* emerald-700 */
+  --color-input-ring: var(--color-button-primary-background); /* emerald-700 */
 
-	/* Error Colors */
-	--color-error: var(--color-brand);
-	--color-error-foreground: var(--color-brand-dark);
+  /* Error Colors */
+  --color-error: var(--color-brand);
+  --color-error-foreground: var(--color-brand-dark);
 
-	/* Destructive Colors - semantic error/danger states */
-	--color-destructive: var(--color-red-600);
-	--color-destructive-foreground: var(--color-white);
+  /* Destructive Colors - semantic error/danger states */
+  --color-destructive: var(--color-red-600);
+  --color-destructive-foreground: var(--color-white);
 
-	/* Primary Colors - using emerald system */
-	--color-primary: var(--color-button-primary-background);
-	--color-primary-foreground: var(--color-button-primary-text);
-	--color-primary-hover: var(--color-main);
+  /* Primary Colors - using emerald system */
+  --color-primary: var(--color-button-primary-background);
+  --color-primary-foreground: var(--color-button-primary-text);
+  --color-primary-hover: var(--color-main);
 
-	/* Hover Colors */
-	--color-background-hover: var(--color-background-hover);
+  /* Hover Colors */
+  --color-background-hover: var(--color-background-hover);
 
-	/* Border Colors */
-	--color-border: var(--color-border);
+  /* Border Colors */
+  --color-border: var(--color-border);
 
-	/* UserMenu Colors */
-	--color-usermenu-bg: var(--color-usermenu-bg);
-	--color-usermenu-text: var(--color-usermenu-text);
-	--color-usermenu-hover-bg: var(--color-usermenu-hover-bg);
-	--color-usermenu-border: var(--color-usermenu-border);
-	--color-usermenu-accent-bg: var(--color-usermenu-accent-bg);
+  /* UserMenu Colors */
+  --color-usermenu-bg: var(--color-usermenu-bg);
+  --color-usermenu-text: var(--color-usermenu-text);
+  --color-usermenu-hover-bg: var(--color-usermenu-hover-bg);
+  --color-usermenu-border: var(--color-usermenu-border);
+  --color-usermenu-accent-bg: var(--color-usermenu-accent-bg);
 
-	/* Panel Gradient Colors */
-	--color-panel-gradient-from: var(--panel-gradient-from);
-	--color-panel-gradient-via: var(--panel-gradient-via);
-	--color-panel-gradient-to: var(--panel-gradient-to);
-	--color-brand-from: var(--color-brand-from);
-	--color-brand-via: var(--color-brand-via);
-	--color-brand-to: var(--color-brand-to);
-	--color-primary-from: var(--color-primary-light-from);
-	--color-primary-via: var(--color-primary-light-via);
-	--color-primary-to: var(--color-primary-light-to);
+  /* Panel Gradient Colors */
+  --color-panel-gradient-from: var(--panel-gradient-from);
+  --color-panel-gradient-via: var(--panel-gradient-via);
+  --color-panel-gradient-to: var(--panel-gradient-to);
+  --color-brand-from: var(--color-brand-from);
+  --color-brand-via: var(--color-brand-via);
+  --color-brand-to: var(--color-brand-to);
+  --color-primary-from: var(--color-primary-light-from);
+  --color-primary-via: var(--color-primary-light-via);
+  --color-primary-to: var(--color-primary-light-to);
 
-	/* Layering */
-	--z-dnd-overlay: 9999;
+  /* Layering */
+  --z-dnd-overlay: 9999;
 
-	/* Adaptive Color System - Consolidated Variables (primarily 700 weights, with exceptions: amber-800, brand red-600) */
-	--color-adaptive-red: var(--color-red-700);
-	--color-adaptive-blue: var(--color-blue-700);
-	--color-adaptive-emerald: var(--color-emerald-700);
-	--color-adaptive-teal: var(--color-teal-700);
-	--color-adaptive-cyan: var(--color-cyan-700);
-	--color-adaptive-green: var(--color-green-700);
-	--color-adaptive-yellow: var(--color-yellow-700);
-	--color-adaptive-orange: var(--color-orange-700);
-	--color-adaptive-amber: var(--color-amber-800);
-	--color-adaptive-lime: var(--color-lime-700);
-	--color-adaptive-violet: var(--color-violet-700);
-	--color-adaptive-purple: var(--color-purple-700);
-	--color-adaptive-fuchsia: var(--color-fuchsia-700);
-	--color-adaptive-pink: var(--color-pink-700);
-	--color-adaptive-rose: var(--color-rose-700);
-	--color-adaptive-slate: var(--color-slate-700);
-	--color-adaptive-zinc: var(--color-zinc-700);
-	--color-adaptive-indigo: var(--color-indigo-700);
-	--color-adaptive-sky: var(--color-sky-700);
-	--color-adaptive-brand: var(--color-red-600);
-	--color-adaptive-brand-text: var(--color-red-800);
+  /* Adaptive Color System - Consolidated Variables (primarily 700 weights, with exceptions: amber-800, brand red-600) */
+  --color-adaptive-red: var(--color-red-700);
+  --color-adaptive-blue: var(--color-blue-700);
+  --color-adaptive-emerald: var(--color-emerald-700);
+  --color-adaptive-teal: var(--color-teal-700);
+  --color-adaptive-cyan: var(--color-cyan-700);
+  --color-adaptive-green: var(--color-green-700);
+  --color-adaptive-yellow: var(--color-yellow-700);
+  --color-adaptive-orange: var(--color-orange-700);
+  --color-adaptive-amber: var(--color-amber-800);
+  --color-adaptive-lime: var(--color-lime-700);
+  --color-adaptive-violet: var(--color-violet-700);
+  --color-adaptive-purple: var(--color-purple-700);
+  --color-adaptive-fuchsia: var(--color-fuchsia-700);
+  --color-adaptive-pink: var(--color-pink-700);
+  --color-adaptive-rose: var(--color-rose-700);
+  --color-adaptive-slate: var(--color-slate-700);
+  --color-adaptive-zinc: var(--color-zinc-700);
+  --color-adaptive-indigo: var(--color-indigo-700);
+  --color-adaptive-sky: var(--color-sky-700);
+  --color-adaptive-brand: var(--color-red-600);
+  --color-adaptive-brand-text: var(--color-red-800);
 
-	/* Adaptive Color System - Background Colors (primarily 600 weights, except amber-700 for proper contrast) */
-	--color-adaptive-bg-red: var(--color-red-600);
-	--color-adaptive-bg-blue: var(--color-blue-600);
-	--color-adaptive-bg-emerald: var(--color-emerald-600);
-	--color-adaptive-bg-teal: var(--color-teal-600);
-	--color-adaptive-bg-cyan: var(--color-cyan-600);
-	--color-adaptive-bg-green: var(--color-green-600);
-	--color-adaptive-bg-yellow: var(--color-yellow-600);
-	--color-adaptive-bg-orange: var(--color-orange-600);
-	--color-adaptive-bg-amber: var(--color-amber-700);
-	--color-adaptive-bg-lime: var(--color-lime-600);
-	--color-adaptive-bg-violet: var(--color-violet-600);
-	--color-adaptive-bg-purple: var(--color-purple-600);
-	--color-adaptive-bg-fuchsia: var(--color-fuchsia-600);
-	--color-adaptive-bg-pink: var(--color-pink-600);
-	--color-adaptive-bg-rose: var(--color-rose-600);
-	--color-adaptive-bg-slate: var(--color-slate-600);
-	--color-adaptive-bg-zinc: var(--color-zinc-600);
-	--color-adaptive-bg-indigo: var(--color-indigo-600);
-	--color-adaptive-bg-sky: var(--color-sky-600);
-	--color-adaptive-bg-brand: var(--color-red-600);
+  /* Adaptive Color System - Background Colors (primarily 600 weights, except amber-700 for proper contrast) */
+  --color-adaptive-bg-red: var(--color-red-600);
+  --color-adaptive-bg-blue: var(--color-blue-600);
+  --color-adaptive-bg-emerald: var(--color-emerald-600);
+  --color-adaptive-bg-teal: var(--color-teal-600);
+  --color-adaptive-bg-cyan: var(--color-cyan-600);
+  --color-adaptive-bg-green: var(--color-green-600);
+  --color-adaptive-bg-yellow: var(--color-yellow-600);
+  --color-adaptive-bg-orange: var(--color-orange-600);
+  --color-adaptive-bg-amber: var(--color-amber-700);
+  --color-adaptive-bg-lime: var(--color-lime-600);
+  --color-adaptive-bg-violet: var(--color-violet-600);
+  --color-adaptive-bg-purple: var(--color-purple-600);
+  --color-adaptive-bg-fuchsia: var(--color-fuchsia-600);
+  --color-adaptive-bg-pink: var(--color-pink-600);
+  --color-adaptive-bg-rose: var(--color-rose-600);
+  --color-adaptive-bg-slate: var(--color-slate-600);
+  --color-adaptive-bg-zinc: var(--color-zinc-600);
+  --color-adaptive-bg-indigo: var(--color-indigo-600);
+  --color-adaptive-bg-sky: var(--color-sky-600);
+  --color-adaptive-bg-brand: var(--color-red-600);
 
-	/* Adaptive Background Colors - Functional Semantics (600 weights) */
-	--color-adaptive-bg-success: var(--color-green-600);
-	--color-adaptive-bg-error: var(--color-red-600);
-	--color-adaptive-bg-warning: var(--color-amber-600);
-	--color-adaptive-bg-info: var(--color-blue-600);
-	--color-adaptive-bg-disabled: var(--color-slate-600);
+  /* Adaptive Background Colors - Functional Semantics (600 weights) */
+  --color-adaptive-bg-success: var(--color-green-600);
+  --color-adaptive-bg-error: var(--color-red-600);
+  --color-adaptive-bg-warning: var(--color-amber-600);
+  --color-adaptive-bg-info: var(--color-blue-600);
+  --color-adaptive-bg-disabled: var(--color-slate-600);
 
-	/* Adaptive Background Colors - Visual Accents (600 weights, except amber uses 700 for better contrast) */
-	--color-adaptive-bg-accent-amber: var(
-		--color-amber-700
-	); /* 700 for better contrast */
-	--color-adaptive-bg-accent-indigo: var(--color-indigo-600);
-	--color-adaptive-bg-accent-fuchsia: var(--color-fuchsia-600);
-	--color-adaptive-bg-accent-teal: var(--color-teal-600);
-	--color-adaptive-bg-accent-sky: var(--color-sky-600);
-	--color-adaptive-bg-accent-purple: var(--color-purple-600);
-	--color-adaptive-bg-accent-lime: var(--color-lime-600);
+  /* Adaptive Background Colors - Visual Accents (600 weights, except amber uses 700 for better contrast) */
+  --color-adaptive-bg-accent-amber: var(
+    --color-amber-700
+  ); /* 700 for better contrast */
+  --color-adaptive-bg-accent-indigo: var(--color-indigo-600);
+  --color-adaptive-bg-accent-fuchsia: var(--color-fuchsia-600);
+  --color-adaptive-bg-accent-teal: var(--color-teal-600);
+  --color-adaptive-bg-accent-sky: var(--color-sky-600);
+  --color-adaptive-bg-accent-purple: var(--color-purple-600);
+  --color-adaptive-bg-accent-lime: var(--color-lime-600);
 
-	/* Adaptive Color System - Functional Semantics (600 weights) */
-	--color-adaptive-success: var(--color-green-600);
-	--color-adaptive-error: var(--color-red-600);
-	--color-adaptive-warning: var(--color-amber-600);
-	--color-adaptive-info: var(--color-blue-600);
-	--color-adaptive-disabled: var(--color-slate-600);
+  /* Adaptive Color System - Functional Semantics (600 weights) */
+  --color-adaptive-success: var(--color-green-600);
+  --color-adaptive-error: var(--color-red-600);
+  --color-adaptive-warning: var(--color-amber-600);
+  --color-adaptive-info: var(--color-blue-600);
+  --color-adaptive-disabled: var(--color-slate-600);
 
-	/* Adaptive Color System - Visual Accents (600 weights) */
-	--color-adaptive-accent-amber: var(--color-amber-600);
-	--color-adaptive-accent-indigo: var(--color-indigo-600);
-	--color-adaptive-accent-fuchsia: var(--color-fuchsia-600);
-	--color-adaptive-accent-teal: var(--color-teal-600);
-	--color-adaptive-accent-sky: var(--color-sky-600);
-	--color-adaptive-accent-purple: var(--color-purple-600);
+  /* Adaptive Color System - Visual Accents (600 weights) */
+  --color-adaptive-accent-amber: var(--color-amber-600);
+  --color-adaptive-accent-indigo: var(--color-indigo-600);
+  --color-adaptive-accent-fuchsia: var(--color-fuchsia-600);
+  --color-adaptive-accent-teal: var(--color-teal-600);
+  --color-adaptive-accent-sky: var(--color-sky-600);
+  --color-adaptive-accent-purple: var(--color-purple-600);
 
-	/* Adaptive Color System - Selected State Text Colors (800/900 weights) */
-	--color-adaptive-red-selected: var(--color-red-800);
-	--color-adaptive-blue-selected: var(--color-blue-800);
-	--color-adaptive-emerald-selected: var(--color-emerald-800);
-	--color-adaptive-teal-selected: var(--color-teal-800);
-	--color-adaptive-cyan-selected: var(--color-cyan-800);
-	--color-adaptive-green-selected: var(--color-green-800);
-	--color-adaptive-yellow-selected: var(--color-yellow-800);
-	--color-adaptive-orange-selected: var(--color-orange-800);
-	--color-adaptive-amber-selected: var(--color-amber-800);
-	--color-adaptive-lime-selected: var(--color-lime-800);
-	--color-adaptive-violet-selected: var(--color-violet-800);
-	--color-adaptive-purple-selected: var(--color-purple-800);
-	--color-adaptive-fuchsia-selected: var(--color-fuchsia-800);
-	--color-adaptive-pink-selected: var(--color-pink-800);
-	--color-adaptive-rose-selected: var(--color-rose-800);
-	--color-adaptive-slate-selected: var(--color-slate-800);
-	--color-adaptive-zinc-selected: var(--color-zinc-800);
-	--color-adaptive-indigo-selected: var(--color-indigo-800);
-	--color-adaptive-sky-selected: var(--color-sky-800);
-	--color-adaptive-brand-selected: var(--color-brand-800);
-	--color-adaptive-primary-selected: var(--color-primary-800);
+  /* Adaptive Color System - Selected State Text Colors (800/900 weights) */
+  --color-adaptive-red-selected: var(--color-red-800);
+  --color-adaptive-blue-selected: var(--color-blue-800);
+  --color-adaptive-emerald-selected: var(--color-emerald-800);
+  --color-adaptive-teal-selected: var(--color-teal-800);
+  --color-adaptive-cyan-selected: var(--color-cyan-800);
+  --color-adaptive-green-selected: var(--color-green-800);
+  --color-adaptive-yellow-selected: var(--color-yellow-800);
+  --color-adaptive-orange-selected: var(--color-orange-800);
+  --color-adaptive-amber-selected: var(--color-amber-800);
+  --color-adaptive-lime-selected: var(--color-lime-800);
+  --color-adaptive-violet-selected: var(--color-violet-800);
+  --color-adaptive-purple-selected: var(--color-purple-800);
+  --color-adaptive-fuchsia-selected: var(--color-fuchsia-800);
+  --color-adaptive-pink-selected: var(--color-pink-800);
+  --color-adaptive-rose-selected: var(--color-rose-800);
+  --color-adaptive-slate-selected: var(--color-slate-800);
+  --color-adaptive-zinc-selected: var(--color-zinc-800);
+  --color-adaptive-indigo-selected: var(--color-indigo-800);
+  --color-adaptive-sky-selected: var(--color-sky-800);
+  --color-adaptive-brand-selected: var(--color-brand-800);
+  --color-adaptive-primary-selected: var(--color-primary-800);
 
-	/* Adaptive Color System - Functional Semantics Selected (800 weights) */
-	--color-adaptive-success-selected: var(--color-green-800);
-	--color-adaptive-error-selected: var(--color-red-800);
-	--color-adaptive-warning-selected: var(--color-amber-800);
-	--color-adaptive-info-selected: var(--color-blue-800);
-	--color-adaptive-disabled-selected: var(--color-slate-800);
+  /* Adaptive Color System - Functional Semantics Selected (800 weights) */
+  --color-adaptive-success-selected: var(--color-green-800);
+  --color-adaptive-error-selected: var(--color-red-800);
+  --color-adaptive-warning-selected: var(--color-amber-800);
+  --color-adaptive-info-selected: var(--color-blue-800);
+  --color-adaptive-disabled-selected: var(--color-slate-800);
 
-	/* Adaptive Color System - Visual Accents Selected (800 weights) */
-	--color-adaptive-accent-amber-selected: var(--color-amber-800);
-	--color-adaptive-accent-indigo-selected: var(--color-indigo-800);
-	--color-adaptive-accent-fuchsia-selected: var(--color-fuchsia-800);
-	--color-adaptive-accent-teal-selected: var(--color-teal-800);
-	--color-adaptive-accent-sky-selected: var(--color-sky-800);
-	--color-adaptive-accent-purple-selected: var(--color-purple-800);
+  /* Adaptive Color System - Visual Accents Selected (800 weights) */
+  --color-adaptive-accent-amber-selected: var(--color-amber-800);
+  --color-adaptive-accent-indigo-selected: var(--color-indigo-800);
+  --color-adaptive-accent-fuchsia-selected: var(--color-fuchsia-800);
+  --color-adaptive-accent-teal-selected: var(--color-teal-800);
+  --color-adaptive-accent-sky-selected: var(--color-sky-800);
+  --color-adaptive-accent-purple-selected: var(--color-purple-800);
 
-	/* Adaptive Color System - Unselected State Text Colors (shared across components) */
-	--color-adaptive-unselected: var(--color-slate-700);
+  /* Adaptive Color System - Unselected State Text Colors (shared across components) */
+  --color-adaptive-unselected: var(--color-slate-700);
 
-	/* Adaptive Color System - Cell Text Colors (for table cell content) */
-	--color-adaptive-cell-primary: var(--color-slate-900);
-	--color-adaptive-cell-secondary: var(--color-slate-600);
-	--color-adaptive-cell-muted: var(--color-slate-500);
+  /* Adaptive Color System - Cell Text Colors (for table cell content) */
+  --color-adaptive-cell-primary: var(--color-slate-900);
+  --color-adaptive-cell-secondary: var(--color-slate-600);
+  --color-adaptive-cell-muted: var(--color-slate-500);
 
-	/* Panel Background Variables - missing from Tailwind auto-generation */
-	--panel-bg-red: var(--color-red-100);
+  /* Panel Background Variables - missing from Tailwind auto-generation */
+  --panel-bg-red: var(--color-red-100);
 }
 
 /**
@@ -333,200 +333,200 @@
  * This generates utility classes like: bg-brand-600, text-primary-50, border-success-300, etc.
  */
 @theme inline {
-	/* Functional Semantics - Brand (red-based) */
-	--color-brand-50: var(--color-red-50);
-	--color-brand-100: var(--color-red-100);
-	--color-brand-200: var(--color-red-200);
-	--color-brand-300: var(--color-red-300);
-	--color-brand-400: var(--color-red-400);
-	--color-brand-500: var(--color-red-500);
-	--color-brand-600: var(--color-red-600);
-	--color-brand-700: var(--color-red-700);
-	--color-brand-800: var(--color-red-800);
-	--color-brand-900: var(--color-red-900);
-	--color-brand-950: var(--color-red-950);
+  /* Functional Semantics - Brand (red-based) */
+  --color-brand-50: var(--color-red-50);
+  --color-brand-100: var(--color-red-100);
+  --color-brand-200: var(--color-red-200);
+  --color-brand-300: var(--color-red-300);
+  --color-brand-400: var(--color-red-400);
+  --color-brand-500: var(--color-red-500);
+  --color-brand-600: var(--color-red-600);
+  --color-brand-700: var(--color-red-700);
+  --color-brand-800: var(--color-red-800);
+  --color-brand-900: var(--color-red-900);
+  --color-brand-950: var(--color-red-950);
 
-	/* Functional Semantics - Primary (emerald-based) */
-	--color-primary-50: var(--color-emerald-50);
-	--color-primary-100: var(--color-emerald-100);
-	--color-primary-200: var(--color-emerald-200);
-	--color-primary-300: var(--color-emerald-300);
-	--color-primary-400: var(--color-emerald-400);
-	--color-primary-500: var(--color-emerald-500);
-	--color-primary-600: var(--color-emerald-600);
-	--color-primary-700: var(--color-emerald-700);
-	--color-primary-800: var(--color-emerald-800);
-	--color-primary-900: var(--color-emerald-900);
-	--color-primary-950: var(--color-emerald-950);
+  /* Functional Semantics - Primary (emerald-based) */
+  --color-primary-50: var(--color-emerald-50);
+  --color-primary-100: var(--color-emerald-100);
+  --color-primary-200: var(--color-emerald-200);
+  --color-primary-300: var(--color-emerald-300);
+  --color-primary-400: var(--color-emerald-400);
+  --color-primary-500: var(--color-emerald-500);
+  --color-primary-600: var(--color-emerald-600);
+  --color-primary-700: var(--color-emerald-700);
+  --color-primary-800: var(--color-emerald-800);
+  --color-primary-900: var(--color-emerald-900);
+  --color-primary-950: var(--color-emerald-950);
 
-	/* Functional Semantics - Surface (slate-based) */
-	--color-surface-50: var(--color-slate-50);
-	--color-surface-100: var(--color-slate-100);
-	--color-surface-200: var(--color-slate-200);
-	--color-surface-300: var(--color-slate-300);
-	--color-surface-400: var(--color-slate-400);
-	--color-surface-500: var(--color-slate-500);
-	--color-surface-600: var(--color-slate-600);
-	--color-surface-700: var(--color-slate-700);
-	--color-surface-800: var(--color-slate-800);
-	--color-surface-900: var(--color-slate-900);
-	--color-surface-950: var(--color-slate-950);
+  /* Functional Semantics - Surface (slate-based) */
+  --color-surface-50: var(--color-slate-50);
+  --color-surface-100: var(--color-slate-100);
+  --color-surface-200: var(--color-slate-200);
+  --color-surface-300: var(--color-slate-300);
+  --color-surface-400: var(--color-slate-400);
+  --color-surface-500: var(--color-slate-500);
+  --color-surface-600: var(--color-slate-600);
+  --color-surface-700: var(--color-slate-700);
+  --color-surface-800: var(--color-slate-800);
+  --color-surface-900: var(--color-slate-900);
+  --color-surface-950: var(--color-slate-950);
 
-	/* Functional Semantics - Success (green-based) */
-	--color-success-50: var(--color-green-50);
-	--color-success-100: var(--color-green-100);
-	--color-success-200: var(--color-green-200);
-	--color-success-300: var(--color-green-300);
-	--color-success-400: var(--color-green-400);
-	--color-success-500: var(--color-green-500);
-	--color-success-600: var(--color-green-600);
-	--color-success-700: var(--color-green-700);
-	--color-success-800: var(--color-green-800);
-	--color-success-900: var(--color-green-900);
-	--color-success-950: var(--color-green-950);
+  /* Functional Semantics - Success (green-based) */
+  --color-success-50: var(--color-green-50);
+  --color-success-100: var(--color-green-100);
+  --color-success-200: var(--color-green-200);
+  --color-success-300: var(--color-green-300);
+  --color-success-400: var(--color-green-400);
+  --color-success-500: var(--color-green-500);
+  --color-success-600: var(--color-green-600);
+  --color-success-700: var(--color-green-700);
+  --color-success-800: var(--color-green-800);
+  --color-success-900: var(--color-green-900);
+  --color-success-950: var(--color-green-950);
 
-	/* Functional Semantics - Error (red-based) */
-	--color-error-50: var(--color-red-50);
-	--color-error-100: var(--color-red-100);
-	--color-error-200: var(--color-red-200);
-	--color-error-300: var(--color-red-300);
-	--color-error-400: var(--color-red-400);
-	--color-error-500: var(--color-red-500);
-	--color-error-600: var(--color-red-600);
-	--color-error-700: var(--color-red-700);
-	--color-error-800: var(--color-red-800);
-	--color-error-900: var(--color-red-900);
-	--color-error-950: var(--color-red-950);
+  /* Functional Semantics - Error (red-based) */
+  --color-error-50: var(--color-red-50);
+  --color-error-100: var(--color-red-100);
+  --color-error-200: var(--color-red-200);
+  --color-error-300: var(--color-red-300);
+  --color-error-400: var(--color-red-400);
+  --color-error-500: var(--color-red-500);
+  --color-error-600: var(--color-red-600);
+  --color-error-700: var(--color-red-700);
+  --color-error-800: var(--color-red-800);
+  --color-error-900: var(--color-red-900);
+  --color-error-950: var(--color-red-950);
 
-	/* Functional Semantics - Warning (amber-based) */
-	--color-warning-50: var(--color-amber-50);
-	--color-warning-100: var(--color-amber-100);
-	--color-warning-200: var(--color-amber-200);
-	--color-warning-300: var(--color-amber-300);
-	--color-warning-400: var(--color-amber-400);
-	--color-warning-500: var(--color-amber-500);
-	--color-warning-600: var(--color-amber-600);
-	--color-warning-700: var(--color-amber-700);
-	--color-warning-800: var(--color-amber-800);
-	--color-warning-900: var(--color-amber-900);
-	--color-warning-950: var(--color-amber-950);
+  /* Functional Semantics - Warning (amber-based) */
+  --color-warning-50: var(--color-amber-50);
+  --color-warning-100: var(--color-amber-100);
+  --color-warning-200: var(--color-amber-200);
+  --color-warning-300: var(--color-amber-300);
+  --color-warning-400: var(--color-amber-400);
+  --color-warning-500: var(--color-amber-500);
+  --color-warning-600: var(--color-amber-600);
+  --color-warning-700: var(--color-amber-700);
+  --color-warning-800: var(--color-amber-800);
+  --color-warning-900: var(--color-amber-900);
+  --color-warning-950: var(--color-amber-950);
 
-	/* Functional Semantics - Info (blue-based) */
-	--color-info-50: var(--color-blue-50);
-	--color-info-100: var(--color-blue-100);
-	--color-info-200: var(--color-blue-200);
-	--color-info-300: var(--color-blue-300);
-	--color-info-400: var(--color-blue-400);
-	--color-info-500: var(--color-blue-500);
-	--color-info-600: var(--color-blue-600);
-	--color-info-700: var(--color-blue-700);
-	--color-info-800: var(--color-blue-800);
-	--color-info-900: var(--color-blue-900);
-	--color-info-950: var(--color-blue-950);
+  /* Functional Semantics - Info (blue-based) */
+  --color-info-50: var(--color-blue-50);
+  --color-info-100: var(--color-blue-100);
+  --color-info-200: var(--color-blue-200);
+  --color-info-300: var(--color-blue-300);
+  --color-info-400: var(--color-blue-400);
+  --color-info-500: var(--color-blue-500);
+  --color-info-600: var(--color-blue-600);
+  --color-info-700: var(--color-blue-700);
+  --color-info-800: var(--color-blue-800);
+  --color-info-900: var(--color-blue-900);
+  --color-info-950: var(--color-blue-950);
 
-	/* Functional Semantics - Disabled (slate-based) */
-	--color-disabled-50: var(--color-slate-50);
-	--color-disabled-100: var(--color-slate-100);
-	--color-disabled-200: var(--color-slate-200);
-	--color-disabled-300: var(--color-slate-300);
-	--color-disabled-400: var(--color-slate-400);
-	--color-disabled-500: var(--color-slate-500);
-	--color-disabled-600: var(--color-slate-600);
-	--color-disabled-700: var(--color-slate-700);
-	--color-disabled-800: var(--color-slate-800);
-	--color-disabled-900: var(--color-slate-900);
-	--color-disabled-950: var(--color-slate-950);
+  /* Functional Semantics - Disabled (slate-based) */
+  --color-disabled-50: var(--color-slate-50);
+  --color-disabled-100: var(--color-slate-100);
+  --color-disabled-200: var(--color-slate-200);
+  --color-disabled-300: var(--color-slate-300);
+  --color-disabled-400: var(--color-slate-400);
+  --color-disabled-500: var(--color-slate-500);
+  --color-disabled-600: var(--color-slate-600);
+  --color-disabled-700: var(--color-slate-700);
+  --color-disabled-800: var(--color-slate-800);
+  --color-disabled-900: var(--color-slate-900);
+  --color-disabled-950: var(--color-slate-950);
 
-	/* Visual Accent - Amber */
-	--color-accent-amber-50: var(--color-amber-50);
-	--color-accent-amber-100: var(--color-amber-100);
-	--color-accent-amber-200: var(--color-amber-200);
-	--color-accent-amber-300: var(--color-amber-300);
-	--color-accent-amber-400: var(--color-amber-400);
-	--color-accent-amber-500: var(--color-amber-500);
-	--color-accent-amber-600: var(--color-amber-600);
-	--color-accent-amber-700: var(--color-amber-700);
-	--color-accent-amber-800: var(--color-amber-800);
-	--color-accent-amber-900: var(--color-amber-900);
-	--color-accent-amber-950: var(--color-amber-950);
+  /* Visual Accent - Amber */
+  --color-accent-amber-50: var(--color-amber-50);
+  --color-accent-amber-100: var(--color-amber-100);
+  --color-accent-amber-200: var(--color-amber-200);
+  --color-accent-amber-300: var(--color-amber-300);
+  --color-accent-amber-400: var(--color-amber-400);
+  --color-accent-amber-500: var(--color-amber-500);
+  --color-accent-amber-600: var(--color-amber-600);
+  --color-accent-amber-700: var(--color-amber-700);
+  --color-accent-amber-800: var(--color-amber-800);
+  --color-accent-amber-900: var(--color-amber-900);
+  --color-accent-amber-950: var(--color-amber-950);
 
-	/* Visual Accent - Indigo */
-	--color-accent-indigo-50: var(--color-indigo-50);
-	--color-accent-indigo-100: var(--color-indigo-100);
-	--color-accent-indigo-200: var(--color-indigo-200);
-	--color-accent-indigo-300: var(--color-indigo-300);
-	--color-accent-indigo-400: var(--color-indigo-400);
-	--color-accent-indigo-500: var(--color-indigo-500);
-	--color-accent-indigo-600: var(--color-indigo-600);
-	--color-accent-indigo-700: var(--color-indigo-700);
-	--color-accent-indigo-800: var(--color-indigo-800);
-	--color-accent-indigo-900: var(--color-indigo-900);
-	--color-accent-indigo-950: var(--color-indigo-950);
+  /* Visual Accent - Indigo */
+  --color-accent-indigo-50: var(--color-indigo-50);
+  --color-accent-indigo-100: var(--color-indigo-100);
+  --color-accent-indigo-200: var(--color-indigo-200);
+  --color-accent-indigo-300: var(--color-indigo-300);
+  --color-accent-indigo-400: var(--color-indigo-400);
+  --color-accent-indigo-500: var(--color-indigo-500);
+  --color-accent-indigo-600: var(--color-indigo-600);
+  --color-accent-indigo-700: var(--color-indigo-700);
+  --color-accent-indigo-800: var(--color-indigo-800);
+  --color-accent-indigo-900: var(--color-indigo-900);
+  --color-accent-indigo-950: var(--color-indigo-950);
 
-	/* Visual Accent - Fuchsia */
-	--color-accent-fuchsia-50: var(--color-fuchsia-50);
-	--color-accent-fuchsia-100: var(--color-fuchsia-100);
-	--color-accent-fuchsia-200: var(--color-fuchsia-200);
-	--color-accent-fuchsia-300: var(--color-fuchsia-300);
-	--color-accent-fuchsia-400: var(--color-fuchsia-400);
-	--color-accent-fuchsia-500: var(--color-fuchsia-500);
-	--color-accent-fuchsia-600: var(--color-fuchsia-600);
-	--color-accent-fuchsia-700: var(--color-fuchsia-700);
-	--color-accent-fuchsia-800: var(--color-fuchsia-800);
-	--color-accent-fuchsia-900: var(--color-fuchsia-900);
-	--color-accent-fuchsia-950: var(--color-fuchsia-950);
+  /* Visual Accent - Fuchsia */
+  --color-accent-fuchsia-50: var(--color-fuchsia-50);
+  --color-accent-fuchsia-100: var(--color-fuchsia-100);
+  --color-accent-fuchsia-200: var(--color-fuchsia-200);
+  --color-accent-fuchsia-300: var(--color-fuchsia-300);
+  --color-accent-fuchsia-400: var(--color-fuchsia-400);
+  --color-accent-fuchsia-500: var(--color-fuchsia-500);
+  --color-accent-fuchsia-600: var(--color-fuchsia-600);
+  --color-accent-fuchsia-700: var(--color-fuchsia-700);
+  --color-accent-fuchsia-800: var(--color-fuchsia-800);
+  --color-accent-fuchsia-900: var(--color-fuchsia-900);
+  --color-accent-fuchsia-950: var(--color-fuchsia-950);
 
-	/* Visual Accent - Teal */
-	--color-accent-teal-50: var(--color-teal-50);
-	--color-accent-teal-100: var(--color-teal-100);
-	--color-accent-teal-200: var(--color-teal-200);
-	--color-accent-teal-300: var(--color-teal-300);
-	--color-accent-teal-400: var(--color-teal-400);
-	--color-accent-teal-500: var(--color-teal-500);
-	--color-accent-teal-600: var(--color-teal-600);
-	--color-accent-teal-700: var(--color-teal-700);
-	--color-accent-teal-800: var(--color-teal-800);
-	--color-accent-teal-900: var(--color-teal-900);
-	--color-accent-teal-950: var(--color-teal-950);
+  /* Visual Accent - Teal */
+  --color-accent-teal-50: var(--color-teal-50);
+  --color-accent-teal-100: var(--color-teal-100);
+  --color-accent-teal-200: var(--color-teal-200);
+  --color-accent-teal-300: var(--color-teal-300);
+  --color-accent-teal-400: var(--color-teal-400);
+  --color-accent-teal-500: var(--color-teal-500);
+  --color-accent-teal-600: var(--color-teal-600);
+  --color-accent-teal-700: var(--color-teal-700);
+  --color-accent-teal-800: var(--color-teal-800);
+  --color-accent-teal-900: var(--color-teal-900);
+  --color-accent-teal-950: var(--color-teal-950);
 
-	/* Visual Accent - Sky */
-	--color-accent-sky-50: var(--color-sky-50);
-	--color-accent-sky-100: var(--color-sky-100);
-	--color-accent-sky-200: var(--color-sky-200);
-	--color-accent-sky-300: var(--color-sky-300);
-	--color-accent-sky-400: var(--color-sky-400);
-	--color-accent-sky-500: var(--color-sky-500);
-	--color-accent-sky-600: var(--color-sky-600);
-	--color-accent-sky-700: var(--color-sky-700);
-	--color-accent-sky-800: var(--color-sky-800);
-	--color-accent-sky-900: var(--color-sky-900);
-	--color-accent-sky-950: var(--color-sky-950);
+  /* Visual Accent - Sky */
+  --color-accent-sky-50: var(--color-sky-50);
+  --color-accent-sky-100: var(--color-sky-100);
+  --color-accent-sky-200: var(--color-sky-200);
+  --color-accent-sky-300: var(--color-sky-300);
+  --color-accent-sky-400: var(--color-sky-400);
+  --color-accent-sky-500: var(--color-sky-500);
+  --color-accent-sky-600: var(--color-sky-600);
+  --color-accent-sky-700: var(--color-sky-700);
+  --color-accent-sky-800: var(--color-sky-800);
+  --color-accent-sky-900: var(--color-sky-900);
+  --color-accent-sky-950: var(--color-sky-950);
 
-	/* Visual Accent - Purple */
-	--color-accent-purple-50: var(--color-purple-50);
-	--color-accent-purple-100: var(--color-purple-100);
-	--color-accent-purple-200: var(--color-purple-200);
-	--color-accent-purple-300: var(--color-purple-300);
-	--color-accent-purple-400: var(--color-purple-400);
-	--color-accent-purple-500: var(--color-purple-500);
-	--color-accent-purple-600: var(--color-purple-600);
-	--color-accent-purple-700: var(--color-purple-700);
-	--color-accent-purple-800: var(--color-purple-800);
-	--color-accent-purple-900: var(--color-purple-900);
-	--color-accent-purple-950: var(--color-purple-950);
+  /* Visual Accent - Purple */
+  --color-accent-purple-50: var(--color-purple-50);
+  --color-accent-purple-100: var(--color-purple-100);
+  --color-accent-purple-200: var(--color-purple-200);
+  --color-accent-purple-300: var(--color-purple-300);
+  --color-accent-purple-400: var(--color-purple-400);
+  --color-accent-purple-500: var(--color-purple-500);
+  --color-accent-purple-600: var(--color-purple-600);
+  --color-accent-purple-700: var(--color-purple-700);
+  --color-accent-purple-800: var(--color-purple-800);
+  --color-accent-purple-900: var(--color-purple-900);
+  --color-accent-purple-950: var(--color-purple-950);
 
-	/* Visual Accent - Lime */
-	--color-accent-lime-50: var(--color-lime-50);
-	--color-accent-lime-100: var(--color-lime-100);
-	--color-accent-lime-200: var(--color-lime-200);
-	--color-accent-lime-300: var(--color-lime-300);
-	--color-accent-lime-400: var(--color-lime-400);
-	--color-accent-lime-500: var(--color-lime-500);
-	--color-accent-lime-600: var(--color-lime-600);
-	--color-accent-lime-700: var(--color-lime-700);
-	--color-accent-lime-800: var(--color-lime-800);
-	--color-accent-lime-900: var(--color-lime-900);
-	--color-accent-lime-950: var(--color-lime-950);
+  /* Visual Accent - Lime */
+  --color-accent-lime-50: var(--color-lime-50);
+  --color-accent-lime-100: var(--color-lime-100);
+  --color-accent-lime-200: var(--color-lime-200);
+  --color-accent-lime-300: var(--color-lime-300);
+  --color-accent-lime-400: var(--color-lime-400);
+  --color-accent-lime-500: var(--color-lime-500);
+  --color-accent-lime-600: var(--color-lime-600);
+  --color-accent-lime-700: var(--color-lime-700);
+  --color-accent-lime-800: var(--color-lime-800);
+  --color-accent-lime-900: var(--color-lime-900);
+  --color-accent-lime-950: var(--color-lime-950);
 }
 
 /* Dark mode variant rules for inputs */

@@ -32,11 +32,11 @@ export const STATUS_ICON_CONTAINER_WIDTH = 'w-6 shrink-0' as const
  * Use these constants to ensure JavaScript breakpoint checks match CSS media queries
  */
 export const BREAKPOINTS = {
-	sm: 640,
-	md: 768,
-	lg: 1024,
-	xl: 1280,
-	'2xl': 1536,
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+  '2xl': 1536,
 } as const
 
 export type Breakpoint = keyof typeof BREAKPOINTS
@@ -51,6 +51,6 @@ export type Breakpoint = keyof typeof BREAKPOINTS
  * }
  */
 export function isBreakpoint(breakpoint: Breakpoint): boolean {
-	if (typeof window === 'undefined') return false
-	return window.innerWidth >= BREAKPOINTS[breakpoint]
+  if (typeof window === 'undefined') return false
+  return window.innerWidth >= BREAKPOINTS[breakpoint]
 }

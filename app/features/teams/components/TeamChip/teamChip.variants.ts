@@ -24,58 +24,58 @@ import { type VariantProps, cva } from 'class-variance-authority'
  * ```
  */
 export const teamChipVariants = cva(
-	// Base classes for all team chips
-	[
-		'inline-flex h-10 items-center rounded-lg border px-2',
-		'relative overflow-hidden font-semibold transition-all duration-300 ease-out',
-		'shadow-lg hover:shadow-xl',
-		// Team chip ring system - matches getTeamChipRingClasses()
-		// Light mode: red ring + white offset
-		'focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50',
-		'hover:ring-2 hover:ring-red-600 hover:ring-offset-2 hover:ring-offset-slate-50',
-		'focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-slate-50',
-		// Dark mode: white ring + red offset (creates white-red-white pattern with white border)
-		'focus-visible:dark:ring-slate-100 focus-visible:dark:ring-offset-red-600',
-		'hover:dark:ring-slate-100 hover:dark:ring-offset-red-600',
-		'focus:dark:ring-slate-100 focus:dark:ring-offset-red-600',
-		'focus:outline-none',
-	],
-	{
-		variants: {
-			interactive: {
-				true: ['cursor-pointer', 'hover:scale-105 active:scale-95'],
-				false: [],
-			},
-			/**
-			 * Color variants optimized for team display context.
-			 * Limited to brand and neutral for tournament-specific design.
-			 *
-			 * - brand: Tournament brand color (red) for primary teams
-			 * - neutral: Neutral styling for secondary/disabled teams
-			 */
-			color: {
-				brand: [
-					'dark:!border-slate-100 border-red-600',
-					'bg-background dark:bg-brand-700',
-					'text-brand',
-					'shadow-brand/25 hover:shadow-brand/40',
-					'hover:border-brand-accent hover:bg-neutral dark:hover:bg-brand-700',
-				],
-				// Neutral variant for non-primary team display
-				neutral: [
-					'border-slate-600 dark:border-slate-400',
-					'bg-background dark:bg-slate-700',
-					'text-slate-700 dark:text-slate-100',
-					'shadow-slate/25 hover:shadow-slate/40',
-					'hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600',
-				],
-			},
-		},
-		defaultVariants: {
-			interactive: false,
-			color: 'brand',
-		},
-	},
+  // Base classes for all team chips
+  [
+    'inline-flex h-10 items-center rounded-lg border px-2',
+    'relative overflow-hidden font-semibold transition-all duration-300 ease-out',
+    'shadow-lg hover:shadow-xl',
+    // Team chip ring system - matches getTeamChipRingClasses()
+    // Light mode: red ring + white offset
+    'focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50',
+    'hover:ring-2 hover:ring-red-600 hover:ring-offset-2 hover:ring-offset-slate-50',
+    'focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-slate-50',
+    // Dark mode: white ring + red offset (creates white-red-white pattern with white border)
+    'focus-visible:dark:ring-slate-100 focus-visible:dark:ring-offset-red-600',
+    'hover:dark:ring-slate-100 hover:dark:ring-offset-red-600',
+    'focus:dark:ring-slate-100 focus:dark:ring-offset-red-600',
+    'focus:outline-none',
+  ],
+  {
+    variants: {
+      interactive: {
+        true: ['cursor-pointer', 'hover:scale-105 active:scale-95'],
+        false: [],
+      },
+      /**
+       * Color variants optimized for team display context.
+       * Limited to brand and neutral for tournament-specific design.
+       *
+       * - brand: Tournament brand color (red) for primary teams
+       * - neutral: Neutral styling for secondary/disabled teams
+       */
+      color: {
+        brand: [
+          'dark:!border-slate-100 border-red-600',
+          'bg-background dark:bg-brand-700',
+          'text-brand',
+          'shadow-brand/25 hover:shadow-brand/40',
+          'hover:border-brand-accent hover:bg-neutral dark:hover:bg-brand-700',
+        ],
+        // Neutral variant for non-primary team display
+        neutral: [
+          'border-slate-600 dark:border-slate-400',
+          'bg-background dark:bg-slate-700',
+          'text-slate-700 dark:text-slate-100',
+          'shadow-slate/25 hover:shadow-slate/40',
+          'hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600',
+        ],
+      },
+    },
+    defaultVariants: {
+      interactive: false,
+      color: 'brand',
+    },
+  },
 )
 
 // TypeScript type exports for component prop typing

@@ -4,13 +4,13 @@ import type { BaseTransitionProps } from './utils'
 
 // CSS-based transition (lightest approach)
 export function CSSRouteTransition({
-	className = '',
+  className = '',
 }: Readonly<BaseTransitionProps>): JSX.Element {
-	const location = useLocation()
+  const location = useLocation()
 
-	return (
-		<div className={`route-fade-container ${className}`} key={location.pathname}>
-			<Outlet />
-		</div>
-	)
+  return (
+    <div className={`route-fade-container ${className}`} key={location.pathname}>
+      <Outlet />
+    </div>
+  )
 }

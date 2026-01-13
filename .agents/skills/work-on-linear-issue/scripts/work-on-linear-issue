@@ -14,7 +14,15 @@ TEAM_ID="MC" # Default team ID, can be modified
 
 # Find root directory (where .agents directory is located)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
+ROOT_DIR="$SCRIPT_DIR"
+while [ ! -d "$ROOT_DIR/.agents" ] && [ "$ROOT_DIR" != "/" ]; do
+	ROOT_DIR="$(dirname "$ROOT_DIR")"
+done
+
+if [ ! -d "$ROOT_DIR/.agents" ]; then
+	echo "Error: Could not locate repo root (missing .agents directory)"
+	exit 1
+fi
 
 # Try to load .env file from root directory
 if [ -f "$ROOT_DIR/.env" ]; then

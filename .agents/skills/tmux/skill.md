@@ -40,9 +40,11 @@ To run a command (e.g., a dev server) in a way that persists and can be inspecte
     _(Replace "server-log" with a relevant name for your task)_
 
 2.  **Send the command** to that window.
+
     ```bash
     tmux send-keys -t "server-log" "npm start" C-m
     ```
+
     _(`C-m` simulates the Enter key)_
 
 ## 3. Inspect Output (Read Logs)

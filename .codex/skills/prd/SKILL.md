@@ -31,7 +31,7 @@ Ask only critical questions where the initial prompt is ambiguous. Focus on:
 
 ### Format Questions Like This:
 
-```
+```text
 1. What is the primary goal of this feature?
    A. Improve user onboarding experience
    B. Increase user retention

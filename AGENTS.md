@@ -63,8 +63,8 @@ Tournado is a modern tournament management system built with React Router v7, Pr
 ```typescript
 // ✅ CORRECT - Use barrel files for cleaner imports
 import {
-	FirebaseSignIn,
-	FirebaseEmailSignIn,
+  FirebaseSignIn,
+  FirebaseEmailSignIn,
 } from '~/features/firebase/components/FirebaseAuth'
 import { Team, TeamFormData } from '~/features/teams/types'
 import { Tournament } from '~/features/tournaments/types'

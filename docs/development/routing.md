@@ -434,28 +434,28 @@ Routes use metadata to define their protection requirements:
 ```typescript
 // Admin-only route example
 export const handle: RouteMetadata = {
-	isPublic: false,
-	auth: {
-		required: true,
-		redirectTo: '/auth/signin',
-		preserveRedirect: true,
-	},
-	authorization: {
-		requiredRoles: ['admin'],
-		roleMatchMode: 'any',
-		redirectTo: '/unauthorized',
-	},
+  isPublic: false,
+  auth: {
+    required: true,
+    redirectTo: '/auth/signin',
+    preserveRedirect: true,
+  },
+  authorization: {
+    requiredRoles: ['admin'],
+    roleMatchMode: 'any',
+    redirectTo: '/unauthorized',
+  },
 }
 
 // Authenticated-only route example
 export const handle: RouteMetadata = {
-	isPublic: false,
-	auth: {
-		required: true,
-		redirectTo: '/auth/signin',
-		preserveRedirect: true,
-	},
-	// No authorization restrictions - all authenticated users can access
+  isPublic: false,
+  auth: {
+    required: true,
+    redirectTo: '/auth/signin',
+    preserveRedirect: true,
+  },
+  // No authorization restrictions - all authenticated users can access
 }
 ```
 

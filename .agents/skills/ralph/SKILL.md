@@ -29,7 +29,7 @@ Interactive feature planning that creates ralph-ready tasks with dependencies.
 
 **Ask the user which mode they need:**
 
-```
+```text
 Are you:
 1. Starting a new feature (I'll help you plan and create tasks)
 2. Using existing tasks (I'll set up Ralph to run them)
@@ -41,7 +41,7 @@ Are you:
 
 Start by asking the user about their feature. Don't assume - ASK:
 
-```
+```text
 What feature are you building?
 ```
 
@@ -93,7 +93,7 @@ Tasks execute based on `dependsOn`. Earlier tasks must complete before dependent
 
 Use `dependsOn` to express this:
 
-```
+```text
 Task 1: Schema (no dependencies)
 Task 2: Server action (dependsOn: [task-1])
 Task 3: UI component (dependsOn: [task-2])
@@ -108,7 +108,7 @@ Parallel tasks that don't depend on each other can share the same dependency.
 
 ### First, create the parent task:
 
-```
+```text
 task_list create
   title: "[Feature Name]"
   description: "[One-line description of the feature]"
@@ -119,7 +119,7 @@ task_list create
 
 ### Then, create subtasks with parentID and dependsOn:
 
-```
+```text
 task_list create
   title: "[Task title - action-oriented]"
   description: "[Detailed description with:
@@ -136,7 +136,7 @@ task_list create
 
 Write descriptions that a future Ralph iteration can pick up without context:
 
-```
+```text
 Implement category name to ID mapping for expenses.
 
 **What to do:**
@@ -188,16 +188,22 @@ Show the user what was created:
 
 **To run Ralph:**
 ```bash
+
 ./scripts/ralph/ralph.sh [max_iterations]
+
 # or directly:
+
 npx tsx scripts/ralph/ralph.ts [max_iterations]
+
 ````
 
 **To check status:**
 
-```bash
+````bash
+
 amp task list --parentID [parent-id] --limit 10
-```
+
+```text
 
 ---
 
@@ -209,38 +215,48 @@ If the user already has tasks created, help them set up Ralph to run them.
 
 Ask the user:
 
-```
+````
+
 What's the parent task? You can give me:
+
 - The task ID directly
 - A search term and I'll find it
 - Or say "list recent" to see recent tasks
-```
+
+```text
 
 To search for tasks (always use limit to avoid context overflow):
 
 ```
+
 task_list list
-  repoURL: "https://github.com/snarktank/untangle"
-  limit: 10
-```
+repoURL: "https://github.com/snarktank/untangle"
+limit: 10
+
+```text
 
 ### Verify subtasks exist:
 
 Once you have the parent ID, check for subtasks (always use limit):
 
 ```
+
 task_list list
-  parentID: "<parent-task-id>"
-  limit: 10
-```
+parentID: "<parent-task-id>"
+limit: 10
+
+```text
 
 If no subtasks found, the parent task might BE the work (not a container). Ask:
 
 ```
+
 This task has no subtasks. Is this:
+
 1. A parent task with subtasks I should find differently?
 2. The actual work task (I should create it as a parent with this as the first subtask)?
-```
+
+```text
 
 ### Check dependencies:
 
@@ -253,10 +269,13 @@ Review the subtasks and verify:
 If dependencies are missing, offer to fix:
 
 ```
+
 These tasks don't have dependencies set. Should I:
+
 1. Add dependencies based on their order?
 2. Leave them parallel (Ralph picks any ready task)?
-```
+
+```text
 
 ### Set up ralph files:
 
@@ -264,12 +283,14 @@ These tasks don't have dependencies set. Should I:
 
 ### Show status:
 
-````
+```
+
 ✅ Ralph is ready to use existing tasks!
 
 **Parent task:** [title] (ID: [id])
 
 **Status:**
+
 - ✅ Completed: 3 tasks
 - 🔄 Ready to work: 2 tasks
 - ⏳ Blocked: 5 tasks (waiting on dependencies)
@@ -278,11 +299,12 @@ These tasks don't have dependencies set. Should I:
 [Task title] - [brief description]
 
 **To run Ralph:**
+
 ```bash
 ./scripts/ralph/ralph.sh [max_iterations]
 # or directly:
 npx tsx scripts/ralph/ralph.ts [max_iterations]
-````
+```
 
 ---
 
@@ -376,13 +398,13 @@ Each task description MUST include verifiable acceptance criteria:
 
 ### Always include:
 
-```
+```text
 npm run typecheck passes
 ```
 
 ### For tasks with testable logic:
 
-```
+```text
 npm test passes
 ```
 
@@ -390,7 +412,7 @@ npm test passes
 
 **For functional testing** (checking behavior, not appearance):
 
-```
+```text
 Use Chrome DevTools MCP with take_snapshot to read page content (NOT screenshots)
 ```
 
@@ -400,7 +422,7 @@ Use Chrome DevTools MCP with take_snapshot to read page content (NOT screenshots
 
 **For visual testing** (checking appearance):
 
-```
+```text
 Use take_screenshot to capture and verify visual appearance
 ```
 
@@ -522,7 +544,7 @@ The task hierarchy may have multiple levels (parent → container → leaf tasks
 
 **Step 1: Get all tasks for the repo**
 
-```
+```text
 task_list action: "list", repoURL: "<repo-url>", ready: true, status: "open", limit: 10
 ```
 
@@ -552,17 +574,20 @@ Check if all descendant tasks are completed:
 - Build the full descendant set (same recursive approach as step 1)
 - If all leaf tasks in the descendant set are `completed`:
   1. Archive progress.txt:
+
      ```bash
      DATE=$(date +%Y-%m-%d)
      FEATURE="feature-name-here"
      mkdir -p scripts/ralph/archive/$DATE-$FEATURE
      mv scripts/ralph/progress.txt scripts/ralph/archive/$DATE-$FEATURE/
      ```
+
   2. Create fresh progress.txt with empty template
   3. Clear parent-task-id.txt: `echo "" > scripts/ralph/parent-task-id.txt`
   4. Commit: `git add scripts/ralph && git commit -m "chore: archive progress for [feature-name]"`
   5. Mark the parent task as `completed`
   6. Stop and report "✅ Build complete - all tasks finished!"
+
 - If some are blocked: Report which tasks are blocked and why
 
 ### 3. If ready tasks exist
@@ -576,7 +601,7 @@ Check if all descendant tasks are completed:
 
 Use the `handoff` tool with this goal:
 
-```
+```text
 Implement and verify task [task-id]: [task-title].
 
 [task-description]
@@ -612,7 +637,7 @@ Task ID: [task-id]
 
 ---
 
-```
+```text
 
 4. If you discovered a reusable pattern for THIS FEATURE, add it to the `## Codebase Patterns` section at the TOP of progress.txt
 
@@ -680,7 +705,7 @@ For UI tasks, specify the right verification method:
 
 **Functional testing** (checking behavior, not appearance):
 
-```
+```text
 Use Chrome DevTools MCP with take_snapshot to read page content
 ```
 
@@ -689,7 +714,7 @@ Use Chrome DevTools MCP with take_snapshot to read page content
 
 **Visual testing** (checking appearance):
 
-```
+```text
 Use take_screenshot to capture and verify visual appearance
 ```
 

@@ -4,6 +4,7 @@
 
 1. make sure you have `ampcode` installed; if not, follow instruction on its [website](https://ampcode.code)
 2. install the amp skills:
+
    ```sh
    amp skill add ampcode/amp-contrib
    amp skill list

@@ -71,6 +71,7 @@ pattern: console.log($ARG)
 - `context`: Provides surrounding code context for correct parsing.
 
 - `strictness`: Modifies the pattern's matching algorithm (`cst`, `smart`, `ast`, `relaxed`, `signature`).
+
   ```yaml
   pattern:
     context: foo($BAR)

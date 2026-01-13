@@ -19,10 +19,30 @@ import {
 	useTournamentFormStoreHydration,
 } from '~/features/tournaments/stores/useTournamentFormStore'
 import type { TournamentFormProps } from '~/features/tournaments/types'
+import { useGuardedStoreInitialization } from '~/hooks/useGuardedStoreInitialization'
 import { getFieldStatus } from '~/lib/lib.helpers'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
 import { toast } from '~/utils/toastUtils'
+
+const buildTournamentFormPayload = (
+	formData: TournamentFormProps['formData'],
+	formMode: 'create' | 'edit',
+) => {
+	if (!formData || Object.keys(formData).length === 0 || formMode !== 'edit') {
+		return null
+	}
+
+	return {
+		id: formData.id ?? '',
+		name: formData.name || '',
+		location: formData.location || '',
+		startDate: formData.startDate || '',
+		endDate: formData.endDate || formData.startDate || '',
+		divisions: formData.divisions || [],
+		categories: formData.categories || [],
+	}
+}
 
 export function TournamentForm({
 	mode: formMode = 'create',
@@ -158,21 +178,12 @@ export function TournamentForm({
 		}
 	}, [formMode, setFormField])
 
-	// Initialize form data in store when formData prop is provided
-	useEffect(() => {
-		// Only set form data if we have meaningful formData content (not just empty object)
-		// AND we're in edit mode (create mode should start clean)
-		if (formData && Object.keys(formData).length > 0 && formMode === 'edit') {
-			setFormData({
-				name: formData.name || '',
-				location: formData.location || '',
-				startDate: formData.startDate || '',
-				endDate: formData.endDate || formData.startDate || '',
-				divisions: formData.divisions || [],
-				categories: formData.categories || [],
-			})
-		}
-	}, [formData, formMode, setFormData])
+	useGuardedStoreInitialization(
+		() => buildTournamentFormPayload(formData, formMode),
+		setFormData,
+		[formData, formMode, isFormDirty],
+		{ skipWhen: () => isFormDirty },
+	)
 
 	// Initialize available options in store
 	useEffect(() => {
@@ -565,39 +576,50 @@ export function TournamentForm({
 				</Panel>
 
 				{/* Submit Button */}
-				<div className='flex flex-col gap-2 md:flex-row md:justify-end rtl:md:justify-start'>
-					<ActionButton
-						type='button'
-						onClick={() => handleReset()}
-						variant='secondary'
-						color='brand'
-						className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
-						permission={
-							formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
-						}
-					>
-						<RestorePageIcon className='mr-2 h-6 w-6' size={24} />
-						{t('common.actions.cancel')}
-					</ActionButton>
+				<div className='flex flex-col gap-2 md:flex-row items-center'>
+					{isFormDirty ? (
+						<span
+							className='text-sm text-warning-600 dark:text-warning-400'
+							data-testid='tournament-unsaved-warning'
+						>
+							{t('competition.groupAssignment.unsavedChanges')}
+						</span>
+					) : null}
 
-					<ActionButton
-						type='submit'
-						variant='primary'
-						color='brand'
-						icon='check_circle'
-						className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
-						aria-label={t('common.actions.save')}
-						permission={
-							formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
-						}
-						disabled={
-							isPublicSuccess ||
-							!isFormReadyForSubmission ||
-							(mode === 'edit' && !isFormDirty)
-						}
-					>
-						{submitButtonText || t('common.actions.save')}
-					</ActionButton>
+					<div className='ms-auto flex items-center gap-3'>
+						<ActionButton
+							type='button'
+							onClick={() => handleReset()}
+							variant='secondary'
+							color='brand'
+							className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
+							permission={
+								formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
+							}
+						>
+							<RestorePageIcon className='mr-2 h-6 w-6' size={24} />
+							{t('common.actions.cancel')}
+						</ActionButton>
+
+						<ActionButton
+							type='submit'
+							variant='primary'
+							color='brand'
+							icon='check_circle'
+							className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
+							aria-label={t('common.actions.save')}
+							permission={
+								formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
+							}
+							disabled={
+								isPublicSuccess ||
+								!isFormReadyForSubmission ||
+								(mode === 'edit' && !isFormDirty)
+							}
+						>
+							{submitButtonText || t('common.actions.save')}
+						</ActionButton>
+					</div>
 				</div>
 			</Form>
 		</div>

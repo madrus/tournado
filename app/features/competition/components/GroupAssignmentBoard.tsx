@@ -20,10 +20,12 @@ import { z } from 'zod'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { ConfirmDialog } from '~/components/ConfirmDialog'
+import { RestorePageIcon } from '~/components/icons'
 import { useMediaQuery } from '~/hooks/useMediaQuery'
 import { useReducedMotion } from '~/hooks/useReducedMotion'
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
+import { useGuardedStoreInitialization } from '~/hooks/useGuardedStoreInitialization'
 
 import { useGroupStageDnd } from '../hooks/useGroupStageDnd'
 import {
@@ -53,6 +55,9 @@ type GroupAssignmentBoardProps = {
 	initialSnapshot: GroupAssignmentSnapshot
 	tournamentId: string
 }
+
+const serializeGroupAssignmentSnapshot = (snapshot: GroupAssignmentSnapshot): string =>
+	`${snapshot.groupStageId}-${snapshot.updatedAt}`
 
 const FetcherResponseSchema = z.object({
 	success: z.boolean().optional(),
@@ -127,9 +132,15 @@ export function GroupAssignmentBoard({
 	} = useGroupStageDnd({ onDisplacedTeam: handleDisplacedTeam })
 
 	// Initialize store from loader data
-	useEffect(() => {
-		setSnapshotPair(initialSnapshot)
-	}, [initialSnapshot, setSnapshotPair])
+	useGuardedStoreInitialization(
+		() => initialSnapshot,
+		setSnapshotPair,
+		[initialSnapshot, isDirty],
+		{
+			skipWhen: () => isDirty,
+			serializer: serializeGroupAssignmentSnapshot,
+		},
+	)
 
 	useEffect(() => {
 		setIsClient(true)
@@ -394,34 +405,41 @@ export function GroupAssignmentBoard({
 
 					{/* Action buttons */}
 					<div className={actionButtonGroupVariants()}>
-						<ActionButton
-							type='button'
-							variant='primary'
-							onClick={handleSave}
-							disabled={!isDirty || isSaving}
-							data-testid='group-assignment-save'
-						>
-							{isSaving ? t('common.actions.saving') : t('common.actions.save')}
-						</ActionButton>
-
-						<ActionButton
-							type='button'
-							variant='secondary'
-							onClick={handleCancel}
-							disabled={!isDirty || isSaving}
-							data-testid='group-assignment-cancel'
-						>
-							{t('common.actions.cancel')}
-						</ActionButton>
-
 						{isDirty ? (
 							<span
-								className='ms-auto text-sm text-warning-600 dark:text-warning-400'
+								className='text-sm text-warning-600 dark:text-warning-400'
 								data-testid='group-assignment-unsaved-warning'
 							>
 								{t('competition.groupAssignment.unsavedChanges')}
 							</span>
 						) : null}
+
+						<div className='ms-auto flex items-center gap-3'>
+							<ActionButton
+								type='button'
+								variant='secondary'
+								onClick={handleCancel}
+								disabled={!isDirty || isSaving}
+								data-testid='group-assignment-cancel'
+							>
+								<RestorePageIcon
+									className='mr-2 h-6 w-6 rtl:order-last rtl:mr-0 rtl:ml-2'
+									size={24}
+								/>
+								{t('common.actions.cancel')}
+							</ActionButton>
+
+							<ActionButton
+								type='button'
+								variant='primary'
+								onClick={handleSave}
+								disabled={!isDirty || isSaving}
+								data-testid='group-assignment-save'
+								icon='check_circle'
+							>
+								{isSaving ? t('common.actions.updating') : t('common.actions.update')}
+							</ActionButton>
+						</div>
 					</div>
 				</div>
 

@@ -25,6 +25,33 @@ import { getDivisionLabel } from '~/lib/lib.helpers'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
 import { toast } from '~/utils/toastUtils'
+import { useGuardedStoreInitialization } from '~/hooks/useGuardedStoreInitialization'
+
+const buildTeamFormPayload = (
+	formData?: TeamFormProps['formData'],
+	formMode?: 'create' | 'edit',
+	hasTournaments?: boolean,
+) => {
+	if (!formData) {
+		return null
+	}
+
+	if (formMode !== 'edit' && !hasTournaments) {
+		return null
+	}
+
+	return {
+		tournamentId: formData.tournamentId || '',
+		clubName: formData.clubName || '',
+		name: formData.name || '',
+		division: formData.division || '',
+		category: formData.category || '',
+		teamLeaderName: formData.teamLeaderName || '',
+		teamLeaderPhone: formData.teamLeaderPhone || '',
+		teamLeaderEmail: formData.teamLeaderEmail || '',
+		privacyAgreement: formData.privacyAgreement || false,
+	}
+}
 
 export function TeamForm({
 	mode: formMode = 'create',
@@ -245,28 +272,12 @@ export function TeamForm({
 		}
 	}, [formMode, setFormField])
 
-	// Initialize form data in store when formData prop is provided
-	useEffect(() => {
-		if (formData) {
-			// In edit mode, set form data immediately since we have all the data
-			// In create mode, wait for tournaments to be loaded
-			if (formMode === 'edit' || availableTournaments.length > 0) {
-				setFormData({
-					tournamentId: formData.tournamentId || '',
-					clubName: formData.clubName || '',
-					name: formData.name || '',
-					division: formData.division || '',
-					category: formData.category || '',
-					teamLeaderName: formData.teamLeaderName || '',
-					teamLeaderPhone: formData.teamLeaderPhone || '',
-					teamLeaderEmail: formData.teamLeaderEmail || '',
-					privacyAgreement: formData.privacyAgreement || false,
-				})
-				// Note: updateAvailableOptions() will be called by the second useEffect
-				// when tournaments are loaded and tournamentId is set
-			}
-		}
-	}, [formData, setFormData, formMode, availableTournaments.length])
+	useGuardedStoreInitialization(
+		() => buildTeamFormPayload(formData, formMode, availableTournaments.length > 0),
+		setFormData,
+		[formData, formMode, availableTournaments.length, isFormDirty],
+		{ skipWhen: () => isFormDirty },
+	)
 
 	// When the list of available tournaments changes (i.e., is loaded from root),
 	// check if a tournament is already selected (e.g., from persisted state).

@@ -588,14 +588,11 @@ export function TournamentForm({
 						!isFormReadyForSubmission ||
 						(mode === 'edit' && !isFormDirty)
 					}
-					primaryType='submit'
 					primaryPermission={
 						formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
 					}
-					primaryClassName='w-full hover:scale-100 md:w-fit md:hover:scale-105'
 					secondaryLabel={t('common.actions.cancel')}
 					onSecondary={handleReset}
-					secondaryClassName='w-full hover:scale-100 md:w-fit md:hover:scale-105'
 					secondaryPermission={
 						formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
 					}

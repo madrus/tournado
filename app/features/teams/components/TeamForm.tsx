@@ -712,12 +712,9 @@ export function TeamForm({
 						!isFormReadyForSubmission ||
 						(formMode === 'edit' && !isFormDirty)
 					}
-					primaryType='submit'
 					primaryPermission={formMode === 'edit' ? 'teams:update' : 'teams:create'}
-					primaryClassName='w-full hover:scale-100 md:w-fit md:hover:scale-105'
 					secondaryLabel={t('common.actions.cancel')}
 					onSecondary={handleReset}
-					secondaryClassName='w-full hover:scale-100 md:w-fit md:hover:scale-105'
 					secondaryPermission={formMode === 'edit' ? 'teams:update' : 'teams:create'}
 				/>
 			</Form>

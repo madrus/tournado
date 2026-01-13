@@ -57,16 +57,16 @@ export class GroupAssignmentPage extends BasePage {
 
 	// Action buttons
 	get saveButton(): Locator {
-		return this.page.getByTestId('group-assignment-save')
+		return this.page.getByTestId('form-action-primary')
 	}
 
 	get cancelButton(): Locator {
-		return this.page.getByTestId('group-assignment-cancel')
+		return this.page.getByTestId('form-action-secondary')
 	}
 
 	// Dirty state indicator
 	get unsavedChangesWarning(): Locator {
-		return this.page.getByTestId('group-assignment-unsaved-warning')
+		return this.page.getByTestId('form-unsaved-warning')
 	}
 
 	// Navigation blocker dialog

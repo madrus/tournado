@@ -75,67 +75,69 @@ export async function createGroupStage({
 	configGroups,
 	configSlots,
 }: CreateGroupStageParams): Promise<string> {
-	// Create the GroupStage
-	const groupStage = await prisma.groupStage.create({
-		data: {
-			tournamentId,
-			name,
-			categories: JSON.stringify(categories), // Store as JSON string
-			configGroups,
-			configSlots,
-			autoFill: true,
-		},
-	})
-
-	// Create groups (Group A, Group B, etc.)
-	const groups = []
-	for (let i = 0; i < configGroups; i++) {
-		const charCode = 65 + i // Start from 'A' (ASCII 65)
-		const groupName = `Group ${String.fromCharCode(charCode)}` // A, B, C, etc.
-		const group = await prisma.group.create({
+	return await prisma.$transaction(async (tx) => {
+		// Create the GroupStage
+		const groupStage = await tx.groupStage.create({
 			data: {
-				groupStageId: groupStage.id,
-				name: groupName,
-				order: i,
+				tournamentId,
+				name,
+				categories: JSON.stringify(categories), // Store as JSON string
+				configGroups,
+				configSlots,
+				autoFill: true,
 			},
 		})
-		groups.push(group)
-	}
 
-	// Create all group slots in a single batch
-	const groupSlotData = groups.flatMap((group) =>
-		Array.from({ length: configSlots }, (_, slotIndex) => ({
-			groupStageId: groupStage.id,
-			groupId: group.id,
-			slotIndex,
-		})),
-	)
-	if (groupSlotData.length > 0) {
-		await prisma.groupSlot.createMany({ data: groupSlotData })
-	}
+		// Create groups (Group A, Group B, etc.)
+		const groups = []
+		for (let i = 0; i < configGroups; i++) {
+			const charCode = 65 + i // Start from 'A' (ASCII 65)
+			const groupName = `Group ${String.fromCharCode(charCode)}` // A, B, C, etc.
+			const group = await tx.group.create({
+				data: {
+					groupStageId: groupStage.id,
+					name: groupName,
+					order: i,
+				},
+			})
+			groups.push(group)
+		}
 
-	// Always auto-fill reserve with matching teams
-	const matchingTeams = await prisma.team.findMany({
-		where: {
-			tournamentId,
-			category: { in: [...categories] },
-			groupSlot: null, // Only teams not already assigned to any group
-		},
-	})
-
-	// Create reserve slots for matching teams
-	if (matchingTeams.length > 0) {
-		await prisma.groupSlot.createMany({
-			data: matchingTeams.map((team) => ({
+		// Create all group slots in a single batch
+		const groupSlotData = groups.flatMap((group) =>
+			Array.from({ length: configSlots }, (_, slotIndex) => ({
 				groupStageId: groupStage.id,
-				groupId: null, // Reserve slot
-				slotIndex: 0, // Reserve doesn't need ordering
-				teamId: team.id,
+				groupId: group.id,
+				slotIndex,
 			})),
-		})
-	}
+		)
+		if (groupSlotData.length > 0) {
+			await tx.groupSlot.createMany({ data: groupSlotData })
+		}
 
-	return groupStage.id
+		// Always auto-fill reserve with matching teams
+		const matchingTeams = await tx.team.findMany({
+			where: {
+				tournamentId,
+				category: { in: [...categories] },
+				groupSlot: null, // Only teams not already assigned to any group
+			},
+		})
+
+		// Create reserve slots for matching teams
+		if (matchingTeams.length > 0) {
+			await tx.groupSlot.createMany({
+				data: matchingTeams.map((team) => ({
+					groupStageId: groupStage.id,
+					groupId: null, // Reserve slot
+					slotIndex: 0, // Reserve doesn't need ordering
+					teamId: team.id,
+				})),
+			})
+		}
+
+		return groupStage.id
+	})
 }
 
 export async function getGroupStageWithDetails(

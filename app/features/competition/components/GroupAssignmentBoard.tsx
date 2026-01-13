@@ -392,12 +392,9 @@ export function GroupAssignmentBoard({
 						}
 						onPrimary={handleSave}
 						primaryDisabled={!isDirty || isSaving}
-						primaryType='button'
-						primaryDataTestId='group-assignment-save'
 						secondaryLabel={t('common.actions.cancel')}
 						onSecondary={handleCancel}
 						secondaryDisabled={!isDirty || isSaving}
-						secondaryDataTestId='group-assignment-cancel'
 					/>
 				</div>
 

@@ -167,7 +167,8 @@ export async function action({
 		return redirect(
 			adminPath(`/competition/groups/${groupStageId}?tournament=${tournamentId}`),
 		)
-	} catch (_error) {
+	} catch (error) {
+		console.error('Failed to create group stage:', error)
 		return {
 			errors: { general: t('errors.competition.createFailed') },
 			fieldValues: {

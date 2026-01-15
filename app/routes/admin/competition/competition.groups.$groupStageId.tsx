@@ -5,7 +5,9 @@ import { CompetitionGroupStageDetails } from '~/features/competition/components'
 import type { GroupStageWithDetails, UnassignedTeam } from '~/models/group.server'
 import {
   assignTeamToGroupSlot,
+  canDeleteGroupStage,
   clearGroupSlot,
+  deleteGroupStage,
   getGroupStageWithDetails,
   getUnassignedTeamsByCategories,
   moveTeamToReserve,
@@ -74,7 +76,7 @@ export async function action({
   request,
   params,
 }: Route.ActionArgs): Promise<ActionData | Response> {
-  await requireUserWithMetadata(request, handle)
+  const user = await requireUserWithMetadata(request, handle)
 
   const { groupStageId } = params
   invariant(groupStageId, 'groupStageId is required')
@@ -101,6 +103,34 @@ export async function action({
 
   try {
     switch (intent) {
+      case 'delete': {
+        if (user.role !== 'ADMIN' && user.role !== 'MANAGER') {
+          throw new Response('Unauthorized', { status: 403 })
+        }
+
+        if (user.role === 'MANAGER') {
+          const tournament = await getTournamentById({ id: tournamentId })
+          if (!tournament) throw new Response('Tournament not found', { status: 404 })
+
+          const isOwner =
+            tournament.createdBy === user.id || groupStage.createdBy === user.id
+
+          if (!isOwner) {
+            throw new Response('Unauthorized', { status: 403 })
+          }
+        }
+
+        const deleteCheck = await canDeleteGroupStage(groupStageId)
+        if (!deleteCheck.canDelete) {
+          return { error: deleteCheck.reason ?? 'Cannot delete group stage' }
+        }
+
+        await deleteGroupStage(groupStageId)
+
+        return redirect(
+          adminPath(`/competition/groups?tournament=${tournamentId}&success=deleted`),
+        )
+      }
       case 'assign': {
         const groupId = formData.get('groupId')?.toString() || ''
         const slotIndex = Number(formData.get('slotIndex'))
@@ -146,6 +176,10 @@ export async function action({
       adminPath(`/competition/groups/${groupStageId}?tournament=${tournamentId}`),
     )
   } catch (error) {
+    if (error instanceof Response) {
+      throw error
+    }
+
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }

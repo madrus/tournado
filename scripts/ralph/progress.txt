@@ -21,3 +21,11 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
 - **Learnings for future iterations:**
   - Deleting a group stage should only touch group slots, groups, and the stage itself; team records must remain untouched.
 ---
+## 2026-01-15 21:53:09 CET - UC-002
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added canDeleteGroupStage validation with impact counts and PLAYED match blocking logic
+- Added unit tests covering blocked deletion, non-played matches, and no matches cases
+- Files changed: app/models/group.server.ts, app/models/__tests__/group.server.test.ts, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - canDeleteGroupStage derives impact from Group/GroupSlot counts and match status for assigned teams using MatchStatus enum.
+---

@@ -1,5 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createGroupStage, deleteGroupStage } from '../group.server'
+import {
+  canDeleteGroupStage,
+  createGroupStage,
+  deleteGroupStage,
+} from '../group.server'
 
 const { mockPrisma, mockTransactionClient } = vi.hoisted(() => {
   const mockTransactionClient = {
@@ -23,6 +27,19 @@ const { mockPrisma, mockTransactionClient } = vi.hoisted(() => {
 
   const mockPrisma = {
     $transaction: vi.fn(),
+    groupStage: {
+      findUnique: vi.fn(),
+    },
+    group: {
+      count: vi.fn(),
+    },
+    groupSlot: {
+      count: vi.fn(),
+      findMany: vi.fn(),
+    },
+    match: {
+      count: vi.fn(),
+    },
   }
 
   return { mockPrisma, mockTransactionClient }
@@ -122,5 +139,72 @@ describe('group.server - deleteGroupStage', () => {
 
     expect(mockTransactionClient.group.deleteMany).not.toHaveBeenCalled()
     expect(mockTransactionClient.groupStage.delete).not.toHaveBeenCalled()
+  })
+})
+
+describe('group.server - canDeleteGroupStage', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('returns canDelete false when played matches exist', async () => {
+    mockPrisma.groupStage.findUnique.mockResolvedValue({ id: 'group-stage-123' })
+    mockPrisma.group.count.mockResolvedValue(2)
+    mockPrisma.groupSlot.count.mockResolvedValue(3)
+    mockPrisma.groupSlot.findMany.mockResolvedValue([
+      { teamId: 'team-1' },
+      { teamId: 'team-2' },
+    ])
+    mockPrisma.match.count.mockResolvedValueOnce(1).mockResolvedValueOnce(4)
+
+    const result = await canDeleteGroupStage('group-stage-123')
+
+    expect(result).toEqual({
+      canDelete: false,
+      reason: 'This group stage has matches with recorded results',
+      impact: {
+        groups: 2,
+        assignedTeams: 3,
+        matchesToDelete: 4,
+      },
+    })
+  })
+
+  it('returns canDelete true when only non-played matches exist', async () => {
+    mockPrisma.groupStage.findUnique.mockResolvedValue({ id: 'group-stage-123' })
+    mockPrisma.group.count.mockResolvedValue(1)
+    mockPrisma.groupSlot.count.mockResolvedValue(2)
+    mockPrisma.groupSlot.findMany.mockResolvedValue([{ teamId: 'team-1' }])
+    mockPrisma.match.count.mockResolvedValueOnce(0).mockResolvedValueOnce(2)
+
+    const result = await canDeleteGroupStage('group-stage-123')
+
+    expect(result).toEqual({
+      canDelete: true,
+      impact: {
+        groups: 1,
+        assignedTeams: 2,
+        matchesToDelete: 2,
+      },
+    })
+  })
+
+  it('returns canDelete true when no matches exist', async () => {
+    mockPrisma.groupStage.findUnique.mockResolvedValue({ id: 'group-stage-123' })
+    mockPrisma.group.count.mockResolvedValue(0)
+    mockPrisma.groupSlot.count.mockResolvedValue(0)
+    mockPrisma.groupSlot.findMany.mockResolvedValue([])
+
+    const result = await canDeleteGroupStage('group-stage-123')
+
+    expect(result).toEqual({
+      canDelete: true,
+      impact: {
+        groups: 0,
+        assignedTeams: 0,
+        matchesToDelete: 0,
+      },
+    })
+    expect(mockPrisma.match.count).not.toHaveBeenCalled()
   })
 })

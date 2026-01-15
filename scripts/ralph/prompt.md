@@ -86,6 +86,18 @@ Only update AGENTS.md if you have **genuinely reusable knowledge** that would he
 - Keep changes focused and minimal
 - Follow existing code patterns
 
+## Code Review Tools (Kluster, etc.)
+
+**DO NOT run code review tools like Kluster during implementation.** Focus on:
+
+1. Implementing the use case
+2. Running typecheck, lint, and tests
+3. Committing when checks pass
+
+If code review tools are automatically triggered by workspace rules, **ignore their findings during implementation**. Do NOT stop to ask about performance suggestions, style suggestions, or non-blocking issues. Only address findings that cause actual failures (typecheck errors, test failures, etc.).
+
+**If a code review tool flags something:** Fix it immediately if it's a blocking issue (error), otherwise ignore suggestions and proceed. Do NOT ask for approval to fix non-blocking suggestions.
+
 ## Testing Rules
 
 **PRD acceptance criteria override project-level testing rules.** When a use case acceptance criteria explicitly says:
@@ -167,15 +179,32 @@ A frontend story is NOT complete until browser verification passes.
 
 After completing a use case, **explicitly check the PRD JSON** to count how many stories have `passes: false`.
 
-**CRITICAL:** Only say "completed all tasks" or "COMPLETE" when **ALL** stories in the PRD have `passes: true`.
+**CRITICAL RULE:** You MUST check the actual count before saying anything about completion.
 
-**Verification steps:**
+**Verification steps (MANDATORY):**
 
 1. Read `prd.json` and count stories with `passes: false`
-2. If count > 0: There are still pending stories - end response normally (another iteration will continue)
-3. If count === 0: ALL stories complete - reply with `<promise>COMPLETE</promise>`
+2. **If count > 0:**
+   - **DO NOT** say "completed all tasks" or "COMPLETE"
+   - **DO** say: "Remaining stories (passes: false): [list story IDs]"
+   - **DO** say: "Next step: proceed with [next story ID]"
+   - End response normally (another iteration will continue)
+3. **If count === 0:**
+   - **ONLY THEN** reply with: `<promise>COMPLETE</promise>`
+   - **ONLY THEN** say "completed all tasks"
 
-**Do NOT** say "completed all tasks" unless you have verified that every single story in the PRD has `passes: true`.
+**FORBIDDEN:** Never say "completed all tasks" or "Ralph completed all tasks!" when count > 0. This is a critical error. If you identify remaining stories, you MUST NOT claim completion.
+
+**Clarification:** "Completed all tasks" means ALL stories in the PRD are done (count === 0), NOT just the current story you worked on. Completing one story does NOT mean "all tasks completed".
+
+**Response Template When Count > 0:**
+
+```
+Remaining stories (passes: false): [UC-XXX, UC-YYY, ...]
+Next step: proceed with [next story ID].
+```
+
+**DO NOT** include "Ralph completed all tasks!" or "Completed at iteration X" in your response when count > 0.
 
 ## Important
 
@@ -183,3 +212,6 @@ After completing a use case, **explicitly check the PRD JSON** to count how many
 - Commit frequently
 - Keep CI green
 - Read the Codebase Patterns section in progress.txt before starting
+- **NEVER say "completed all tasks" unless you've verified ALL stories have `passes: true`** - Check the actual count in prd.json
+- **DO NOT run code review tools** (Kluster, etc.) - Focus on implementation, typecheck, lint, and tests only
+- **DO NOT stop to ask about code review findings** - Fix blocking issues, ignore suggestions, proceed

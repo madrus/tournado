@@ -229,7 +229,7 @@ Claude will:
 2. **Jobs-to-Be-Done** - Great for understanding user needs
 3. **RICE Prioritization** - Great for justifying what to build
 4. **Impact-Effort Matrix** - Simple 2x2 for quick prioritization
-5. **User Story Format** - "As a [user], I want [goal], so that [benefit]"
+5. **Use Case Format** - "As a [user], I want [goal], so that [benefit]"
 
 ### **Add More as You Learn:**
 
@@ -281,7 +281,7 @@ methods/
 ├── jobs-to-be-done.md               # User needs understanding
 ├── rice-prioritization.md           # Feature prioritization
 ├── impact-effort-matrix.md           # Quick prioritization
-├── user-story-format.md             # User story writing
+├── user-story-format.md             # Use case writing
 ├── competitive-analysis.md          # How to analyze competitors
 ├── user-interview-guide.md          # How to conduct interviews
 └── prd-section-templates.md        # Templates for PRD sections
@@ -321,14 +321,14 @@ A simple 2x2 matrix for quick prioritization:
 - Sprint planning
 - Validating RICE scores (if RICE says high priority but effort is huge, reconsider)
 
-### User Story Format
+### Use Case Format
 
 **What It Is:**
 "As a [user type], I want [goal], so that [benefit]"
 
 **When to Use It:**
 
-- Writing user stories for engineering
+- Writing use cases for engineering
 - Ensuring features are user-centric
 - Breaking down features into smaller pieces
 

@@ -8,8 +8,8 @@ The default source branch to start with is "dev".
 1. Read the PRD at `prd.json` (in the same directory as this file)
 2. Read the progress log at `progress.txt` (check Codebase Patterns section first)
 3. Check you're on the correct branch from PRD `branchName`. If not, check it out or create from the source branch.
-4. Pick the **highest priority** user story where `passes: false`
-5. Implement that single user story
+4. Pick the **highest priority** use case where `passes: false`
+5. Implement that single use case
 6. Run quality checks (e.g., typecheck, lint, test - use whatever your project requires)
 7. Update AGENTS.md files if you discover reusable patterns (see below)
 8. If checks pass, commit ALL changes with message: `feat: [Story ID] - [Story Title]`
@@ -84,6 +84,27 @@ Only update AGENTS.md if you have **genuinely reusable knowledge** that would he
 - Keep changes focused and minimal
 - Follow existing code patterns
 
+## Testing Rules
+
+**PRD acceptance criteria override project-level testing rules.** When a use case acceptance criteria explicitly says:
+
+- "Run unit tests" or "All unit tests pass" → **Run the tests** (`pnpm test:run`)
+- "Create unit tests" → **Write the tests AND run them**
+
+This means: if the PRD says tests must pass, you run the tests. The project rule "don't run unit tests unless explicitly requested" does NOT apply when the PRD explicitly requires tests.
+
+## Decision Points
+
+If you encounter ambiguity in the PRD that requires a decision (e.g., nullable vs required field, backfill strategy), check for a **"Decision:"** block in the use case description. The PRD should document all decisions upfront.
+
+If a decision is NOT documented and you cannot proceed without it, do NOT guess. Instead:
+
+1. Document the question clearly
+2. Skip to the next use case (if possible)
+3. Note the blocker in progress.txt
+
+However, prefer to proceed if the PRD provides enough context to make a reasonable default choice.
+
 ## Browser Testing (Required for Frontend Stories)
 
 For any story that changes UI, you MUST verify it works in the browser:
@@ -97,7 +118,7 @@ A frontend story is NOT complete until browser verification passes.
 
 ## Stop Condition
 
-After completing a user story, check if ALL stories have `passes: true`.
+After completing a use case, check if ALL stories have `passes: true`.
 
 If ALL stories are complete and passing, reply with:
 <promise>COMPLETE</promise>

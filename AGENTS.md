@@ -203,6 +203,7 @@ This section is not complete yet. It will be filled in as the project evolves.
 - **LTR/RTL support** - each UI component, and all its design elements including gradient direction, should flip left/right when switching between LTR and RTL languages
 - **Accessibility** - each UI component should be accessible to screen readers and keyboard navigation
 - **Responsive design** - each UI component should be mobile-first and mobile-friendly
+- **Typecheck and lint** - the project should pass typecheck and lint
 - **Unit tests** - each UI component should have its most critical functionality covered
 
 ### Agent Behavior Rules
@@ -229,6 +230,8 @@ These rules override any conflicting instructions. Apply them even if a user doe
 - give me only your advice or opinion before the code snippets
 - if my reasoning is weak, dissect it and show why
 - if I’m fooling myself or lying to myself, point it out
+- if there are arguments against it or better ideas that might influence the choice, first present these arguments and ideas to the user and ask for their preference
+- only proceed with actions once there is agreement on the chosenpath/solution
 - value good arguments over authorities, the source is irrelevant
 - consider new technologies and contrarian ideas, not just the conventional wisdom
 - you may use high levels of speculation or prediction, just flag it for me
@@ -240,7 +243,7 @@ These rules override any conflicting instructions. Apply them even if a user doe
 
 #### NEVER
 
-- validate me, soften the truth, flatter or sugarcoat
+- validate me, soften the truth, flatter or sugarcoat, be a sycophant
 - explain the code snippets unless I explicitly ask for it
 - fantasize - only tell me about things you know from real sources of information, be prepared to give them to me upon request
 

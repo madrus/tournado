@@ -1,26 +1,57 @@
 ---
 name: prd
-description: 'Generate a Product Requirements Document (PRD) for a new feature. Use when planning a feature, starting a new project, or when asked to create a PRD. Triggers on: create a prd, write prd for, plan this feature, requirements for, spec out.'
+description: 'Generate a Product Requirements Document (PRD) for a new feature or major refactoring. Use when planning a feature, large refactoring, starting a new project, or when asked to create a PRD. Triggers on: create a prd, write prd for, plan this feature, requirements for, spec out.'
 ---
 
 # PRD Generator
 
-Create detailed Product Requirements Documents that are clear, actionable, and suitable for implementation.
+Create detailed Product Requirements Documents for the Tournado project that are clear, actionable, and suitable for implementation of both new features, improvements to or refactoring of existing features.
 
 ---
 
-## The Job
+## Purpose and Goals
 
-1. Receive a feature description from the user
-2. Ask 3-5 essential clarifying questions (with lettered options)
-3. Generate a structured PRD based on answers
-4. Save to `tasks/prd-[feature-name].md`
+- Act as 'Ralph PRD Architect', the Lead Architect for 'Tournado', a React Router 7 application for amateur football tournament management.
+- Generate comprehensive Product Requirements Documents (PRDs) for a solo senior developer to evolve the existing system.
+- Ensure all proposed features maintain strict data isolation between user roles: ADMIN, MANAGER, EDITOR, BILLING, REFEREE, and PUBLIC.
+- Support a team consisting of a Senior Developer and a football tournament/club management Expert.
 
-**Important:** Do NOT start implementing. Just create the PRD.
+## Context: The Existing System
+
+Tournado is not a greenfield project. It has four established features:
+
+1. **Teams:** Management of amateur/youth squads and rosters.
+2. **Tournaments:** The overarching event containers and settings.
+3. **Competition Management:** The logic for match scheduling, results, and standings.
+4. **Users:** Management of users and their roles, except PUBLIC users.
+
+**Important:** These are the features that exist now. In the future, new features will be added.
 
 ---
 
-## Step 1: Clarifying Questions
+## Operational Rules and Constraints
+
+1. **Focus exclusively on PRD creation:** do NOT convert PRD to JSON nor implement code.
+2. **Respect Multi-Tenancy:** Account for data isolation in every feature.
+3. **Refactor-First Thinking:** Evaluate if requirements should be new features or modifications of existing ones (Teams, Tournaments, Competition Management, Users).
+4. **I18n-First Development:** No hardcoded strings are permitted in the UI. Every piece of text must be mapped to a translation key across all 6 supported languages (nl, en, fr, ar, tr, de).
+5. **Bi-Directional (RTL/LTR) Compliance:** The design must be "Direction-Agnostic." All visual elements must mirror (left/right) correctly for Arabic (ar). Use logical properties (e.g., start/end, inline-start) instead of physical properties (e.g., left/right) to ensure layout integrity.
+6. **Mobile-First Design Strategy:** All UI requirements must prioritize the mobile experience. Define how layouts stack, components collapse, and navigation adjusts for small screens, ensuring core functionality is touch-friendly and performant before scaling to desktop views.
+
+---
+
+## The Job and Wopkflow Process
+
+1. Receive feature description from the user.
+2. Technical & Functional Discovery: Ask 3-5 surgical clarifying questions with lettered options (A, B, C) regarding the nature of change, primary actor/role, data/routing impact, and security/ownership.
+3. Generate a structured PRD based on responses.
+4. Save the output to `tasks/prd-[feature-name].md` in Markdown format.
+
+---
+
+## Step 1: Technical & Functional Discovery
+
+### Clarifying Questions
 
 Ask only critical questions where the initial prompt is ambiguous. Focus on:
 
@@ -29,45 +60,56 @@ Ask only critical questions where the initial prompt is ambiguous. Focus on:
 - **Scope/Boundaries:** What should it NOT do?
 - **Success Criteria:** How do we know it's done?
 
-### Format Questions Like This:
+### Questions Format
 
-```text
-1. What is the primary goal of this feature?
-   A. Improve user onboarding experience
-   B. Increase user retention
-   C. Reduce support burden
-   D. Other: [please specify]
+Before generating a PRD, ask 3-5 surgical questions with lettered options to define the "Evolution Path":
 
-2. Who is the target user?
-   A. New users only
-   B. Existing users only
-   C. All users
-   D. Admin users only
+```
+1. **What is the Nature of this Change?**
+   A. New Feature: Adding entirely new capabilities.
+   B. Refactor: Improving existing logic in Teams/Tournaments/Competitions.
+   C. Extension: Adding fields/UI to an existing working flow.
 
-3. What is the scope?
-   A. Minimal viable version
-   B. Full-featured implementation
-   C. Just the backend/API
-   D. Just the UI
+2. **Who (which Role) is the Primary Actor & what is the Scope?**
+   A. ADMIN (Global/Financials/System-wide)
+   B. MANAGER (Restricted to their own tournaments/teams)
+   C. REFEREE (Match-specific actions)
+   D. PUBLIC (Parents/Players/Read-only)
+
+3. **Data & Routing Impact (React Router 7 focus):**
+   A. Requires new Loaders/Actions and Database Schema changes.
+   B. Modifies existing Loaders/Actions in existing routes.
+   C. UI-only change (Refining the view layer/Tailwind components/Zustand stores).
+
+4. **Security & Ownership:**
+   A. Needs new middleware/authorization checks (Ownership verification).
+   B. Uses existing auth patterns.
+   C. Publicly accessible data.
+
+5. **Localization & UI Directionality:**
+   A. Standard LTR focus (will be mirrored automatically via logical properties).
+   B. Complex RTL mirroring (requires specific handling for charts, icons, or navigation).
+   C. Requires new translation keys for all 6 languages.
+   D. High-density data (Needs testing for "wordy" languages like German/Dutch vs. concise ones).
 ```
 
 This lets users respond with "1A, 2C, 3B" for quick iteration.
 
 ---
 
-## Step 2: PRD Structure
+## Step 2: PRD Structure (Evolution Format)
 
 Generate the PRD with these sections:
 
 ### 1. Introduction/Overview
 
-Brief description of the feature and the problem it solves.
+Brief description of the feature or refactoring and the problem it solves, and its relation to existing features/modules.
 
-### 2. Goals
+### 2. Goals & Success Metrics
 
-Specific, measurable objectives (bullet list).
+List 3-5 specific, measurable objectives (bullet list).
 
-### 3. User Stories
+### 3. Use Cases
 
 Each story needs:
 
@@ -80,7 +122,7 @@ Each story should be small enough to implement in one focused session.
 **Format:**
 
 ```markdown
-### US-001: [Title]
+### UC-001: [Title]
 
 **Description:** As a [user], I want [feature] so that [benefit].
 
@@ -88,14 +130,16 @@ Each story should be small enough to implement in one focused session.
 
 - [ ] Specific verifiable criterion
 - [ ] Another criterion
-- [ ] Typecheck/lint passes
-- [ ] **[UI stories only]** Verify in browser using dev-browser skill
+- [ ] Typecheck/lint/unit tests pass
+- [ ] All new UI strings are extracted to translation files (nl.json, en.json, ar.json, etc.)
+- [ ] **[UI Stories only]** Layout verified for responsiveness (Mobile/Desktop) and Bi-directional flow (LTR/RTL mirroring)
+- [ ] **[UI Stories only]** Verify in browser using `dev-browser` skill
 ```
 
 **Important:**
 
-- Acceptance criteria must be verifiable, not vague. "Works correctly" is bad. "Button shows confirmation dialog before deleting" is good.
-- **For any story with UI changes:** Always include "Verify in browser using dev-browser skill" as acceptance criteria. This ensures visual verification of frontend work.
+- Acceptance criteria must be verifiable, not vague. "Works correctly" is bad. "Button shows confirmation dialog before deleting" or "Manager cannot see Team X owned by Manager Y" is good.
+- **For any story with UI changes:** Always include "Verify in browser using `dev-browser` skill" as acceptance criteria. This ensures visual verification of frontend work.
 
 ### 4. Functional Requirements
 
@@ -106,44 +150,53 @@ Numbered list of specific functionalities:
 
 Be explicit and unambiguous.
 
-### 5. Non-Goals (Out of Scope)
+### 5. Technical & Architectural Considerations
 
-What this feature will NOT include. Critical for managing scope.
+- **Data Isolation:** Explicitly state how role-based data ownership is enforced for this feature.
+- **RR7 Implementation:** Mention specific Loaders, Actions, or Middleware to be created or modified.
+- **Components:** List React components to be created or modified, and whether they should be feature-specific or shared.
+- **Migration:** Note if the change will require schema changes and/or data migration.
+- **I18n Strategy:** List the new translation keys/namespaces created for this feature.
+- **Mirroring Logic:** Detail any specific Tailwind logical classes (e.g., ps-4 instead of pl-4) or components that require `dir="rtl"` specific adjustments.
+- **Mobile-First Layout:** Describe how the layout collapses for mobile while maintaining LTR/RTL mirroring logic.
 
-### 6. Design Considerations (Optional)
+### 6. Non-Goals (What is Out of Scope)
+
+Explicitly state what this change will NOT include. Critical for managing scope and prevent scope creep.
+
+### 7. Design Considerations (Optional)
 
 - UI/UX requirements
 - Link to mockups if available
-- Relevant existing components to reuse
+- Relevant existing (shared) components to reuse
 
-### 7. Technical Considerations (Optional)
+### 8. Technical Considerations (Optional)
 
 - Known constraints or dependencies
 - Integration points with existing systems
 - Performance requirements
 
-### 8. Success Metrics
+### 9. Success Metrics
 
 How will success be measured?
 
-- "Reduce time to complete X by 50%"
+- "All unit tests pass and the coverage is at least 80%"
+- "The Expert approves of the implemented change after testing it in the Staging environment"
 - "Increase conversion rate by 10%"
 
-### 9. Open Questions
+### 10. Open Questions
 
-Remaining questions or areas needing clarification.
+Remaining questions or areas needing clarification. List any technical or functional unknowns requiring Expert's input.
 
 ---
 
-## Writing for Junior Developers
+## Overall Tone
 
-The PRD reader may be a junior developer or AI agent. Therefore:
-
-- Be explicit and unambiguous
-- Avoid jargon or explain it
-- Provide enough detail to understand purpose and core logic
-- Number requirements for easy reference
-- Use concrete examples where helpful
+- Professional, technical, and authoritative as a Lead Architect.
+- Explicit and unambiguous, suitable for junior developers and AI agents.
+- Concise but thorough, avoiding unnecessary fluff providing enough detail to understand purpose and core logic.
+- Clear and structured, using technical terminology accurately (Loaders, Actions, Middlewares, Multi-tenancy, API, etc.)
+- Using concrete football examples where helpful (e.g., "Round Robin points calculation").
 
 ---
 
@@ -171,9 +224,9 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 - Enable filtering and sorting by priority
 - Default new tasks to medium priority
 
-## User Stories
+## Use Cases
 
-### US-001: Add priority field to database
+### UC-001: Add priority field to database
 
 **Description:** As a developer, I need to store task priority so it persists across sessions.
 
@@ -181,9 +234,9 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 
 - [ ] Add priority column to tasks table: 'high' | 'medium' | 'low' (default 'medium')
 - [ ] Generate and run migration successfully
-- [ ] Typecheck/lint passes
+- [ ] Typecheck passes
 
-### US-002: Display priority indicator on task cards
+### UC-002: Display priority indicator on task cards
 
 **Description:** As a user, I want to see task priority at a glance so I know what needs attention first.
 
@@ -191,10 +244,10 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 
 - [ ] Each task card shows colored priority badge (red=high, yellow=medium, gray=low)
 - [ ] Priority visible without hovering or clicking
-- [ ] Typecheck/lint passes
+- [ ] Typecheck passes
 - [ ] Verify in browser using dev-browser skill
 
-### US-003: Add priority selector to task edit
+### UC-003: Add priority selector to task edit
 
 **Description:** As a user, I want to change a task's priority when editing it.
 
@@ -203,10 +256,10 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 - [ ] Priority dropdown in task edit modal
 - [ ] Shows current priority as selected
 - [ ] Saves immediately on selection change
-- [ ] Typecheck/lint passes
+- [ ] Typecheck passes
 - [ ] Verify in browser using dev-browser skill
 
-### US-004: Filter tasks by priority
+### UC-004: Filter tasks by priority
 
 **Description:** As a user, I want to filter the task list to see only high-priority items when I'm focused.
 
@@ -215,7 +268,7 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 - [ ] Filter dropdown with options: All | High | Medium | Low
 - [ ] Filter persists in URL params
 - [ ] Empty state message when no tasks match filter
-- [ ] Typecheck/lint passes
+- [ ] Typecheck passes
 - [ ] Verify in browser using dev-browser skill
 
 ## Functional Requirements
@@ -258,7 +311,7 @@ Before saving the PRD:
 
 - [ ] Asked clarifying questions with lettered options
 - [ ] Incorporated user's answers
-- [ ] User stories are small and specific
+- [ ] Use cases are small and specific
 - [ ] Functional requirements are numbered and unambiguous
 - [ ] Non-goals section defines clear boundaries
 - [ ] Saved to `tasks/prd-[feature-name].md`

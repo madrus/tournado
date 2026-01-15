@@ -93,6 +93,16 @@ Only update AGENTS.md if you have **genuinely reusable knowledge** that would he
 
 This means: if the PRD says tests must pass, you run the tests. The project rule "don't run unit tests unless explicitly requested" does NOT apply when the PRD explicitly requires tests.
 
+## Ripple Effects (Schema Changes)
+
+When you add or modify required fields in the database schema, you MUST also update:
+
+1. **All test fixtures** that create models with the changed schema
+2. **All seed data** that creates those models
+3. **All factory functions** or mock data generators
+
+This is NOT optional and NOT a decision point. If typecheck fails because test fixtures lack a new required field, fix them immediately without asking. Use the same approach as documented in the PRD (e.g., if PRD says backfill with a specific user ID, use that ID in test fixtures too).
+
 ## Decision Points
 
 If you encounter ambiguity in the PRD that requires a decision (e.g., nullable vs required field, backfill strategy), check for a **"Decision:"** block in the use case description. The PRD should document all decisions upfront.
@@ -104,6 +114,10 @@ If a decision is NOT documented and you cannot proceed without it, do NOT guess.
 3. Note the blocker in progress.txt
 
 However, prefer to proceed if the PRD provides enough context to make a reasonable default choice.
+
+**What IS a decision point:** Architecture choices, business logic interpretation, nullable vs required fields, backfill strategies.
+
+**What is NOT a decision point:** Fixing compilation errors, updating test fixtures, adding missing imports, fixing lint errors. These are routine fixes - just do them.
 
 ## Browser Testing (Required for Frontend Stories)
 

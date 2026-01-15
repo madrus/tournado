@@ -34,6 +34,7 @@ Add the ability to delete a Group Stage from Competition Management. Currently, 
 - [ ] Apply migration: `pnpm prisma migrate deploy`
 - [ ] Update `createTournament` function to set `createdBy` from authenticated user
 - [ ] Update `createGroupStage` function to set `createdBy` from authenticated user
+- [ ] Update ALL test fixtures that create Tournament or GroupStage objects to include `createdBy` field (use a valid test user ID from test setup or the backfill user ID)
 - [ ] Typecheck/lint pass
 - [ ] Create unit tests in `app/models/__tests__/tournament.server.test.ts` for `createTournament` with `createdBy`
 - [ ] Create unit tests in `app/models/__tests__/group.server.test.ts` for `createGroupStage` with `createdBy`

@@ -29,3 +29,10 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
 - **Learnings for future iterations:**
   - canDeleteGroupStage derives impact from Group/GroupSlot counts and match status for assigned teams using MatchStatus enum.
 ---
+## 2026-01-15 22:21:36 CET - UC-003
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added delete-success toast handling for competition groups list and translation strings
+- Files changed: app/routes/admin/competition/competition.groups.tsx, app/i18n/locales/en.json, app/i18n/locales/nl.json, app/i18n/locales/fr.json, app/i18n/locales/de.json, app/i18n/locales/tr.json, app/i18n/locales/ar.json, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - No new reusable patterns discovered.
+---

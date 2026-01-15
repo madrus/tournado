@@ -349,6 +349,9 @@
       "groupNotFound": "Hedef grup bulunamadı. Yenileyip tekrar deneyin.",
       "slotNotFound": "Hedef slot bulunamadı. Yenileyip tekrar deneyin."
     },
+    "groupStage": {
+      "deleteSuccess": "Grup aşaması başarıyla silindi"
+    },
     "panel": {
       "errorTitle": "Bir şeyler ters gitti",
       "errorBody": "Bu bölümü yüklerken bir hata oluştu. Lütfen sayfayı yenilemeyi deneyin."

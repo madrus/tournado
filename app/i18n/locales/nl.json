@@ -349,6 +349,9 @@
       "groupNotFound": "Doelgroep niet gevonden. Vernieuw en probeer het opnieuw.",
       "slotNotFound": "Doelslot niet gevonden. Vernieuw en probeer het opnieuw."
     },
+    "groupStage": {
+      "deleteSuccess": "Groepsfase succesvol verwijderd"
+    },
     "panel": {
       "errorTitle": "Er is iets misgegaan",
       "errorBody": "Er is een fout opgetreden bij het laden van dit gedeelte. Probeer de pagina te vernieuwen."

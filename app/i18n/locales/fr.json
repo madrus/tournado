@@ -349,6 +349,9 @@
       "groupNotFound": "Groupe cible introuvable. Actualisez et réessayez.",
       "slotNotFound": "Emplacement cible introuvable. Actualisez et réessayez."
     },
+    "groupStage": {
+      "deleteSuccess": "Phase de groupes supprimée avec succès"
+    },
     "panel": {
       "errorTitle": "Une erreur s'est produite",
       "errorBody": "Une erreur s'est produite lors du chargement de cette section. Veuillez essayer de rafraîchir la page."

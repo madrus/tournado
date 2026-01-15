@@ -349,6 +349,9 @@
       "groupNotFound": "Zielgruppe nicht gefunden. Bitte aktualisieren und erneut versuchen.",
       "slotNotFound": "Ziel-Slot nicht gefunden. Bitte aktualisieren und erneut versuchen."
     },
+    "groupStage": {
+      "deleteSuccess": "Gruppenphase erfolgreich gelöscht"
+    },
     "panel": {
       "errorTitle": "Etwas ist schief gelaufen",
       "errorBody": "Beim Laden dieses Abschnitts ist ein Fehler aufgetreten. Bitte versuchen Sie, die Seite zu aktualisieren."

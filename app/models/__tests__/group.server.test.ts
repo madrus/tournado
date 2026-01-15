@@ -1,16 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createGroupStage } from '../group.server'
+import { createGroupStage, deleteGroupStage } from '../group.server'
 
 const { mockPrisma, mockTransactionClient } = vi.hoisted(() => {
   const mockTransactionClient = {
     groupStage: {
       create: vi.fn(),
+      delete: vi.fn(),
     },
     group: {
       create: vi.fn(),
+      deleteMany: vi.fn(),
     },
     groupSlot: {
       createMany: vi.fn(),
+      deleteMany: vi.fn(),
     },
     team: {
       findMany: vi.fn(),
@@ -66,5 +69,58 @@ describe('group.server - createGroupStage', () => {
       },
     })
     expect(result).toBe('group-stage-123')
+  })
+})
+
+describe('group.server - deleteGroupStage', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockPrisma.$transaction.mockImplementation(async callback =>
+      callback(mockTransactionClient),
+    )
+  })
+
+  it('deletes group slots, groups, and group stage, returning counts', async () => {
+    mockTransactionClient.groupSlot.deleteMany.mockResolvedValue({ count: 4 })
+    mockTransactionClient.group.deleteMany.mockResolvedValue({ count: 2 })
+    mockTransactionClient.groupStage.delete.mockResolvedValue({
+      id: 'group-stage-123',
+    })
+
+    const result = await deleteGroupStage('group-stage-123')
+
+    expect(mockTransactionClient.groupSlot.deleteMany).toHaveBeenCalledWith({
+      where: { groupStageId: 'group-stage-123' },
+    })
+    expect(mockTransactionClient.group.deleteMany).toHaveBeenCalledWith({
+      where: { groupStageId: 'group-stage-123' },
+    })
+    expect(mockTransactionClient.groupStage.delete).toHaveBeenCalledWith({
+      where: { id: 'group-stage-123' },
+    })
+    expect(result).toEqual({ groupsDeleted: 2, slotsDeleted: 4 })
+
+    const slotCallOrder =
+      mockTransactionClient.groupSlot.deleteMany.mock.invocationCallOrder[0]
+    const groupCallOrder =
+      mockTransactionClient.group.deleteMany.mock.invocationCallOrder[0]
+    const stageCallOrder =
+      mockTransactionClient.groupStage.delete.mock.invocationCallOrder[0]
+
+    expect(slotCallOrder).toBeLessThan(groupCallOrder)
+    expect(groupCallOrder).toBeLessThan(stageCallOrder)
+  })
+
+  it('rolls back when deletion fails', async () => {
+    mockTransactionClient.groupSlot.deleteMany.mockRejectedValue(
+      new Error('delete failed'),
+    )
+
+    await expect(deleteGroupStage('group-stage-123')).rejects.toThrow(
+      'delete failed',
+    )
+
+    expect(mockTransactionClient.group.deleteMany).not.toHaveBeenCalled()
+    expect(mockTransactionClient.groupStage.delete).not.toHaveBeenCalled()
   })
 })

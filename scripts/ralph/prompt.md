@@ -3,6 +3,8 @@
 You are an autonomous coding agent working on a software project.
 The default source branch to start with is "dev".
 
+**CRITICAL: Start immediately.** Do NOT ask for confirmation to begin. When invoked, immediately start with step 1 below.
+
 ## Your Task
 
 1. Read the PRD at `prd.json` (in the same directory as this file)
@@ -88,10 +90,13 @@ Only update AGENTS.md if you have **genuinely reusable knowledge** that would he
 
 **PRD acceptance criteria override project-level testing rules.** When a use case acceptance criteria explicitly says:
 
-- "Run unit tests" or "All unit tests pass" → **Run the tests** (`pnpm test:run`)
-- "Create unit tests" → **Write the tests AND run them**
+- "Run unit tests" or "All unit tests pass" → **Run tests for changed files only** (e.g., `pnpm test:run app/models/__tests__/group.server.test.ts`)
+- "Create unit tests" → **Write the tests AND run them** (run only the new test file)
+- "Run all tests" or "Full test suite" → **Run entire test suite** (`pnpm test:run`)
 
-This means: if the PRD says tests must pass, you run the tests. The project rule "don't run unit tests unless explicitly requested" does NOT apply when the PRD explicitly requires tests.
+**Default behavior:** When PRD says "run unit tests", run only tests related to files you changed, not the entire suite. This keeps iterations fast while ensuring your changes work.
+
+This means: if the PRD says tests must pass, you run the relevant tests. The project rule "don't run unit tests unless explicitly requested" does NOT apply when the PRD explicitly requires tests.
 
 ## Ripple Effects (Schema Changes)
 
@@ -102,6 +107,23 @@ When you add or modify required fields in the database schema, you MUST also upd
 3. **All factory functions** or mock data generators
 
 This is NOT optional and NOT a decision point. If typecheck fails because test fixtures lack a new required field, fix them immediately without asking. Use the same approach as documented in the PRD (e.g., if PRD says backfill with a specific user ID, use that ID in test fixtures too).
+
+## Development Database Workflow
+
+This project is **pre-production**. For migrations that add required fields:
+
+1. **Do NOT** add complex backfill logic to migration SQL
+2. **Do** use `pnpm prisma migrate dev` which handles empty tables cleanly
+3. **Seed data** (via `seed.js`) handles populating required fields for test data
+
+If `prisma migrate dev` prompts to reset the database, that's acceptable in development. The workflow after migration is:
+
+```bash
+node prisma/seedSuperAdmins.js  # Creates admin users
+node prisma/seed.js             # Creates test data with proper ownership
+```
+
+**Do NOT ask for confirmation** about database resets in development - just proceed.
 
 ## Decision Points
 
@@ -117,7 +139,18 @@ However, prefer to proceed if the PRD provides enough context to make a reasonab
 
 **What IS a decision point:** Architecture choices, business logic interpretation, nullable vs required fields, backfill strategies.
 
-**What is NOT a decision point:** Fixing compilation errors, updating test fixtures, adding missing imports, fixing lint errors. These are routine fixes - just do them.
+**What is NOT a decision point:**
+
+- **Asking for confirmation to start work** - Start immediately when invoked
+- Fixing compilation errors, updating test fixtures, adding missing imports, fixing lint errors
+- Implementation details that are **implied by PRD requirements** (e.g., if PRD says "returns deletion statistics", use explicit deletes with counting; if PRD says "in a transaction", wrap operations in a transaction)
+- Choosing between implementation approaches when one clearly satisfies the PRD requirements better
+
+**When PRD requirements imply implementation approach:** If the PRD specifies requirements like "returns statistics", "in a transaction", "handles rollback", etc., the implementation approach is implied. Don't ask which approach - implement what satisfies the requirements.
+
+**PRD "Implementation Note" sections:** If a use case has an "Implementation Note" or "Implementation:" section, that is the explicit approach to follow. Do NOT ask for approval - just implement it as specified.
+
+**Testing style:** When PRD says "unit tests", use mocked unit tests (consistent with existing test files). Only use integration tests if PRD explicitly says "integration tests" or "test against real database".
 
 ## Browser Testing (Required for Frontend Stories)
 

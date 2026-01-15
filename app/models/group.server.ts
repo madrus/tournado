@@ -572,6 +572,34 @@ export async function batchSaveGroupAssignments(
   })
 }
 
+type DeleteGroupStageResult = {
+  readonly groupsDeleted: number
+  readonly slotsDeleted: number
+}
+
+export async function deleteGroupStage(
+  groupStageId: string,
+): Promise<DeleteGroupStageResult> {
+  return await prisma.$transaction(async tx => {
+    const slotsResult = await tx.groupSlot.deleteMany({
+      where: { groupStageId },
+    })
+
+    const groupsResult = await tx.group.deleteMany({
+      where: { groupStageId },
+    })
+
+    await tx.groupStage.delete({
+      where: { id: groupStageId },
+    })
+
+    return {
+      groupsDeleted: groupsResult.count,
+      slotsDeleted: slotsResult.count,
+    }
+  })
+}
+
 type DeleteTeamFromGroupStageProps = {
   readonly groupStageId: string
   readonly teamId: string

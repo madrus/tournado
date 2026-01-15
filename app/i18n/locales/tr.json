@@ -213,6 +213,8 @@
     "groupAssignment": {
       "instruction": "Takımları belirli kontenjanlara atamak için sürükleyin. Boş bir kontenjana veya bir takımın üzerine bırakıp değiştirebilirsiniz.",
       "backToGroups": "Gruplara geri dön",
+      "deleteTitle": "Grup aşamasını sil",
+      "deleteDescription": "Bu grup aşamasını silmek istediğinizden emin misiniz?",
       "unsavedChanges": "Kaydedilmemiş değişiklikleriniz var",
       "unsavedTitle": "Kaydedilmemiş değişiklikler",
       "unsavedDescription": "Bu sayfadan ayrılırsanız kaydedilmemiş değişiklikleriniz kaybolacak. Ayrılmak istediğinizden emin misiniz?",

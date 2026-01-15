@@ -213,6 +213,8 @@
     "groupAssignment": {
       "instruction": "Ziehen Sie Teams, um sie bestimmten Plätzen zuzuweisen. Lassen Sie auf einem freien Platz oder auf einem Team los, um es zu ersetzen.",
       "backToGroups": "Zurück zu Gruppen",
+      "deleteTitle": "Gruppenphase löschen",
+      "deleteDescription": "Möchten Sie diese Gruppenphase wirklich löschen?",
       "unsavedChanges": "Sie haben ungespeicherte Änderungen",
       "unsavedTitle": "Ungespeicherte Änderungen",
       "unsavedDescription": "Ihre ungespeicherten Änderungen gehen verloren, wenn Sie diese Seite verlassen. Sind Sie sicher, dass Sie gehen möchten?",

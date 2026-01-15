@@ -24,6 +24,7 @@ type LoaderData = {
   readonly groupStage: GroupStageWithDetails
   readonly availableTeams: readonly UnassignedTeam[]
   readonly tournamentId: string
+  readonly tournamentCreatedBy: string
 }
 
 type ActionData = {
@@ -69,7 +70,12 @@ export async function loader({
     groupStage.categories as Category[],
   )
 
-  return { groupStage, availableTeams, tournamentId }
+  return {
+    groupStage,
+    availableTeams,
+    tournamentId,
+    tournamentCreatedBy: tournament.createdBy,
+  }
 }
 
 export async function action({
@@ -185,7 +191,8 @@ export async function action({
 }
 
 export function GroupStageDetails(): JSX.Element {
-  const { groupStage, availableTeams, tournamentId } = useLoaderData<LoaderData>()
+  const { groupStage, availableTeams, tournamentId, tournamentCreatedBy } =
+    useLoaderData<LoaderData>()
   const actionData = useActionData<ActionData>()
 
   return (
@@ -193,6 +200,7 @@ export function GroupStageDetails(): JSX.Element {
       groupStage={groupStage}
       availableTeams={availableTeams}
       tournamentId={tournamentId}
+      tournamentCreatedBy={tournamentCreatedBy}
       actionData={actionData}
     />
   )

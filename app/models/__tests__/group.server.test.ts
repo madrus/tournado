@@ -16,6 +16,7 @@ const { mockPrisma, mockTransactionClient } = vi.hoisted(() => {
       deleteMany: vi.fn(),
     },
     team: {
+      deleteMany: vi.fn(),
       findMany: vi.fn(),
     },
   }
@@ -98,6 +99,7 @@ describe('group.server - deleteGroupStage', () => {
     expect(mockTransactionClient.groupStage.delete).toHaveBeenCalledWith({
       where: { id: 'group-stage-123' },
     })
+    expect(mockTransactionClient.team.deleteMany).not.toHaveBeenCalled()
     expect(result).toEqual({ groupsDeleted: 2, slotsDeleted: 4 })
 
     const slotCallOrder =
@@ -116,9 +118,7 @@ describe('group.server - deleteGroupStage', () => {
       new Error('delete failed'),
     )
 
-    await expect(deleteGroupStage('group-stage-123')).rejects.toThrow(
-      'delete failed',
-    )
+    await expect(deleteGroupStage('group-stage-123')).rejects.toThrow('delete failed')
 
     expect(mockTransactionClient.group.deleteMany).not.toHaveBeenCalled()
     expect(mockTransactionClient.groupStage.delete).not.toHaveBeenCalled()

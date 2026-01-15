@@ -165,12 +165,17 @@ A frontend story is NOT complete until browser verification passes.
 
 ## Stop Condition
 
-After completing a use case, check if ALL stories have `passes: true`.
+After completing a use case, **explicitly check the PRD JSON** to count how many stories have `passes: false`.
 
-If ALL stories are complete and passing, reply with:
-<promise>COMPLETE</promise>
+**CRITICAL:** Only say "completed all tasks" or "COMPLETE" when **ALL** stories in the PRD have `passes: true`.
 
-If there are still stories with `passes: false`, end your response normally (another iteration will pick up the next story).
+**Verification steps:**
+
+1. Read `prd.json` and count stories with `passes: false`
+2. If count > 0: There are still pending stories - end response normally (another iteration will continue)
+3. If count === 0: ALL stories complete - reply with `<promise>COMPLETE</promise>`
+
+**Do NOT** say "completed all tasks" unless you have verified that every single story in the PRD has `passes: true`.
 
 ## Important
 

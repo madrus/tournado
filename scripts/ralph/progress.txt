@@ -14,3 +14,10 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - Migration backfill uses the user with email madrus@gmail.com.
   - Prisma relation fields need matching User back-relations to avoid schema validation errors.
 ---
+## 2026-01-15 21:43:42 CET - UC-001
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added deleteGroupStage test coverage to ensure team records are not deleted during group stage removal
+- Files changed: app/models/__tests__/group.server.test.ts, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - Deleting a group stage should only touch group slots, groups, and the stage itself; team records must remain untouched.
+---

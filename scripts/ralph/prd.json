@@ -43,7 +43,7 @@
         "Run unit tests for changed files (e.g., pnpm test:run app/models/__tests__/group.server.test.ts) - all related tests must pass"
       ],
       "priority": 2,
-      "passes": false,
+      "passes": true,
       "notes": "Implementation: To return deletion statistics, explicitly delete in order: GroupSlots (count), then Groups (count), then GroupStage. Wrap all in a Prisma transaction. Prisma's onDelete: SetNull on GroupSlot.teamId automatically handles team preservation."
     },
     {

@@ -27,18 +27,20 @@ export const getAllTournaments = async (): Promise<TournamentListItem[]> =>
   })
 
 export const createTournament = async ({
+  createdBy,
   name,
   location,
   divisions,
   categories,
   startDate,
   endDate,
-}: Pick<Tournament, 'name' | 'location' | 'startDate' | 'endDate'> & {
+}: Pick<Tournament, 'createdBy' | 'name' | 'location' | 'startDate' | 'endDate'> & {
   divisions: string[]
   categories: string[]
 }): Promise<Tournament> =>
   prisma.tournament.create({
     data: {
+      createdBy,
       name,
       location,
       divisions: JSON.stringify(divisions),

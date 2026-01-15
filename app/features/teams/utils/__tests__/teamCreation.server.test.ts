@@ -112,6 +112,7 @@ describe('teamCreation.server - createTeamFromFormData', () => {
     endDate: new Date(),
     categories: '["JO12"]',
     divisions: '["FIRST_DIVISION"]',
+    createdBy: 'user-123',
     createdAt: new Date(),
     updatedAt: new Date(),
   }

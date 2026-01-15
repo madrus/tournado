@@ -107,7 +107,7 @@ export async function action({
   request,
 }: Route.ActionArgs): Promise<ActionData | Response> {
   // Require user with role-based authorization for group creation action
-  await requireUserWithMetadata(request, handle)
+  const user = await requireUserWithMetadata(request, handle)
   const t = getServerT(request)
 
   // Get tournament ID from search params since competition is now top-level
@@ -161,6 +161,7 @@ export async function action({
       categories: selectedCategories as Category[],
       configGroups: groupsNum,
       configSlots: slotsNum,
+      createdBy: user.id,
     })
 
     return redirect(

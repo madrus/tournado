@@ -64,6 +64,7 @@ export type CreateGroupStageParams = {
   readonly categories: readonly Category[]
   readonly configGroups: number
   readonly configSlots: number
+  readonly createdBy: string
 }
 
 // Server-side functions
@@ -73,6 +74,7 @@ export async function createGroupStage({
   categories,
   configGroups,
   configSlots,
+  createdBy,
 }: CreateGroupStageParams): Promise<string> {
   return await prisma.$transaction(async tx => {
     // Create the GroupStage
@@ -84,6 +86,7 @@ export async function createGroupStage({
         configGroups,
         configSlots,
         autoFill: true,
+        createdBy,
       },
     })
 

@@ -18,6 +18,7 @@ vi.mock('~/models/tournament.server', () => ({
     endDate: new Date(),
     divisions: [],
     categories: [],
+    createdBy: 'user-123',
   }),
   getAllDivisions: vi.fn(() => ['Boys', 'Girls']),
   getAllCategories: vi.fn(() => ['U12', 'U14', 'U16']),

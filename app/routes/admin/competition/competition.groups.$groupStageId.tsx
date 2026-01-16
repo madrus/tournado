@@ -25,6 +25,11 @@ type LoaderData = {
   readonly availableTeams: readonly UnassignedTeam[]
   readonly tournamentId: string
   readonly tournamentCreatedBy: string
+  readonly deleteImpact: {
+    groups: number
+    assignedTeams: number
+    matchesToDelete: number
+  }
 }
 
 type ActionData = {
@@ -70,11 +75,14 @@ export async function loader({
     groupStage.categories as Category[],
   )
 
+  const deleteImpact = await canDeleteGroupStage(groupStageId)
+
   return {
     groupStage,
     availableTeams,
     tournamentId,
     tournamentCreatedBy: tournament.createdBy,
+    deleteImpact: deleteImpact.impact,
   }
 }
 
@@ -191,8 +199,13 @@ export async function action({
 }
 
 export function GroupStageDetails(): JSX.Element {
-  const { groupStage, availableTeams, tournamentId, tournamentCreatedBy } =
-    useLoaderData<LoaderData>()
+  const {
+    groupStage,
+    availableTeams,
+    tournamentId,
+    tournamentCreatedBy,
+    deleteImpact,
+  } = useLoaderData<LoaderData>()
   const actionData = useActionData<ActionData>()
 
   return (
@@ -201,6 +214,7 @@ export function GroupStageDetails(): JSX.Element {
       availableTeams={availableTeams}
       tournamentId={tournamentId}
       tournamentCreatedBy={tournamentCreatedBy}
+      deleteImpact={deleteImpact}
       actionData={actionData}
     />
   )

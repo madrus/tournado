@@ -44,3 +44,11 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
 - **Learnings for future iterations:**
   - No new reusable patterns discovered.
 ---
+## 2026-01-16 19:59:14 CET - UC-005
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Enhanced the group stage delete confirmation dialog with impact details and updated translations
+- Added unit tests covering impact copy variants and confirm/cancel behavior
+- Files changed: app/features/competition/components/CompetitionGroupStageDetails.tsx, app/routes/admin/competition/competition.groups.$groupStageId.tsx, app/features/competition/components/__tests__/CompetitionGroupStageDetails.test.tsx, app/i18n/locales/en.json, app/i18n/locales/nl.json, app/i18n/locales/fr.json, app/i18n/locales/de.json, app/i18n/locales/tr.json, app/i18n/locales/ar.json, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - No new reusable patterns discovered.
+---

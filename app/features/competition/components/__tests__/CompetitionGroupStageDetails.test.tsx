@@ -1,5 +1,5 @@
 import { Category } from '@prisma/client'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -69,6 +69,11 @@ const baseProps = {
   availableTeams: [],
   tournamentId: 'tournament-1',
   tournamentCreatedBy: 'tournament-owner',
+  deleteImpact: {
+    groups: 2,
+    assignedTeams: 3,
+    matchesToDelete: 1,
+  },
 }
 
 const renderWithRouter = (ui: React.ReactElement) =>
@@ -130,5 +135,70 @@ describe('CompetitionGroupStageDetails', () => {
     expect(
       screen.getByText('competition.groupAssignment.deleteTitle'),
     ).toBeInTheDocument()
+  })
+
+  it('shows impact with matches when matches exist', async () => {
+    const user = userEvent.setup()
+
+    renderWithRouter(<CompetitionGroupStageDetails {...baseProps} />)
+
+    await user.click(screen.getByRole('button', { name: 'common.actions.delete' }))
+
+    expect(
+      screen.getByText('competition.groupAssignment.deleteImpactWithMatches'),
+    ).toBeInTheDocument()
+  })
+
+  it('shows impact without matches when none exist', async () => {
+    const user = userEvent.setup()
+
+    renderWithRouter(
+      <CompetitionGroupStageDetails
+        {...baseProps}
+        deleteImpact={{
+          groups: 1,
+          assignedTeams: 0,
+          matchesToDelete: 0,
+        }}
+      />,
+    )
+
+    await user.click(screen.getByRole('button', { name: 'common.actions.delete' }))
+
+    expect(
+      screen.getByText('competition.groupAssignment.deleteImpactWithoutMatches'),
+    ).toBeInTheDocument()
+  })
+
+  it('submits delete intent when confirm is clicked', async () => {
+    const user = userEvent.setup()
+
+    renderWithRouter(<CompetitionGroupStageDetails {...baseProps} />)
+
+    await user.click(screen.getByRole('button', { name: 'common.actions.delete' }))
+    await user.click(
+      screen.getByRole('button', {
+        name: 'competition.groupAssignment.deleteConfirm',
+      }),
+    )
+
+    expect(mockSubmit).toHaveBeenCalledTimes(1)
+  })
+
+  it('closes dialog without deleting when cancel is clicked', async () => {
+    const user = userEvent.setup()
+
+    renderWithRouter(<CompetitionGroupStageDetails {...baseProps} />)
+
+    await user.click(screen.getByRole('button', { name: 'common.actions.delete' }))
+    await user.click(screen.getByRole('button', { name: 'common.actions.cancel' }))
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText('competition.groupAssignment.deleteTitle'),
+      ).not.toBeInTheDocument()
+    })
+
+    expect(mockSubmit).not.toHaveBeenCalled()
   })
 })

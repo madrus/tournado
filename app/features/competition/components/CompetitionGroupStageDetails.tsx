@@ -18,6 +18,11 @@ type CompetitionGroupStageDetailsProps = {
   availableTeams: readonly UnassignedTeam[]
   tournamentId: string
   tournamentCreatedBy: string
+  deleteImpact: {
+    groups: number
+    assignedTeams: number
+    matchesToDelete: number
+  }
   actionData?: {
     error?: string
   }
@@ -89,6 +94,7 @@ export function CompetitionGroupStageDetails({
   availableTeams,
   tournamentId,
   tournamentCreatedBy,
+  deleteImpact,
 }: Readonly<CompetitionGroupStageDetailsProps>): JSX.Element {
   const { t } = useTranslation()
   const submit = useSubmit()
@@ -110,6 +116,18 @@ export function CompetitionGroupStageDetails({
     formData.set('intent', 'delete')
     submit(formData, { method: 'post' })
   }
+
+  const deleteDescription =
+    deleteImpact.matchesToDelete > 0
+      ? t('competition.groupAssignment.deleteImpactWithMatches', {
+          groups: deleteImpact.groups,
+          teams: deleteImpact.assignedTeams,
+          matches: deleteImpact.matchesToDelete,
+        })
+      : t('competition.groupAssignment.deleteImpactWithoutMatches', {
+          groups: deleteImpact.groups,
+          teams: deleteImpact.assignedTeams,
+        })
 
   return (
     <div className='space-y-6'>
@@ -146,8 +164,8 @@ export function CompetitionGroupStageDetails({
                 </ActionButton>
               }
               title={t('competition.groupAssignment.deleteTitle')}
-              description={t('competition.groupAssignment.deleteDescription')}
-              confirmLabel={t('common.actions.delete')}
+              description={deleteDescription}
+              confirmLabel={t('competition.groupAssignment.deleteConfirm')}
               cancelLabel={t('common.actions.cancel')}
               destructive
               onConfirm={handleDelete}

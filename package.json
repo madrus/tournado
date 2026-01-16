@@ -16,6 +16,7 @@
     "db:reset:staging": "flyctl ssh console --app tournado-staging -C \"npx prisma migrate reset --force\"",
     "predev": "rm -rf .react-router build",
     "dev": "react-router dev",
+    "dev:bridge": "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --user-data-dir=/tmp/ralph-session",
     "dev:mocks": "react-router dev -c \"pnpm dev:serve\"",
     "dev:serve": "NODE_OPTIONS=\"--import tsx/esm --import ./test/mocks/index.ts\" react-router-serve ./build/server/index.js",
     "dev:test": "PLAYWRIGHT=true DATABASE_URL=file:./prisma/data-test.db?connection_limit=1 react-router dev --port 8811",

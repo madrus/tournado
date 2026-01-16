@@ -1,3 +1,5 @@
+import { render, waitFor } from '@testing-library/react'
+import * as ReactRouter from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   canDeleteGroupStage,
@@ -7,9 +9,61 @@ import {
 import type { Tournament } from '~/models/tournament.server'
 import { getTournamentById } from '~/models/tournament.server'
 import type { User } from '~/models/user.server'
-import { action } from '~/routes/admin/competition/competition.groups.$groupStageId'
+import {
+  GroupStageDetails,
+  action,
+} from '~/routes/admin/competition/competition.groups.$groupStageId'
 import { adminPath } from '~/utils/adminRoutes'
 import { getUser } from '~/utils/session.server'
+import { toast } from '~/utils/toastUtils'
+
+vi.mock('react-router', async () => {
+  const actual = await vi.importActual<typeof import('react-router')>('react-router')
+  return {
+    ...actual,
+    useActionData: vi.fn(),
+    useLoaderData: vi.fn(),
+    useSubmit: vi.fn(() => vi.fn()),
+  }
+})
+
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string, options?: { reason?: string }) => {
+      if (key === 'competition.groupAssignment.errors.deleteBlocked') {
+        return `Cannot delete: ${options?.reason ?? ''}`.trim()
+      }
+      if (key === 'competition.groupAssignment.errors.deleteBlockedReason') {
+        return 'This group stage has matches with recorded results'
+      }
+      return key
+    },
+    i18n: { language: 'en' },
+  }),
+  initReactI18next: { type: '3rdParty', init: vi.fn() },
+}))
+
+vi.mock('~/utils/routeUtils', () => ({
+  useUser: () => ({ id: 'user-1', role: 'ADMIN' }),
+  useMatchesData: vi.fn(() => ({})),
+}))
+
+vi.mock('~/features/competition/components/GroupAssignmentBoard', () => ({
+  GroupAssignmentBoard: () => <div data-testid='group-assignment-board' />,
+}))
+
+vi.mock('~/features/competition/utils/groupStageDnd', () => ({
+  createSnapshotFromLoader: vi.fn(() => ({})),
+}))
+
+vi.mock('~/utils/toastUtils', () => ({
+  toast: {
+    error: vi.fn(),
+    success: vi.fn(),
+    info: vi.fn(),
+    warning: vi.fn(),
+  },
+}))
 
 vi.mock('~/utils/session.server', () => ({
   getUser: vi.fn(),
@@ -31,6 +85,8 @@ const mockGetGroupStageWithDetails = vi.mocked(getGroupStageWithDetails)
 const mockCanDeleteGroupStage = vi.mocked(canDeleteGroupStage)
 const mockDeleteGroupStage = vi.mocked(deleteGroupStage)
 const mockGetTournamentById = vi.mocked(getTournamentById)
+const mockUseActionData = vi.mocked(ReactRouter.useActionData)
+const mockUseLoaderData = vi.mocked(ReactRouter.useLoaderData)
 
 const buildRequest = (tournamentId: string) => {
   const formData = new FormData()
@@ -103,6 +159,8 @@ const buildArgs = (tournamentId: string): Parameters<typeof action>[0] =>
 describe('competition.groups.$groupStageId delete action', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockUseActionData.mockReset()
+    mockUseLoaderData.mockReset()
   })
 
   it('allows ADMIN to delete any group stage', async () => {
@@ -190,5 +248,36 @@ describe('competition.groups.$groupStageId delete action', () => {
         adminPath('/competition/groups?tournament=tournament-1&success=deleted'),
       )
     }
+  })
+})
+
+describe('competition.groups.$groupStageId delete blocked toast', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockUseLoaderData.mockReturnValue({
+      groupStage: baseGroupStage,
+      availableTeams: [],
+      tournamentId: 'tournament-1',
+      tournamentCreatedBy: 'tournament-creator',
+      deleteImpact: baseDeleteCheck.impact,
+    })
+  })
+
+  it('shows error toast when deletion is blocked', async () => {
+    mockUseActionData.mockReturnValue({
+      error: 'This group stage has matches with recorded results',
+    })
+
+    render(
+      <ReactRouter.MemoryRouter>
+        <GroupStageDetails />
+      </ReactRouter.MemoryRouter>,
+    )
+
+    await waitFor(() => {
+      expect(vi.mocked(toast.error)).toHaveBeenCalledWith(
+        'Cannot delete: This group stage has matches with recorded results',
+      )
+    })
   })
 })

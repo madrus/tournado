@@ -226,6 +226,8 @@
       "conflictReload": "إعادة تحميل الصفحة",
       "goToGroup": "الذهاب إلى {{name}}",
       "errors": {
+        "deleteBlocked": "Cannot delete: {{reason}}",
+        "deleteBlockedReason": "This group stage has matches with recorded results",
         "noCapacity": "لا مساحة متوفرة في المجموعة المؤكدة. أزل فريقاً من مجموعة أولاً.",
         "waitlistToGroup": "لا يمكن تعيين فرق قائمة الانتظار مباشرة للمجموعات. انقلها إلى المجموعة المؤكدة أولاً."
       },

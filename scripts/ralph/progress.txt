@@ -52,3 +52,12 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
 - **Learnings for future iterations:**
   - No new reusable patterns discovered.
 ---
+## 2026-01-16 21:33:38 CET - UC-006
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added delete-blocked toast handling for group stage deletion and translations for the blocked message
+- Added route test coverage to assert blocked deletion toast content
+- Browser verification: opened group stage details, opened delete dialog, captured screenshots in .agents/skills/dev-browser/tmp/verification-UC-006.png and .agents/skills/dev-browser/tmp/verification-UC-006-detail.png (no PLAYED matches in dev data to trigger blocked toast)
+- Files changed: app/features/competition/components/CompetitionGroupStageDetails.tsx, app/i18n/locales/en.json, app/i18n/locales/nl.json, app/i18n/locales/fr.json, app/i18n/locales/de.json, app/i18n/locales/tr.json, app/i18n/locales/ar.json, test/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.$groupStageId.test.tsx, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - No new reusable patterns discovered.
+---

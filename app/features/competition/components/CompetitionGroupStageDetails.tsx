@@ -1,4 +1,4 @@
-import { Component, type JSX, type ReactNode, useMemo } from 'react'
+import { Component, type JSX, type ReactNode, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useSubmit } from 'react-router'
 import { SimpleConfirmDialog } from '~/components/ConfirmDialog'
@@ -7,6 +7,7 @@ import { ActionButton } from '~/components/buttons/ActionButton'
 import type { GroupStageWithDetails, UnassignedTeam } from '~/models/group.server'
 import { adminPath } from '~/utils/adminRoutes'
 import { useUser } from '~/utils/routeUtils'
+import { toast } from '~/utils/toastUtils'
 import {
   type GroupAssignmentSnapshot,
   createSnapshotFromLoader,
@@ -95,6 +96,7 @@ export function CompetitionGroupStageDetails({
   tournamentId,
   tournamentCreatedBy,
   deleteImpact,
+  actionData,
 }: Readonly<CompetitionGroupStageDetailsProps>): JSX.Element {
   const { t } = useTranslation()
   const submit = useSubmit()
@@ -128,6 +130,21 @@ export function CompetitionGroupStageDetails({
           groups: deleteImpact.groups,
           teams: deleteImpact.assignedTeams,
         })
+
+  useEffect(() => {
+    if (!actionData?.error) return
+
+    const knownReason =
+      actionData.error === 'This group stage has matches with recorded results'
+        ? t('competition.groupAssignment.errors.deleteBlockedReason')
+        : actionData.error
+
+    toast.error(
+      t('competition.groupAssignment.errors.deleteBlocked', {
+        reason: knownReason,
+      }),
+    )
+  }, [actionData?.error, t])
 
   return (
     <div className='space-y-6'>

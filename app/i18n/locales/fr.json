@@ -228,6 +228,8 @@
       "conflictReload": "Recharger la page",
       "goToGroup": "Aller à {{name}}",
       "errors": {
+        "deleteBlocked": "Cannot delete: {{reason}}",
+        "deleteBlockedReason": "This group stage has matches with recorded results",
         "noCapacity": "Pas d'espace disponible dans le pool confirmé. Retirez d'abord une équipe d'un groupe.",
         "waitlistToGroup": "Les équipes en liste d'attente ne peuvent pas être assignées directement aux groupes. Déplacez-les d'abord vers le pool confirmé."
       },

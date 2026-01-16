@@ -228,6 +228,8 @@
       "conflictReload": "Sayfayı yenile",
       "goToGroup": "{{name}} grubuna git",
       "errors": {
+        "deleteBlocked": "Cannot delete: {{reason}}",
+        "deleteBlockedReason": "This group stage has matches with recorded results",
         "noCapacity": "Onaylı havuzda yer yok. Önce bir gruptan bir takım çıkarın.",
         "waitlistToGroup": "Bekleme listesindeki takımlar doğrudan gruplara atanamaz. Önce onaylı havuza taşıyın."
       },

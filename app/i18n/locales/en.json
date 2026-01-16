@@ -221,6 +221,8 @@
       "conflictReload": "Reload Page",
       "goToGroup": "Go to {{name}}",
       "errors": {
+        "deleteBlocked": "Cannot delete: {{reason}}",
+        "deleteBlockedReason": "This group stage has matches with recorded results",
         "noCapacity": "No space available in confirmed pool. Remove a team from a group first.",
         "waitlistToGroup": "Waitlist teams cannot be assigned directly to groups. Move them to confirmed pool first."
       },

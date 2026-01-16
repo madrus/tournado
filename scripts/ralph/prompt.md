@@ -168,12 +168,28 @@ However, prefer to proceed if the PRD provides enough context to make a reasonab
 
 For any story that changes UI, you MUST verify it works in the browser:
 
-1. Load the `dev-browser` skill
-2. Navigate to the relevant page
-3. Verify the UI changes work as expected
-4. Take a screenshot if helpful for the progress log
+**Setup (one-time per session):**
 
-A frontend story is NOT complete until browser verification passes.
+1. Ensure the dev server is running at localhost:5173: `pnpm run dev`
+2. Ensure Chrome with remote debugging is running: `pnpm run dev:bridge` (should show Chrome on port 9222)
+3. Start the dev-browser server: `pnpm run dev:browser` (wait for "Ready" message)
+
+**Verification workflow:**
+
+1. Load the `dev-browser` skill by reading `.agents/skills/dev-browser/SKILL.md`
+2. Write and run a small browser script to:
+   - Navigate to the relevant page (e.g., localhost:5173/admin/competition/...)
+   - Verify the UI changes work as expected
+   - Take a screenshot: `await page.screenshot({ path: "tmp/verification-[story-id].png" })`
+3. Document the verification in progress.txt
+
+**If browser automation fails:**
+
+- Check if Chrome bridge is running (pnpm run dev:bridge)
+- Check if dev-browser server is running (./server.sh)
+- Fall back to manual verification: Document in progress.txt that user needs to verify UI manually
+
+A frontend story is NOT complete until browser verification passes or is explicitly deferred to manual verification.
 
 ## Stop Condition
 

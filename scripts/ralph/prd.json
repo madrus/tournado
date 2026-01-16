@@ -165,7 +165,7 @@
         "Run unit tests for changed files (e.g., pnpm test:run app/models/__tests__/group.server.test.ts) - all related tests must pass"
       ],
       "priority": 7,
-      "passes": false,
+      "passes": true,
       "notes": ""
     }
   ]

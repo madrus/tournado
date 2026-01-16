@@ -1,0 +1,15 @@
+# Project Structure and Preferences
+
+## Components Organization
+
+- Shared components are located in `src/components` folder 
+- Feature specific components are located inside `src/features/<feature_name>/components` folder for each feature 
+- Components follow pascal-cased naming convention, other types of functions follow camel-cased naming convention
+
+## Styling
+
+- Use TailwindCSS for styling and semantic color system
+
+## State Management
+
+- Prefer Zustand for complex state management, especially for forms, to avoid prop drilling

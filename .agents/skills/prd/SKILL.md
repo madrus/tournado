@@ -126,11 +126,19 @@ Each story should be small enough to implement in one focused session.
 
 **Description:** As a [user], I want [feature] so that [benefit].
 
+**Decision: [Decision Name]:** [Optional: Document important choices upfront, e.g., "Backfill Strategy: Use required field with backfill to system user ID" or "Nullable vs Required: Use nullable field for legacy data compatibility"]
+
+**Implementation Note:** [Optional: Explicit implementation approach when requirements imply but don't fully specify the approach. Use when the implementation method needs to be clear to prevent blocking questions during autonomous execution, e.g., "To return deletion statistics, explicitly delete in order: GroupSlots (count), then Groups (count), then GroupStage. Wrap all in a Prisma transaction."]
+
 **Acceptance Criteria:**
 
 - [ ] Specific verifiable criterion
 - [ ] Another criterion
-- [ ] Typecheck/lint/unit tests pass
+- [ ] **[If schema changes]** Update ALL test fixtures that create [Model] objects to include [newField] field (use a valid test user ID from test setup)
+- [ ] Typecheck/lint pass
+- [ ] Create unit tests in [path] for [functionality]
+- [ ] Run unit tests for changed files (e.g., `pnpm test:run app/models/__tests__/feature.test.ts`) - all related tests must pass
+- [ ] **[If full test suite needed]** Run all tests: `pnpm test:run` - all tests must pass
 - [ ] All new UI strings are extracted to translation files (nl.json, en.json, ar.json, etc.)
 - [ ] **[UI Stories only]** Layout verified for responsiveness (Mobile/Desktop) and Bi-directional flow (LTR/RTL mirroring)
 - [ ] **[UI Stories only]** Verify in browser using `dev-browser` skill
@@ -156,6 +164,8 @@ Be explicit and unambiguous.
 - **RR7 Implementation:** Mention specific Loaders, Actions, or Middleware to be created or modified.
 - **Components:** List React components to be created or modified, and whether they should be feature-specific or shared.
 - **Migration:** Note if the change will require schema changes and/or data migration.
+- **Migration Workflow (for schema changes):** Document the development workflow for applying migrations, especially when adding required fields. Example: "This project is pre-production. Workflow: (1) Drop/recreate database, (2) Run migrations, (3) Run seedSuperAdmins.js, (4) Run seed.js"
+- **Testing Strategy:** Specify test type (unit tests with mocks vs integration tests with real database). For unit tests, specify which test files to create/update and which files to run tests for (e.g., "Run unit tests for changed files only: `pnpm test:run app/models/__tests__/group.server.test.ts`")
 - **I18n Strategy:** List the new translation keys/namespaces created for this feature.
 - **Mirroring Logic:** Detail any specific Tailwind logical classes (e.g., ps-4 instead of pl-4) or components that require `dir="rtl"` specific adjustments.
 - **Mobile-First Layout:** Describe how the layout collapses for mobile while maintaining LTR/RTL mirroring logic.
@@ -230,21 +240,32 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 
 **Description:** As a developer, I need to store task priority so it persists across sessions.
 
+**Decision: Default Value Strategy:** Use 'medium' as the default priority for existing tasks to avoid breaking current workflows.
+
 **Acceptance Criteria:**
 
 - [ ] Add priority column to tasks table: 'high' | 'medium' | 'low' (default 'medium')
-- [ ] Generate and run migration successfully
-- [ ] Typecheck passes
+- [ ] Generate migration: `pnpm prisma migrate dev --name add_priority_to_tasks`
+- [ ] Update ALL test fixtures that create Task objects to include priority field
+- [ ] Typecheck/lint pass
+- [ ] Create unit tests in `app/models/__tests__/task.server.test.ts` for priority field handling
+- [ ] Run unit tests for changed files: `pnpm test:run app/models/__tests__/task.server.test.ts` - all related tests must pass
 
 ### UC-002: Display priority indicator on task cards
 
 **Description:** As a user, I want to see task priority at a glance so I know what needs attention first.
 
+**Implementation Note:** Reuse existing `Badge` component with color variants. Map priority values to semantic colors: high=error, medium=warning, low=disabled.
+
 **Acceptance Criteria:**
 
 - [ ] Each task card shows colored priority badge (red=high, yellow=medium, gray=low)
 - [ ] Priority visible without hovering or clicking
-- [ ] Typecheck passes
+- [ ] All new UI strings extracted to translation files (nl.json, en.json, ar.json, etc.)
+- [ ] Layout verified for responsiveness (Mobile/Desktop) and Bi-directional flow (LTR/RTL mirroring)
+- [ ] Typecheck/lint pass
+- [ ] Create unit tests in `app/components/__tests__/TaskCard.test.tsx` for priority display
+- [ ] Run unit tests for changed files: `pnpm test:run app/components/__tests__/TaskCard.test.tsx` - all related tests must pass
 - [ ] Verify in browser using dev-browser skill
 
 ### UC-003: Add priority selector to task edit
@@ -256,7 +277,11 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 - [ ] Priority dropdown in task edit modal
 - [ ] Shows current priority as selected
 - [ ] Saves immediately on selection change
-- [ ] Typecheck passes
+- [ ] All new UI strings extracted to translation files
+- [ ] Layout verified for responsiveness and RTL mirroring
+- [ ] Typecheck/lint pass
+- [ ] Create unit tests in `app/components/__tests__/TaskEditModal.test.tsx` for priority selector
+- [ ] Run unit tests for changed files: `pnpm test:run app/components/__tests__/TaskEditModal.test.tsx` - all related tests must pass
 - [ ] Verify in browser using dev-browser skill
 
 ### UC-004: Filter tasks by priority
@@ -268,7 +293,11 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 - [ ] Filter dropdown with options: All | High | Medium | Low
 - [ ] Filter persists in URL params
 - [ ] Empty state message when no tasks match filter
-- [ ] Typecheck passes
+- [ ] All new UI strings extracted to translation files
+- [ ] Layout verified for responsiveness and RTL mirroring
+- [ ] Typecheck/lint pass
+- [ ] Create unit tests in `test/routes/tasks.index.test.tsx` for priority filtering
+- [ ] Run unit tests for changed files: `pnpm test:run test/routes/tasks.index.test.tsx` - all related tests must pass
 - [ ] Verify in browser using dev-browser skill
 
 ## Functional Requirements
@@ -287,9 +316,11 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 
 ## Technical Considerations
 
-- Reuse existing badge component with color variants
-- Filter state managed via URL search params
-- Priority stored in database, not computed
+- **Components:** Reuse existing badge component with color variants
+- **State Management:** Filter state managed via URL search params
+- **Database:** Priority stored in database, not computed
+- **Testing Strategy:** Use mocked unit tests for model functions and component rendering. Run tests for changed files only to keep iterations fast.
+- **Migration Workflow:** Standard migration workflow - add column with default value, update model functions, update test fixtures
 
 ## Success Metrics
 

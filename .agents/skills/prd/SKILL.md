@@ -119,6 +119,8 @@ Each story needs:
 
 Each story should be small enough to implement in one focused session.
 
+**CRITICAL:** Always include UC-999 (Final Verification) as the last use case. This ensures full project verification (typecheck, lint, unit tests, build) runs after all feature changes are complete.
+
 **Format:**
 
 ```markdown
@@ -165,7 +167,7 @@ Be explicit and unambiguous.
 - **Components:** List React components to be created or modified, and whether they should be feature-specific or shared.
 - **Migration:** Note if the change will require schema changes and/or data migration.
 - **Migration Workflow (for schema changes):** Document the development workflow for applying migrations, especially when adding required fields. Example: "This project is pre-production. Workflow: (1) Drop/recreate database, (2) Run migrations, (3) Run seedSuperAdmins.js, (4) Run seed.js"
-- **Testing Strategy:** Specify test type (unit tests with mocks vs integration tests with real database). For unit tests, specify which test files to create/update and which files to run tests for (e.g., "Run unit tests for changed files only: `pnpm test:run app/models/__tests__/group.server.test.ts`")
+- **Testing Strategy:** Specify test type (unit tests with mocks vs integration tests with real database). For unit tests, specify which test files to create/update and which files to run tests for (e.g., "Run unit tests for changed files only: `pnpm test:run app/models/__tests__/group.server.test.ts`"). Note: UC-999 (Final Verification) will run the complete test suite at the end.
 - **I18n Strategy:** List the new translation keys/namespaces created for this feature.
 - **Mirroring Logic:** Detail any specific Tailwind logical classes (e.g., ps-4 instead of pl-4) or components that require `dir="rtl"` specific adjustments.
 - **Mobile-First Layout:** Describe how the layout collapses for mobile while maintaining LTR/RTL mirroring logic.
@@ -300,6 +302,20 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 - [ ] Run unit tests for changed files: `pnpm test:run test/routes/tasks.index.test.tsx` - all related tests must pass
 - [ ] Verify in browser using dev-browser skill
 
+### UC-999: Final Verification (ALWAYS INCLUDE AS LAST USE CASE)
+
+**Description:** As a developer, I need to ensure the entire codebase is production-ready after all changes.
+
+**Implementation Note:** This use case MUST be the final step in every PRD, regardless of feature type.
+
+**Acceptance Criteria:**
+
+- [ ] Run full typecheck: `pnpm typecheck` - must pass with zero errors
+- [ ] Run full lint: `pnpm lint` - must pass with zero errors
+- [ ] Run all unit tests: `pnpm test:run` - all tests must pass
+- [ ] Run production build: `pnpm build` - must build successfully with zero errors
+- [ ] All four verification steps above must complete successfully before marking feature as complete
+
 ## Functional Requirements
 
 - FR-1: Add `priority` field to tasks table ('high' | 'medium' | 'low', default 'medium')
@@ -343,6 +359,7 @@ Before saving the PRD:
 - [ ] Asked clarifying questions with lettered options
 - [ ] Incorporated user's answers
 - [ ] Use cases are small and specific
+- [ ] **UC-999 (Final Verification) is included as the last use case**
 - [ ] Functional requirements are numbered and unambiguous
 - [ ] Non-goals section defines clear boundaries
 - [ ] Saved to `tasks/prd-[feature-name].md`

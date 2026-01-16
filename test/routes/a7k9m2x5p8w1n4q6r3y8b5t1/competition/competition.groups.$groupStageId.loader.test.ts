@@ -22,6 +22,14 @@ vi.mock('~/models/group.server', () => ({
     reserveSlots: [],
   }),
   getUnassignedTeamsByCategories: vi.fn().mockResolvedValue([]),
+  canDeleteGroupStage: vi.fn().mockResolvedValue({
+    canDelete: true,
+    impact: {
+      groups: 0,
+      assignedTeams: 0,
+      matchesToDelete: 0,
+    },
+  }),
 }))
 
 // Mock tournament model

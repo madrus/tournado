@@ -1,4 +1,10 @@
-import { type Browser, type ElementHandle, type Page, chromium } from 'playwright'
+import {
+  type Browser,
+  type CDPSession,
+  type ElementHandle,
+  type Page,
+  chromium,
+} from 'playwright'
 import { getSnapshotScript } from './snapshot/browser-script'
 import type {
   GetPageRequest,
@@ -122,11 +128,19 @@ export async function waitForPageLoad(
 async function getPageLoadState(page: Page): Promise<PageLoadState> {
   const result = await page.evaluate(() => {
     // Access browser globals via globalThis for TypeScript compatibility
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    const g = globalThis as { document?: any; performance?: any }
-    /* eslint-enable @typescript-eslint/no-explicit-any */
-    const perf = g.performance!
-    const doc = g.document!
+    const g = globalThis as unknown as {
+      document?: Document
+      performance?: Performance
+    }
+    const perf = g.performance
+    const doc = g.document
+
+    if (!perf || !doc)
+      return {
+        documentReadyState: 'unknown',
+        documentLoading: false,
+        pendingRequests: [],
+      }
 
     const now = perf.now()
     const resources = perf.getEntriesByType('resource')
@@ -257,7 +271,7 @@ export async function connect(
 
   async function ensureConnected(): Promise<Browser> {
     // Return existing connection if still active
-    if (browser && browser.isConnected()) {
+    if (browser?.isConnected()) {
       return browser
     }
 
@@ -295,7 +309,7 @@ export async function connect(
   ): Promise<Page | null> {
     for (const context of b.contexts()) {
       for (const page of context.pages()) {
-        let cdpSession
+        let cdpSession: CDPSession | null = null
         try {
           cdpSession = await context.newCDPSession(page)
           const { targetInfo } = await cdpSession.send('Target.getTargetInfo')
@@ -346,6 +360,9 @@ export async function connect(
 
     // Check if we're in extension mode
     const infoRes = await fetch(serverUrl)
+    if (!infoRes.ok) {
+      throw new Error(`Server returned ${infoRes.status}: ${await infoRes.text()}`)
+    }
     const info = (await infoRes.json()) as { mode?: string }
     const isExtensionMode = info.mode === 'extension'
 
@@ -359,7 +376,9 @@ export async function connect(
       }
 
       if (allPages.length === 1) {
-        return allPages[0]!
+        const firstPage = allPages[0]
+        if (!firstPage) throw new Error(`No pages available in browser`)
+        return firstPage
       }
 
       // Multiple pages - try to match by URL if available
@@ -391,6 +410,9 @@ export async function connect(
 
     async list(): Promise<string[]> {
       const res = await fetch(`${serverUrl}/pages`)
+      if (!res.ok) {
+        throw new Error(`Server returned ${res.status}: ${await res.text()}`)
+      }
       const data = (await res.json()) as ListPagesResponse
       return data.pages
     },
@@ -422,13 +444,12 @@ export async function connect(
       const snapshot = await page.evaluate((script: string) => {
         // Inject script if not already present
         // Note: page.evaluate runs in browser context where window exists
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const w = globalThis as any
+        const w = globalThis as unknown as { __devBrowser_getAISnapshot?: () => string }
         if (!w.__devBrowser_getAISnapshot) {
-          // eslint-disable-next-line no-eval
+          // biome-ignore lint/security/noGlobalEval: Eval required for injecting script in browser context
           eval(script)
         }
-        return w.__devBrowser_getAISnapshot()
+        return w.__devBrowser_getAISnapshot?.() || ''
       }, snapshotScript)
 
       return snapshot
@@ -441,8 +462,9 @@ export async function connect(
       // Find the element using the stored refs
       const elementHandle = await page.evaluateHandle((refId: string) => {
         // Note: page.evaluateHandle runs in browser context where globalThis is the window
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const w = globalThis as any
+        const w = globalThis as unknown as {
+          __devBrowserRefs?: Record<string, Element>
+        }
         const refs = w.__devBrowserRefs
         if (!refs) {
           throw new Error('No snapshot refs found. Call getAISnapshot first.')

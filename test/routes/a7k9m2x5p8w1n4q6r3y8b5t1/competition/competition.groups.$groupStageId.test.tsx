@@ -30,11 +30,8 @@ vi.mock('react-router', async () => {
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string, options?: { reason?: string }) => {
-      if (key === 'competition.groupAssignment.errors.deleteBlocked') {
-        return `Cannot delete: ${options?.reason ?? ''}`.trim()
-      }
-      if (key === 'competition.groupAssignment.errors.deleteBlockedReason') {
-        return 'This group stage has matches with recorded results'
+      if (options?.reason) {
+        return `${key} (reason: ${options.reason})`
       }
       return key
     },
@@ -78,6 +75,15 @@ vi.mock('~/models/group.server', () => ({
 
 vi.mock('~/models/tournament.server', () => ({
   getTournamentById: vi.fn(),
+}))
+
+vi.mock('~/i18n/i18n.server', () => ({
+  getServerT: vi.fn(() => (key: string, options?: { reason?: string }) => {
+    if (options?.reason) {
+      return `${key} (reason: ${options.reason})`
+    }
+    return key
+  }),
 }))
 
 const mockGetUser = vi.mocked(getUser)
@@ -229,7 +235,8 @@ describe('competition.groups.$groupStageId delete action', () => {
     const result = await action(buildArgs('tournament-1'))
 
     expect(result).toEqual({
-      error: 'This group stage has matches with recorded results',
+      error:
+        'competition.groupAssignment.errors.deleteBlocked (reason: competition.groupAssignment.errors.deleteBlockedReason)',
     })
     expect(mockDeleteGroupStage).not.toHaveBeenCalled()
   })
@@ -264,8 +271,10 @@ describe('competition.groups.$groupStageId delete blocked toast', () => {
   })
 
   it('shows error toast when deletion is blocked', async () => {
+    const errorKey = 'competition.groupAssignment.errors.deleteBlocked'
+    const reasonKey = 'competition.groupAssignment.errors.deleteBlockedReason'
     mockUseActionData.mockReturnValue({
-      error: 'This group stage has matches with recorded results',
+      error: `${errorKey} (reason: ${reasonKey})`,
     })
 
     render(
@@ -276,7 +285,7 @@ describe('competition.groups.$groupStageId delete blocked toast', () => {
 
     await waitFor(() => {
       expect(vi.mocked(toast.error)).toHaveBeenCalledWith(
-        'Cannot delete: This group stage has matches with recorded results',
+        `${errorKey} (reason: ${reasonKey})`,
       )
     })
   })

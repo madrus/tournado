@@ -40,20 +40,20 @@ async function setContent(html: string): Promise<void> {
 async function getSnapshot(): Promise<string> {
   const script = getSnapshotScript()
   return await page.evaluate((s: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const w = globalThis as any
+    const w = globalThis as unknown as { __devBrowser_getAISnapshot?: () => string }
     if (!w.__devBrowser_getAISnapshot) {
-      // eslint-disable-next-line no-eval
+      // biome-ignore lint/security/noGlobalEval: Eval required for test script injection
       eval(s)
     }
-    return w.__devBrowser_getAISnapshot()
+    return w.__devBrowser_getAISnapshot?.() || ''
   }, script)
 }
 
 async function selectRef(ref: string): Promise<unknown> {
   return await page.evaluate((refId: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const w = globalThis as any
+    const w = globalThis as unknown as {
+      __devBrowser_selectSnapshotRef: (id: string) => Element
+    }
     const element = w.__devBrowser_selectSnapshotRef(refId)
     return {
       tagName: element.tagName,
@@ -110,8 +110,7 @@ describe('ARIA Snapshot', () => {
 
     // Check that refs are stored
     const hasRefs = await page.evaluate(() => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const w = globalThis as any
+      const w = globalThis as unknown as { __devBrowserRefs?: Record<string, Element> }
       return (
         typeof w.__devBrowserRefs === 'object' &&
         Object.keys(w.__devBrowserRefs).length > 0
@@ -135,11 +134,14 @@ describe('ARIA Snapshot', () => {
     // Extract a ref from the snapshot
     const refMatch = snapshot.match(/\[ref=(e\d+)\]/)
     expect(refMatch).toBeTruthy()
-    expect(refMatch![1]).toBeDefined()
-    const ref = refMatch![1] as string
+    const ref = refMatch?.[1]
+    expect(ref).toBeDefined()
 
     // Select the element by ref
-    const result = (await selectRef(ref)) as { tagName: string; textContent: string }
+    const result = (await selectRef(ref as string)) as {
+      tagName: string
+      textContent: string
+    }
     expect(result.tagName).toBe('BUTTON')
     expect(result.textContent).toBe('My Button')
   })

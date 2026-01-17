@@ -6,6 +6,9 @@
 import { serveRelay } from '@/relay.js'
 
 const PORT = parseInt(process.env.PORT || '9222', 10)
+if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
+  throw new Error(`Invalid PORT value: ${process.env.PORT}`)
+}
 const HOST = process.env.HOST || '127.0.0.1'
 
 async function main() {

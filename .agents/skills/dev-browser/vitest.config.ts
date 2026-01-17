@@ -4,7 +4,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
-    include: ['src/**/*.test.ts'],
+    include: ['src/**/*.test.{ts,tsx}'],
     testTimeout: 60000, // Playwright tests can be slow
     hookTimeout: 60000,
     teardownTimeout: 60000,

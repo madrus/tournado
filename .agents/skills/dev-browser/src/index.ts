@@ -1,6 +1,6 @@
-import { mkdirSync } from 'fs'
-import type { Socket } from 'net'
-import { join } from 'path'
+import { mkdirSync } from 'node:fs'
+import type { Socket } from 'node:net'
+import { join } from 'node:path'
 import express, { type Express, type Request, type Response } from 'express'
 import { type BrowserContext, type Page, chromium } from 'playwright'
 import type {
@@ -271,14 +271,18 @@ export async function serve(options: ServeOptions = {}): Promise<DevBrowserServe
   }
 
   // Register handlers
-  signals.forEach(sig => process.on(sig, signalHandler))
+  signals.forEach(sig => {
+    process.on(sig, signalHandler)
+  })
   process.on('uncaughtException', errorHandler)
   process.on('unhandledRejection', errorHandler)
   process.on('exit', syncCleanup)
 
   // Helper to remove all handlers
   const removeHandlers = () => {
-    signals.forEach(sig => process.off(sig, signalHandler))
+    signals.forEach(sig => {
+      process.off(sig, signalHandler)
+    })
     process.off('uncaughtException', errorHandler)
     process.off('unhandledRejection', errorHandler)
     process.off('exit', syncCleanup)

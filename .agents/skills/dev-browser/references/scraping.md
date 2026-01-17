@@ -27,6 +27,8 @@ First, intercept a request to understand URL structure and required headers:
 import * as fs from 'node:fs'
 import { connect, waitForPageLoad } from '@/client.js'
 
+fs.mkdirSync('tmp', { recursive: true })
+
 const client = await connect()
 const page = await client.page('site')
 
@@ -83,6 +85,8 @@ Once you understand the schema, replay requests directly:
 ```typescript
 import * as fs from 'node:fs'
 import { connect } from '@/client.js'
+
+fs.mkdirSync('tmp', { recursive: true })
 
 const client = await connect()
 const page = await client.page('site')

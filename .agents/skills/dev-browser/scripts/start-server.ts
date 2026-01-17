@@ -1,7 +1,7 @@
-import { execSync } from 'child_process'
-import { existsSync, mkdirSync, readdirSync } from 'fs'
-import { dirname, join } from 'path'
-import { fileURLToPath } from 'url'
+import { execSync } from 'node:child_process'
+import { existsSync, mkdirSync, readdirSync } from 'node:fs'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { serve } from '@/index.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -70,6 +70,7 @@ try {
 } catch (error) {
   console.error('Failed to install Playwright browsers:', error)
   console.log('You may need to run: npx playwright install chromium')
+  process.exit(1)
 }
 
 // Check if dev-browser server is already running on port 9222

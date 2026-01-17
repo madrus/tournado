@@ -46,16 +46,6 @@ interface PlaywrightClient {
 }
 
 // Message types for extension communication
-interface ExtensionCommandMessage {
-  id: number
-  method: 'forwardCDPCommand'
-  params: {
-    method: string
-    params?: Record<string, unknown>
-    sessionId?: string
-  }
-}
-
 interface ExtensionResponseMessage {
   id: number
   result?: unknown

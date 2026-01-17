@@ -140,12 +140,14 @@ export async function action({
         if (!deleteCheck.canDelete) {
           const reason =
             deleteCheck.reason === 'This group stage has matches with recorded results'
-              ? t('groupAssignment.errors.deleteBlockedReason')
+              ? t('competition.groupAssignment.errors.deleteBlockedReason')
               : deleteCheck.reason
 
           return {
             error: reason
-              ? t('groupAssignment.errors.deleteBlocked', { reason })
+              ? t('competition.groupAssignment.errors.deleteBlocked', {
+                  reason,
+                })
               : t('errors.somethingWentWrong'),
           }
         }

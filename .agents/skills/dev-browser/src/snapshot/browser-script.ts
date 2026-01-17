@@ -8,8 +8,6 @@
  * into a single script that exposes window.__devBrowser_getAISnapshot() and
  * window.__devBrowser_selectSnapshotRef().
  */
-import * as fs from 'fs'
-import * as path from 'path'
 
 // Cache the bundled script
 let cachedScript: string | null = null
@@ -25,7 +23,7 @@ export function getSnapshotScript(): string {
   if (cachedScript) return cachedScript
 
   // Read the compiled JavaScript files
-  const snapshotDir = path.dirname(new URL(import.meta.url).pathname)
+  // const snapshotDir = path.dirname(new URL(import.meta.url).pathname)
 
   // For now, we'll inline the functions directly
   // In production, we could use a bundler like esbuild to create a single file

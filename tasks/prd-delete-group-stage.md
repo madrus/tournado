@@ -23,7 +23,9 @@ Add the ability to delete a Group Stage from Competition Management. Currently, 
 
 **Description:** As a developer, I need ownership tracking on Tournament and GroupStage to enable MANAGER role permission checks.
 
-**Decision: Development Workflow:** This project is pre-production. The development workflow is:
+**Decision: Development Workflow vs. Production Migration:**
+
+**For Reset Environments (Development):** When dropping and recreating the database:
 
 1. Drop and recreate database (empty tables)
 2. Run migrations (no backfill needed - tables are empty)
@@ -31,6 +33,12 @@ Add the ability to delete a Group Stage from Competition Management. Currently, 
 4. Run `seed.js` (creates tournaments/teams with `createdBy` set)
 
 The `seed.js` file already handles `createdBy` by finding/creating the `madrus@gmail.com` user and using their ID.
+
+**For Non-Reset Environments (Staging/Production):** When migrating live data:
+
+- Backfill is **required** - existing Tournament and GroupStage records need `createdBy` values
+- Run backfill after migration but before deploying application code
+- See "Database Operations" section below for backfill trigger conditions and steps
 
 **Acceptance Criteria:**
 
@@ -203,7 +211,17 @@ The `seed.js` file already handles `createdBy` by finding/creating the `madrus@g
 
 - Add `createdBy` field to `Tournament` model (String, **required**, references User.id)
 - Add `createdBy` field to `GroupStage` model (String, **required**, references User.id)
-- Backfill existing records with user ID of `madrus@gmail.com`
+
+**Backfill requirements:**
+
+- **When to backfill:** Only required when migrating **non-reset environments** (staging/production) that contain existing Tournament or GroupStage records
+- **Not needed for:** Development workflows that drop and recreate the database (see UC-000)
+- **Backfill steps for live data:**
+  1. Run migration to add fields (will initially fail due to required constraint)
+  2. Temporarily make fields optional in schema or use migration SQL to add with default
+  3. Run backfill script: `UPDATE Tournament SET createdBy = (SELECT id FROM User WHERE email = 'madrus@gmail.com'); UPDATE GroupStage SET createdBy = (SELECT id FROM User WHERE email = 'madrus@gmail.com');`
+  4. Restore required constraint if temporarily removed
+  5. Deploy application code that uses `createdBy` fields
 
 **Cascade delete behavior:**
 

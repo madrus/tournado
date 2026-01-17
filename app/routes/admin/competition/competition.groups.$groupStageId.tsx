@@ -5,6 +5,7 @@ import { CompetitionGroupStageDetails } from '~/features/competition/components'
 import { getServerT } from '~/i18n/i18n.server'
 import type { GroupStageWithDetails, UnassignedTeam } from '~/models/group.server'
 import {
+  GROUP_STAGE_DELETE_ERROR_CODES,
   assignTeamToGroupSlot,
   canDeleteGroupStage,
   clearGroupSlot,
@@ -26,6 +27,7 @@ type LoaderData = {
   readonly availableTeams: readonly UnassignedTeam[]
   readonly tournamentId: string
   readonly tournamentCreatedBy: string
+  readonly canDelete: boolean
   readonly deleteImpact: {
     groups: number
     assignedTeams: number
@@ -33,7 +35,7 @@ type LoaderData = {
   }
 }
 
-type ActionData = {
+export type ActionData = {
   readonly error?: string
 }
 
@@ -83,6 +85,7 @@ export async function loader({
     availableTeams,
     tournamentId,
     tournamentCreatedBy: tournament.createdBy,
+    canDelete: deleteImpact.canDelete,
     deleteImpact: deleteImpact.impact,
   }
 }
@@ -139,7 +142,7 @@ export async function action({
         const deleteCheck = await canDeleteGroupStage(groupStageId)
         if (!deleteCheck.canDelete) {
           const reason =
-            deleteCheck.errorCode === 'HAS_PLAYED_MATCHES'
+            deleteCheck.errorCode === GROUP_STAGE_DELETE_ERROR_CODES.HAS_PLAYED_MATCHES
               ? t('competition.groupAssignment.errors.deleteBlockedReason')
               : t('errors.somethingWentWrong')
 
@@ -215,6 +218,7 @@ export function GroupStageDetails(): JSX.Element {
     availableTeams,
     tournamentId,
     tournamentCreatedBy,
+    canDelete,
     deleteImpact,
   } = useLoaderData<LoaderData>()
   const actionData = useActionData<ActionData>()
@@ -225,6 +229,7 @@ export function GroupStageDetails(): JSX.Element {
       availableTeams={availableTeams}
       tournamentId={tournamentId}
       tournamentCreatedBy={tournamentCreatedBy}
+      canDelete={canDelete}
       deleteImpact={deleteImpact}
       actionData={actionData}
     />

@@ -221,7 +221,7 @@
       "goToGroup": "Ga naar {{name}}",
       "errors": {
         "deleteBlocked": "Kan niet verwijderen: {{reason}}",
-        "deleteBlockedReason": "Deze groepsfase heeft wedstrijden met geregistreerde resultaten",
+        "deleteBlockedReason": "Deze poulefase heeft wedstrijden met geregistreerde resultaten",
         "noCapacity": "Geen ruimte beschikbaar in bevestigde pool. Verwijder eerst een team uit een poule.",
         "waitlistToGroup": "Wachtlijstteams kunnen niet direct aan poules worden toegewezen. Verplaats ze eerst naar de bevestigde pool."
       },
@@ -356,7 +356,7 @@
       "slotNotFound": "Doelslot niet gevonden. Vernieuw en probeer het opnieuw."
     },
     "groupStage": {
-      "deleteSuccess": "Groepsfase succesvol verwijderd"
+      "deleteSuccess": "Poulefase succesvol verwijderd"
     },
     "panel": {
       "errorTitle": "Er is iets misgegaan",

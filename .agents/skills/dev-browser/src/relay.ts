@@ -356,13 +356,20 @@ export async function serveRelay(options: RelayOptions = {}): Promise<RelayServe
       const target = connectedTargets.get(existingSessionId)
       if (target) {
         // Activate the tab so it becomes the active tab
-        await sendToExtension({
-          method: 'forwardCDPCommand',
-          params: {
-            method: 'Target.activateTarget',
-            params: { targetId: target.targetId },
-          },
-        })
+        try {
+          await sendToExtension({
+            method: 'forwardCDPCommand',
+            params: {
+              method: 'Target.activateTarget',
+              params: { targetId: target.targetId },
+            },
+          })
+        } catch (err) {
+          log('Error activating existing tab:', err)
+          const message = (err as Error).message
+          const status = message.includes('Extension not connected') ? 503 : 500
+          return c.json({ error: message }, status)
+        }
         return c.json({
           wsEndpoint: `ws://${host}:${port}/cdp`,
           name,
@@ -386,20 +393,38 @@ export async function serveRelay(options: RelayOptions = {}): Promise<RelayServe
       })) as { targetId: string }
 
       // Wait for Target.attachedToTarget event to register the new target
-      await new Promise(resolve => setTimeout(resolve, 200))
+      // Use polling with timeout instead of fixed delay
+      const deadline = Date.now() + 5000
+      while (Date.now() < deadline) {
+        if (
+          Array.from(connectedTargets.values()).some(
+            t => t.targetId === result.targetId,
+          )
+        ) {
+          break
+        }
+        await new Promise(resolve => setTimeout(resolve, 50))
+      }
 
       // Find and name the new target
       for (const [sessionId, target] of connectedTargets) {
         if (target.targetId === result.targetId) {
           namedPages.set(name, sessionId)
           // Activate the tab so it becomes the active tab
-          await sendToExtension({
-            method: 'forwardCDPCommand',
-            params: {
-              method: 'Target.activateTarget',
-              params: { targetId: target.targetId },
-            },
-          })
+          try {
+            await sendToExtension({
+              method: 'forwardCDPCommand',
+              params: {
+                method: 'Target.activateTarget',
+                params: { targetId: target.targetId },
+              },
+            })
+          } catch (err) {
+            log('Error activating new tab:', err)
+            const message = (err as Error).message
+            const status = message.includes('Extension not connected') ? 503 : 500
+            return c.json({ error: message }, status)
+          }
           return c.json({
             wsEndpoint: `ws://${host}:${port}/cdp`,
             name,
@@ -632,6 +657,8 @@ export async function serveRelay(options: RelayOptions = {}): Promise<RelayServe
               sendAttachedToTarget(target)
             } else if (method === 'Target.detachedFromTarget') {
               const detachParams = params as { sessionId: string }
+              const target = connectedTargets.get(detachParams.sessionId)
+
               connectedTargets.delete(detachParams.sessionId)
 
               // Also remove any name mapping
@@ -639,6 +666,13 @@ export async function serveRelay(options: RelayOptions = {}): Promise<RelayServe
                 if (sid === detachParams.sessionId) {
                   namedPages.delete(name)
                   break
+                }
+              }
+
+              // Remove from all clients' knownTargets to allow future re-attach
+              if (target) {
+                for (const client of playwrightClients.values()) {
+                  client.knownTargets.delete(target.targetId)
                 }
               }
 

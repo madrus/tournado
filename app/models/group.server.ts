@@ -607,7 +607,7 @@ export async function deleteGroupStage(
       const matchesResult = await tx.match.deleteMany({
         where: {
           OR: [{ homeTeamId: { in: teamIds } }, { awayTeamId: { in: teamIds } }],
-          status: { not: 'PLAYED' }, // Safety check, though canDeleteGroupStage handles the blocking
+          status: { not: MatchStatus.PLAYED }, // Safety check, though canDeleteGroupStage handles the blocking
         },
       })
       matchesDeleted = matchesResult.count
@@ -678,7 +678,7 @@ export async function canDeleteGroupStage(
   const uniqueTeamIds = [
     ...new Set(assignedSlots.flatMap(slot => (slot.teamId ? [slot.teamId] : []))),
   ]
-  const assignedTeamsCount = assignedSlots.length
+  const assignedTeamsCount = uniqueTeamIds.length
   const hasTeams = uniqueTeamIds.length > 0
 
   const [playedMatchesCount, nonPlayedMatchesCount] = hasTeams

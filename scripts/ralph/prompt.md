@@ -15,7 +15,7 @@ The default source branch to start with is "dev".
 6. Run quality checks (e.g., typecheck, lint, test - use whatever your project requires)
 7. Update AGENTS.md files if you discover reusable patterns (see below)
 8. If checks pass, commit ALL changes with message: `feat: [Story ID] - [Story Title]`
-9. Update the PRD to set `passes: true` for the completed story
+9. Update the PRD to set `passes: true` for the completed story (DO NOT ask for human confirmation!)
 10. Append your progress to `progress.txt`
 
 ## Progress Report Format

@@ -19,6 +19,7 @@ type CompetitionGroupStageDetailsProps = {
   availableTeams: readonly UnassignedTeam[]
   tournamentId: string
   tournamentCreatedBy: string
+  canDelete: boolean
   deleteImpact: {
     groups: number
     assignedTeams: number
@@ -95,6 +96,7 @@ export function CompetitionGroupStageDetails({
   availableTeams,
   tournamentId,
   tournamentCreatedBy,
+  canDelete: canDeleteFromState,
   deleteImpact,
   actionData,
 }: Readonly<CompetitionGroupStageDetailsProps>): JSX.Element {
@@ -102,10 +104,12 @@ export function CompetitionGroupStageDetails({
   const submit = useSubmit()
   const user = useUser()
 
-  const canDelete =
+  const hasDeletePermission =
     user?.role === 'ADMIN' ||
     (user?.role === 'MANAGER' &&
       (groupStage.createdBy === user.id || tournamentCreatedBy === user.id))
+
+  const canDelete = hasDeletePermission && canDeleteFromState
 
   // Create initial snapshot from loader data
   const initialSnapshot = useMemo(

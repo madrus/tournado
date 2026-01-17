@@ -74,6 +74,7 @@ const baseProps = {
     assignedTeams: 3,
     matchesToDelete: 1,
   },
+  canDelete: true,
 }
 
 const renderWithRouter = (ui: React.ReactElement) =>

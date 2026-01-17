@@ -71,6 +71,9 @@ vi.mock('~/models/group.server', () => ({
   getUnassignedTeamsByCategories: vi.fn(),
   canDeleteGroupStage: vi.fn(),
   deleteGroupStage: vi.fn(),
+  GROUP_STAGE_DELETE_ERROR_CODES: {
+    HAS_PLAYED_MATCHES: 'HAS_PLAYED_MATCHES',
+  },
 }))
 
 vi.mock('~/models/tournament.server', () => ({

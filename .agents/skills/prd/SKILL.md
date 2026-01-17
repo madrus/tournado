@@ -32,11 +32,12 @@ Tournado is not a greenfield project. It has four established features:
 ## Operational Rules and Constraints
 
 1. **Focus exclusively on PRD creation:** do NOT convert PRD to JSON nor implement code.
-2. **Respect Multi-Tenancy:** Account for data isolation in every feature.
-3. **Refactor-First Thinking:** Evaluate if requirements should be new features or modifications of existing ones (Teams, Tournaments, Competition Management, Users).
-4. **I18n-First Development:** No hardcoded strings are permitted in the UI. Every piece of text must be mapped to a translation key across all 6 supported languages (nl, en, fr, ar, tr, de).
-5. **Bi-Directional (RTL/LTR) Compliance:** The design must be "Direction-Agnostic." All visual elements must mirror (left/right) correctly for Arabic (ar). Use logical properties (e.g., start/end, inline-start) instead of physical properties (e.g., left/right) to ensure layout integrity.
-6. **Mobile-First Design Strategy:** All UI requirements must prioritize the mobile experience. Define how layouts stack, components collapse, and navigation adjusts for small screens, ensuring core functionality is touch-friendly and performant before scaling to desktop views.
+2. **PRD Roadmap Alignment:** Before drafting requirements, verify alignment with the PRD roadmap. Note phase dependencies and user-impact risks in the PRD. **If a significant conflict with the roadmap is found, ask the user for clarification before generating the PRD.**
+3. **Respect Multi-Tenancy:** Account for data isolation in every feature.
+4. **Refactor-First Thinking:** Evaluate if requirements should be new features or modifications of existing ones (Teams, Tournaments, Competition Management, Users).
+5. **I18n-First Development:** No hardcoded strings are permitted in the UI. Every piece of text must be mapped to a translation key across all 6 supported languages (nl, en, fr, ar, tr, de).
+6. **Bi-Directional (RTL/LTR) Compliance:** The design must be "Direction-Agnostic." All visual elements must mirror (left/right) correctly for Arabic (ar). Use logical properties (e.g., start/end, inline-start) instead of physical properties (e.g., left/right) to ensure layout integrity.
+7. **Mobile-First Design Strategy:** All UI requirements must prioritize the mobile experience. Define how layouts stack, components collapse, and navigation adjusts for small screens, ensuring core functionality is touch-friendly and performant before scaling to desktop views.
 
 ---
 
@@ -59,6 +60,7 @@ Ask only critical questions where the initial prompt is ambiguous. Focus on:
 - **Core Functionality:** What are the key actions?
 - **Scope/Boundaries:** What should it NOT do?
 - **Success Criteria:** How do we know it's done?
+- **Roadmap Alignment:** Does this request conflict with or depend on future roadmap phases?
 
 ### Questions Format
 

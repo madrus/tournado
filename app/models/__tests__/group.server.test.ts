@@ -207,7 +207,6 @@ describe('group.server - canDeleteGroupStage', () => {
   it('returns canDelete false when played matches exist', async () => {
     mockPrisma.groupStage.findUnique.mockResolvedValue({ id: 'group-stage-123' })
     mockPrisma.group.count.mockResolvedValue(2)
-    mockPrisma.groupSlot.count.mockResolvedValue(3)
     mockPrisma.groupSlot.findMany.mockResolvedValue([
       { teamId: 'team-1' },
       { teamId: 'team-2' },
@@ -231,7 +230,6 @@ describe('group.server - canDeleteGroupStage', () => {
   it('returns canDelete true when only non-played matches exist', async () => {
     mockPrisma.groupStage.findUnique.mockResolvedValue({ id: 'group-stage-123' })
     mockPrisma.group.count.mockResolvedValue(1)
-    mockPrisma.groupSlot.count.mockResolvedValue(2)
     mockPrisma.groupSlot.findMany.mockResolvedValue([
       { teamId: 'team-1' },
       { teamId: 'team-2' },
@@ -253,7 +251,6 @@ describe('group.server - canDeleteGroupStage', () => {
   it('returns canDelete true when no matches exist', async () => {
     mockPrisma.groupStage.findUnique.mockResolvedValue({ id: 'group-stage-123' })
     mockPrisma.group.count.mockResolvedValue(0)
-    mockPrisma.groupSlot.count.mockResolvedValue(0)
     mockPrisma.groupSlot.findMany.mockResolvedValue([])
 
     const result = await canDeleteGroupStage('group-stage-123')

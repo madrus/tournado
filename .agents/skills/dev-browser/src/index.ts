@@ -19,22 +19,43 @@ export interface DevBrowserServer {
   stop: () => Promise<void>
 }
 
-// Helper to retry fetch with exponential backoff
+// Helper to retry fetch with exponential backoff and per-request timeout
 async function fetchWithRetry(
   url: string,
   maxRetries = 5,
   delayMs = 500,
+  timeoutMs = 10000,
 ): Promise<globalThis.Response> {
   let lastError: Error | null = null
   for (let i = 0; i < maxRetries; i++) {
+    const controller = new AbortController()
+    let timeoutId: NodeJS.Timeout | undefined
+
     try {
-      const res = await fetch(url)
+      // Race fetch against timeout
+      const fetchPromise = fetch(url, { signal: controller.signal })
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        timeoutId = setTimeout(() => {
+          controller.abort()
+          reject(new Error(`Request timeout after ${timeoutMs}ms`))
+        }, timeoutMs)
+      })
+
+      const res = await Promise.race([fetchPromise, timeoutPromise])
+      clearTimeout(timeoutId)
+
       if (res.ok) return res
       throw new Error(`HTTP ${res.status}: ${res.statusText}`)
     } catch (err) {
+      // Clean up timeout if it exists
+      if (timeoutId) clearTimeout(timeoutId)
+
       lastError = err instanceof Error ? err : new Error(String(err))
       if (i < maxRetries - 1) {
-        await new Promise(resolve => setTimeout(resolve, delayMs * (i + 1)))
+        // Exponential backoff with jitter: delay = delayMs * 2^i + random(0, delayMs/2)
+        const exponentialDelay = delayMs * 2 ** i
+        const jitter = Math.random() * (delayMs / 2)
+        await new Promise(resolve => setTimeout(resolve, exponentialDelay + jitter))
       }
     }
   }

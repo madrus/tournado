@@ -52,7 +52,12 @@ async function getSnapshot(): Promise<string> {
 async function selectRef(ref: string): Promise<unknown> {
   return await page.evaluate((refId: string) => {
     const w = globalThis as unknown as {
-      __devBrowser_selectSnapshotRef: (id: string) => Element
+      __devBrowser_selectSnapshotRef?: (id: string) => Element
+    }
+    if (!w.__devBrowser_selectSnapshotRef) {
+      throw new Error(
+        'Snapshot script not injected. Call getSnapshot() first to inject the script.',
+      )
     }
     const element = w.__devBrowser_selectSnapshotRef(refId)
     return {

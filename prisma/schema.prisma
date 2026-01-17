@@ -85,6 +85,8 @@ model Tournament {
   matches     Match[]
   teams       Team[]
   creator     User         @relation("TournamentCreator", fields: [createdBy], references: [id], onDelete: Restrict)
+
+  @@index([createdBy])
 }
 
 model Match {
@@ -130,6 +132,7 @@ model GroupStage {
   tournament   Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
   creator      User        @relation("GroupStageCreator", fields: [createdBy], references: [id], onDelete: Restrict)
 
+  @@index([createdBy])
   @@unique([tournamentId, name])
   @@index([tournamentId])
 }

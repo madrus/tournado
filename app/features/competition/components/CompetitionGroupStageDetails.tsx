@@ -133,19 +133,8 @@ export function CompetitionGroupStageDetails({
 
   useEffect(() => {
     if (!actionData?.error) return
-
-    // If the server already returned a localized message, just show it.
-    // Otherwise, handle legacy raw English strings.
-    if (actionData.error === 'This group stage has matches with recorded results') {
-      toast.error(
-        t('competition.groupAssignment.errors.deleteBlocked', {
-          reason: t('competition.groupAssignment.errors.deleteBlockedReason'),
-        }),
-      )
-    } else {
-      toast.error(actionData.error)
-    }
-  }, [actionData?.error, t])
+    toast.error(actionData.error)
+  }, [actionData?.error])
 
   return (
     <div className='space-y-6'>

@@ -253,7 +253,7 @@ New translation keys in namespace `competition`:
 - Batch delete multiple group stages at once
 - Archive group stage instead of delete
 - Automatic reassignment of teams to other group stages
-- Match deletion cascade (matches are tied to tournament, not group stage)
+- **Full cascade deletion of all matches** - Out of scope: Deleting matches with `status: PLAYED` and tournament-scoped matches (not tied to group stage). **In scope per UC-002, FR-4, FR-5:** Deleting non-played matches (UPCOMING, CANCELLED, POSTPONED) that are scoped to the group stage. Played matches and tournament-scoped matches are preserved.
 - Audit logging of deletion (defer to future audit feature)
 
 ## Design Considerations

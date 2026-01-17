@@ -94,7 +94,7 @@ const mockGetTournamentById = vi.mocked(getTournamentById)
 const mockUseActionData = vi.mocked(ReactRouter.useActionData)
 const mockUseLoaderData = vi.mocked(ReactRouter.useLoaderData)
 
-const buildRequest = (tournamentId: string) => {
+function buildRequest(tournamentId: string): Request {
   const formData = new FormData()
   formData.append('intent', 'delete')
 
@@ -173,7 +173,11 @@ describe('competition.groups.$groupStageId delete action', () => {
     mockGetUser.mockResolvedValue(buildUser({ id: 'admin-user', role: 'ADMIN' }))
     mockGetGroupStageWithDetails.mockResolvedValue(baseGroupStage)
     mockCanDeleteGroupStage.mockResolvedValue(baseDeleteCheck)
-    mockDeleteGroupStage.mockResolvedValue({ groupsDeleted: 2, slotsDeleted: 8 })
+    mockDeleteGroupStage.mockResolvedValue({
+      groupsDeleted: 2,
+      slotsDeleted: 8,
+      matchesDeleted: 0,
+    })
 
     const response = await action(buildArgs('tournament-1'))
 
@@ -228,7 +232,7 @@ describe('competition.groups.$groupStageId delete action', () => {
     mockGetGroupStageWithDetails.mockResolvedValue(baseGroupStage)
     mockCanDeleteGroupStage.mockResolvedValue({
       canDelete: false,
-      reason: 'This group stage has matches with recorded results',
+      errorCode: 'HAS_PLAYED_MATCHES',
       impact: { groups: 2, assignedTeams: 3, matchesToDelete: 1 },
     })
 
@@ -245,7 +249,11 @@ describe('competition.groups.$groupStageId delete action', () => {
     mockGetUser.mockResolvedValue(buildUser({ id: 'admin-user', role: 'ADMIN' }))
     mockGetGroupStageWithDetails.mockResolvedValue(baseGroupStage)
     mockCanDeleteGroupStage.mockResolvedValue(baseDeleteCheck)
-    mockDeleteGroupStage.mockResolvedValue({ groupsDeleted: 2, slotsDeleted: 8 })
+    mockDeleteGroupStage.mockResolvedValue({
+      groupsDeleted: 2,
+      slotsDeleted: 8,
+      matchesDeleted: 0,
+    })
 
     const response = await action(buildArgs('tournament-1'))
 

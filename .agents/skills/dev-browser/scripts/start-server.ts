@@ -1,5 +1,6 @@
 import { execSync } from 'node:child_process'
 import { existsSync, mkdirSync, readdirSync } from 'node:fs'
+import os from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { serve } from '@/index.js'
@@ -18,6 +19,8 @@ mkdirSync(profileDir, { recursive: true })
 console.log('Checking Playwright browser installation...')
 
 function findPackageManager(): { name: string; command: string } | null {
+  const isWin = process.platform === 'win32'
+  const locator = isWin ? 'where' : 'which'
   const managers = [
     { name: 'bun', command: 'bunx playwright install chromium' },
     { name: 'pnpm', command: 'pnpm exec playwright install chromium' },
@@ -26,7 +29,7 @@ function findPackageManager(): { name: string; command: string } | null {
 
   for (const manager of managers) {
     try {
-      execSync(`which ${manager.name}`, { stdio: 'ignore' })
+      execSync(`${locator} ${manager.name}`, { stdio: 'ignore' })
       return manager
     } catch {
       // Package manager not found, try next
@@ -36,8 +39,28 @@ function findPackageManager(): { name: string; command: string } | null {
 }
 
 function isChromiumInstalled(): boolean {
-  const homeDir = process.env.HOME || process.env.USERPROFILE || ''
-  const playwrightCacheDir = join(homeDir, '.cache', 'ms-playwright')
+  if (process.env.PLAYWRIGHT_BROWSERS_PATH) {
+    const customPath = process.env.PLAYWRIGHT_BROWSERS_PATH
+    if (existsSync(customPath)) {
+      try {
+        const entries = readdirSync(customPath)
+        return entries.some(entry => entry.startsWith('chromium'))
+      } catch {
+        return false
+      }
+    }
+    return false
+  }
+
+  let playwrightCacheDir: string
+  if (process.platform === 'win32') {
+    playwrightCacheDir = join(process.env.LOCALAPPDATA || '', 'ms-playwright')
+  } else if (process.platform === 'darwin') {
+    playwrightCacheDir = join(os.homedir(), 'Library', 'Caches', 'ms-playwright')
+  } else {
+    // Linux
+    playwrightCacheDir = join(os.homedir(), '.cache', 'ms-playwright')
+  }
 
   if (!existsSync(playwrightCacheDir)) {
     return false
@@ -92,8 +115,36 @@ try {
 try {
   const pid = execSync('lsof -ti:9223', { encoding: 'utf-8' }).trim()
   if (pid) {
-    console.log(`Cleaning up stale Chrome process on CDP port 9223 (PID: ${pid})`)
-    execSync(`kill -9 ${pid}`)
+    // Verify it's actually Chrome/Chromium before killing
+    try {
+      const command = execSync(`ps -o comm= -p ${pid}`, {
+        encoding: 'utf-8',
+      }).trim()
+      if (
+        command.toLowerCase().includes('chrome') ||
+        command.toLowerCase().includes('chromium')
+      ) {
+        console.log(`Cleaning up stale Chrome process on CDP port 9223 (PID: ${pid})`)
+
+        // Try graceful SIGTERM first
+        execSync(`kill ${pid}`)
+
+        // Wait 500ms to see if it exits
+        await new Promise(resolve => setTimeout(resolve, 500))
+
+        // Check if still running
+        try {
+          execSync(`kill -0 ${pid}`, { stdio: 'ignore' })
+          // Still running, force kill
+          console.log('Process did not exit, forcing kill...')
+          execSync(`kill -9 ${pid}`)
+        } catch {
+          // Process exited successfully
+        }
+      }
+    } catch {
+      // Process might have exited between lsof and ps
+    }
   }
 } catch {
   // No process on CDP port, which is expected

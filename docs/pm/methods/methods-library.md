@@ -280,11 +280,11 @@ methods/
 ├── socratic-questioning.md          # Problem refinement
 ├── jobs-to-be-done.md               # User needs understanding
 ├── rice-prioritization.md           # Feature prioritization
-├── impact-effort-matrix.md           # Quick prioritization
-├── user-story-format.md             # Use case writing
+├── impact-effort-matrix.md          # Quick prioritization
+├── use-case-format.md               # Use case writing
 ├── competitive-analysis.md          # How to analyze competitors
 ├── user-interview-guide.md          # How to conduct interviews
-└── prd-section-templates.md        # Templates for PRD sections
+└── prd-section-templates.md         # Templates for PRD sections
 ```
 
 ## The Power of Reusable Frameworks

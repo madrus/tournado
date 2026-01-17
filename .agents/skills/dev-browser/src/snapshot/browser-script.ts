@@ -626,6 +626,7 @@ function getAriaSnapshotCode(): string {
   return `
 // === ariaSnapshot ===
 let lastRef = 0;
+const ariaRefCache = new WeakMap();
 
 function generateAriaTree(rootElement) {
   const options = { visibility: "ariaOrVisible", refs: "interactable", refPrefix: "", includeGenericRole: true, renderActive: true, renderCursorPointer: true };
@@ -708,10 +709,10 @@ function generateAriaTree(rootElement) {
 function computeAriaRef(ariaNode, options) {
   if (options.refs === "none") return;
   if (options.refs === "interactable" && (!ariaNode.box.visible || !ariaNode.receivesPointerEvents)) return;
-  let ariaRef = ariaNode.element._ariaRef;
+  let ariaRef = ariaRefCache.get(ariaNode.element);
   if (!ariaRef || ariaRef.role !== ariaNode.role || ariaRef.name !== ariaNode.name) {
     ariaRef = { role: ariaNode.role, name: ariaNode.name, ref: (options.refPrefix || "") + "e" + (++lastRef) };
-    ariaNode.element._ariaRef = ariaRef;
+    ariaRefCache.set(ariaNode.element, ariaRef);
   }
   ariaNode.ref = ariaRef.ref;
 }

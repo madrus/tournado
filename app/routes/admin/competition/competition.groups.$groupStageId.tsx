@@ -139,16 +139,14 @@ export async function action({
         const deleteCheck = await canDeleteGroupStage(groupStageId)
         if (!deleteCheck.canDelete) {
           const reason =
-            deleteCheck.reason === 'This group stage has matches with recorded results'
+            deleteCheck.errorCode === 'HAS_PLAYED_MATCHES'
               ? t('competition.groupAssignment.errors.deleteBlockedReason')
-              : deleteCheck.reason
+              : t('errors.somethingWentWrong')
 
           return {
-            error: reason
-              ? t('competition.groupAssignment.errors.deleteBlocked', {
-                  reason,
-                })
-              : t('errors.somethingWentWrong'),
+            error: t('competition.groupAssignment.errors.deleteBlocked', {
+              reason,
+            }),
           }
         }
 

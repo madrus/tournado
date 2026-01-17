@@ -34,5 +34,4 @@ public/mockServiceWorker.js
 
 # dev-browser skill (external code)
 .agents/skills/dev-browser/profiles/browser-data
-.agents/skills/dev-browser/node_modules
 .agents/skills/dev-browser/tmp

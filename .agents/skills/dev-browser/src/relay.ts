@@ -275,6 +275,7 @@ export async function serveRelay(options: RelayOptions = {}): Promise<RelayServe
               return { targetInfo: target.targetInfo }
             }
           }
+          throw new Error(`Target.getTargetInfo: targetId ${targetId} not found`)
         }
 
         if (sessionId) {
@@ -282,11 +283,15 @@ export async function serveRelay(options: RelayOptions = {}): Promise<RelayServe
           if (target) {
             return { targetInfo: target.targetInfo }
           }
+          throw new Error(`Target.getTargetInfo: sessionId ${sessionId} not found`)
         }
 
         // Return first target if no specific one requested
         const firstTarget = Array.from(connectedTargets.values())[0]
-        return { targetInfo: firstTarget?.targetInfo }
+        if (!firstTarget) {
+          throw new Error('Target.getTargetInfo: no targets available')
+        }
+        return { targetInfo: firstTarget.targetInfo }
       }
 
       case 'Target.getTargets':

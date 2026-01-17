@@ -138,7 +138,7 @@ export function SimpleConfirmDialog({
               ) : null}
 
               <div className='mt-8 flex flex-col-reverse gap-3 sm:flex-row'>
-                <div className='w-full sm:order-1 sm:flex-1'>
+                <div className='w-full sm:flex-1'>
                   <Dialog.Close asChild>
                     <ActionButton
                       variant='secondary'
@@ -153,7 +153,7 @@ export function SimpleConfirmDialog({
                   </Dialog.Close>
                 </div>
 
-                <div className='w-full sm:order-2 sm:flex-1'>
+                <div className='w-full sm:flex-1'>
                   <Dialog.Close asChild>
                     <ActionButton
                       variant='primary'

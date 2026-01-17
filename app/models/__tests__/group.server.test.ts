@@ -10,6 +10,7 @@ const { mockPrisma, mockTransactionClient } = vi.hoisted(() => {
     groupStage: {
       create: vi.fn(),
       delete: vi.fn(),
+      findUnique: vi.fn(),
     },
     group: {
       create: vi.fn(),
@@ -17,6 +18,10 @@ const { mockPrisma, mockTransactionClient } = vi.hoisted(() => {
     },
     groupSlot: {
       createMany: vi.fn(),
+      deleteMany: vi.fn(),
+      findMany: vi.fn(),
+    },
+    match: {
       deleteMany: vi.fn(),
     },
     team: {
@@ -99,6 +104,14 @@ describe('group.server - deleteGroupStage', () => {
   })
 
   it('deletes group slots, groups, and group stage, returning counts', async () => {
+    mockTransactionClient.groupStage.findUnique.mockResolvedValue({
+      id: 'group-stage-123',
+    })
+    mockTransactionClient.groupSlot.findMany.mockResolvedValue([
+      { teamId: 'team-1' },
+      { teamId: 'team-2' },
+    ])
+    mockTransactionClient.match.deleteMany.mockResolvedValue({ count: 2 })
     mockTransactionClient.groupSlot.deleteMany.mockResolvedValue({ count: 4 })
     mockTransactionClient.group.deleteMany.mockResolvedValue({ count: 2 })
     mockTransactionClient.groupStage.delete.mockResolvedValue({
@@ -107,6 +120,23 @@ describe('group.server - deleteGroupStage', () => {
 
     const result = await deleteGroupStage('group-stage-123')
 
+    expect(mockTransactionClient.groupStage.findUnique).toHaveBeenCalledWith({
+      where: { id: 'group-stage-123' },
+      select: { id: true },
+    })
+    expect(mockTransactionClient.groupSlot.findMany).toHaveBeenCalledWith({
+      where: { groupStageId: 'group-stage-123', teamId: { not: null } },
+      select: { teamId: true },
+    })
+    expect(mockTransactionClient.match.deleteMany).toHaveBeenCalledWith({
+      where: {
+        OR: [
+          { homeTeamId: { in: ['team-1', 'team-2'] } },
+          { awayTeamId: { in: ['team-1', 'team-2'] } },
+        ],
+        status: { not: 'PLAYED' },
+      },
+    })
     expect(mockTransactionClient.groupSlot.deleteMany).toHaveBeenCalledWith({
       where: { groupStageId: 'group-stage-123' },
     })
@@ -117,8 +147,12 @@ describe('group.server - deleteGroupStage', () => {
       where: { id: 'group-stage-123' },
     })
     expect(mockTransactionClient.team.deleteMany).not.toHaveBeenCalled()
-    expect(result).toEqual({ groupsDeleted: 2, slotsDeleted: 4 })
+    expect(result).toEqual({ groupsDeleted: 2, slotsDeleted: 4, matchesDeleted: 2 })
 
+    const findOrder =
+      mockTransactionClient.groupStage.findUnique.mock.invocationCallOrder[0]
+    const matchCallOrder =
+      mockTransactionClient.match.deleteMany.mock.invocationCallOrder[0]
     const slotCallOrder =
       mockTransactionClient.groupSlot.deleteMany.mock.invocationCallOrder[0]
     const groupCallOrder =
@@ -126,17 +160,40 @@ describe('group.server - deleteGroupStage', () => {
     const stageCallOrder =
       mockTransactionClient.groupStage.delete.mock.invocationCallOrder[0]
 
+    expect(findOrder).toBeLessThan(matchCallOrder)
+    expect(matchCallOrder).toBeLessThan(slotCallOrder)
     expect(slotCallOrder).toBeLessThan(groupCallOrder)
     expect(groupCallOrder).toBeLessThan(stageCallOrder)
   })
 
   it('rolls back when deletion fails', async () => {
+    mockTransactionClient.groupStage.findUnique.mockResolvedValue({
+      id: 'group-stage-123',
+    })
+    mockTransactionClient.groupSlot.findMany.mockResolvedValue([])
     mockTransactionClient.groupSlot.deleteMany.mockRejectedValue(
       new Error('delete failed'),
     )
 
     await expect(deleteGroupStage('group-stage-123')).rejects.toThrow('delete failed')
 
+    expect(mockTransactionClient.group.deleteMany).not.toHaveBeenCalled()
+    expect(mockTransactionClient.groupStage.delete).not.toHaveBeenCalled()
+  })
+
+  it('throws when group stage does not exist', async () => {
+    mockTransactionClient.groupStage.findUnique.mockResolvedValue(null)
+
+    await expect(deleteGroupStage('non-existent-id')).rejects.toThrow(
+      'Group stage not found',
+    )
+
+    expect(mockTransactionClient.groupStage.findUnique).toHaveBeenCalledWith({
+      where: { id: 'non-existent-id' },
+      select: { id: true },
+    })
+    expect(mockTransactionClient.match.deleteMany).not.toHaveBeenCalled()
+    expect(mockTransactionClient.groupSlot.deleteMany).not.toHaveBeenCalled()
     expect(mockTransactionClient.group.deleteMany).not.toHaveBeenCalled()
     expect(mockTransactionClient.groupStage.delete).not.toHaveBeenCalled()
   })
@@ -154,6 +211,7 @@ describe('group.server - canDeleteGroupStage', () => {
     mockPrisma.groupSlot.findMany.mockResolvedValue([
       { teamId: 'team-1' },
       { teamId: 'team-2' },
+      { teamId: 'team-3' },
     ])
     mockPrisma.match.count.mockResolvedValueOnce(1).mockResolvedValueOnce(4)
 
@@ -161,7 +219,7 @@ describe('group.server - canDeleteGroupStage', () => {
 
     expect(result).toEqual({
       canDelete: false,
-      reason: 'This group stage has matches with recorded results',
+      errorCode: 'HAS_PLAYED_MATCHES',
       impact: {
         groups: 2,
         assignedTeams: 3,
@@ -174,7 +232,10 @@ describe('group.server - canDeleteGroupStage', () => {
     mockPrisma.groupStage.findUnique.mockResolvedValue({ id: 'group-stage-123' })
     mockPrisma.group.count.mockResolvedValue(1)
     mockPrisma.groupSlot.count.mockResolvedValue(2)
-    mockPrisma.groupSlot.findMany.mockResolvedValue([{ teamId: 'team-1' }])
+    mockPrisma.groupSlot.findMany.mockResolvedValue([
+      { teamId: 'team-1' },
+      { teamId: 'team-2' },
+    ])
     mockPrisma.match.count.mockResolvedValueOnce(0).mockResolvedValueOnce(2)
 
     const result = await canDeleteGroupStage('group-stage-123')

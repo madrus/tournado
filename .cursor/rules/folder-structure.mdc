@@ -23,8 +23,8 @@ This project follows a modular architecture pattern for React Router v7 applicat
   - **resources/** - API resource routes
   - **$.tsx** - Catch-all route for 404s
 
-- **components/** - Reusable UI Components
-  - **auth/** - Authentication components (SignIn, SignUp forms)
+- **components/** - Shared/Reusable UI Components
+  - **Rule**: Components used across multiple features or globally throughout the app
   - **buttons/** - Custom button components
   - **inputs/** - Form input components
   - **layouts/** - Layout components and structures
@@ -78,13 +78,26 @@ This project follows a modular architecture pattern for React Router v7 applicat
   - Multi-language support with react-i18next
 
 - **features/** - Feature Modules
-  - **firebase/** - Firebase Authentication Feature Module
+  - **Rule**: Feature-specific code including components, utilities, types, and business logic
+  - **Structure**: Each feature follows this pattern:
+    - **components/** - Feature-specific components (used only within this feature)
+    - **stores/** - Feature-specific state management
+    - **utils/** - Feature-specific utilities
+    - **hooks/** - Feature-specific React hooks
+    - **types.ts** - Feature-specific TypeScript types
+    - **validation.ts** - Feature-specific validation schemas
+    - **__tests__/** - Feature tests
+  - **Example: firebase/** - Firebase Authentication Feature Module
     - **client.ts** - Firebase client SDK setup (browser)
-    - **server.ts** - Firebase Admin SDK setup (server)  
+    - **server.ts** - Firebase Admin SDK setup (server)
     - **session.server.ts** - Firebase session cookie bridging
     - **components/** - Firebase-specific components (FirebaseSignIn, etc.)
     - **types.ts** - Firebase-related types and interfaces
     - **__tests__/** - Firebase feature tests
+  - **Example: competition/** - Competition/Tournament Feature Module
+    - **components/** - Competition-specific components (GroupAssignmentBoard, etc.)
+    - **utils/** - Competition-specific utilities
+    - **types.ts** - Competition-related types
 
 - **lib/** - Core Library Functions & Types
   - **lib.types.ts** - Centralized application types and interfaces (primary location for all app types)
@@ -123,6 +136,29 @@ This project follows a modular architecture pattern for React Router v7 applicat
 ## Development Rules
 
 ### 1. Component Organization
+
+#### Component Location Rules
+
+**When to use `app/components/`** (Shared Components):
+- Components used across multiple features
+- Generic UI components (buttons, inputs, layouts)
+- Global navigation and layout components
+- Utility components used throughout the app
+- Examples: `ActionButton`, `TextInput`, `ConfirmDialog`, `Panel`
+
+**When to use `app/features/<feature>/components/`** (Feature-Specific Components):
+- Components used exclusively within a single feature
+- Business logic components tied to a specific domain
+- Feature-specific forms, cards, or views
+- Examples: `CompetitionGroupStageDetails`, `FirebaseSignIn`, `TournamentCard`
+
+**Decision Process**:
+1. Ask: "Will this component be used in multiple features?"
+   - **Yes** → `app/components/`
+   - **No** → `app/features/<feature>/components/`
+2. If unsure, start in `app/features/` and move to `app/components/` when reuse emerges
+
+#### General Component Guidelines
 
 - Keep components small and focused on single responsibility
 - Use composition over inheritance
@@ -172,7 +208,7 @@ This project follows a modular architecture pattern for React Router v7 applicat
 ### 7. Authentication & Authorization
 
 - Firebase Authentication with session cookie bridging
-- Support for Google OAuth and email/password authentication  
+- Support for Google OAuth and email/password authentication
 - Role-based access control (ADMIN, MANAGER, REFEREE, PUBLIC)
 - Server-side Firebase session validation
 - Protected route middleware

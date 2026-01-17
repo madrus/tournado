@@ -104,6 +104,8 @@ export async function serve(options: ServeOptions = {}): Promise<DevBrowserServe
 
   // Registry: name -> PageEntry
   const registry = new Map<string, PageEntry>()
+  // In-flight page creation promises: name -> Promise<PageEntry>
+  const inFlight = new Map<string, Promise<PageEntry>>()
 
   // Helper to get CDP targetId for a page
   async function getTargetId(page: Page): Promise<string> {
@@ -156,27 +158,62 @@ export async function serve(options: ServeOptions = {}): Promise<DevBrowserServe
 
     // Check if page already exists
     let entry = registry.get(name)
+
     if (!entry) {
-      // Create new page in the persistent context (with timeout to prevent hangs)
-      const page = await withTimeout(
-        context.newPage(),
-        30000,
-        'Page creation timed out after 30s',
-      )
-
-      // Apply viewport if provided
-      if (viewport) {
-        await page.setViewportSize(viewport)
+      // Check if page creation is already in flight
+      const flightPromise = inFlight.get(name)
+      if (flightPromise) {
+        try {
+          entry = await flightPromise
+        } catch {
+          // If the in-flight creation failed, we'll try again below
+          // (the inFlight entry is removed in the finally block of the creator)
+        }
       }
+    }
 
-      const targetId = await getTargetId(page)
-      entry = { page, targetId }
-      registry.set(name, entry)
+    if (!entry) {
+      // Start creation process
+      const creationPromise = (async () => {
+        try {
+          // Create new page in the persistent context (with timeout to prevent hangs)
+          const page = await withTimeout(
+            context.newPage(),
+            30000,
+            'Page creation timed out after 30s',
+          )
 
-      // Clean up registry when page is closed (e.g., user clicks X)
-      page.on('close', () => {
-        registry.delete(name)
-      })
+          // Apply viewport if provided
+          if (viewport) {
+            await page.setViewportSize(viewport)
+          }
+
+          const targetId = await getTargetId(page)
+          const newEntry: PageEntry = { page, targetId }
+          registry.set(name, newEntry)
+
+          // Clean up registry when page is closed (e.g., user clicks X)
+          page.on('close', () => {
+            registry.delete(name)
+          })
+
+          return newEntry
+        } finally {
+          // Clean up in-flight entry
+          inFlight.delete(name)
+        }
+      })()
+
+      inFlight.set(name, creationPromise)
+
+      try {
+        entry = await creationPromise
+      } catch (err) {
+        res.status(500).json({
+          error: `Failed to create page: ${err instanceof Error ? err.message : String(err)}`,
+        })
+        return
+      }
     }
 
     const response: GetPageResponse = { wsEndpoint, name, targetId: entry.targetId }

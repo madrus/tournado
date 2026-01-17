@@ -206,6 +206,10 @@
     "groupAssignment": {
       "instruction": "Drag teams to assign them to specific slots. Drop on a free slot or on a team to replace it.",
       "backToGroups": "Back to Groups",
+      "deleteTitle": "Delete Group Stage",
+      "deleteDescription": "Are you sure you want to delete this group stage?",
+      "deleteImpactWithMatches": "This will delete {{groups}} groups, unassign {{teams}} teams, and remove {{matches}} scheduled matches. Teams will remain in the tournament.",
+      "deleteImpactWithoutMatches": "This will delete {{groups}} groups and unassign {{teams}} teams. Teams will remain in the tournament.",
       "unsavedChanges": "You have unsaved changes",
       "unsavedTitle": "Unsaved Changes",
       "unsavedDescription": "You have unsaved changes that will be lost if you leave this page. Are you sure you want to leave?",
@@ -216,6 +220,8 @@
       "conflictReload": "Reload Page",
       "goToGroup": "Go to {{name}}",
       "errors": {
+        "deleteBlocked": "Cannot delete: {{reason}}",
+        "deleteBlockedReason": "This group stage has matches with recorded results",
         "noCapacity": "No space available in confirmed pool. Remove a team from a group first.",
         "waitlistToGroup": "Waitlist teams cannot be assigned directly to groups. Move them to confirmed pool first."
       },
@@ -348,6 +354,9 @@
       "teamNotFound": "Team not found. Refresh and try again.",
       "groupNotFound": "Target group not found. Refresh and try again.",
       "slotNotFound": "Target slot not found. Refresh and try again."
+    },
+    "groupStage": {
+      "deleteSuccess": "Group stage deleted successfully"
     },
     "panel": {
       "errorTitle": "Something went wrong",

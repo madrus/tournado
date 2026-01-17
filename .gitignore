@@ -31,3 +31,10 @@ test-results
 # MSW auto-generated files
 mockServiceWorker.js
 public/mockServiceWorker.js
+
+# dev-browser skill (external code, except SKILL.md)
+.agents/skills/dev-browser/profiles/browser-data
+.agents/skills/dev-browser/node_modules
+.agents/skills/dev-browser/src
+.agents/skills/dev-browser/scripts
+.agents/skills/dev-browser/tmp

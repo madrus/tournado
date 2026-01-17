@@ -213,6 +213,10 @@
     "groupAssignment": {
       "instruction": "Faites glisser les équipes pour les assigner à des places spécifiques. Déposez sur une place libre ou sur une équipe pour la remplacer.",
       "backToGroups": "Retour aux groupes",
+      "deleteTitle": "Supprimer la phase de groupes",
+      "deleteDescription": "Êtes-vous sûr de vouloir supprimer cette phase de groupes ?",
+      "deleteImpactWithMatches": "Cela supprimera {{groups}} groupes, désassignera {{teams}} équipes et supprimera {{matches}} matchs prévus. Les équipes resteront dans le tournoi.",
+      "deleteImpactWithoutMatches": "Cela supprimera {{groups}} groupes et désassignera {{teams}} équipes. Les équipes resteront dans le tournoi.",
       "unsavedChanges": "Vous avez des modifications non enregistrées",
       "unsavedTitle": "Modifications non enregistrées",
       "unsavedDescription": "Vos modifications non enregistrées seront perdues si vous quittez cette page. Êtes-vous sûr de vouloir quitter ?",
@@ -223,6 +227,8 @@
       "conflictReload": "Recharger la page",
       "goToGroup": "Aller à {{name}}",
       "errors": {
+        "deleteBlocked": "Cannot delete: {{reason}}",
+        "deleteBlockedReason": "This group stage has matches with recorded results",
         "noCapacity": "Pas d'espace disponible dans le pool confirmé. Retirez d'abord une équipe d'un groupe.",
         "waitlistToGroup": "Les équipes en liste d'attente ne peuvent pas être assignées directement aux groupes. Déplacez-les d'abord vers le pool confirmé."
       },
@@ -348,6 +354,9 @@
       "teamNotFound": "Équipe introuvable. Actualisez et réessayez.",
       "groupNotFound": "Groupe cible introuvable. Actualisez et réessayez.",
       "slotNotFound": "Emplacement cible introuvable. Actualisez et réessayez."
+    },
+    "groupStage": {
+      "deleteSuccess": "Phase de groupes supprimée avec succès"
     },
     "panel": {
       "errorTitle": "Une erreur s'est produite",

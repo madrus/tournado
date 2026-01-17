@@ -75,6 +75,23 @@ async function seed() {
       },
     })
 
+    const seedOwnerEmail = 'madrus@gmail.com'
+    let seedOwner = await prisma.user.findFirst({
+      where: { email: seedOwnerEmail },
+    })
+
+    if (!seedOwner) {
+      seedOwner = await prisma.user.create({
+        data: {
+          email: seedOwnerEmail,
+          firstName: 'Madrus',
+          lastName: 'Admin',
+          role: 'ADMIN',
+          firebaseUid: `seed-${seedOwnerEmail.replace(/[@.]/g, '-')}`,
+        },
+      })
+    }
+
     // Create test fixture users (only during test runs)
     if (testFixtureUsers.length > 0) {
       await Promise.all(
@@ -161,6 +178,7 @@ async function seed() {
         categories: JSON.stringify(['JO8', 'JO9', 'JO10', 'JO11']),
         startDate: new Date('2025-05-01'),
         endDate: new Date('2025-05-02'),
+        createdBy: seedOwner.id,
       },
     })
 
@@ -176,6 +194,7 @@ async function seed() {
         categories: JSON.stringify(['JO9', 'JO10', 'JO11', 'JO12']),
         startDate: new Date('2025-06-01'),
         endDate: new Date('2025-06-02'),
+        createdBy: seedOwner.id,
       },
     })
 

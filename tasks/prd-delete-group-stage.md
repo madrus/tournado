@@ -23,32 +23,39 @@ Add the ability to delete a Group Stage from Competition Management. Currently, 
 
 **Description:** As a developer, I need ownership tracking on Tournament and GroupStage to enable MANAGER role permission checks.
 
-**Decision: Backfill Strategy:** Use **required** `createdBy` field. Backfill existing records with the user ID of the user with email `madrus@gmail.com`. Query the User table to get the ID during migration.
+**Decision: Development Workflow:** This project is pre-production. The development workflow is:
+
+1. Drop and recreate database (empty tables)
+2. Run migrations (no backfill needed - tables are empty)
+3. Run `seedSuperAdmins.js` (creates admin users)
+4. Run `seed.js` (creates tournaments/teams with `createdBy` set)
+
+The `seed.js` file already handles `createdBy` by finding/creating the `madrus@gmail.com` user and using their ID.
 
 **Acceptance Criteria:**
 
 - [ ] Add `createdBy` field (String, **required**, references User.id) to `Tournament` model in `prisma/schema.prisma`
 - [ ] Add `createdBy` field (String, **required**, references User.id) to `GroupStage` model in `prisma/schema.prisma`
-- [ ] Generate migration: `pnpm prisma migrate dev --name add_createdby_to_tournament_and_groupstage --create-only`
-- [ ] Edit migration SQL to backfill existing records: set `createdBy` to the ID of user with email `madrus@gmail.com`
-- [ ] Apply migration: `pnpm prisma migrate deploy`
+- [ ] Generate migration: `pnpm prisma migrate dev --name add_createdby_to_tournament_and_groupstage`
 - [ ] Update `createTournament` function to set `createdBy` from authenticated user
 - [ ] Update `createGroupStage` function to set `createdBy` from authenticated user
-- [ ] Update ALL test fixtures that create Tournament or GroupStage objects to include `createdBy` field (use a valid test user ID from test setup or the backfill user ID)
+- [ ] Update ALL test fixtures that create Tournament or GroupStage objects to include `createdBy` field (use a valid test user ID from test setup)
 - [ ] Typecheck/lint pass
 - [ ] Create unit tests in `app/models/__tests__/tournament.server.test.ts` for `createTournament` with `createdBy`
 - [ ] Create unit tests in `app/models/__tests__/group.server.test.ts` for `createGroupStage` with `createdBy`
-- [ ] Run unit tests: `pnpm test:run` - all tests must pass
+- [ ] Run unit tests for changed files (e.g., `pnpm test:run app/models/__tests__/group.server.test.ts`) - all related tests must pass
 
 ### UC-001: Add delete model function for group stage
 
 **Description:** As a developer, I need a server function to safely delete a group stage and all its child records.
 
+**Implementation Note:** To return deletion statistics, explicitly delete in order: GroupSlots (count), then Groups (count), then GroupStage. Wrap all in a Prisma transaction. Prisma's `onDelete: SetNull` on GroupSlot.teamId automatically handles team preservation.
+
 **Acceptance Criteria:**
 
 - [ ] Create `deleteGroupStage` function in `app/models/group.server.ts`
 - [ ] Function accepts `groupStageId` parameter
-- [ ] Deletes GroupStage, all Groups, and all GroupSlots in a transaction
+- [ ] Deletes GroupSlots first (count deleted), then Groups (count deleted), then GroupStage - all in a transaction
 - [ ] Teams referenced by GroupSlots remain in database (Prisma `onDelete: SetNull` handles this)
 - [ ] Returns deletion statistics: `{ groupsDeleted: number, slotsDeleted: number }`
 - [ ] Typecheck/lint pass
@@ -56,7 +63,7 @@ Add the ability to delete a Group Stage from Competition Management. Currently, 
 - [ ] Test cascade deletion of Groups and GroupSlots
 - [ ] Test that Teams remain (GroupSlot.teamId set to null)
 - [ ] Test transaction rollback on error
-- [ ] Run unit tests: `pnpm test:run` - all tests must pass
+- [ ] Run unit tests for changed files (e.g., `pnpm test:run app/models/__tests__/group.server.test.ts`) - all related tests must pass
 
 ### UC-002: Add pre-delete validation function
 
@@ -75,7 +82,7 @@ Add the ability to delete a Group Stage from Competition Management. Currently, 
 - [ ] Test returns `canDelete: true` when only non-played matches exist
 - [ ] Test returns `canDelete: true` when no matches exist
 - [ ] Test impact calculation includes correct counts
-- [ ] Run unit tests: `pnpm test:run` - all tests must pass
+- [ ] Run unit tests for changed files (e.g., `pnpm test:run app/models/__tests__/group.server.test.ts`) - all related tests must pass
 
 ### UC-003: Add delete action to group stage route
 
@@ -98,7 +105,7 @@ Add the ability to delete a Group Stage from Competition Management. Currently, 
 - [ ] Test MANAGER cannot delete if they didn't create tournament or group stage
 - [ ] Test deletion blocked when matches with PLAYED status exist
 - [ ] Test successful deletion redirects with success param
-- [ ] Run unit tests: `pnpm test:run` - all tests must pass
+- [ ] Run unit tests for changed files (e.g., `pnpm test:run app/models/__tests__/group.server.test.ts`) - all related tests must pass
 
 ### UC-004: Add delete button to group stage detail header
 
@@ -118,7 +125,7 @@ Add the ability to delete a Group Stage from Competition Management. Currently, 
 - [ ] Test delete button renders for MANAGER role (with ownership)
 - [ ] Test delete button does not render for unauthorized roles
 - [ ] Test delete button triggers confirmation dialog
-- [ ] Run unit tests: `pnpm test:run` - all tests must pass
+- [ ] Run unit tests for changed files (e.g., `pnpm test:run app/models/__tests__/group.server.test.ts`) - all related tests must pass
 - [ ] Verify in browser using `dev-browser` skill
 
 ### UC-005: Implement enhanced confirmation dialog
@@ -141,7 +148,7 @@ Add the ability to delete a Group Stage from Competition Management. Currently, 
 - [ ] Test dialog shows matches count only when > 0
 - [ ] Test confirm action triggers delete
 - [ ] Test cancel action closes dialog without deleting
-- [ ] Run unit tests: `pnpm test:run` - all tests must pass
+- [ ] Run unit tests for changed files (e.g., `pnpm test:run app/models/__tests__/group.server.test.ts`) - all related tests must pass
 - [ ] Verify in browser using `dev-browser` skill
 
 ### UC-006: Handle blocked deletion state
@@ -158,7 +165,7 @@ Add the ability to delete a Group Stage from Competition Management. Currently, 
 - [ ] Create unit tests in `test/routes/admin/competition/competition.groups.$groupStageId.test.ts` for blocked deletion
 - [ ] Test error toast shown when deletion blocked due to PLAYED matches
 - [ ] Test correct error message displayed
-- [ ] Run unit tests: `pnpm test:run` - all tests must pass
+- [ ] Run unit tests for changed files (e.g., `pnpm test:run app/models/__tests__/group.server.test.ts`) - all related tests must pass
 
 ## Functional Requirements
 

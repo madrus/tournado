@@ -228,6 +228,7 @@ const mockTournament = {
   endDate: new Date('2024-06-03'),
   divisions: JSON.stringify(['PREMIER_DIVISION', 'FIRST_DIVISION']),
   categories: JSON.stringify(['JO8', 'JO9']),
+  createdBy: 'user-123',
 }
 
 const mockLoaderData = {

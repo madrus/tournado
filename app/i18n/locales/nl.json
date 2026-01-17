@@ -206,6 +206,10 @@
     "groupAssignment": {
       "instruction": "Sleep teams om ze aan specifieke plekken toe te wijzen. Laat los op een vrije plek of op een team om het te vervangen.",
       "backToGroups": "Terug naar poules",
+      "deleteTitle": "Poulefase verwijderen",
+      "deleteDescription": "Weet je zeker dat je deze poulefase wilt verwijderen?",
+      "deleteImpactWithMatches": "Dit verwijdert {{groups}} poules, maakt {{teams}} teams los en verwijdert {{matches}} geplande wedstrijden. Teams blijven in het toernooi.",
+      "deleteImpactWithoutMatches": "Dit verwijdert {{groups}} poules en maakt {{teams}} teams los. Teams blijven in het toernooi.",
       "unsavedChanges": "Je hebt niet-opgeslagen wijzigingen",
       "unsavedTitle": "Niet-opgeslagen wijzigingen",
       "unsavedDescription": "Je hebt niet-opgeslagen wijzigingen die verloren gaan als je deze pagina verlaat. Weet je zeker dat je wilt vertrekken?",
@@ -216,6 +220,8 @@
       "conflictReload": "Pagina herladen",
       "goToGroup": "Ga naar {{name}}",
       "errors": {
+        "deleteBlocked": "Cannot delete: {{reason}}",
+        "deleteBlockedReason": "This group stage has matches with recorded results",
         "noCapacity": "Geen ruimte beschikbaar in bevestigde pool. Verwijder eerst een team uit een poule.",
         "waitlistToGroup": "Wachtlijstteams kunnen niet direct aan poules worden toegewezen. Verplaats ze eerst naar de bevestigde pool."
       },
@@ -348,6 +354,9 @@
       "teamNotFound": "Team niet gevonden. Vernieuw en probeer het opnieuw.",
       "groupNotFound": "Doelgroep niet gevonden. Vernieuw en probeer het opnieuw.",
       "slotNotFound": "Doelslot niet gevonden. Vernieuw en probeer het opnieuw."
+    },
+    "groupStage": {
+      "deleteSuccess": "Groepsfase succesvol verwijderd"
     },
     "panel": {
       "errorTitle": "Er is iets misgegaan",

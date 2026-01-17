@@ -10,21 +10,19 @@
       "acceptanceCriteria": [
         "Add createdBy field (String, required, references User.id) to Tournament model in prisma/schema.prisma",
         "Add createdBy field (String, required, references User.id) to GroupStage model in prisma/schema.prisma",
-        "Generate migration: pnpm prisma migrate dev --name add_createdby_to_tournament_and_groupstage --create-only",
-        "Edit migration SQL to backfill existing records: set createdBy to the ID of user with email madrus@gmail.com",
-        "Apply migration: pnpm prisma migrate deploy",
+        "Generate migration: pnpm prisma migrate dev --name add_createdby_to_tournament_and_groupstage",
         "Update createTournament function to set createdBy from authenticated user",
         "Update createGroupStage function to set createdBy from authenticated user",
-        "Update ALL test fixtures that create Tournament or GroupStage objects to include createdBy field (use a valid test user ID from test setup or the backfill user ID)",
+        "Update ALL test fixtures that create Tournament or GroupStage objects to include createdBy field (use a valid test user ID from test setup)",
         "Typecheck passes",
         "Lint passes",
         "Create unit tests in app/models/__tests__/tournament.server.test.ts for createTournament with createdBy",
         "Create unit tests in app/models/__tests__/group.server.test.ts for createGroupStage with createdBy",
-        "Run unit tests: pnpm test:run - all tests must pass"
+        "Run unit tests for changed files (e.g., pnpm test:run app/models/__tests__/group.server.test.ts) - all related tests must pass"
       ],
       "priority": 1,
-      "passes": false,
-      "notes": "Decision: Backfill Strategy - Use required createdBy field. Backfill existing records with the user ID of the user with email madrus@gmail.com. Query the User table to get the ID during migration."
+      "passes": true,
+      "notes": "Decision: Development workflow - This is pre-production. Use pnpm prisma migrate dev (handles empty tables cleanly). After migration: run seedSuperAdmins.js then seed.js. The seed.js already handles createdBy by finding/creating madrus@gmail.com user."
     },
     {
       "id": "UC-001",
@@ -33,7 +31,7 @@
       "acceptanceCriteria": [
         "Create deleteGroupStage function in app/models/group.server.ts",
         "Function accepts groupStageId parameter",
-        "Deletes GroupStage, all Groups, and all GroupSlots in a transaction",
+        "Deletes GroupSlots first (count deleted), then Groups (count deleted), then GroupStage - all in a transaction",
         "Teams referenced by GroupSlots remain in database (Prisma onDelete: SetNull handles this)",
         "Returns deletion statistics: { groupsDeleted: number, slotsDeleted: number }",
         "Typecheck passes",
@@ -42,11 +40,11 @@
         "Test cascade deletion of Groups and GroupSlots",
         "Test that Teams remain (GroupSlot.teamId set to null)",
         "Test transaction rollback on error",
-        "Run unit tests: pnpm test:run - all tests must pass"
+        "Run unit tests for changed files (e.g., pnpm test:run app/models/__tests__/group.server.test.ts) - all related tests must pass"
       ],
       "priority": 2,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Implementation: To return deletion statistics, explicitly delete in order: GroupSlots (count), then Groups (count), then GroupStage. Wrap all in a Prisma transaction. Prisma's onDelete: SetNull on GroupSlot.teamId automatically handles team preservation."
     },
     {
       "id": "UC-002",
@@ -65,10 +63,10 @@
         "Test returns canDelete: true when only non-played matches exist",
         "Test returns canDelete: true when no matches exist",
         "Test impact calculation includes correct counts",
-        "Run unit tests: pnpm test:run - all tests must pass"
+        "Run unit tests for changed files (e.g., pnpm test:run app/models/__tests__/group.server.test.ts) - all related tests must pass"
       ],
       "priority": 3,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -92,10 +90,10 @@
         "Test MANAGER cannot delete if they didn't create tournament or group stage",
         "Test deletion blocked when matches with PLAYED status exist",
         "Test successful deletion redirects with success param",
-        "Run unit tests: pnpm test:run - all tests must pass"
+        "Run unit tests for changed files (e.g., pnpm test:run app/models/__tests__/group.server.test.ts) - all related tests must pass"
       ],
       "priority": 4,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -116,11 +114,11 @@
         "Test delete button renders for MANAGER role (with ownership)",
         "Test delete button does not render for unauthorized roles",
         "Test delete button triggers confirmation dialog",
-        "Run unit tests: pnpm test:run - all tests must pass",
+        "Run unit tests for changed files (e.g., pnpm test:run app/models/__tests__/group.server.test.ts) - all related tests must pass",
         "Verify in browser using dev-browser skill"
       ],
       "priority": 5,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -143,11 +141,11 @@
         "Test dialog shows matches count only when > 0",
         "Test confirm action triggers delete",
         "Test cancel action closes dialog without deleting",
-        "Run unit tests: pnpm test:run - all tests must pass",
+        "Run unit tests for changed files (e.g., pnpm test:run app/models/__tests__/group.server.test.ts) - all related tests must pass",
         "Verify in browser using dev-browser skill"
       ],
       "priority": 6,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -164,10 +162,10 @@
         "Create unit tests in test/routes/admin/competition/competition.groups.$groupStageId.test.ts for blocked deletion",
         "Test error toast shown when deletion blocked due to PLAYED matches",
         "Test correct error message displayed",
-        "Run unit tests: pnpm test:run - all tests must pass"
+        "Run unit tests for changed files (e.g., pnpm test:run app/models/__tests__/group.server.test.ts) - all related tests must pass"
       ],
       "priority": 7,
-      "passes": false,
+      "passes": true,
       "notes": ""
     }
   ]

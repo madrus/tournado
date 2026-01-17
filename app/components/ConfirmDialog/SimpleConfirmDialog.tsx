@@ -88,7 +88,7 @@ export function SimpleConfirmDialog({
   const finalIcon = getIconForIntent(intent)
   const finalConfirmColor = intentColors.confirm
   const finalCancelColor = getCancelButtonColor()
-  const buttonClassName = cn('w-full min-w-[120px] md:w-auto')
+  const buttonClassName = 'w-full h-auto min-h-[3rem] px-4 whitespace-normal'
 
   const handleConfirm = (): void => {
     onConfirm?.()
@@ -137,8 +137,8 @@ export function SimpleConfirmDialog({
                 </Dialog.Description>
               ) : null}
 
-              <div className='mt-8 flex flex-col-reverse gap-2 sm:flex-row'>
-                <div className='sm:order-1'>
+              <div className='mt-8 flex flex-col-reverse gap-3 sm:flex-row'>
+                <div className='w-full sm:order-1 sm:flex-1'>
                   <Dialog.Close asChild>
                     <ActionButton
                       variant='secondary'
@@ -153,7 +153,7 @@ export function SimpleConfirmDialog({
                   </Dialog.Close>
                 </div>
 
-                <div className='sm:order-2'>
+                <div className='w-full sm:order-2 sm:flex-1'>
                   <Dialog.Close asChild>
                     <ActionButton
                       variant='primary'

@@ -14,6 +14,7 @@ vi.mock('~/models/tournament.server', () => ({
     id: 'test-tournament-id',
     name: 'Test Tournament',
     categories: '["U12","U14"]',
+    createdBy: 'user-123',
   }),
 }))
 

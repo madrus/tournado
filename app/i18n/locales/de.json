@@ -213,6 +213,10 @@
     "groupAssignment": {
       "instruction": "Ziehen Sie Teams, um sie bestimmten Plätzen zuzuweisen. Lassen Sie auf einem freien Platz oder auf einem Team los, um es zu ersetzen.",
       "backToGroups": "Zurück zu Gruppen",
+      "deleteTitle": "Gruppenphase löschen",
+      "deleteDescription": "Sind Sie sicher, dass Sie diese Gruppenphase löschen möchten?",
+      "deleteImpactWithMatches": "Dies wird {{groups}} Gruppen löschen, die Zuweisung von {{teams}} Teams aufheben und {{matches}} geplante Spiele entfernen. Die Teams bleiben im Turnier.",
+      "deleteImpactWithoutMatches": "Dies löscht {{groups}} Gruppen und weist {{teams}} Teams ab. Teams bleiben im Turnier.",
       "unsavedChanges": "Sie haben ungespeicherte Änderungen",
       "unsavedTitle": "Ungespeicherte Änderungen",
       "unsavedDescription": "Ihre ungespeicherten Änderungen gehen verloren, wenn Sie diese Seite verlassen. Sind Sie sicher, dass Sie gehen möchten?",
@@ -223,6 +227,8 @@
       "conflictReload": "Seite neu laden",
       "goToGroup": "Zu {{name}} gehen",
       "errors": {
+        "deleteBlocked": "Cannot delete: {{reason}}",
+        "deleteBlockedReason": "This group stage has matches with recorded results",
         "noCapacity": "Kein Platz im bestätigten Pool verfügbar. Entfernen Sie zuerst ein Team aus einer Gruppe.",
         "waitlistToGroup": "Wartelisten-Teams können nicht direkt Gruppen zugewiesen werden. Verschieben Sie sie zuerst in den bestätigten Pool."
       },
@@ -348,6 +354,9 @@
       "teamNotFound": "Team nicht gefunden. Bitte aktualisieren und erneut versuchen.",
       "groupNotFound": "Zielgruppe nicht gefunden. Bitte aktualisieren und erneut versuchen.",
       "slotNotFound": "Ziel-Slot nicht gefunden. Bitte aktualisieren und erneut versuchen."
+    },
+    "groupStage": {
+      "deleteSuccess": "Gruppenphase erfolgreich gelöscht"
     },
     "panel": {
       "errorTitle": "Etwas ist schief gelaufen",

@@ -220,8 +220,8 @@
       "conflictReload": "Pagina herladen",
       "goToGroup": "Ga naar {{name}}",
       "errors": {
-        "deleteBlocked": "Cannot delete: {{reason}}",
-        "deleteBlockedReason": "This group stage has matches with recorded results",
+        "deleteBlocked": "Kan niet verwijderen: {{reason}}",
+        "deleteBlockedReason": "Deze groepsfase heeft wedstrijden met geregistreerde resultaten",
         "noCapacity": "Geen ruimte beschikbaar in bevestigde pool. Verwijder eerst een team uit een poule.",
         "waitlistToGroup": "Wachtlijstteams kunnen niet direct aan poules worden toegewezen. Verplaats ze eerst naar de bevestigde pool."
       },

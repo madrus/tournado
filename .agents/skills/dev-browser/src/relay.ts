@@ -563,6 +563,12 @@ export async function serveRelay(options: RelayOptions = {}): Promise<RelayServe
               pending.reject(new Error('Extension connection replaced'))
             }
             extensionPendingRequests.clear()
+
+            // Close all Playwright clients to ensure they reconnect and get fresh state
+            for (const client of playwrightClients.values()) {
+              client.ws.close(1000, 'Extension connection replaced')
+            }
+            playwrightClients.clear()
           }
 
           extensionWs = ws

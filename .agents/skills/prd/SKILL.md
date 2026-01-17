@@ -64,7 +64,7 @@ Ask only critical questions where the initial prompt is ambiguous. Focus on:
 
 Before generating a PRD, ask 3-5 surgical questions with lettered options to define the "Evolution Path":
 
-```
+```text
 1. **What is the Nature of this Change?**
    A. New Feature: Adding entirely new capabilities.
    B. Refactor: Improving existing logic in Teams/Tournaments/Competitions.

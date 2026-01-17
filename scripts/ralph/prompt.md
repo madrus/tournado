@@ -215,7 +215,7 @@ After completing a use case, **explicitly check the PRD JSON** to count how many
 
 **Response Template When Count > 0:**
 
-```
+```text
 Remaining stories (passes: false): [UC-XXX, UC-YYY, ...]
 Next step: proceed with [next story ID].
 ```

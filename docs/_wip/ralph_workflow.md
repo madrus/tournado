@@ -258,14 +258,18 @@ git diff
 For features requiring schema changes, Ralph follows this workflow:
 
 1. **Drop/recreate database** (tables empty)
+
    ```sh
    # Manual command (if needed):
    pnpm db:reset:local
    ```
+
 2. **Run migrations** (no backfill needed - tables are empty)
+
    ```sh
    pnpm prisma migrate dev --name <migration_name>
    ```
+
 3. **Run seed scripts** (creates data with proper fields)
    - `prisma/seedSuperAdmins.js` - creates admin users
    - `prisma/seed.js` - creates test data with `createdBy`, etc.

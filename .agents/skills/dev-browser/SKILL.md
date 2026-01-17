@@ -99,14 +99,14 @@ Code passed to `page.evaluate()` runs in the browser, which doesn't understand T
 ```typescript
 // ✅ Correct: plain JavaScript
 const text = await page.evaluate(() => {
-  return document.body.innerText;
-});
+  return document.body.innerText
+})
 
 // ❌ Wrong: TypeScript syntax will fail at runtime
 const text = await page.evaluate(() => {
   const el: HTMLElement = document.body; // Type annotation breaks in browser!
-  return el.innerText;
-});
+  return el.innerText
+})
 ```
 
 ## Scraping Data

@@ -40,7 +40,7 @@ Tournado is not a greenfield project. It has four established features:
 
 ---
 
-## The Job and Wopkflow Process
+## The Job and Workflow Process
 
 1. Receive feature description from the user.
 2. Technical & Functional Discovery: Ask 3-5 surgical clarifying questions with lettered options (A, B, C) regarding the nature of change, primary actor/role, data/routing impact, and security/ownership.

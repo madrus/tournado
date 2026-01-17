@@ -229,5 +229,5 @@ Next step: proceed with [next story ID].
 - Keep CI green
 - Read the Codebase Patterns section in progress.txt before starting
 - **NEVER say "completed all tasks" unless you've verified ALL stories have `passes: true`** - Check the actual count in prd.json
-- **DO NOT run code review tools** (Kluster, etc.) - Focus on implementation, typecheck, lint, and tests only
+- **DO NOT run code review tools** (e.g., CodeRabbit, etc.) - Focus on implementation, typecheck, lint, and tests only
 - **DO NOT stop to ask about code review findings** - Fix blocking issues, ignore suggestions, proceed

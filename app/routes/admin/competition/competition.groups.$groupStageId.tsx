@@ -2,6 +2,7 @@ import type { Category } from '@prisma/client'
 import type { JSX } from 'react'
 import { redirect, useActionData, useLoaderData } from 'react-router'
 import { CompetitionGroupStageDetails } from '~/features/competition/components'
+import { getServerT } from '~/i18n/i18n.server'
 import type { GroupStageWithDetails, UnassignedTeam } from '~/models/group.server'
 import {
   assignTeamToGroupSlot,
@@ -91,6 +92,7 @@ export async function action({
   params,
 }: Route.ActionArgs): Promise<ActionData | Response> {
   const user = await requireUserWithMetadata(request, handle)
+  const t = getServerT(request)
 
   const { groupStageId } = params
   invariant(groupStageId, 'groupStageId is required')
@@ -136,7 +138,16 @@ export async function action({
 
         const deleteCheck = await canDeleteGroupStage(groupStageId)
         if (!deleteCheck.canDelete) {
-          return { error: deleteCheck.reason ?? 'Cannot delete group stage' }
+          const reason =
+            deleteCheck.reason === 'This group stage has matches with recorded results'
+              ? t('groupAssignment.errors.deleteBlockedReason')
+              : deleteCheck.reason
+
+          return {
+            error: reason
+              ? t('groupAssignment.errors.deleteBlocked', { reason })
+              : t('errors.somethingWentWrong'),
+          }
         }
 
         await deleteGroupStage(groupStageId)

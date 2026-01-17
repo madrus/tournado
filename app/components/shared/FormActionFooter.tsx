@@ -17,6 +17,7 @@ type FormActionFooterProps = {
   buttonsDisabled?: boolean
   permission?: Permission
   onSecondary?: ButtonHTMLAttributes<HTMLButtonElement>['onClick']
+  hasErrors?: boolean
 }
 
 export function FormActionFooter({
@@ -29,6 +30,7 @@ export function FormActionFooter({
   buttonsDisabled,
   permission,
   onSecondary,
+  hasErrors = false,
 }: Readonly<FormActionFooterProps>): JSX.Element {
   const { t } = useTranslation()
   const blocker = useBlocker(
@@ -67,7 +69,7 @@ export function FormActionFooter({
   // Derive disabled states
   const isPrimaryDisabled =
     buttonsDisabled ?? (loading || !isValid || (mode === 'edit' && !isDirty))
-  const isSecondaryDisabled = loading
+  const isSecondaryDisabled = loading || (!isDirty && isValid && !hasErrors)
 
   return (
     <>

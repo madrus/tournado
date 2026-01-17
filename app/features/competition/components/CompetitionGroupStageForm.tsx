@@ -1,7 +1,7 @@
 import type { Category } from '@prisma/client'
-import type { JSX } from 'react'
+import { type JSX, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Form, useNavigate, useNavigation } from 'react-router'
+import { Form, useNavigation } from 'react-router'
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { Checkbox } from '~/components/inputs/Checkbox'
 import { TextInputField } from '~/components/inputs/TextInputField'
@@ -37,9 +37,18 @@ export function CompetitionGroupStageForm({
 }: Readonly<CompetitionGroupStageFormProps>): JSX.Element {
   const navigation = useNavigation()
   const { t } = useTranslation()
-  const navigate = useNavigate()
+  const formRef = useRef<HTMLFormElement>(null)
+  const [isDirty, setIsDirty] = useState(false)
 
   const isSubmitting = navigation.state === 'submitting'
+  const hasErrors = Boolean(
+    actionData?.errors && Object.keys(actionData.errors).length > 0,
+  )
+
+  const handleReset = () => {
+    setIsDirty(false)
+    formRef.current?.reset()
+  }
 
   // Calculate total teams for selected categories
   const selectedCategories = actionData?.fieldValues?.categories || []
@@ -60,7 +69,12 @@ export function CompetitionGroupStageForm({
       </div>
 
       <div className='max-w-2xl'>
-        <Form method='post' className='space-y-6'>
+        <Form
+          ref={formRef}
+          method='post'
+          className='space-y-6'
+          onChange={() => setIsDirty(true)}
+        >
           {actionData?.errors?.general ? (
             <div className='rounded-md bg-error-50 p-4'>
               <p className='text-error-700 text-sm'>{actionData.errors.general}</p>
@@ -176,11 +190,16 @@ export function CompetitionGroupStageForm({
             <ActionButton
               type='button'
               variant='secondary'
-              onClick={() => navigate(-1)}
+              onClick={handleReset}
+              disabled={!isDirty && !hasErrors}
             >
               {t('common.actions.cancel')}
             </ActionButton>
-            <ActionButton type='submit' variant='primary' disabled={isSubmitting}>
+            <ActionButton
+              type='submit'
+              variant='primary'
+              disabled={isSubmitting || (!isDirty && !hasErrors)}
+            >
               {isSubmitting ? t('common.actions.creating') : t('common.actions.create')}
             </ActionButton>
           </div>

@@ -389,6 +389,7 @@ export function GroupAssignmentBoard({
             mode='edit'
             onPrimary={handleSave}
             onSecondary={handleCancel}
+            hasErrors={Boolean(saveError)}
           />
         </div>
 

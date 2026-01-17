@@ -711,6 +711,7 @@ export function TeamForm({
           primaryLabel={submitButtonText}
           permission={formMode === 'edit' ? 'teams:update' : 'teams:create'}
           onSecondary={handleReset}
+          hasErrors={Object.keys(errors).length > 0}
         />{' '}
       </Form>
     </div>

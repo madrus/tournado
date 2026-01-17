@@ -316,7 +316,31 @@ export const createSnapshotFromLoader = (
     tournamentId: groupStage.tournamentId,
     updatedAt: groupStage.updatedAt.toISOString(),
     groups,
-    unassignedTeams,
+    unassignedTeams: sortUnassignedTeams(unassignedTeams),
     totalSlots,
   }
+}
+
+/**
+ * Sort unassigned teams consistently
+ * 1. Confirmed first, Waitlist last
+ * 2. Club name alphabetically
+ * 3. Team name alphabetically
+ */
+export const sortUnassignedTeams = (
+  teams: readonly DndUnassignedTeam[],
+): DndUnassignedTeam[] => {
+  return [...teams].sort((a, b) => {
+    // Sort by waitlist status first (false < true)
+    if (a.isWaitlist !== b.isWaitlist) {
+      return a.isWaitlist ? 1 : -1
+    }
+
+    // Then by club name
+    const clubCompare = a.clubName.localeCompare(b.clubName)
+    if (clubCompare !== 0) return clubCompare
+
+    // Finally by team name
+    return a.name.localeCompare(b.name)
+  })
 }

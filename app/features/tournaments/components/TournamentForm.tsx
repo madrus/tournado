@@ -576,6 +576,7 @@ export function TournamentForm({
           primaryLabel={submitButtonText}
           permission={formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'}
           onSecondary={handleReset}
+          hasErrors={Object.keys(errors).length > 0}
         />{' '}
       </Form>
     </div>

@@ -178,7 +178,7 @@ describe('CompetitionGroupStageDetails', () => {
     await user.click(screen.getByRole('button', { name: 'common.actions.delete' }))
     await user.click(
       screen.getByRole('button', {
-        name: 'competition.groupAssignment.deleteConfirm',
+        name: 'common.actions.confirmDelete',
       }),
     )
 

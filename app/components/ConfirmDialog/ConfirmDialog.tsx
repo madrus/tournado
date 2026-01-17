@@ -114,7 +114,6 @@ export function ConfirmDialog({
   const finalIcon = getIconForIntent(intent)
   const finalConfirmColor = intentColors.confirm
   const finalCancelColor = getCancelButtonColor()
-  const sharedButtonClasses = 'w-full sm:w-auto h-12 px-6'
 
   const handleConfirm = (): void => {
     onConfirm?.()
@@ -161,14 +160,14 @@ export function ConfirmDialog({
                 </Dialog.Description>
               ) : null}
 
-              <div className='mt-8 flex flex-col-reverse gap-2 sm:flex-row'>
-                <div className='sm:order-1'>
+              <div className='mt-8 flex flex-col-reverse gap-3 sm:flex-row'>
+                <div className='w-full sm:order-1 sm:flex-1'>
                   <DialogCloseWrapper shouldAutoClose={true}>
                     <ActionButton
                       variant='secondary'
                       color={finalCancelColor}
                       size='md'
-                      className={sharedButtonClasses}
+                      className='w-full h-auto min-h-[3rem] px-4 whitespace-normal'
                       autoFocus={destructive}
                       disabled={isLoading}
                     >
@@ -177,13 +176,13 @@ export function ConfirmDialog({
                   </DialogCloseWrapper>
                 </div>
 
-                <div className='sm:order-2'>
+                <div className='w-full sm:order-2 sm:flex-1'>
                   <ActionButton
                     variant='primary'
                     color={finalConfirmColor}
                     size='md'
                     onClick={handleConfirm}
-                    className={sharedButtonClasses}
+                    className='w-full h-auto min-h-[3rem] px-4 whitespace-normal'
                     aria-label={confirmLabel}
                     autoFocus={!destructive}
                     disabled={isLoading}

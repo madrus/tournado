@@ -182,7 +182,7 @@ export function CompetitionGroupStageDetails({
               }
               title={t('competition.groupAssignment.deleteTitle')}
               description={deleteDescription}
-              confirmLabel={t('competition.groupAssignment.deleteConfirm')}
+              confirmLabel={t('common.actions.confirmDelete')}
               cancelLabel={t('common.actions.cancel')}
               destructive
               onConfirm={handleDelete}

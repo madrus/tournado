@@ -213,7 +213,6 @@
       "backToGroups": "العودة إلى المجموعات",
       "deleteTitle": "حذف مرحلة المجموعات",
       "deleteDescription": "هل أنت متأكد أنك تريد حذف مرحلة المجموعات هذه؟",
-      "deleteConfirm": "حذف مرحلة المجموعات",
       "deleteImpactWithMatches": "سيؤدي ذلك إلى حذف {{groups}} مجموعات، وإلغاء تعيين {{teams}} فرق، وإزالة {{matches}} مباريات مجدولة. ستبقى الفرق في البطولة.",
       "deleteImpactWithoutMatches": "سيؤدي ذلك إلى حذف {{groups}} مجموعات وإلغاء تعيين {{teams}} فرق. ستبقى الفرق في البطولة.",
       "unsavedChanges": "لديك تغييرات غير محفوظة",

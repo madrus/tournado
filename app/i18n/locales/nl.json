@@ -208,7 +208,6 @@
       "backToGroups": "Terug naar poules",
       "deleteTitle": "Poulefase verwijderen",
       "deleteDescription": "Weet je zeker dat je deze poulefase wilt verwijderen?",
-      "deleteConfirm": "Poulefase verwijderen",
       "deleteImpactWithMatches": "Dit verwijdert {{groups}} poules, maakt {{teams}} teams los en verwijdert {{matches}} geplande wedstrijden. Teams blijven in het toernooi.",
       "deleteImpactWithoutMatches": "Dit verwijdert {{groups}} poules en maakt {{teams}} teams los. Teams blijven in het toernooi.",
       "unsavedChanges": "Je hebt niet-opgeslagen wijzigingen",

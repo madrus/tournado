@@ -32,7 +32,7 @@ When reviewing finished implementation, you provide:
 
 You help PMs ensure features are complete and correct by:
 
-- Validating implementation against original requirements/user story
+- Validating implementation against original requirements/use case
 - Identifying requirement gaps before shipping
 - Spotting incomplete or half-implemented features
 - Checking for obvious edge cases that need handling

@@ -1,4 +1,4 @@
-import type { Category, Prisma } from '@prisma/client'
+import { type Category, MatchStatus, type Prisma } from '@prisma/client'
 import { prisma } from '~/db.server'
 import { safeParseJSON } from '~/utils/json'
 
@@ -32,6 +32,7 @@ export type GroupStageWithDetails = {
   readonly id: string
   readonly name: string
   readonly tournamentId: string
+  readonly createdBy: string
   readonly categories: readonly Category[]
   readonly configGroups: number
   readonly configSlots: number
@@ -64,6 +65,7 @@ export type CreateGroupStageParams = {
   readonly categories: readonly Category[]
   readonly configGroups: number
   readonly configSlots: number
+  readonly createdBy: string
 }
 
 // Server-side functions
@@ -73,6 +75,7 @@ export async function createGroupStage({
   categories,
   configGroups,
   configSlots,
+  createdBy,
 }: CreateGroupStageParams): Promise<string> {
   return await prisma.$transaction(async tx => {
     // Create the GroupStage
@@ -84,6 +87,7 @@ export async function createGroupStage({
         configGroups,
         configSlots,
         autoFill: true,
+        createdBy,
       },
     })
 
@@ -185,6 +189,7 @@ export async function getGroupStageWithDetails(
     id: groupStage.id,
     name: groupStage.name,
     tournamentId: groupStage.tournamentId,
+    createdBy: groupStage.createdBy,
     categories: safeParseJSON<Category[]>(
       groupStage.categories,
       `getGroupStageWithDetails(${groupStageId})`,
@@ -567,6 +572,160 @@ export async function batchSaveGroupAssignments(
       data: { updatedAt: new Date() },
     })
   })
+}
+
+type DeleteGroupStageResult = {
+  readonly groupsDeleted: number
+  readonly slotsDeleted: number
+  readonly matchesDeleted: number
+}
+
+export async function deleteGroupStage(
+  groupStageId: string,
+): Promise<DeleteGroupStageResult> {
+  return await prisma.$transaction(async tx => {
+    // 1. Verify existence
+    const groupStage = await tx.groupStage.findUnique({
+      where: { id: groupStageId },
+      select: { id: true },
+    })
+
+    if (!groupStage) {
+      throw new Error('Group stage not found')
+    }
+
+    // 2. Find all teams in this group stage to clean up their matches
+    const slots = await tx.groupSlot.findMany({
+      where: { groupStageId, teamId: { not: null } },
+      select: { teamId: true },
+    })
+    const teamIds = slots.map(s => s.teamId).filter((id): id is string => id !== null)
+
+    // 3. Delete scheduled matches for these teams (only if not played - though validation should catch played ones)
+    let matchesDeleted = 0
+    if (teamIds.length > 0) {
+      const matchesResult = await tx.match.deleteMany({
+        where: {
+          OR: [{ homeTeamId: { in: teamIds } }, { awayTeamId: { in: teamIds } }],
+          status: { not: MatchStatus.PLAYED }, // Safety check, though canDeleteGroupStage handles the blocking
+        },
+      })
+      matchesDeleted = matchesResult.count
+    }
+
+    // 4. Delete slots and groups
+    const slotsResult = await tx.groupSlot.deleteMany({
+      where: { groupStageId },
+    })
+
+    const groupsResult = await tx.group.deleteMany({
+      where: { groupStageId },
+    })
+
+    // 5. Delete the stage
+    await tx.groupStage.delete({
+      where: { id: groupStageId },
+    })
+
+    return {
+      groupsDeleted: groupsResult.count,
+      slotsDeleted: slotsResult.count,
+      matchesDeleted,
+    }
+  })
+}
+
+type GroupStageDeleteImpact = {
+  readonly groups: number
+  readonly assignedTeams: number
+  readonly matchesToDelete: number
+}
+
+export const GROUP_STAGE_DELETE_ERROR_CODES = {
+  HAS_PLAYED_MATCHES: 'HAS_PLAYED_MATCHES',
+} as const
+
+export type GroupStageDeleteErrorCode =
+  (typeof GROUP_STAGE_DELETE_ERROR_CODES)[keyof typeof GROUP_STAGE_DELETE_ERROR_CODES]
+
+type CanDeleteGroupStageResult = {
+  readonly canDelete: boolean
+  readonly errorCode?: GroupStageDeleteErrorCode
+  readonly impact: GroupStageDeleteImpact
+}
+
+export async function canDeleteGroupStage(
+  groupStageId: string,
+): Promise<CanDeleteGroupStageResult> {
+  const [groupStage, groupsCount, assignedSlots] = await Promise.all([
+    prisma.groupStage.findUnique({
+      where: { id: groupStageId },
+      select: { id: true },
+    }),
+    prisma.group.count({
+      where: { groupStageId },
+    }),
+    prisma.groupSlot.findMany({
+      where: { groupStageId, teamId: { not: null } },
+      select: { teamId: true },
+    }),
+  ])
+
+  if (!groupStage) {
+    throw new Error('Group stage not found')
+  }
+
+  const uniqueTeamIds = [
+    ...new Set(assignedSlots.flatMap(slot => (slot.teamId ? [slot.teamId] : []))),
+  ]
+  const assignedTeamsCount = uniqueTeamIds.length
+  const hasTeams = uniqueTeamIds.length > 0
+
+  const [playedMatchesCount, nonPlayedMatchesCount] = hasTeams
+    ? await Promise.all([
+        prisma.match.count({
+          where: {
+            status: MatchStatus.PLAYED,
+            OR: [
+              { homeTeamId: { in: uniqueTeamIds } },
+              { awayTeamId: { in: uniqueTeamIds } },
+            ],
+          },
+        }),
+        prisma.match.count({
+          where: {
+            status: {
+              in: [MatchStatus.UPCOMING, MatchStatus.CANCELLED, MatchStatus.POSTPONED],
+            },
+            OR: [
+              { homeTeamId: { in: uniqueTeamIds } },
+              { awayTeamId: { in: uniqueTeamIds } },
+            ],
+          },
+        }),
+      ])
+    : [0, 0]
+
+  if (playedMatchesCount > 0) {
+    return {
+      canDelete: false,
+      errorCode: GROUP_STAGE_DELETE_ERROR_CODES.HAS_PLAYED_MATCHES,
+      impact: {
+        groups: groupsCount,
+        assignedTeams: assignedTeamsCount,
+        matchesToDelete: nonPlayedMatchesCount,
+      },
+    }
+  }
+
+  return {
+    canDelete: true,
+    impact: {
+      groups: groupsCount,
+      assignedTeams: assignedTeamsCount,
+      matchesToDelete: nonPlayedMatchesCount,
+    },
+  }
 }
 
 type DeleteTeamFromGroupStageProps = {

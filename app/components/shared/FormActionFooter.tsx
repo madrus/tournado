@@ -9,34 +9,28 @@ import type { Permission } from '~/utils/rbac'
 
 type FormActionFooterProps = {
   isDirty: boolean
-  primaryLabel: string
+  isValid?: boolean
+  loading?: boolean
+  mode?: 'create' | 'edit'
+  primaryLabel?: string
   onPrimary?: ButtonHTMLAttributes<HTMLButtonElement>['onClick']
-  primaryDisabled?: boolean
-  primaryPermission?: Permission
-  secondaryLabel?: string
+  buttonsDisabled?: boolean
+  permission?: Permission
   onSecondary?: ButtonHTMLAttributes<HTMLButtonElement>['onClick']
-  secondaryDisabled?: boolean
-  secondaryPermission?: Permission
-  confirmTitle?: string
-  confirmDescription?: string
-  confirmProceedLabel?: string
-  confirmCancelLabel?: string
+  hasErrors?: boolean
 }
 
 export function FormActionFooter({
   isDirty,
+  isValid = true,
+  loading = false,
+  mode = 'create',
   primaryLabel,
   onPrimary,
-  primaryDisabled,
-  primaryPermission,
-  secondaryLabel,
+  buttonsDisabled,
+  permission,
   onSecondary,
-  secondaryDisabled,
-  secondaryPermission,
-  confirmTitle,
-  confirmDescription,
-  confirmProceedLabel,
-  confirmCancelLabel,
+  hasErrors = false,
 }: Readonly<FormActionFooterProps>): JSX.Element {
   const { t } = useTranslation()
   const blocker = useBlocker(
@@ -61,6 +55,22 @@ export function FormActionFooter({
     blocker.reset?.()
   }
 
+  // Derive label logic
+  const primaryLabelText =
+    primaryLabel ??
+    (loading
+      ? mode === 'edit'
+        ? t('common.actions.updating')
+        : t('common.actions.saving')
+      : mode === 'edit'
+        ? t('common.actions.update')
+        : t('common.actions.save'))
+
+  // Derive disabled states
+  const isPrimaryDisabled =
+    buttonsDisabled ?? (loading || !isValid || (mode === 'edit' && !isDirty))
+  const isSecondaryDisabled = loading || (!isDirty && isValid && !hasErrors)
+
   return (
     <>
       <div
@@ -83,14 +93,14 @@ export function FormActionFooter({
             variant='secondary'
             color='brand'
             onClick={onSecondary}
-            disabled={secondaryDisabled}
-            permission={secondaryPermission}
+            disabled={isSecondaryDisabled}
+            permission={permission}
             className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
             data-testid='form-action-secondary'
           >
             <span className='flex items-center gap-2'>
               <RestorePageIcon className='h-6 w-6' size={24} />
-              <span>{secondaryLabel ?? t('common.actions.cancel')}</span>
+              <span>{t('common.actions.cancel')}</span>
             </span>
           </ActionButton>
           <ActionButton
@@ -99,12 +109,12 @@ export function FormActionFooter({
             color='brand'
             icon='check_circle'
             onClick={onPrimary}
-            disabled={primaryDisabled}
-            permission={primaryPermission}
+            disabled={isPrimaryDisabled}
+            permission={permission}
             className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
             data-testid='form-action-primary'
           >
-            {primaryLabel}
+            {primaryLabelText}
           </ActionButton>
         </div>
       </div>
@@ -117,10 +127,10 @@ export function FormActionFooter({
           }
         }}
         onConfirm={handleConfirmLeave}
-        title={confirmTitle ?? t('common.confirm.unsavedTitle')}
-        description={confirmDescription ?? t('common.confirm.unsavedDescription')}
-        confirmLabel={confirmProceedLabel ?? t('common.confirm.leaveAnyway')}
-        cancelLabel={confirmCancelLabel ?? t('common.confirm.stayOnPage')}
+        title={t('common.confirm.unsavedTitle')}
+        description={t('common.confirm.unsavedDescription')}
+        confirmLabel={t('common.confirm.leaveAnyway')}
+        cancelLabel={t('common.confirm.stayOnPage')}
         intent='warning'
       />
     </>

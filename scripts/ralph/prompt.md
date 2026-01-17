@@ -3,17 +3,19 @@
 You are an autonomous coding agent working on a software project.
 The default source branch to start with is "dev".
 
+**CRITICAL: Start immediately.** Do NOT ask for confirmation to begin. When invoked, immediately start with step 1 below.
+
 ## Your Task
 
 1. Read the PRD at `prd.json` (in the same directory as this file)
 2. Read the progress log at `progress.txt` (check Codebase Patterns section first)
 3. Check you're on the correct branch from PRD `branchName`. If not, check it out or create from the source branch.
-4. Pick the **highest priority** user story where `passes: false`
-5. Implement that single user story
+4. Pick the **highest priority** use case where `passes: false`
+5. Implement that single use case
 6. Run quality checks (e.g., typecheck, lint, test - use whatever your project requires)
 7. Update AGENTS.md files if you discover reusable patterns (see below)
 8. If checks pass, commit ALL changes with message: `feat: [Story ID] - [Story Title]`
-9. Update the PRD to set `passes: true` for the completed story
+9. Update the PRD to set `passes: true` for the completed story (DO NOT ask for human confirmation!)
 10. Append your progress to `progress.txt`
 
 ## Progress Report Format
@@ -84,25 +86,141 @@ Only update AGENTS.md if you have **genuinely reusable knowledge** that would he
 - Keep changes focused and minimal
 - Follow existing code patterns
 
+## Code Review Tools (Kluster, etc.)
+
+**DO NOT run code review tools like Kluster during implementation.** Focus on:
+
+1. Implementing the use case
+2. Running typecheck, lint, and tests
+3. Committing when checks pass
+
+If code review tools are automatically triggered by workspace rules, **ignore their findings during implementation**. Do NOT stop to ask about performance suggestions, style suggestions, or non-blocking issues. Only address findings that cause actual failures (typecheck errors, test failures, etc.).
+
+**If a code review tool flags something:** Fix it immediately if it's a blocking issue (error), otherwise ignore suggestions and proceed. Do NOT ask for approval to fix non-blocking suggestions.
+
+## Testing Rules
+
+**PRD acceptance criteria override project-level testing rules.** When a use case acceptance criteria explicitly says:
+
+- "Run unit tests" or "All unit tests pass" → **Run tests for changed files only** (e.g., `pnpm test:run app/models/__tests__/group.server.test.ts`)
+- "Create unit tests" → **Write the tests AND run them** (run only the new test file)
+- "Run all tests" or "Full test suite" → **Run entire test suite** (`pnpm test:run`)
+
+**Default behavior:** When PRD says "run unit tests", run only tests related to files you changed, not the entire suite. This keeps iterations fast while ensuring your changes work.
+
+This means: if the PRD says tests must pass, you run the relevant tests. The project rule "don't run unit tests unless explicitly requested" does NOT apply when the PRD explicitly requires tests.
+
+## Ripple Effects (Schema Changes)
+
+When you add or modify required fields in the database schema, you MUST also update:
+
+1. **All test fixtures** that create models with the changed schema
+2. **All seed data** that creates those models
+3. **All factory functions** or mock data generators
+
+This is NOT optional and NOT a decision point. If typecheck fails because test fixtures lack a new required field, fix them immediately without asking. Use the same approach as documented in the PRD (e.g., if PRD says backfill with a specific user ID, use that ID in test fixtures too).
+
+## Development Database Workflow
+
+This project is **pre-production**. For migrations that add required fields:
+
+1. **Do NOT** add complex backfill logic to migration SQL
+2. **Do** use `pnpm prisma migrate dev` which handles empty tables cleanly
+3. **Seed data** (via `seed.js`) handles populating required fields for test data
+
+If `prisma migrate dev` prompts to reset the database, that's acceptable in development. The workflow after migration is:
+
+```bash
+node prisma/seedSuperAdmins.js  # Creates admin users
+node prisma/seed.js             # Creates test data with proper ownership
+```
+
+**Do NOT ask for confirmation** about database resets in development - just proceed.
+
+## Decision Points
+
+If you encounter ambiguity in the PRD that requires a decision (e.g., nullable vs required field, backfill strategy), check for a **"Decision:"** block in the use case description. The PRD should document all decisions upfront.
+
+If a decision is NOT documented and you cannot proceed without it, do NOT guess. Instead:
+
+1. Document the question clearly
+2. Skip to the next use case (if possible)
+3. Note the blocker in progress.txt
+
+However, prefer to proceed if the PRD provides enough context to make a reasonable default choice.
+
+**What IS a decision point:** Architecture choices, business logic interpretation, nullable vs required fields, backfill strategies.
+
+**What is NOT a decision point:**
+
+- **Asking for confirmation to start work** - Start immediately when invoked
+- Fixing compilation errors, updating test fixtures, adding missing imports, fixing lint errors
+- Implementation details that are **implied by PRD requirements** (e.g., if PRD says "returns deletion statistics", use explicit deletes with counting; if PRD says "in a transaction", wrap operations in a transaction)
+- Choosing between implementation approaches when one clearly satisfies the PRD requirements better
+
+**When PRD requirements imply implementation approach:** If the PRD specifies requirements like "returns statistics", "in a transaction", "handles rollback", etc., the implementation approach is implied. Don't ask which approach - implement what satisfies the requirements.
+
+**PRD "Implementation Note" sections:** If a use case has an "Implementation Note" or "Implementation:" section, that is the explicit approach to follow. Do NOT ask for approval - just implement it as specified.
+
+**Testing style:** When PRD says "unit tests", use mocked unit tests (consistent with existing test files). Only use integration tests if PRD explicitly says "integration tests" or "test against real database".
+
 ## Browser Testing (Required for Frontend Stories)
 
 For any story that changes UI, you MUST verify it works in the browser:
 
-1. Load the `dev-browser` skill
-2. Navigate to the relevant page
-3. Verify the UI changes work as expected
-4. Take a screenshot if helpful for the progress log
+**Setup (one-time per session):**
 
-A frontend story is NOT complete until browser verification passes.
+1. Ensure the dev server is running at localhost:5173: `pnpm run dev`
+2. Ensure Chrome with remote debugging is running: `pnpm run dev:bridge` (should show Chrome on port 9222)
+3. Start the dev-browser server: `pnpm run dev:browser` (wait for "Ready" message)
+
+**Verification workflow:**
+
+1. Load the `dev-browser` skill by reading `.agents/skills/dev-browser/SKILL.md`
+2. Write and run a small browser script to:
+   - Navigate to the relevant page (e.g., localhost:5173/admin/competition/...)
+   - Verify the UI changes work as expected
+   - Take a screenshot: `await page.screenshot({ path: "tmp/verification-[story-id].png" })`
+3. Document the verification in progress.txt
+
+**If browser automation fails:**
+
+- Check if Chrome bridge is running (pnpm run dev:bridge)
+- Check if dev-browser server is running (./server.sh)
+- Fall back to manual verification: Document in progress.txt that user needs to verify UI manually
+
+A frontend story is NOT complete until browser verification passes or is explicitly deferred to manual verification.
 
 ## Stop Condition
 
-After completing a user story, check if ALL stories have `passes: true`.
+After completing a use case, **explicitly check the PRD JSON** to count how many stories have `passes: false`.
 
-If ALL stories are complete and passing, reply with:
-<promise>COMPLETE</promise>
+**CRITICAL RULE:** You MUST check the actual count before saying anything about completion.
 
-If there are still stories with `passes: false`, end your response normally (another iteration will pick up the next story).
+**Verification steps (MANDATORY):**
+
+1. Read `prd.json` and count stories with `passes: false`
+2. **If count > 0:**
+   - **DO NOT** say "completed all tasks" or "COMPLETE"
+   - **DO** say: "Remaining stories (passes: false): [list story IDs]"
+   - **DO** say: "Next step: proceed with [next story ID]"
+   - End response normally (another iteration will continue)
+3. **If count === 0:**
+   - **ONLY THEN** reply with: `<promise>COMPLETE</promise>`
+   - **ONLY THEN** say "completed all tasks"
+
+**FORBIDDEN:** Never say "completed all tasks" or "Ralph completed all tasks!" when count > 0. This is a critical error. If you identify remaining stories, you MUST NOT claim completion.
+
+**Clarification:** "Completed all tasks" means ALL stories in the PRD are done (count === 0), NOT just the current story you worked on. Completing one story does NOT mean "all tasks completed".
+
+**Response Template When Count > 0:**
+
+```text
+Remaining stories (passes: false): [UC-XXX, UC-YYY, ...]
+Next step: proceed with [next story ID].
+```
+
+**DO NOT** include "Ralph completed all tasks!" or "Completed at iteration X" in your response when count > 0.
 
 ## Important
 
@@ -110,3 +228,6 @@ If there are still stories with `passes: false`, end your response normally (ano
 - Commit frequently
 - Keep CI green
 - Read the Codebase Patterns section in progress.txt before starting
+- **NEVER say "completed all tasks" unless you've verified ALL stories have `passes: true`** - Check the actual count in prd.json
+- **DO NOT run code review tools** (e.g., CodeRabbit, etc.) - Focus on implementation, typecheck, lint, and tests only
+- **DO NOT stop to ask about code review findings** - Fix blocking issues, ignore suggestions, proceed

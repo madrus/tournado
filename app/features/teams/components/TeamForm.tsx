@@ -705,24 +705,13 @@ export function TeamForm({
         ) : null}
         <FormActionFooter
           isDirty={isFormDirty}
-          primaryLabel={
-            isSubmitting
-              ? t('common.actions.saving')
-              : formMode === 'edit'
-                ? t('common.actions.update')
-                : submitButtonText || t('common.actions.save')
-          }
-          primaryDisabled={
-            isSubmitting ||
-            isPublicSuccess ||
-            !isFormReadyForSubmission ||
-            (formMode === 'edit' && !isFormDirty)
-          }
-          primaryPermission={formMode === 'edit' ? 'teams:update' : 'teams:create'}
-          secondaryLabel={t('common.actions.cancel')}
+          isValid={isFormReadyForSubmission}
+          loading={isSubmitting || isPublicSuccess}
+          mode={formMode}
+          primaryLabel={submitButtonText}
+          permission={formMode === 'edit' ? 'teams:update' : 'teams:create'}
           onSecondary={handleReset}
-          secondaryDisabled={!isFormDirty || isSubmitting}
-          secondaryPermission={formMode === 'edit' ? 'teams:update' : 'teams:create'}
+          hasErrors={Object.keys(errors).length > 0}
         />{' '}
       </Form>
     </div>

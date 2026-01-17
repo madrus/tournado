@@ -254,7 +254,7 @@ Each framework file should include:
 - High Impact / Low Effort = Quick wins
 - Low Impact / High Effort = Avoid
 
-**User Story Format**
+**Use Case Format**
 
 - "As a [user], I want [goal], so that [benefit]"
 - Ensures user-centric thinking
@@ -307,7 +307,7 @@ Claude will:
 2. **Jobs-to-Be-Done** - Great for understanding user needs
 3. **RICE Prioritization** - Great for justifying what to build
 4. **Impact-Effort Matrix** - Simple 2x2 for quick prioritization
-5. **User Story Format** - "As a [user], I want [goal], so that [benefit]"
+5. **Use Case Format** - "As a [user], I want [goal], so that [benefit]"
 
 **Add More as You Learn:**
 
@@ -352,11 +352,11 @@ methods/
 ├── socratic-questioning.md          # Problem refinement
 ├── jobs-to-be-done.md               # User needs understanding
 ├── rice-prioritization.md           # Feature prioritization
-├── impact-effort-matrix.md           # Quick prioritization
-├── user-story-format.md             # User story writing
+├── impact-effort-matrix.md          # Quick prioritization
+├── use-case-format.md               # Use case writing
 ├── competitive-analysis.md          # How to analyze competitors
 ├── user-interview-guide.md          # How to conduct interviews
-└── prd-section-templates.md        # Templates for PRD sections
+└── prd-section-templates.md         # Templates for PRD sections
 ```
 
 ### The Power of Reusable Frameworks

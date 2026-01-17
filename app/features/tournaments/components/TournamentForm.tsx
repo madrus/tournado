@@ -61,11 +61,11 @@ export function TournamentForm({
   const nameRef = useRef<HTMLInputElement>(null)
   const navigation = useNavigation()
   const submit = useSubmit()
-  const isSubmitting = navigation.state === 'submitting'
   // Refs to track scroll listener and timeout for cleanup on unmount
   const scrollListenerRef = useRef<((this: Window, ev: Event) => void) | null>(null)
   const scrollTimeoutRef = useRef<number | undefined>(undefined) // Re-entrancy guard for submit during scroll-to-top
   const isSubmittingRef = useRef(false)
+  const isSubmitting = navigation.state === 'submitting'
   const isPublicSuccess = isSuccess && variant === 'public'
   // Panel color constants - single source of truth
   const PANEL_COLORS = {
@@ -570,26 +570,13 @@ export function TournamentForm({
         </Panel>
         <FormActionFooter
           isDirty={isFormDirty}
-          primaryLabel={
-            submitButtonText ??
-            (formMode === 'edit'
-              ? t('common.actions.update')
-              : t('common.actions.save'))
-          }
-          primaryDisabled={
-            isPublicSuccess ||
-            !isFormReadyForSubmission ||
-            (mode === 'edit' && !isFormDirty)
-          }
-          primaryPermission={
-            formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
-          }
-          secondaryLabel={t('common.actions.cancel')}
+          isValid={isFormReadyForSubmission}
+          loading={isSubmitting || isPublicSuccess}
+          mode={formMode}
+          primaryLabel={submitButtonText}
+          permission={formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'}
           onSecondary={handleReset}
-          secondaryDisabled={!isFormDirty || isSubmitting}
-          secondaryPermission={
-            formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
-          }
+          hasErrors={Object.keys(errors).length > 0}
         />{' '}
       </Form>
     </div>

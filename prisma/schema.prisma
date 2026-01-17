@@ -19,6 +19,8 @@ model User {
   updatedAt       DateTime       @updatedAt
   performedAudits UserAuditLog[] @relation("PerformedAudits")
   auditLogs       UserAuditLog[] @relation("UserAuditLogs")
+  tournamentsCreated Tournament[] @relation("TournamentCreator")
+  groupStagesCreated GroupStage[] @relation("GroupStageCreator")
 
   @@index([active, createdAt])
 }
@@ -74,6 +76,7 @@ model Tournament {
   location    String
   divisions   String
   categories  String
+  createdBy   String
   startDate   DateTime
   endDate     DateTime
   createdAt   DateTime     @default(now())
@@ -81,6 +84,9 @@ model Tournament {
   groupStages GroupStage[]
   matches     Match[]
   teams       Team[]
+  creator     User         @relation("TournamentCreator", fields: [createdBy], references: [id], onDelete: Restrict)
+
+  @@index([createdBy])
 }
 
 model Match {
@@ -118,12 +124,15 @@ model GroupStage {
   configGroups Int
   configSlots  Int
   autoFill     Boolean     @default(true)
+  createdBy    String
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   groups       Group[]
   groupSlots   GroupSlot[]
   tournament   Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  creator      User        @relation("GroupStageCreator", fields: [createdBy], references: [id], onDelete: Restrict)
 
+  @@index([createdBy])
   @@unique([tournamentId, name])
   @@index([tournamentId])
 }

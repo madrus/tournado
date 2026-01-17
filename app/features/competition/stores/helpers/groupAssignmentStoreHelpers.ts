@@ -9,6 +9,7 @@ import {
   calculateConfirmedCapacity,
   findTeam,
   isTeamOnWaitlist,
+  sortUnassignedTeams,
 } from '../../utils/groupStageDnd'
 import type { GroupAssignmentTeamLocation } from './groupAssignmentStoreTypes'
 
@@ -94,8 +95,19 @@ export const isGroupAssignmentDirty = (
   originalSnapshot: GroupAssignmentSnapshot | null,
 ): boolean => {
   if (!snapshot || !originalSnapshot) return false
-  // JSON.stringify is simple but scales with snapshot size; consider tracking mutations if this becomes hot.
-  return JSON.stringify(snapshot) !== JSON.stringify(originalSnapshot)
+
+  // To ensure we ignore order in unassigned teams during comparison
+  // (though the store should keep them sorted now)
+  const s1 = {
+    ...snapshot,
+    unassignedTeams: sortUnassignedTeams(snapshot.unassignedTeams),
+  }
+  const s2 = {
+    ...originalSnapshot,
+    unassignedTeams: sortUnassignedTeams(originalSnapshot.unassignedTeams),
+  }
+
+  return JSON.stringify(s1) !== JSON.stringify(s2)
 }
 
 export const getTeamById = (
@@ -149,7 +161,7 @@ export const assignTeamToSlot = (
   return {
     ...snapshot,
     groups: updatedGroups,
-    unassignedTeams: updatedUnassignedTeams,
+    unassignedTeams: sortUnassignedTeams(updatedUnassignedTeams),
   }
 }
 
@@ -169,7 +181,7 @@ export const moveTeamToConfirmed = (
   return {
     ...snapshot,
     groups: updatedGroups,
-    unassignedTeams: updatedUnassignedTeams,
+    unassignedTeams: sortUnassignedTeams(updatedUnassignedTeams),
   }
 }
 
@@ -192,7 +204,7 @@ export const moveTeamToWaitlist = (
   return {
     ...snapshot,
     groups: updatedGroups,
-    unassignedTeams: updatedUnassignedTeams,
+    unassignedTeams: sortUnassignedTeams(updatedUnassignedTeams),
   }
 }
 
@@ -248,7 +260,7 @@ export const swapTeamWithSlot = (
   return {
     ...snapshot,
     groups: updatedGroups,
-    unassignedTeams: updatedUnassignedTeams,
+    unassignedTeams: sortUnassignedTeams(updatedUnassignedTeams),
   }
 }
 
@@ -267,8 +279,10 @@ export const promoteFromWaitlist = (
   const team = snapshot.unassignedTeams.find(t => t.id === teamId)
   if (!team || !team.isWaitlist) return null
 
-  const updatedUnassignedTeams = snapshot.unassignedTeams.map(t =>
-    t.id === teamId ? { ...t, isWaitlist: false } : t,
+  const updatedUnassignedTeams = sortUnassignedTeams(
+    snapshot.unassignedTeams.map(t =>
+      t.id === teamId ? { ...t, isWaitlist: false } : t,
+    ),
   )
 
   return {

@@ -77,7 +77,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 export async function action({
   request,
 }: Route.ActionArgs): Promise<Response | ActionData> {
-  await requireUserWithMetadata(request, handle)
+  const user = await requireUserWithMetadata(request, handle)
 
   const formData = await request.formData()
   const name = formData.get('name')
@@ -137,6 +137,7 @@ export async function action({
       endDate && typeof endDate === 'string' ? endDate : (startDate as string)
 
     const tournament = await createTournament({
+      createdBy: user.id,
       name: name as string,
       location: location as string,
       startDate: new Date(startDate as string),

@@ -54,6 +54,7 @@ describe('email.server', () => {
     endDate: new Date(),
     divisions: '["FIRST_DIVISION"]',
     categories: '["JO12"]',
+    createdBy: 'user-123',
     createdAt: new Date(),
     updatedAt: new Date(),
   }

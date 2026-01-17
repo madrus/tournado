@@ -2,10 +2,14 @@ import type { Category } from '@prisma/client'
 import type { JSX } from 'react'
 import { redirect, useActionData, useLoaderData } from 'react-router'
 import { CompetitionGroupStageDetails } from '~/features/competition/components'
+import { getServerT } from '~/i18n/i18n.server'
 import type { GroupStageWithDetails, UnassignedTeam } from '~/models/group.server'
 import {
+  GROUP_STAGE_DELETE_ERROR_CODES,
   assignTeamToGroupSlot,
+  canDeleteGroupStage,
   clearGroupSlot,
+  deleteGroupStage,
   getGroupStageWithDetails,
   getUnassignedTeamsByCategories,
   moveTeamToReserve,
@@ -22,9 +26,16 @@ type LoaderData = {
   readonly groupStage: GroupStageWithDetails
   readonly availableTeams: readonly UnassignedTeam[]
   readonly tournamentId: string
+  readonly tournamentCreatedBy: string
+  readonly canDelete: boolean
+  readonly deleteImpact: {
+    groups: number
+    assignedTeams: number
+    matchesToDelete: number
+  }
 }
 
-type ActionData = {
+export type ActionData = {
   readonly error?: string
 }
 
@@ -67,14 +78,24 @@ export async function loader({
     groupStage.categories as Category[],
   )
 
-  return { groupStage, availableTeams, tournamentId }
+  const deleteImpact = await canDeleteGroupStage(groupStageId)
+
+  return {
+    groupStage,
+    availableTeams,
+    tournamentId,
+    tournamentCreatedBy: tournament.createdBy,
+    canDelete: deleteImpact.canDelete,
+    deleteImpact: deleteImpact.impact,
+  }
 }
 
 export async function action({
   request,
   params,
 }: Route.ActionArgs): Promise<ActionData | Response> {
-  await requireUserWithMetadata(request, handle)
+  const user = await requireUserWithMetadata(request, handle)
+  const t = getServerT(request)
 
   const { groupStageId } = params
   invariant(groupStageId, 'groupStageId is required')
@@ -101,6 +122,43 @@ export async function action({
 
   try {
     switch (intent) {
+      case 'delete': {
+        if (user.role !== 'ADMIN' && user.role !== 'MANAGER') {
+          throw new Response('Unauthorized', { status: 403 })
+        }
+
+        if (user.role === 'MANAGER') {
+          const tournament = await getTournamentById({ id: tournamentId })
+          if (!tournament) throw new Response('Tournament not found', { status: 404 })
+
+          const isOwner =
+            tournament.createdBy === user.id || groupStage.createdBy === user.id
+
+          if (!isOwner) {
+            throw new Response('Unauthorized', { status: 403 })
+          }
+        }
+
+        const deleteCheck = await canDeleteGroupStage(groupStageId)
+        if (!deleteCheck.canDelete) {
+          const reason =
+            deleteCheck.errorCode === GROUP_STAGE_DELETE_ERROR_CODES.HAS_PLAYED_MATCHES
+              ? t('competition.groupAssignment.errors.deleteBlockedReason')
+              : t('errors.somethingWentWrong')
+
+          return {
+            error: t('competition.groupAssignment.errors.deleteBlocked', {
+              reason,
+            }),
+          }
+        }
+
+        await deleteGroupStage(groupStageId)
+
+        return redirect(
+          adminPath(`/competition/groups?tournament=${tournamentId}&success=deleted`),
+        )
+      }
       case 'assign': {
         const groupId = formData.get('groupId')?.toString() || ''
         const slotIndex = Number(formData.get('slotIndex'))
@@ -146,12 +204,23 @@ export async function action({
       adminPath(`/competition/groups/${groupStageId}?tournament=${tournamentId}`),
     )
   } catch (error) {
+    if (error instanceof Response) {
+      throw error
+    }
+
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
 export function GroupStageDetails(): JSX.Element {
-  const { groupStage, availableTeams, tournamentId } = useLoaderData<LoaderData>()
+  const {
+    groupStage,
+    availableTeams,
+    tournamentId,
+    tournamentCreatedBy,
+    canDelete,
+    deleteImpact,
+  } = useLoaderData<LoaderData>()
   const actionData = useActionData<ActionData>()
 
   return (
@@ -159,6 +228,9 @@ export function GroupStageDetails(): JSX.Element {
       groupStage={groupStage}
       availableTeams={availableTeams}
       tournamentId={tournamentId}
+      tournamentCreatedBy={tournamentCreatedBy}
+      canDelete={canDelete}
+      deleteImpact={deleteImpact}
       actionData={actionData}
     />
   )

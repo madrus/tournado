@@ -17,7 +17,7 @@
       "statusBarItem.remoteForeground": "#e7e7e7",
       "sideBar.border": "#9c2fba",
       "statusBar.border": "#7a2591",
-      "tab.activeBorder": "#9c2fba",
+      "tab.activeBorder": "#9c2fba"
     },
     "peacock.color": "#7a2591",
     "i18n-ally.keystyle": "nested",

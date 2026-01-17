@@ -1,0 +1,63 @@
+# Ralph Progress Log
+## Codebase Patterns
+- Tournament and GroupStage require createdBy; seed data and fixtures must set it explicitly.
+
+Started: Thu Jan 15 16:41:11 CET 2026
+---
+## 2026-01-15 20:13:44 CET - UC-000
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added required createdBy ownership for Tournament and GroupStage, updated creation flows and seed data, and backfilled via migration
+- Added unit tests for createTournament and createGroupStage createdBy behavior
+- Files changed: prisma/schema.prisma, prisma/migrations/20260115190818_add_createdby_to_tournament_and_groupstage/migration.sql, prisma/seed.js, app/models/tournament.server.ts, app/models/group.server.ts, app/routes/admin/tournaments/tournaments.new.tsx, app/routes/admin/competition/competition.groups.new.tsx, app/models/__tests__/tournament.server.test.ts, app/models/__tests__/group.server.test.ts, app/utils/__tests__/email.server.test.tsx, app/features/teams/utils/__tests__/teamCreation.server.test.ts, test/routes/admin/tournaments/tournaments.$tournamentId.test.tsx, test/routes/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/tournaments.$tournamentId.loader.test.ts, test/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.new.loader.test.ts, test/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.$groupStageId.loader.test.ts
+- **Learnings for future iterations:**
+  - CreatedBy is now required on Tournament and GroupStage; seed data must set it explicitly.
+  - Migration backfill uses the user with email madrus@gmail.com.
+  - Prisma relation fields need matching User back-relations to avoid schema validation errors.
+---
+## 2026-01-15 21:43:42 CET - UC-001
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added deleteGroupStage test coverage to ensure team records are not deleted during group stage removal
+- Files changed: app/models/__tests__/group.server.test.ts, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - Deleting a group stage should only touch group slots, groups, and the stage itself; team records must remain untouched.
+---
+## 2026-01-15 21:53:09 CET - UC-002
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added canDeleteGroupStage validation with impact counts and PLAYED match blocking logic
+- Added unit tests covering blocked deletion, non-played matches, and no matches cases
+- Files changed: app/models/group.server.ts, app/models/__tests__/group.server.test.ts, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - canDeleteGroupStage derives impact from Group/GroupSlot counts and match status for assigned teams using MatchStatus enum.
+---
+## 2026-01-15 22:21:36 CET - UC-003
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added delete-success toast handling for competition groups list and translation strings
+- Files changed: app/routes/admin/competition/competition.groups.tsx, app/i18n/locales/en.json, app/i18n/locales/nl.json, app/i18n/locales/fr.json, app/i18n/locales/de.json, app/i18n/locales/tr.json, app/i18n/locales/ar.json, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - No new reusable patterns discovered.
+---
+## 2026-01-15 23:28:46 CET - UC-004
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added delete button with confirmation dialog to group stage detail header and translated UI strings
+- Added component tests for delete button visibility and dialog trigger; wired tournamentCreatedBy into loader props
+- Files changed: app/features/competition/components/CompetitionGroupStageDetails.tsx, app/features/competition/components/__tests__/CompetitionGroupStageDetails.test.tsx, app/routes/admin/competition/competition.groups.$groupStageId.tsx, app/i18n/locales/en.json, app/i18n/locales/nl.json, app/i18n/locales/fr.json, app/i18n/locales/de.json, app/i18n/locales/tr.json, app/i18n/locales/ar.json, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - No new reusable patterns discovered.
+---
+## 2026-01-16 19:59:14 CET - UC-005
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Enhanced the group stage delete confirmation dialog with impact details and updated translations
+- Added unit tests covering impact copy variants and confirm/cancel behavior
+- Files changed: app/features/competition/components/CompetitionGroupStageDetails.tsx, app/routes/admin/competition/competition.groups.$groupStageId.tsx, app/features/competition/components/__tests__/CompetitionGroupStageDetails.test.tsx, app/i18n/locales/en.json, app/i18n/locales/nl.json, app/i18n/locales/fr.json, app/i18n/locales/de.json, app/i18n/locales/tr.json, app/i18n/locales/ar.json, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - No new reusable patterns discovered.
+---
+## 2026-01-16 21:33:38 CET - UC-006
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added delete-blocked toast handling for group stage deletion and translations for the blocked message
+- Added route test coverage to assert blocked deletion toast content
+- Browser verification: opened group stage details, opened delete dialog, captured screenshots in .agents/skills/dev-browser/tmp/verification-UC-006.png and .agents/skills/dev-browser/tmp/verification-UC-006-detail.png (no PLAYED matches in dev data to trigger blocked toast)
+- Files changed: app/features/competition/components/CompetitionGroupStageDetails.tsx, app/i18n/locales/en.json, app/i18n/locales/nl.json, app/i18n/locales/fr.json, app/i18n/locales/de.json, app/i18n/locales/tr.json, app/i18n/locales/ar.json, test/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.$groupStageId.test.tsx, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - No new reusable patterns discovered.
+---

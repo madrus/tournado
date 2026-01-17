@@ -1,9 +1,13 @@
-import { Component, type JSX, type ReactNode, useMemo } from 'react'
+import { Component, type JSX, type ReactNode, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router'
+import { Link, useSubmit } from 'react-router'
+import { SimpleConfirmDialog } from '~/components/ConfirmDialog'
 import { Panel } from '~/components/Panel'
+import { ActionButton } from '~/components/buttons/ActionButton'
 import type { GroupStageWithDetails, UnassignedTeam } from '~/models/group.server'
 import { adminPath } from '~/utils/adminRoutes'
+import { useUser } from '~/utils/routeUtils'
+import { toast } from '~/utils/toastUtils'
 import {
   type GroupAssignmentSnapshot,
   createSnapshotFromLoader,
@@ -14,6 +18,13 @@ type CompetitionGroupStageDetailsProps = {
   groupStage: GroupStageWithDetails
   availableTeams: readonly UnassignedTeam[]
   tournamentId: string
+  tournamentCreatedBy: string
+  canDelete: boolean
+  deleteImpact: {
+    groups: number
+    assignedTeams: number
+    matchesToDelete: number
+  }
   actionData?: {
     error?: string
   }
@@ -84,8 +95,21 @@ export function CompetitionGroupStageDetails({
   groupStage,
   availableTeams,
   tournamentId,
+  tournamentCreatedBy,
+  canDelete: canDeleteFromState,
+  deleteImpact,
+  actionData,
 }: Readonly<CompetitionGroupStageDetailsProps>): JSX.Element {
   const { t } = useTranslation()
+  const submit = useSubmit()
+  const user = useUser()
+
+  const hasDeletePermission =
+    user?.role === 'ADMIN' ||
+    (user?.role === 'MANAGER' &&
+      (groupStage.createdBy === user.id || tournamentCreatedBy === user.id))
+
+  const canDelete = hasDeletePermission && canDeleteFromState
 
   // Create initial snapshot from loader data
   const initialSnapshot = useMemo(
@@ -93,10 +117,33 @@ export function CompetitionGroupStageDetails({
     [groupStage, availableTeams],
   )
 
+  const handleDelete = (): void => {
+    const formData = new FormData()
+    formData.set('intent', 'delete')
+    submit(formData, { method: 'post' })
+  }
+
+  const deleteDescription =
+    deleteImpact.matchesToDelete > 0
+      ? t('competition.groupAssignment.deleteImpactWithMatches', {
+          groups: deleteImpact.groups,
+          teams: deleteImpact.assignedTeams,
+          matches: deleteImpact.matchesToDelete,
+        })
+      : t('competition.groupAssignment.deleteImpactWithoutMatches', {
+          groups: deleteImpact.groups,
+          teams: deleteImpact.assignedTeams,
+        })
+
+  useEffect(() => {
+    if (!actionData?.error) return
+    toast.error(actionData.error)
+  }, [actionData?.error])
+
   return (
     <div className='space-y-6'>
       {/* Header */}
-      <div className='flex items-center justify-between'>
+      <div className='flex items-center justify-between gap-4'>
         <div>
           <Link
             to={adminPath(`/competition/groups?tournament=${tournamentId}`)}
@@ -118,6 +165,24 @@ export function CompetitionGroupStageDetails({
             {t('competition.groupAssignment.backToGroups')}
           </Link>
         </div>
+        {canDelete ? (
+          <div className='shrink-0'>
+            <SimpleConfirmDialog
+              intent='danger'
+              trigger={
+                <ActionButton icon='delete' variant='secondary'>
+                  {t('common.actions.delete')}
+                </ActionButton>
+              }
+              title={t('competition.groupAssignment.deleteTitle')}
+              description={deleteDescription}
+              confirmLabel={t('common.actions.confirmDelete')}
+              cancelLabel={t('common.actions.cancel')}
+              destructive
+              onConfirm={handleDelete}
+            />
+          </div>
+        ) : null}
       </div>
 
       {/* Assignment board with error boundary */}
